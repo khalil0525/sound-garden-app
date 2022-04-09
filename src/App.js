@@ -5,7 +5,7 @@ import Genres from "./pages/Genres";
 import Artists from "./pages/Artists";
 import Liked from "./pages/Liked";
 import Uploaded from "./pages/Uploaded";
-
+import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 function App() {
   return (
@@ -106,6 +106,7 @@ function App() {
             <Route path="/liked" element={<Liked />}></Route>
             <Route path="/uploaded" element={<Uploaded />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,0 +1,10 @@
+.actionbar {
+  background-color: blue;
+  padding: 0.5rem 3rem;
+}
+.actionbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2rem;
+}

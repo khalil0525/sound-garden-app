@@ -1,4 +1,5 @@
 import styles from "./Home.module.css";
+import ActionBar from "../components/ActionBar/ActionBar";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         doloremque aut culpa praesentium eum suscipit itaque earum rerum nulla?
         Corrupti.
       </p>
+      <ActionBar></ActionBar>
     </div>
   );
 }
