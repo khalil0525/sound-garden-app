@@ -4,25 +4,42 @@ function App() {
   return (
     <div className={styles.app}>
       <div className={styles.sidebar}>
+        <div className={styles["sidebar-header"]}>
+          <h1>Sound Garden</h1>
+          <p className={styles["welcome-text"]}>Hi</p>
+          <p className={styles.username}>
+            First_name<br></br>Last_name
+          </p>
+        </div>
         <div className={styles.navigation}>
           <BrowserRouter>
             <div className={styles["navigation-main"]}>
-              <h2>Menu</h2>
+              <h4>Menu</h4>
               <nav className={styles.navbar}>
-                <NavLink to="/">Home</NavLink>
-                <NavLink to="/genres">Genres</NavLink>
-                <NavLink to="/artists">Artists</NavLink>
+                <NavLink to="/">
+                  <div>Home</div>
+                </NavLink>
+                <NavLink to="/genres">
+                  <div>Genres</div>
+                </NavLink>
+                <NavLink to="/artists">
+                  <div>Artists</div>
+                </NavLink>
               </nav>
             </div>
             <div className={styles["navigation-library"]}>
-              <h2>Library</h2>
+              <h4>Library</h4>
               <nav className={styles.navbar}>
-                <NavLink to="/liked">Liked</NavLink>
-                <NavLink to="/uploaded">Uploaded</NavLink>
+                <NavLink to="/liked">
+                  <div>Liked</div>
+                </NavLink>
+                <NavLink to="/uploaded">
+                  <div>Uploaded</div>
+                </NavLink>
               </nav>
             </div>
             <Routes>
-              <Route path="/"></Route>
+              <Route path="/" element={null}></Route>
               <Route path="/genres"></Route>
               <Route path="/artists"></Route>
               <Route path="/liked"></Route>
