@@ -13,7 +13,8 @@ function App() {
       <BrowserRouter>
         <div className={styles.sidebar}>
           <div className={styles["sidebar-header"]}>
-            <h1>Sound Garden</h1>
+            {/* <h1>Sound Garden</h1> */}
+            <img src="/img/soundgarden.jpg" alt="Soundgarden logo"></img>
             <p className={styles["welcome-text"]}>Hi</p>
             <p className={styles.username}>
               First_name<br></br>Last_name

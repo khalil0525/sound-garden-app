@@ -15,10 +15,27 @@
 }
 .login-form_controls {
 }
+
 .login-form_control {
   display: flex;
   flex-direction: column;
 }
+.login-form_control label {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.login-form_control input {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 30rem;
+  max-width: 100%;
+}
+
 .login-form_actions {
   display: flex;
   flex-direction: column;
