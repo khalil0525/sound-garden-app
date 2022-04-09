@@ -72,16 +72,22 @@
   font-weight: 400;
   text-decoration: none;
   /* color: #ffffff; */
+
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
   opacity: 0.5;
-  padding: 1rem 3rem;
+  padding: 0.5rem 3rem;
 
   /* Style for active class */
-  background: rgba(158, 71, 0, 0.5);
-  border-left: 3px solid orangered;
+  /* background: rgba(158, 71, 0, 0.5);
+  border-left: 3px solid orangered; */
 }
 .navbar a div {
-  width: 20rem;
+  width: 16rem;
 }
-/* .navbar a.active {
+.nav a.active {
   background: orange;
-} */
+  color: #fff;
+}

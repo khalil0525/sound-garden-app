@@ -17,12 +17,18 @@ function App() {
               <h4>Menu</h4>
               <nav className={styles.navbar}>
                 <NavLink to="/">
+                  <img src="/img/Home_fill.svg" alt="Home button icon" />
                   <div>Home</div>
                 </NavLink>
                 <NavLink to="/genres">
+                  <img src="/img/Mic_alt_duotone.svg" alt="Genre button icon" />
                   <div>Genres</div>
                 </NavLink>
                 <NavLink to="/artists">
+                  <img
+                    src="/img/User_duotone_line.svg"
+                    alt="Artist button icon"
+                  />
                   <div>Artists</div>
                 </NavLink>
               </nav>
@@ -31,9 +37,17 @@ function App() {
               <h4>Library</h4>
               <nav className={styles.navbar}>
                 <NavLink to="/liked">
+                  <img
+                    src="/img/favorite_duotone.svg"
+                    alt="Artist button icon"
+                  />
                   <div>Liked</div>
                 </NavLink>
                 <NavLink to="/uploaded">
+                  <img
+                    src="/img/Upload_duotone_line.svg"
+                    alt="Artist button icon"
+                  />
                   <div>Uploaded</div>
                 </NavLink>
               </nav>
