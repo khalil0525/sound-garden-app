@@ -1,0 +1,25 @@
+.login {
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  margin: 10rem auto;
+  padding: 20rem;
+  max-width: 50rem;
+  background-color: #fb502f;
+  border-radius: 16px;
+}
+.login-form_controls {
+}
+.login-form_control {
+  display: flex;
+  flex-direction: column;
+}
+.login-form_actions {
+  display: flex;
+  flex-direction: column;
+}

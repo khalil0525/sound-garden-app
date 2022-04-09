@@ -5,6 +5,8 @@ import Genres from "./pages/Genres";
 import Artists from "./pages/Artists";
 import Liked from "./pages/Liked";
 import Uploaded from "./pages/Uploaded";
+
+import Login from "./pages/Login";
 function App() {
   return (
     <div className={styles.app}>
@@ -17,6 +19,7 @@ function App() {
               First_name<br></br>Last_name
             </p>
           </div>
+
           <div className={styles.navigation}>
             <div className={styles["navigation-main"]}>
               <h4>Menu</h4>
@@ -51,8 +54,17 @@ function App() {
                   />
                   <div>Artists</div>
                 </NavLink>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive ? styles["active-nav-item"] : undefined
+                  }
+                >
+                  <div>Login Temp</div>
+                </NavLink>
               </nav>
             </div>
+
             <div className={styles["navigation-library"]}>
               <h4>Library</h4>
               <nav className={styles.navbar}>
@@ -84,6 +96,7 @@ function App() {
             </div>
           </div>
         </div>
+
         <div className={styles.page}>
           <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -91,6 +104,7 @@ function App() {
             <Route path="/artists" element={<Artists />}></Route>
             <Route path="/liked" element={<Liked />}></Route>
             <Route path="/uploaded" element={<Uploaded />}></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
