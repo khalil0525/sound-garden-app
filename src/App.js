@@ -1,12 +1,13 @@
 import styles from "./App.module.css";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router-dom";
-import Genres from "./pages/Genres";
-import Artists from "./pages/Artists";
-import Liked from "./pages/Liked";
-import Uploaded from "./pages/Uploaded";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login";
+import Genres from "./pages/Genres/Genres";
+import Artists from "./pages/Artists/Artists";
+import Liked from "./pages/Liked/Liked";
+import Uploaded from "./pages/Uploaded/Uploaded";
+import Profile from "./pages/Profile/Profile";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 function App() {
   return (
     <div className={styles.app}>
@@ -56,12 +57,12 @@ function App() {
                   <div>Artists</div>
                 </NavLink>
                 <NavLink
-                  to="/login"
+                  to="/register"
                   className={({ isActive }) =>
                     isActive ? styles["active-nav-item"] : undefined
                   }
                 >
-                  <div>Login Temp</div>
+                  <div>Register temp</div>
                 </NavLink>
               </nav>
             </div>
@@ -107,6 +108,7 @@ function App() {
             <Route path="/uploaded" element={<Uploaded />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/register" element={<Register />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

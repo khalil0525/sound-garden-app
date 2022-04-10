@@ -1,5 +1,5 @@
 import styles from "./Home.module.css";
-import ActionBar from "../components/ActionBar/ActionBar";
+import ActionBar from "../../components/ActionBar/ActionBar";
 
 export default function Home() {
   return (

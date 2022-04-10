@@ -1,42 +1,43 @@
-.login {
-}
-
-.login form {
+.register-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 
-  margin: 10rem auto;
-  padding: 20rem;
-  max-width: 50rem;
+  margin: 6rem auto;
+  padding: 10rem 20rem;
+  max-width: 3.6rem;
   background-color: #fb502f;
   border-radius: 16px;
 }
-.login-form_controls {
+
+.register-form h2 {
+  font-size: 3rem;
+}
+.register-form_controls {
 }
 
-.login-form_control {
+.register-form_control {
   display: flex;
   flex-direction: column;
 }
-.login-form_control label {
+.register-form_control label {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   display: block;
 }
 
-.login-form_control input {
+.register-form_control input {
   font: inherit;
-  padding: 0.5rem;
+  padding: 0.8rem 0.6rem;
   border-radius: 6px;
   border: 1px solid #ccc;
   width: 30rem;
   max-width: 100%;
 }
 
-.login-form_actions {
+.register-form_actions {
   display: flex;
   flex-direction: column;
 }
