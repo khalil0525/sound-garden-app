@@ -58,6 +58,14 @@ function App() {
                   <div>Artists</div>
                 </NavLink>
                 <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive ? styles["active-nav-item"] : undefined
+                  }
+                >
+                  <div>Login temp</div>
+                </NavLink>
+                <NavLink
                   to="/register"
                   className={({ isActive }) =>
                     isActive ? styles["active-nav-item"] : undefined

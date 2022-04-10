@@ -45,7 +45,9 @@ export default function Register() {
           ></input>
         </div>
       </div>
-
+      {/* We are conditionally rendering buttons based on isPending, which
+      is a piece of state in our useRegister hook which will be set to true
+      when the create user attempts to process */}
       {!isPending && (
         <div className={styles["register-form_actions"]}>
           <button type="submit">Register</button>
@@ -56,6 +58,8 @@ export default function Register() {
           <button disabled>loading</button>
         </div>
       )}
+      {/* We are conditionally rendering an error message which firebase will
+      return back if we encounter an error during registration. */}
       {error && <p>{error}</p>}
     </form>
   );
