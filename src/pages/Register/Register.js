@@ -21,7 +21,7 @@ export default function Register() {
         <div className={styles["register-form_control"]}>
           <label>Email</label>
           <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>

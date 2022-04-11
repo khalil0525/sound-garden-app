@@ -17,7 +17,7 @@ export default function Login() {
         <div className={styles["login-form_control"]}>
           <label>Email</label>
           <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
