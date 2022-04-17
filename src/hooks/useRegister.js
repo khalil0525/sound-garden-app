@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { projectAuth } from "../firebase/config";
-
+import { useAuthContext } from "./useAuthContext";
 export const useRegister = () => {
   // Error state so that we can displaye error messages on form
   const [error, setError] = useState(null);
@@ -10,6 +10,7 @@ export const useRegister = () => {
   const [isPending, setIsPending] = useState(false);
   // Async function that trys to register a user, if registration is unsuccessful
   // It throws an error
+  const { dispatch } = useAuthContext();
   const register = async (email, password, displayName) => {
     setError(null);
     setIsPending(true);
@@ -28,6 +29,8 @@ export const useRegister = () => {
 
       // add display name to user
       await res.user.updateProfile({ displayName });
+      // dispatch login action
+      dispatch({ type: "LOGIN", action: res.user });
 
       setIsPending(false);
       setError(null);
