@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { projectAuth } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 export const useRegister = () => {
+  const [isCancelled, setIsCancelled] = useState(false);
   // Error state so that we can displaye error messages on form
   const [error, setError] = useState(null);
   // Pending state so that we can know when the when an action is being performed
@@ -30,16 +31,24 @@ export const useRegister = () => {
       // add display name to user
       await res.user.updateProfile({ displayName });
       // dispatch login action
-      dispatch({ type: "LOGIN", action: res.user });
-
-      setIsPending(false);
-      setError(null);
+      dispatch({ type: "LOGIN", payload: res.user });
+      //update state
+      if (!isCancelled) {
+        setIsPending(false);
+        setError(null);
+      }
     } catch (err) {
-      console.log(err.message);
-      setError(err.message);
-      setIsPending(false);
+      if (!isCancelled) {
+        console.log(err.message);
+        setError(err.message);
+        setIsPending(false);
+      }
     }
   };
+  // Cleanup function
+  useEffect(() => {
+    return () => setIsCancelled(true);
+  }, []);
 
   return { register, error, isPending };
 };
