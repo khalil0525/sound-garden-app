@@ -59,7 +59,7 @@ export default function Register() {
         </div>
       )}
       {/* We are conditionally rendering an error message which firebase will
-      return back if we encounter an error during registration. */}
+      return back if we encounter an error during registration. ddd*/}
       {error && <p>{error}</p>}
     </form>
   );
