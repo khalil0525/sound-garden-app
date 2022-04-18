@@ -8,8 +8,11 @@ import Uploaded from "./pages/Uploaded/Uploaded";
 import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-
+import { useAuthContext } from "./hooks/useAuthContext";
 function App() {
+  // Getting the context of the user to see if they're logged in
+  const { user } = useAuthContext();
+
   return (
     <div className={styles.app}>
       <BrowserRouter>
@@ -75,35 +78,39 @@ function App() {
                 </NavLink>
               </nav>
             </div>
-
+            {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
             <div className={styles["navigation-library"]}>
-              <h4>Library</h4>
-              <nav className={styles.navbar}>
-                <NavLink
-                  to="/liked"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <img
-                    src="/img/favorite_duotone.svg"
-                    alt="Artist button icon"
-                  />
-                  <div>Liked</div>
-                </NavLink>
-                <NavLink
-                  to="/uploaded"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <img
-                    src="/img/Upload_duotone_line.svg"
-                    alt="Artist button icon"
-                  />
-                  <div>Uploaded</div>
-                </NavLink>
-              </nav>
+              {user && (
+                <>
+                  <h4>Library</h4>
+                  <nav className={styles.navbar}>
+                    <NavLink
+                      to="/liked"
+                      className={({ isActive }) =>
+                        isActive ? styles["active-nav-item"] : undefined
+                      }
+                    >
+                      <img
+                        src="/img/favorite_duotone.svg"
+                        alt="Artist button icon"
+                      />
+                      <div>Liked</div>
+                    </NavLink>
+                    <NavLink
+                      to="/uploaded"
+                      className={({ isActive }) =>
+                        isActive ? styles["active-nav-item"] : undefined
+                      }
+                    >
+                      <img
+                        src="/img/Upload_duotone_line.svg"
+                        alt="Artist button icon"
+                      />
+                      <div>Uploaded</div>
+                    </NavLink>
+                  </nav>
+                </>
+              )}
             </div>
           </div>
         </div>
