@@ -20,10 +20,13 @@ function App() {
           <div className={styles["sidebar-header"]}>
             {/* <h1>Sound Garden</h1> */}
             <img src="/img/soundgarden.jpg" alt="Soundgarden logo"></img>
-            <p className={styles["welcome-text"]}>Hi</p>
-            <p className={styles.username}>
-              First_name<br></br>Last_name
-            </p>
+            {/* Conditionally render the users displayName */}
+            {user && (
+              <>
+                <p className={styles["welcome-text"]}>Hi,</p>
+                <p className={styles.username}>{user.displayName}</p>
+              </>
+            )}
           </div>
 
           <div className={styles.navigation}>
@@ -60,22 +63,26 @@ function App() {
                   />
                   <div>Artists</div>
                 </NavLink>
-                <NavLink
-                  to="/login"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <div>Login temp</div>
-                </NavLink>
-                <NavLink
-                  to="/register"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <div>Register temp</div>
-                </NavLink>
+                {!user && (
+                  <>
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) =>
+                        isActive ? styles["active-nav-item"] : undefined
+                      }
+                    >
+                      <div>Login temp</div>
+                    </NavLink>
+                    <NavLink
+                      to="/register"
+                      className={({ isActive }) =>
+                        isActive ? styles["active-nav-item"] : undefined
+                      }
+                    >
+                      <div>Register temp</div>
+                    </NavLink>
+                  </>
+                )}
               </nav>
             </div>
             {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
