@@ -24,7 +24,7 @@ function App() {
         <BrowserRouter>
           {/* We pass the styles.sidebar class down to the SideNavigation
         function so that we can still use CSS grid from the app class */}
-          <SideNavigation className={styles.sidebar} />
+          <SideNavigation />
           {/* Within this div we will render different pages */}
           <div className={styles.page}>
             <Routes>

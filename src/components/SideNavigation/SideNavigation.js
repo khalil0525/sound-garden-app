@@ -3,13 +3,12 @@ import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLogout } from "../../hooks/useLogout";
 
-// Destructure the className prop from props
-const SideNavigation = ({ className }) => {
+const SideNavigation = () => {
   const { user } = useAuthContext();
   const { logout, error, isPending } = useLogout();
   return (
     //This className
-    <div className={className}>
+    <div className={styles.sidebar}>
       <div className={styles["sidebar-header"]}>
         {/* <h1>Sound Garden</h1> */}
         <img src="/img/soundgarden.jpg" alt="Soundgarden logo"></img>
