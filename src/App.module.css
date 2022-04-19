@@ -16,95 +16,10 @@
 
   /* gap: 10rem; */
 }
-.sidebar-header {
-  margin: 3rem 0 3rem 3rem;
-
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-/* .sidebar-header h1 {
-  font-size: 4.8rem;
-  font-weight: 700;
-  color: orange;
-} */
-
-.sidebar-header img {
-  width: 30%;
-  border-radius: 12px;
-  opacity: 0.9;
-  box-shadow: 0 10px 140px #fb502f;
-}
-.welcome-text {
-  font-size: 2.4rem;
-  font-weight: 400;
-  opacity: 0.5;
-  color: #ffffff;
-}
-.username {
-  font-size: 3.2rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
 .page {
   background-color: #e5e5e5;
   border-radius: 32px;
   max-width: 80vw;
 
   grid-column: 2/-1;
-}
-.navigation {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  margin-top: 3rem;
-}
-.navigation h4 {
-  font-weight: 400;
-  font-size: 2rem;
-  margin-left: 3rem;
-  margin-bottom: 1rem;
-  color: #ffffff;
-}
-.navigation-main {
-}
-.navigation-library {
-}
-.navbar {
-  display: flex;
-  flex-direction: column;
-
-  margin-bottom: 3rem;
-}
-
-.navbar a:link,
-.navbar a:visited {
-  font-size: 2rem;
-  font-weight: 400;
-  text-decoration: none;
-  color: #ffffff;
-
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-
-  opacity: 0.5;
-  padding: 1rem 3rem;
-
-  /* Style for active class */
-}
-.navbar a:hover {
-  background: rgba(252, 100, 70, 0.514);
-}
-.navbar a.active-nav-item {
-  background: rgba(250, 57, 18, 0.226);
-  border-left: 4px solid orangered;
-  opacity: 1;
-  color: #fff;
-}
-.navbar a div {
-  width: 16rem;
 }
