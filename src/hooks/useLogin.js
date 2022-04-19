@@ -31,8 +31,10 @@ export const useLogin = () => {
       }
     }
   };
-  // Cleanup function, this will fire when we navigate away from the page this is
-  // Being used on. In turn, it will prevent the above code from being run
+  //Cleanup function
+  //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
+  // on a componenent that already had unmounted because this will cause an error.
+  //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);

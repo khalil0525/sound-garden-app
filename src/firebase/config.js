@@ -18,7 +18,10 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+//Object to interact with firestore
 const projectFirestore = firebase.firestore();
+//Object to interact with firebase auth
 const projectAuth = firebase.auth();
-
-export { projectFirestore, projectAuth };
+//Special data property from firestore to give our documents a timestamp
+const timestamp = firebase.firestore.Timestamp;
+export { projectFirestore, projectAuth, timestamp };

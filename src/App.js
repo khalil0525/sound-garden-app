@@ -1,6 +1,13 @@
 import styles from "./App.module.css";
 import Home from "./pages/Home/Home";
-import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import Genres from "./pages/Genres/Genres";
 import Artists from "./pages/Artists/Artists";
 import Liked from "./pages/Liked/Liked";
@@ -141,16 +148,32 @@ function App() {
             </div>
           </div>
 
+          {/* Within this div we will render different pages */}
           <div className={styles.page}>
             <Routes>
               <Route path="/" element={<Home />}></Route>
               <Route path="/genres" element={<Genres />}></Route>
               <Route path="/artists" element={<Artists />}></Route>
-              <Route path="/liked" element={<Liked />}></Route>
-              <Route path="/uploaded" element={<Uploaded />}></Route>
-              <Route path="/login" element={<Login />}></Route>
-              <Route path="/profile" element={<Profile />}></Route>
-              <Route path="/register" element={<Register />}></Route>
+              <Route
+                path="/liked"
+                element={user ? <Liked /> : <Navigate to="/" />}
+              ></Route>
+              <Route
+                path="/uploaded"
+                element={user ? <Uploaded /> : <Navigate to="/" />}
+              ></Route>
+              <Route
+                path="/login"
+                element={!user ? <Login /> : <Navigate to="/" />}
+              ></Route>
+              <Route
+                path="/profile"
+                element={user ? <Profile /> : <Navigate to="/login" />}
+              ></Route>
+              <Route
+                path="/register"
+                element={!user ? <Register /> : <Navigate to="/" />}
+              ></Route>
             </Routes>
           </div>
         </BrowserRouter>

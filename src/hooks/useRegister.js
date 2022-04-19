@@ -45,7 +45,11 @@ export const useRegister = () => {
       }
     }
   };
-  // Cleanup function
+  //Cleanup function
+  //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
+  // on a componenent that already had unmounted because this will cause an error.
+  //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
+
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);
