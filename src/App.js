@@ -10,6 +10,8 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import SideNavigation from "./components/SideNavigation/SideNavigation";
 import { useAuthContext } from "./hooks/useAuthContext";
+import Upload from "./pages/Upload/Upload";
+import Search from "./pages/Search/Search";
 
 function App() {
   // Getting the context of the user to see if they're logged in
@@ -46,6 +48,11 @@ function App() {
               <Route
                 path="/profile"
                 element={user ? <Profile /> : <Navigate to="/login" />}
+              ></Route>
+              <Route path="/search" element={<Search />}></Route>
+              <Route
+                path="/upload"
+                element={user ? <Upload /> : <Navigate to="/login" />}
               ></Route>
               <Route
                 path="/register"

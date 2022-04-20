@@ -2,6 +2,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,4 +25,6 @@ const projectFirestore = firebase.firestore();
 const projectAuth = firebase.auth();
 //Special data property from firestore to give our documents a timestamp
 const timestamp = firebase.firestore.Timestamp;
-export { projectFirestore, projectAuth, timestamp };
+//Object to interact with firebase storage
+const projectStorage = firebase.storage();
+export { projectFirestore, projectAuth, projectStorage, timestamp };
