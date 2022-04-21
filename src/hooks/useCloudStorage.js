@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
-
+import { useFirestore } from "./useFirestore";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
 
 let initialState = {
@@ -56,6 +56,13 @@ export const useCloudStorage = (path) => {
   //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
   // And since it's a variable on the same level of our useEffect we can use it to cancel the upload when we navigate away
   const addedFileRef = useRef();
+  //This about using a ternary for this?..... path === "songs/" ? 'music' : 'images
+  //Our fireStore hook so we can add the data we need from our uploads to it.
+  const {
+    addDocument,
+    deleteDocument,
+    response: firestoreResponse,
+  } = useFirestore(path === "songs/" ? "music" : "images");
   // this is a reference to the Cloud Storage folder we want to perform something on.
   const ref = projectStorage.ref(path);
 
@@ -97,7 +104,9 @@ export const useCloudStorage = (path) => {
     // }
 
     addedFileRef.current = fileRef.put(file);
+
     console.log(addedFileRef);
+
     addedFileRef.current.on(
       "state_changed",
       (snapshot) => {
@@ -117,8 +126,14 @@ export const useCloudStorage = (path) => {
         addedFileRef.current.snapshot.ref
           .getDownloadURL()
           .then((downloadURL) => {
+            //Need another ternary or if statement here so we can reuse this hook for songs AND images.
+            addDocument({
+              song: file.name,
+              URL: downloadURL,
+            });
             console.log("File URL:", downloadURL);
           });
+        //
         dispatchIfNotCancelled({
           type: "ADDED_FILE",
           payload: addedFileRef.current,
