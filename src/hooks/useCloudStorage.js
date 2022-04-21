@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
 
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
@@ -48,9 +48,15 @@ export const useCloudStorage = (path) => {
   //We are using "initialState" because we don't need to make a new copy of the state every time the hook is used.
   const [response, dispatch] = useReducer(cloudStorageReducer, initialState);
   //This state is used to cancel updating local state when the component that uses this hook is unmounted.
-  const [isCancelled, setIsCancelled] = useState();
-
-  // collection ref, this is a reference to the Cloud Storage folder we want to perform something on.
+  const [isCancelled, setIsCancelled] = useState(false);
+  //This state is used to hold the progress of the upload
+  const [uploadProgress, setUploadProgress] = useState();
+  //Essentially, useRef is like a “box” that can hold a mutable value in its .current property
+  //We want to cancel the upload if a user navigates away from page and state updates won't work due to the
+  //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
+  // And since it's a variable on the same level of our useEffect we can use it to cancel the upload when we navigate away
+  const addedFileRef = useRef();
+  // this is a reference to the Cloud Storage folder we want to perform something on.
   const ref = projectStorage.ref(path);
 
   // only dispatch if not cancelled
@@ -60,23 +66,67 @@ export const useCloudStorage = (path) => {
     }
   };
 
-  // add a document
-  const addFile = async (file) => {
-    let fileRef = projectStorage.ref(path + file.name);
+  // add a file to the cloud storage
+  const addFile = (file) => {
+    const fileRef = projectStorage.ref(path + file.name);
+
+    //We can use await because it exepects an object back. When we use .on to
 
     console.log(path + file.name);
 
-    dispatch({ type: "IS_PENDING" });
+    //If we navigate away from the page then we still upload the song. We need to find some way to prevent this. This happens in both of these methods.
+    //There are ways to monitor the task.
 
-    try {
-      const addedFile = await fileRef.put(file);
-      dispatchIfNotCancelled({
-        type: "ADDED_FILE",
-        payload: addedFile,
-      });
-    } catch (err) {
-      dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
-    }
+    // ALL FUNCTIONS IN FIRE BASE ARE ASYNCHRONOUS. This is why we can run fileRef.put without making this function ASYNC or using await!!
+    // Await will prevent the try block from moving on until it gets the promise back from fileRef.put which is an UploadTask.
+
+    //Firebase APIs are sensitive to the performance of your app’s main thread. This means that any Firebase API that needs to deal with data on disk or network
+    //is implemented in an asynchronous style. The functions will return immediately, so you can call them on the main thread without worrying about performance.
+    ///All you have to do is implement callbacks using the patterns established in the documentation and samples.
+
+    // dispatch({ type: "IS_PENDING" });
+    //If we use this we must add async back to function declaration
+    // try {
+    //   const addedFile = await fileRef.put(file);
+    //   dispatchIfNotCancelled({
+    //     type: "ADDED_FILE",
+    //     payload: addedFile,
+    //   });
+    // } catch (err) {
+    //   dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
+    // }
+
+    addedFileRef.current = fileRef.put(file);
+    console.log(addedFileRef);
+    addedFileRef.current.on(
+      "state_changed",
+      (snapshot) => {
+        dispatch({ type: "IS_PENDING" });
+
+        setUploadProgress(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        console.log(uploadProgress, isCancelled);
+      },
+      //callback for error on upload
+      (error) => {
+        dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      },
+      //Callback for completed upload
+      () => {
+        addedFileRef.current.snapshot.ref
+          .getDownloadURL()
+          .then((downloadURL) => {
+            console.log("File URL:", downloadURL);
+          });
+        dispatchIfNotCancelled({
+          type: "ADDED_FILE",
+          payload: addedFileRef.current,
+        });
+      }
+    );
+
+    console.log("were uploading at the moment but this still ran");
   };
   // delete a song
   const deleteFile = (id) => {};
@@ -86,9 +136,13 @@ export const useCloudStorage = (path) => {
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
   useEffect(() => {
     return () => {
+      console.log("CLEAN UP");
+      //Don't need to wrap with if because this has no effect on a complete or failed task.
+      //This will cancel the upload if it is running when we leave the page
+      addedFileRef.current.cancel();
       setIsCancelled(true);
     };
   }, []);
 
-  return { addFile, deleteFile, response };
+  return { addFile, deleteFile, response, uploadProgress };
 };

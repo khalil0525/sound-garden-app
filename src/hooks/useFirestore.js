@@ -48,7 +48,7 @@ export const useFirestore = (collection) => {
   //We are using "initialState" because we don't need to make a new copy of the state every time the hook is used.
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   //This state is used to cancel updating local state when the component that uses this hook is unmounted.
-  const [isCancelled, setIsCancelled] = useState();
+  const [isCancelled, setIsCancelled] = useState(false);
 
   // collection ref, this is a reference to the firestore collection we want to perform something on.
   const ref = projectFirestore.collection(collection);

@@ -3,7 +3,7 @@ import { useCloudStorage } from "../../hooks/useCloudStorage";
 
 const Upload = () => {
   const [songFile, setSongFile] = useState(null);
-  const { addFile, response } = useCloudStorage("songs/");
+  const { addFile, response, uploadProgress } = useCloudStorage("songs/");
   const handleFileChange = (event) => {
     setSongFile(event.target.files[0]);
     // console.log(songFile);
@@ -24,6 +24,7 @@ const Upload = () => {
       )}
       {response.isPending && <button disabled>Uploading... Please wait</button>}
       {response.success && <p> {response.success}</p>}
+      <p>{uploadProgress}</p>
     </div>
   );
 };

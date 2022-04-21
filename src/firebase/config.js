@@ -18,7 +18,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
+// **************************************************
+// YOU ARE CURRENTLY USE WEB VERSION 8 METHODS
+// **********************************************
 //Object to interact with firestore
 const projectFirestore = firebase.firestore();
 //Object to interact with firebase auth
