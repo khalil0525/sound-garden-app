@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
 import { useFirestore } from "./useFirestore";
+import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
 
 let initialState = {
@@ -51,6 +52,7 @@ export const useCloudStorage = (path) => {
   const [isCancelled, setIsCancelled] = useState(false);
   //This state is used to hold the progress of the upload
   const [uploadProgress, setUploadProgress] = useState();
+  const { user } = useAuthContext();
   //Essentially, useRef is like a “box” that can hold a mutable value in its .current property
   //We want to cancel the upload if a user navigates away from page and state updates won't work due to the
   //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
@@ -74,8 +76,8 @@ export const useCloudStorage = (path) => {
   };
 
   // add a file to the cloud storage
-  const addFile = (file) => {
-    const fileRef = projectStorage.ref(path + file.name);
+  const addFile = (file, songDetails) => {
+    const fileRef = projectStorage.ref(path + user.uid + "/" + file.name);
 
     //We can use await because it exepects an object back. When we use .on to
 
@@ -127,9 +129,13 @@ export const useCloudStorage = (path) => {
           .getDownloadURL()
           .then((downloadURL) => {
             //Need another ternary or if statement here so we can reuse this hook for songs AND images.
+
             addDocument({
-              song: file.name,
+              artist: songDetails.artistName,
+              genre: songDetails.genreType,
+              song: songDetails.songName,
               URL: downloadURL,
+              uid: user.uid,
             });
             console.log("File URL:", downloadURL);
           });
@@ -154,7 +160,10 @@ export const useCloudStorage = (path) => {
       console.log("CLEAN UP");
       //Don't need to wrap with if because this has no effect on a complete or failed task.
       //This will cancel the upload if it is running when we leave the page
-      addedFileRef.current.cancel();
+      if (addedFileRef.current) {
+        addedFileRef.current.cancel();
+      }
+
       setIsCancelled(true);
     };
   }, []);
