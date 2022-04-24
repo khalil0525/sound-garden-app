@@ -1,6 +1,6 @@
 import React from "react";
 
-const GenreSelect = ({ onGenreTypeChange, genreValue }) => {
+const GenreSelect = ({ onGenreTypeChange, genreValue, disabled }) => {
   return (
     <>
       <label htmlFor="genre-type">Genre:</label>
@@ -10,6 +10,7 @@ const GenreSelect = ({ onGenreTypeChange, genreValue }) => {
         name="genre-type"
         value={genreValue}
         onChange={onGenreTypeChange}
+        disabled={disabled}
       >
         <option value="none">None</option>
         <option value="alternative-rock">Alternative Rock</option>

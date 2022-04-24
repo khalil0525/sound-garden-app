@@ -6,3 +6,9 @@
   margin: 0 auto;
   margin-top: 5rem;
 }
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}

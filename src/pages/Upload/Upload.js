@@ -1,5 +1,6 @@
 import { useState, useReducer } from "react";
 import { useCloudStorage } from "../../hooks/useCloudStorage";
+import { Link } from "react-router-dom";
 import LoadingBar from "../../components/LoadingBar/LoadingBar";
 import styles from "./Upload.module.css";
 import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
@@ -57,15 +58,18 @@ const Upload = () => {
     initialState
   );
   const { addFile, response, uploadProgress } = useCloudStorage("songs/");
+  //Destruct values from the reducer state
   const { songFile, artistName, songName, genreType, formIsValid } =
     songUploadState;
+
+  //HANDLE FUNCTIONS
+
   const handleFileChange = (event) => {
     dispatchSongUploadState({
       type: "FILE_CHANGED",
       payload: event.target.files[0],
     });
   };
-
   const handleSongUpload = (event) => {
     if (songFile && formIsValid) {
       addFile(songFile, { artistName, songName, genreType });
@@ -77,7 +81,6 @@ const Upload = () => {
       type: "CANCEL_UPLOAD",
     });
   };
-  //TURN THIS INTO A REDUCER
   const handleArtistNameChange = (event) => {
     dispatchSongUploadState({
       type: "ARTIST_NAME_CHANGE",
@@ -101,7 +104,6 @@ const Upload = () => {
     });
     // setGenreType(event.target.value);
   };
-  // const handle
 
   return (
     <div>
@@ -114,38 +116,53 @@ const Upload = () => {
       {songFile && (
         <div className={styles["upload"]}>
           <LoadingBar progress={uploadProgress} song={songFile.name} />
-          <label htmlFor="artist-name">Artist:</label>
-          <input
-            type="text"
-            id="artist-name"
-            name="artist-name"
-            value={artistName}
-            onChange={handleArtistNameChange}
-          ></input>
+          {!response.success && (
+            <>
+              <label htmlFor="artist-name">Artist:</label>
+              <input
+                type="text"
+                id="artist-name"
+                name="artist-name"
+                value={artistName}
+                onChange={handleArtistNameChange}
+                disabled={response.isPending}
+              ></input>
 
-          <label htmlFor="song-name">Song Name:</label>
-          <input
-            type="text"
-            id="song-name"
-            name="song-name"
-            value={songName}
-            onChange={handleSongNameChange}
-          ></input>
+              <label htmlFor="song-name">Song Name:</label>
+              <input
+                type="text"
+                id="song-name"
+                name="song-name"
+                value={songName}
+                onChange={handleSongNameChange}
+                disabled={response.isPending}
+              ></input>
 
-          <GenreSelect
-            onGenreTypeChange={handleGenreTypeChange}
-            genreValue={genreType}
-          />
+              <GenreSelect
+                onGenreTypeChange={handleGenreTypeChange}
+                genreValue={genreType}
+                disabled={response.isPending}
+              />
 
-          {!response.isPending && (
-            <div className={styles["button-container"]}>
-              <button onClick={handleCancelClick}>Cancel</button>
-              <button onClick={handleSongUpload} disabled={!formIsValid}>
-                Upload
-              </button>
-            </div>
+              {!response.isPending && (
+                <div className={styles["action-container"]}>
+                  <div onClick={handleCancelClick}>Cancel</div>
+                  <button onClick={handleSongUpload} disabled={!formIsValid}>
+                    Upload
+                  </button>
+                </div>
+              )}
+            </>
           )}
-
+          {response.success && (
+            <>
+              {/* <div onClick={handleCancelClick}>Upload Another track?</div> */}
+              <h2>Uploaded Sucessfully!</h2>
+              <div>
+                <Link to="/uploaded">Go to your uploaded tracks</Link>
+              </div>
+            </>
+          )}
           {response.isPending && (
             <button disabled>Uploading... Please wait</button>
           )}
