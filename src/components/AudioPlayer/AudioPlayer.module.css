@@ -1,0 +1,21 @@
+.audio-player {
+}
+.audio-player_controls {
+  display: flex;
+  flex-direction: column;
+}
+.audio-player_controls_seek {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.audio-player_controls_main {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.audio-player_controls_volume {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
