@@ -2,7 +2,7 @@ import styles from "./SideNavigation.module.css";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLogout } from "../../hooks/useLogout";
-
+import AudioPlayer from "../AudioPlayer/AudioPlayer";
 const SideNavigation = () => {
   const { user } = useAuthContext();
   const { logout, error, isPending } = useLogout();
@@ -115,6 +115,7 @@ const SideNavigation = () => {
             </>
           )}
         </div>
+        <AudioPlayer />
       </div>
     </div>
   );
