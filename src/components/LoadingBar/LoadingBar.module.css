@@ -5,12 +5,16 @@
   flex-direction: row;
   align-items: center;
 }
+.loading-bar_header {
+  display: flex;
+  justify-content: space-between;
+}
 .loading-bar_inner {
   height: 100%;
   width: 100%;
 
   border: 1px solid #313131;
-  border-radius: 12px;
+  border-radius: 3px;
   background-color: #c3b4f3;
   overflow: hidden;
   display: flex;
@@ -20,7 +24,7 @@
 .loading-bar_fill {
   height: 100%;
 
-  padding: 1rem 0;
+  padding: 0.5rem 0;
 
   background-color: #4826b9;
 }
