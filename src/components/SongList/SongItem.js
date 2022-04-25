@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styles from "./SongItem.module.css";
+import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 const SongItem = ({ song }) => {
   const [url, setUrl] = useState(song.URL);
+  const { dispatch } = useAudioPlayerContext();
   return (
     <div className={styles["song-item"]}>
       <li>
@@ -11,7 +13,11 @@ const SongItem = ({ song }) => {
           {/* <h1>{song.createdAt}</h1> */}
           <h4>{song.genre}</h4>
 
-          <button>Play</button>
+          <button
+            onClick={() => dispatch({ type: "URL_CHANGE", payload: url })}
+          >
+            Play
+          </button>
         </div>
       </li>
     </div>

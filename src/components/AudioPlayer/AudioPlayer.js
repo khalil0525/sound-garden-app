@@ -2,7 +2,7 @@ import React, { useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
-
+import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 let initialState = {
   url: null,
   playing: false,
@@ -64,6 +64,9 @@ const AudioPlayer = () => {
   } = audioPlayerState;
   //Ref to ReactPlayer
   const player = useRef();
+  //Audio player context
+  const { songURL } = useAudioPlayerContext();
+
   //Function to load songs
   const load = (url) => {
     dispatchAudioPlayerState({
@@ -132,11 +135,11 @@ const AudioPlayer = () => {
         ref={player}
         width={0}
         height={0}
-        url="https://firebasestorage.googleapis.com/v0/b/sound-garden-eeeed.appspot.com/o/songs%2FxCvggxf5HPhL9xBbHOz49BWcsly2%2FDADADADA.mp3?alt=media&token=a0255825-856e-447b-b9f1-cd0eaba7e046"
+        url={songURL}
         playing={playing}
         volume={volume}
         muted={muted}
-        // onReady={handlePlay}
+        onReady={handlePlay}
         // onStart={() => console.log("onStart")}
         onPlay={handlePlay}
         onPause={handlePause}
@@ -165,13 +168,14 @@ const AudioPlayer = () => {
         </div>
 
         {/* PREVIOUS/PLAY&PAUSE/NEXT */}
+        {/* {songURL && ()} */}
         <div className={styles["audio-player_controls_main"]}>
-          <button>Back</button>
+          <button disabled={!songURL}>Prev</button>
           {/*  */}
-          <button onClick={handlePlayPause}>
+          <button disabled={!songURL} onClick={handlePlayPause}>
             {playing ? "Pause" : "Play"}
           </button>
-          <button>Reverse</button>
+          <button disabled={!songURL}>Next</button>
         </div>
 
         {/* VOLUME */}

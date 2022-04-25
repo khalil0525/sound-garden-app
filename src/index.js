@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthContextProvider } from "./context/AuthContext";
+import { AudioPlayerContextProvider } from "./context/AudioPlayerContext";
 
 ReactDOM.render(
   <React.StrictMode>
     {/* Custom context provider component */}
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
+    <AudioPlayerContextProvider>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </AudioPlayerContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
