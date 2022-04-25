@@ -30,6 +30,14 @@ const firestoreReducer = (state, action) => {
         success: true,
         error: null,
       };
+    case "QUERIED_DOCUMENT":
+      return {
+        ...state,
+        isPending: false,
+        document: action.payload,
+        success: true,
+        error: null,
+      };
 
     case "ERROR":
       return {
@@ -78,9 +86,42 @@ export const useFirestore = (collection) => {
       dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
     }
   };
+
+  // get docments based on query... docProperty === property to look at in our documents.... queryString === what the docProperty value should be = to
+  const getDocument = async (docProperty, queryString) => {
+    dispatch({ type: "IS_PENDING" });
+    try {
+      const queryDocuments = await ref
+        .where(docProperty, "==", queryString)
+        .get();
+
+      dispatchIfNotCancelled({
+        type: "QUERIED_DOCUMENT",
+        payload: queryDocuments,
+      });
+      return { queryDocuments };
+    } catch (err) {
+      dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
+    }
+
+    // let res = [];
+    // query
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       // doc.data() is never undefined for query doc snapshots
+    //       console.log(doc.id, " => ", doc.data());
+    //       res = [...res, doc.data()];
+    //     });
+    //     console.log(res);
+    //
+    // })
+    // .catch((error) => {
+    //   console.log("Error getting documents: ", error);
+    // });
+  };
   // delete a document
   const deleteDocument = (id) => {};
-
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
@@ -90,5 +131,5 @@ export const useFirestore = (collection) => {
     };
   }, []);
 
-  return { addDocument, deleteDocument, response };
+  return { addDocument, deleteDocument, getDocument, response };
 };

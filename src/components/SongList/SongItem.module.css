@@ -1,0 +1,11 @@
+.song-item {
+  padding: 1rem;
+  border: 1px grey solid;
+}
+.song-item li {
+  display: flex;
+
+  width: 50rem;
+  justify-content: flex-start;
+  list-style: none;
+}

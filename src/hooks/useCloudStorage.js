@@ -66,7 +66,7 @@ export const useCloudStorage = (path) => {
     response: firestoreResponse,
   } = useFirestore(path === "songs/" ? "music" : "images");
   // this is a reference to the Cloud Storage folder we want to perform something on.
-  const ref = projectStorage.ref(path);
+  // const ref = projectStorage.ref(path);
 
   // only dispatch if not cancelled
   const dispatchIfNotCancelled = (action) => {
@@ -133,7 +133,7 @@ export const useCloudStorage = (path) => {
             addDocument({
               artist: songDetails.artistName,
               genre: songDetails.genreType,
-              song: songDetails.songName,
+              title: songDetails.songName,
               URL: downloadURL,
               uid: user.uid,
             });
