@@ -1,10 +1,11 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useCloudStorage } from "../../hooks/useCloudStorage";
+import { useFirestore } from "../../hooks/useFirestore";
 import { Link } from "react-router-dom";
 import LoadingBar from "../../components/LoadingBar/LoadingBar";
 import styles from "./Upload.module.css";
 import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
-
+import { useAuthContext } from "../../hooks/useAuthContext";
 let initialState = {
   songFile: null,
   artistName: "",
@@ -60,8 +61,17 @@ const Upload = () => {
   //Destruct values from the reducer state
   const { songFile, artistName, songName, genreType, formIsValid } =
     songUploadState;
-  const { addFile, response, uploadProgress } = useCloudStorage("songs/");
+  //Cloud storage hook
+  const {
+    addFile,
+    response: cloudStorageResponse,
+    uploadProgress,
+  } = useCloudStorage("songs/");
+  //Fire store hook
+  const { addDocument, response: firestoreResponse } = useFirestore("music");
+  const { user } = useAuthContext();
 
+  // path === "songs/" ? "music" : "images"
   //HANDLER FUNCTIONS
 
   const handleFileChange = (event) => {
@@ -70,12 +80,28 @@ const Upload = () => {
       payload: event.target.files[0],
     });
   };
-  const handleSongUpload = (event) => {
+  const handleSongUpload = async (event) => {
     if (songFile && formIsValid) {
-      addFile(songFile, { artistName, songName, genreType });
-      //Then wait, then clear the previous file... Possibly redirect to uploaded?
+      //Try to add a document to the FireStore database, we will then use this to store the file
+      // URL and generate a unique filename
+      addDocument({
+        artist: artistName,
+        genre: genreType,
+        title: songName,
+        // URL: downloadURL,
+        uid: user.uid,
+      });
     }
   };
+
+  useEffect(() => {
+    //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
+    if (firestoreResponse.success) {
+      console.log(firestoreResponse.document);
+      addFile(firestoreResponse.document, user, songFile);
+    }
+  }, [firestoreResponse.success]);
+
   const handleCancelClick = () => {
     dispatchSongUploadState({
       type: "CANCEL_UPLOAD",
@@ -117,7 +143,7 @@ const Upload = () => {
           {songFile && (
             <div className={styles["upload-form"]}>
               <LoadingBar progress={uploadProgress} song={songFile.name} />
-              {!response.success && (
+              {!cloudStorageResponse.success && (
                 <>
                   <label htmlFor="artist-name">Artist:</label>
                   <input
@@ -126,7 +152,7 @@ const Upload = () => {
                     name="artist-name"
                     value={artistName}
                     onChange={handleArtistNameChange}
-                    disabled={response.isPending}
+                    disabled={cloudStorageResponse.isPending}
                   ></input>
 
                   <label htmlFor="song-name">Song Name:</label>
@@ -136,16 +162,16 @@ const Upload = () => {
                     name="song-name"
                     value={songName}
                     onChange={handleSongNameChange}
-                    disabled={response.isPending}
+                    disabled={cloudStorageResponse.isPending}
                   ></input>
 
                   <GenreSelect
                     onGenreTypeChange={handleGenreTypeChange}
                     genreValue={genreType}
-                    disabled={response.isPending}
+                    disabled={cloudStorageResponse.isPending}
                   />
 
-                  {!response.isPending && (
+                  {!cloudStorageResponse.isPending && (
                     <div className={styles["action-container"]}>
                       <div onClick={handleCancelClick}>Cancel</div>
                       <button
@@ -158,7 +184,7 @@ const Upload = () => {
                   )}
                 </>
               )}
-              {response.success && (
+              {cloudStorageResponse.success && (
                 <>
                   {/* <div onClick={handleCancelClick}>Upload Another track?</div> */}
                   <h2>Uploaded Sucessfully!</h2>
@@ -167,7 +193,7 @@ const Upload = () => {
                   </div>
                 </>
               )}
-              {response.isPending && (
+              {cloudStorageResponse.isPending && (
                 <button disabled>Uploading... Please wait</button>
               )}
             </div>

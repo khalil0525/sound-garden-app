@@ -170,12 +170,45 @@ const AudioPlayer = () => {
         {/* PREVIOUS/PLAY&PAUSE/NEXT */}
         {/* {songURL && ()} */}
         <div className={styles["audio-player_controls_main"]}>
-          <button disabled={!songURL}>Prev</button>
-          {/*  */}
-          <button disabled={!songURL} onClick={handlePlayPause}>
-            {playing ? "Pause" : "Play"}
+          <button
+            disabled={!songURL}
+            className={styles["audio-player_controls_main_previous"]}
+          >
+            <img
+              src="/img/Expand_right_stop.svg"
+              alt="Audio player previous button"
+            ></img>
           </button>
-          <button disabled={!songURL}>Next</button>
+
+          <button
+            disabled={!songURL}
+            onClick={handlePlayPause}
+            className={styles["audio-player_controls_main_play"]}
+          >
+            {playing ? (
+              // Pause button img
+              <img
+                src="/img/pause-svgrepo-com.svg"
+                alt="Audio player pause button"
+              ></img>
+            ) : (
+              // Play button img
+              <img
+                src="/img/Arrow_drop_right.svg"
+                alt="Audio player play button"
+              ></img>
+            )}
+          </button>
+
+          <button
+            disabled={!songURL}
+            className={styles["audio-player_controls_main_next"]}
+          >
+            <img
+              src="/img/Expand_right_stop.svg"
+              alt="Audio player previous button"
+            ></img>
+          </button>
         </div>
 
         {/* VOLUME */}

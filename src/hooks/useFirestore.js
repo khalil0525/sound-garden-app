@@ -57,7 +57,6 @@ export const useFirestore = (collection) => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   //This state is used to cancel updating local state when the component that uses this hook is unmounted.
   const [isCancelled, setIsCancelled] = useState(false);
-
   // collection ref, this is a reference to the firestore collection we want to perform something on.
   const ref = projectFirestore.collection(collection);
 
@@ -87,39 +86,6 @@ export const useFirestore = (collection) => {
     }
   };
 
-  // get docments based on query... docProperty === property to look at in our documents.... queryString === what the docProperty value should be = to
-  const getDocument = async (docProperty, queryString) => {
-    dispatch({ type: "IS_PENDING" });
-    try {
-      const queryDocuments = await ref
-        .where(docProperty, "==", queryString)
-        .get();
-
-      dispatchIfNotCancelled({
-        type: "QUERIED_DOCUMENT",
-        payload: queryDocuments,
-      });
-      return { queryDocuments };
-    } catch (err) {
-      dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
-    }
-
-    // let res = [];
-    // query
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       // doc.data() is never undefined for query doc snapshots
-    //       console.log(doc.id, " => ", doc.data());
-    //       res = [...res, doc.data()];
-    //     });
-    //     console.log(res);
-    //
-    // })
-    // .catch((error) => {
-    //   console.log("Error getting documents: ", error);
-    // });
-  };
   // delete a document
   const deleteDocument = (id) => {};
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
@@ -131,5 +97,5 @@ export const useFirestore = (collection) => {
     };
   }, []);
 
-  return { addDocument, deleteDocument, getDocument, response };
+  return { addDocument, deleteDocument, response };
 };

@@ -15,6 +15,22 @@
   gap: 0.5rem;
   justify-content: center;
 }
+/* previous/play/pause controls */
+.audio-player_controls_main_previous {
+  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+}
+.audio-player_controls_main_previous img {
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+.audio-player_controls_main_play {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+}
+.audio-player_controls_main_next {
+  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+}
+/* volume controls */
 .audio-player_controls_volume {
   display: flex;
   gap: 0.5rem;

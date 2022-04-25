@@ -6,6 +6,8 @@
   display: flex;
 
   width: 50rem;
+  align-items: center;
+  gap: 2rem;
   justify-content: flex-start;
   list-style: none;
 }
