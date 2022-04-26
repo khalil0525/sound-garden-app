@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
@@ -21,14 +21,12 @@ const audioPlayerReducer = (state, action) => {
       return { ...state, playing: !state.playing };
     case "VOLUME_CHANGE":
       return { ...state, volume: action.payload };
-
     case "SEEK_POSITION_CHANGE":
       return { ...state, played: action.payload };
     case "SEEK_MOUSE_DOWN":
       return { ...state, seeking: true };
     case "SEEK_MOUSE_UP":
       return { ...state, seeking: false };
-
     case "PROGRESS_CHANGE":
       return { ...state, ...action.payload };
     case "DURATION_CHANGE":
@@ -65,7 +63,14 @@ const AudioPlayer = () => {
   //Ref to ReactPlayer
   const player = useRef();
   //Audio player context
-  const { songURL } = useAudioPlayerContext();
+  const {
+    loadedSongURL,
+    dispatchAudioPlayerContext,
+    isSongPlaying,
+    playlistEnded,
+    playlistIndex,
+    playlist,
+  } = useAudioPlayerContext();
 
   //Function to load songs
   const load = (url) => {
@@ -76,7 +81,35 @@ const AudioPlayer = () => {
   };
 
   const handlePlayPause = () => {
+    if (isSongPlaying) {
+      dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
+    } else {
+      dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
+    }
     dispatchAudioPlayerState({ type: "PLAY_PAUSE_CLICK" });
+  };
+  const handlePreviousClick = () => {
+    const elapsedTime = duration * played;
+    if ((elapsedTime < 4 || !isSongPlaying) && playlistIndex !== 0) {
+      console.log("first previous condition");
+      dispatchAudioPlayerContext({ type: "LOAD_PREVIOUS_SONG" });
+    } else {
+      console.log("second previous condition");
+      dispatchAudioPlayerContext({
+        type: "SEEK_POSITION_CHANGE",
+        payload: 0.0,
+      });
+      player.current.seekTo(0.0);
+    }
+  };
+  const handleNextClick = () => {
+    console.log("onEnded");
+    if (playlistIndex < playlist.length - 1) {
+      dispatchAudioPlayerContext({ type: "LOAD_NEXT_SONG" });
+      console.log("LOAD NEXT SONG");
+    } else {
+      dispatchAudioPlayerContext({ type: "PLAYLIST_ENDED" });
+    }
   };
   const handleVolumeChange = (event) => {
     dispatchAudioPlayerState({
@@ -85,12 +118,22 @@ const AudioPlayer = () => {
     });
   };
   const handlePlay = () => {
+    console.log("handlePlay");
+    dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
     dispatchAudioPlayerState({ type: "PLAY" });
   };
   const handlePause = () => {
+    console.log("handlePause");
+    dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
     dispatchAudioPlayerState({ type: "PAUSE" });
   };
-
+  const handleAudioReady = () => {
+    if (playlistEnded) {
+      handlePause();
+    } else {
+      handlePlay();
+    }
+  };
   const handleSeekMouseDown = (event) => {
     console.log("MOUSE DOWN");
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_DOWN" });
@@ -125,9 +168,29 @@ const AudioPlayer = () => {
   };
   //THIS FUNCTION NEEDS TO CHECK WHETHER WE HAVE MORE TRACKS TO PLAY OR THIS IS THE LAST SONG
   const handleEnded = () => {
-    console.log("onEnded");
-    dispatchAudioPlayerState({ playing: false });
+    // dispatchAudioPlayerState({ playing: false });
+    //Calls the handleNextClick function which has the same
+    //Functionality as this would have
+    handleNextClick();
   };
+  //This will load the song whenever the loadedSongURL changes
+  useEffect(() => {
+    console.log("Loading new song");
+    load(loadedSongURL);
+  }, [loadedSongURL]);
+
+  useEffect(() => {
+    // console.log("second use effect Audio Player");
+    if (!isSongPlaying) {
+      // console.log("2nd use effect pause");
+      dispatchAudioPlayerState({ type: "PAUSE" });
+    } else {
+      // console.log("2nd use effect play");
+      // console.log(player.current.getSecondsLoaded());
+      // console.log(audioPlayerState);
+      dispatchAudioPlayerState({ type: "PLAY" });
+    }
+  }, [isSongPlaying]);
 
   return (
     <div className={styles["audio-player"]}>
@@ -135,17 +198,17 @@ const AudioPlayer = () => {
         ref={player}
         width={0}
         height={0}
-        url={songURL}
+        url={url}
         playing={playing}
         volume={volume}
         muted={muted}
-        onReady={handlePlay}
-        // onStart={() => console.log("onStart")}
+        // onReady={}
+        onStart={handleAudioReady}
         onPlay={handlePlay}
         onPause={handlePause}
         // onBuffer={() => console.log("onBuffer")}
         onSeek={(e) => console.log("onSeek", e)}
-        // onEnded={handleEnded}
+        onEnded={handleEnded}
         onError={(e) => console.log("onError", e)}
         onProgress={handleProgress}
         onDuration={handleDuration}
@@ -168,11 +231,12 @@ const AudioPlayer = () => {
         </div>
 
         {/* PREVIOUS/PLAY&PAUSE/NEXT */}
-        {/* {songURL && ()} */}
+        {/* {loadedSongURL && ()} */}
         <div className={styles["audio-player_controls_main"]}>
           <button
-            disabled={!songURL}
+            disabled={!loadedSongURL}
             className={styles["audio-player_controls_main_previous"]}
+            onClick={handlePreviousClick}
           >
             <img
               src="/img/Expand_right_stop.svg"
@@ -181,7 +245,7 @@ const AudioPlayer = () => {
           </button>
 
           <button
-            disabled={!songURL}
+            disabled={!loadedSongURL}
             onClick={handlePlayPause}
             className={styles["audio-player_controls_main_play"]}
           >
@@ -201,8 +265,9 @@ const AudioPlayer = () => {
           </button>
 
           <button
-            disabled={!songURL}
+            disabled={!loadedSongURL}
             className={styles["audio-player_controls_main_next"]}
+            onClick={handleNextClick}
           >
             <img
               src="/img/Expand_right_stop.svg"

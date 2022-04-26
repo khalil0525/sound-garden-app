@@ -10,7 +10,15 @@ const SongList = ({ songs }) => {
     <div>
       <h1>Uploaded Tracks</h1>
       <ul>
-        {songs && songs.map((song) => <SongItem song={song} key={song.URL} />)}
+        {songs &&
+          songs.map((song, index) => (
+            <SongItem
+              song={song}
+              key={song.id}
+              playlistSongs={songs}
+              songIndex={index}
+            />
+          ))}
       </ul>
     </div>
   );
