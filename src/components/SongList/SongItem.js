@@ -6,6 +6,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   const { loadedSongURL, isSongPlaying, playlist, dispatchAudioPlayerContext } =
     useAudioPlayerContext();
   const [isPlaying, setIsPlaying] = useState(false);
+
   //***********************************************************
   // We only change playlists when we click play on a song
   // that is not apart of the current playlist.
@@ -85,10 +86,13 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
             )}
           </button>
         </div>
-        <div>
-          <h2>{song.artist}</h2>
-          <h3>{song.title}</h3>
-          {/* <h1>{song.createdAt}</h1> */}
+
+        <div className={styles["song-item_header_song_details"]}>
+          <h3>{song.artist}</h3>
+          <h1>{song.title}</h1>
+        </div>
+        <div className={styles["song-item_header_song_details_other"]}>
+          <h4>{song.createdAt}</h4>
           <h4>{song.genre}</h4>
         </div>
       </li>

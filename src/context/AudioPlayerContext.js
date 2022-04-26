@@ -8,7 +8,6 @@ export const audioPlayerReducer = (state, action) => {
   switch (action.type) {
     case "URL_CHANGE":
       return { ...state, songURL: action.payload };
-
     case "PLAYLIST_CHANGE":
       return {
         ...state,
@@ -42,7 +41,6 @@ export const audioPlayerReducer = (state, action) => {
         loadedSongURL: state.playlist[state.playlistIndex - 1].URL,
         isSongPlaying: true,
       };
-
     case "LOAD_NEXT_SONG":
       return {
         ...state,

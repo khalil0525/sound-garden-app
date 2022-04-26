@@ -7,7 +7,7 @@ const SongList = ({ songs }) => {
   // const [songs, setSongs] = useState([]);
 
   return (
-    <div>
+    <div className={styles["song-list"]}>
       <h1>Uploaded Tracks</h1>
       <ul>
         {songs &&

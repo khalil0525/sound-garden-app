@@ -6,6 +6,7 @@ import LoadingBar from "../../components/LoadingBar/LoadingBar";
 import styles from "./Upload.module.css";
 import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
 import { useAuthContext } from "../../hooks/useAuthContext";
+
 let initialState = {
   songFile: null,
   artistName: "",
@@ -75,10 +76,16 @@ const Upload = () => {
   //HANDLER FUNCTIONS
 
   const handleFileChange = (event) => {
-    dispatchSongUploadState({
-      type: "FILE_CHANGED",
-      payload: event.target.files[0],
-    });
+    //Check if the file the user is passing is an audio file
+    // Otherwise don't accept it.
+    if (event.target.files[0].type.split("/")[0] === "audio") {
+      dispatchSongUploadState({
+        type: "FILE_CHANGED",
+        payload: event.target.files[0],
+      });
+    } else {
+      event.target.value = "";
+    }
   };
   const handleSongUpload = async (event) => {
     if (songFile && formIsValid) {

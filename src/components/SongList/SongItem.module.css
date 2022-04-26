@@ -1,13 +1,28 @@
 .song-item {
-  padding: 1rem;
+  padding: 4rem;
   border: 1px grey solid;
 }
 .song-item li {
-  display: flex;
-
-  width: 50rem;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  width: 70rem;
   align-items: center;
-  gap: 2rem;
+  gap: 0.4rem;
   justify-content: flex-start;
   list-style: none;
+}
+.song-item_header {
+  display: inherit;
+
+  justify-content: space-around;
+}
+.song-item_header_song_details {
+  grid-column: 2/4;
+  display: inherit;
+  flex-direction: column;
+}
+.song-item_header_song_details_other {
+  grid-column: 4/5;
+  display: flex;
+  flex-direction: column;
 }

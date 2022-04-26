@@ -12,7 +12,9 @@ export const useCollection = (collection) => {
       (snapshot) => {
         let results = [];
         snapshot.docs.forEach((doc) => {
-          results.push({ ...doc.data(), id: doc.id });
+          //Convert the timestamp to a date
+          const timestamp = doc.data().createdAt.toDate().toDateString();
+          results.push({ ...doc.data(), id: doc.id, createdAt: timestamp });
         });
 
         // update state
