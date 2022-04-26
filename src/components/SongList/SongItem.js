@@ -75,7 +75,10 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
     <div className={styles["song-item"]}>
       <li>
         <div>
-          <button onClick={handlePlayPauseClick}>
+          <button
+            onClick={handlePlayPauseClick}
+            className={styles["song-item-button"]}
+          >
             {isPlaying ? (
               <img
                 src="img/pause-svgrepo-com.svg"
@@ -88,7 +91,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
         </div>
 
         <div className={styles["song-item_header_song_details"]}>
-          <h3>{song.artist}</h3>
+          <h4>{song.artist}</h4>
           <h1>{song.title}</h1>
         </div>
         <div className={styles["song-item_header_song_details_other"]}>

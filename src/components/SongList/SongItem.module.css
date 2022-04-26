@@ -11,6 +11,10 @@
   justify-content: flex-start;
   list-style: none;
 }
+.song-item-button {
+  border-radius: 60%;
+  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+}
 .song-item_header {
   display: inherit;
 

@@ -1,12 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { projectFirestore } from "../firebase/config";
 
-export const useCollection = (collection) => {
+export const useCollection = (collection, _query) => {
   const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
 
+  // We are using useRef here because the _query data that we are passing is a
+  // reference type (array) and upon component reevaluation (state change)
+  // reference types are seen as being "different" than before even if we
+  // did not change the content of it and therefore it would cause and infinite
+  // loop.
+  // This is because it works like an instance variable in a class and when this
+  // hook is used in a component there will only be 1 instance of it during
+  // mount/unmounting. This use ref will persist and only cause the useEffect
+  // to fire if the .current value of it changes.
+  console.log(_query);
+  const query = useRef(_query).current;
+
   useEffect(() => {
     let ref = projectFirestore.collection(collection);
+
+    if (query) {
+      ref = ref.where(...query);
+    }
 
     const unsubscribe = ref.onSnapshot(
       (snapshot) => {
@@ -28,7 +44,8 @@ export const useCollection = (collection) => {
     );
     //Unsubscribe on unmount
     return () => unsubscribe();
-  }, [collection]);
+  }, [collection, query]);
+
   return { documents, error };
 };
 // get docments based on query... docProperty === property to look at in our documents.... queryString === what the docProperty value should be = to

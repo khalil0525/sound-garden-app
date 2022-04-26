@@ -5,10 +5,9 @@ import { useCollection } from "../../hooks/useCollection";
 import styles from "./Uploaded.module.css";
 
 export default function Uploaded() {
-  // const { user } = useAuthContext();
-  const { documents, error } = useCollection("music");
+  const { user } = useAuthContext();
+  const { documents, error } = useCollection("music", ["uid", "==", user.uid]);
 
-  // useEffect(() => {}, [documents]);
   return (
     <div className={styles.uploaded}>
       <h1>Uploaded</h1>
