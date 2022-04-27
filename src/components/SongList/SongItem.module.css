@@ -29,8 +29,8 @@
   align-self: center;
   border-radius: 60%;
   background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   margin-left: 1rem;
 }
 
@@ -76,25 +76,45 @@
   background-color: gray;
 }
 .song-item__footer {
-  display: inherit;
+  /* display: inherit; */
   grid-column: 2/2;
   grid-row: 3/3;
 }
 .song-item__actionContainer {
+  display: flex;
+  gap: 0.5rem;
   width: 55rem;
 }
-.actionContainer-downloadBtn {
-  width: 8rem;
-  height: 2.8rem;
+.actionContainer-likeBtn {
+  margin-left: 1rem;
+  width: 5rem;
+  height: 2rem;
+  padding: 0.2rem 0.8rem;
 
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.actionContainer_likeBtn-icon {
+  width: 1.8rem;
+  height: 1.6rem;
+  stroke: black;
+}
+.actionContainer-downloadBtn {
+  width: 8rem;
+  height: 2rem;
+  padding: 0.2rem 0.8rem;
+
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .actionContainer_downloadBtn-icon {
   width: 1.8rem;
-  height: 1.8rem;
+  height: 1.6rem;
 }
 .song-item__aside {
   grid-column: 1/1;

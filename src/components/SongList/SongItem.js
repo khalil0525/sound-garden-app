@@ -109,11 +109,15 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
                 <img
                   src="img/pause-svgrepo-com.svg"
                   alt="Song play button icon"
+                  width="36"
+                  height="36"
                 />
               ) : (
                 <img
                   src="img/Arrow_drop_right.svg"
                   alt="Song play button icon"
+                  width="36"
+                  height="36"
                 />
               )}
             </button>
@@ -138,6 +142,14 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
         </div>
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
+            <button className={styles["actionContainer-likeBtn"]}>
+              <img
+                className={styles["actionContainer_likeBtn-icon"]}
+                src="img/Heart_greyfill.svg"
+                alt="Song Like Icon"
+              />
+              Like
+            </button>
             <button
               className={styles["actionContainer-downloadBtn"]}
               onClick={handleSongDownloadClick}
