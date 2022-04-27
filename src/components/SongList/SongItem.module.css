@@ -1,32 +1,109 @@
 .song-item {
-  padding: 4rem;
+  padding: 1rem;
   border: 1px grey solid;
 }
-.song-item li {
+.song-item__content {
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  width: 70rem;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 85rem;
+  height: 16rem;
   align-items: center;
   gap: 0.4rem;
   justify-content: flex-start;
   list-style: none;
 }
-.song-item-button {
+.song-item__header {
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: row;
+}
+.song-item__titleContainer {
+  width: 55rem;
+  display: flex;
+
+  gap: 0.5rem;
+}
+
+.titleContainer__playBtn {
+  align-self: center;
   border-radius: 60%;
   background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+  width: 5rem;
+  height: 5rem;
+  margin-left: 1rem;
 }
-.song-item_header {
-  display: inherit;
 
-  justify-content: space-around;
-}
-.song-item_header_song_details {
-  grid-column: 2/4;
-  display: inherit;
-  flex-direction: column;
-}
-.song-item_header_song_details_other {
-  grid-column: 4/5;
+.titleContainer__songTitle {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.titleContainer__songTitle-artist {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.titleContainer__songTitle-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.titleContainer__additional {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-left: 2rem;
+}
+.titleContainer__additional-uploadDate {
+  /* margin-left: 20rem; */
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+.titleContainer__additional-genre {
+  /* margin-left: 20rem; */
+  padding: 0 0.6rem;
+
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+
+  border: 1px solid gray;
+  border-radius: 2rem;
+
+  background-color: gray;
+}
+.song-item__footer {
+  display: inherit;
+  grid-column: 2/2;
+  grid-row: 3/3;
+}
+.song-item__actionContainer {
+  width: 55rem;
+}
+.actionContainer-downloadBtn {
+  width: 8rem;
+  height: 2.8rem;
+
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.actionContainer_downloadBtn-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+.song-item__aside {
+  grid-column: 1/1;
+  grid-row: 1/-1;
+}
+
+.song-item__songPhotoContainer {
+}
+.songPhotoContainer-img {
+  width: 16rem;
+  height: 16rem;
 }

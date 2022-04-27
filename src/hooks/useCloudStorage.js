@@ -94,18 +94,6 @@ export const useCloudStorage = (storageFilePath) => {
     //is implemented in an asynchronous style. The functions will return immediately, so you can call them on the main thread without worrying about performance.
     ///All you have to do is implement callbacks using the patterns established in the documentation and samples.
 
-    // dispatch({ type: "IS_PENDING" });
-    //If we use this we must add async back to function declaration
-    // try {
-    //   const addedFile = await fileRef.put(file);
-    //   dispatchIfNotCancelled({
-    //     type: "ADDED_FILE",
-    //     payload: addedFile,
-    //   });
-    // } catch (err) {
-    //   dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
-    // }
-
     addedFileRef.current = fileRef.put(file);
 
     console.log(addedFileRef);

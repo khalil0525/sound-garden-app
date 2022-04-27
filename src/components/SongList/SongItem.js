@@ -5,7 +5,13 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   // const [url, setUrl] = useState(song.URL);
   const { loadedSongURL, isSongPlaying, playlist, dispatchAudioPlayerContext } =
     useAudioPlayerContext();
-  const [isPlaying, setIsPlaying] = useState(false);
+  //This state anonymous fucntion replaced a useEffect, it will run a function only when
+  // this component mounts for the first time.. It ensures that if we navigate
+  // away from a page where this song component is, when we come back and it
+  // is still playing we can set its state to playing
+  const [isPlaying, setIsPlaying] = useState(
+    () => loadedSongURL === song.URL && isSongPlaying
+  );
 
   //***********************************************************
   // We only change playlists when we click play on a song
@@ -17,7 +23,6 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   // from that other page
   //***********************************************************
   const handlePlayPauseClick = () => {
-    console.log("songs", playlistSongs);
     if (loadedSongURL !== song.URL) {
       //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
@@ -26,6 +31,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
           payload: songIndex,
         });
       } else {
+        console.log("songs", playlistSongs);
         dispatchAudioPlayerContext({
           type: "PLAYLIST_CHANGE",
           payload: { playlistSongs, songIndex },
@@ -44,59 +50,106 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
     setIsPlaying((prevState) => !prevState);
   };
 
+  const handleSongDownloadClick = async () => {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "blob";
+    xhr.onload = (event) => {
+      const blob = xhr.response;
+    };
+    xhr.open("GET", song.URL);
+    xhr.send();
+
+    // Or inserted into an <img> element
+    // const img = document.getElementById("myimg");
+    // img.setAttribute("src", url);
+  };
   //If we navigate to a different page than where this song is located and come back
   //We want to reset the set the state so that the play/pause stays the same.
   // This will fire up whenever this component is loaded
-  useEffect(() => {
-    if (loadedSongURL === song.URL && isSongPlaying) {
-      setIsPlaying(true);
-    }
-    console.log("First USEFFECT in SongItem");
-  }, []);
+  // useEffect(() => {
+  //   if (loadedSongURL === song.URL && isSongPlaying) {
+  //     setIsPlaying(true);
+  //   }
+  //   console.log("First USEFFECT in SongItem");
+  // }, []);
 
   useEffect(() => {
     // If globally no song is playing OR song was changed and this songItem isPlaying
     // Set isPlaying to false.
     if ((!isSongPlaying || loadedSongURL !== song.URL) && isPlaying) {
-      console.log("Second USEFFECT in SongItem, CONDITION 1", song.title);
+      console.log("USEFFECT in SongItem, CONDITION 1", song.title);
       setIsPlaying(false);
     }
     //Otherwise, if globally a song is playing and the URL is this songs
     //
     else if (isSongPlaying && loadedSongURL === song.URL && !isPlaying) {
-      console.log("Second USEFFECT in SongItem, CONDITION 2");
+      console.log(" USEFFECT in SongItem, CONDITION 2");
       setIsPlaying(true);
     }
-  }, [loadedSongURL, isSongPlaying, isPlaying]);
+  }, [loadedSongURL, isSongPlaying, isPlaying, song]);
 
   //CREATE USEFFECT TO HANDLE SONGS THAT ARE ALREADY PLAYING TO SET isPLAYING TO FALSE
 
   return (
     <div className={styles["song-item"]}>
-      <li>
-        <div>
-          <button
-            onClick={handlePlayPauseClick}
-            className={styles["song-item-button"]}
-          >
-            {isPlaying ? (
-              <img
-                src="img/pause-svgrepo-com.svg"
-                alt="Song play button icon"
-              />
-            ) : (
-              <img src="img/Arrow_drop_right.svg" alt="Song play button icon" />
-            )}
-          </button>
-        </div>
+      <li className={styles["song-item__content"]}>
+        <div className={styles["song-item__header"]}>
+          <div className={styles["song-item__titleContainer"]}>
+            <button
+              className={styles["titleContainer__playBtn"]}
+              onClick={handlePlayPauseClick}
+            >
+              {isPlaying ? (
+                <img
+                  src="img/pause-svgrepo-com.svg"
+                  alt="Song play button icon"
+                />
+              ) : (
+                <img
+                  src="img/Arrow_drop_right.svg"
+                  alt="Song play button icon"
+                />
+              )}
+            </button>
 
-        <div className={styles["song-item_header_song_details"]}>
-          <h4>{song.artist}</h4>
-          <h1>{song.title}</h1>
+            <div className={styles["titleContainer__songTitle"]}>
+              <p className={styles["titleContainer__songTitle-artist"]}>
+                {song.artist}
+              </p>
+              <p className={styles["titleContainer__songTitle-title"]}>
+                {song.title}
+              </p>
+            </div>
+          </div>
+          <div className={styles["titleContainer__additional"]}>
+            <p className={styles["titleContainer__additional-uploadDate"]}>
+              {song.createdAt}
+            </p>
+            <span className={styles["titleContainer__additional-genre"]}>
+              {song.genre}
+            </span>
+          </div>
         </div>
-        <div className={styles["song-item_header_song_details_other"]}>
-          <h4>{song.createdAt}</h4>
-          <h4>{song.genre}</h4>
+        <div className={styles["song-item__footer"]}>
+          <div className={styles["song-item__actionContainer"]}>
+            <button className={styles["actionContainer-downloadBtn"]}>
+              <img
+                className={styles["actionContainer_downloadBtn-icon"]}
+                src="img/Download.svg"
+                alt="Song Download Icon"
+              />
+              Download
+            </button>
+          </div>
+        </div>
+        <div className={styles["song-item__aside"]}>
+          <div className={styles["song-item__songPhotoContainer"]}>
+            <img
+              className={styles["songPhotoContainer-img"]}
+              src="img/blank_image_placeholder.svg"
+              alt="Song img placeholder"
+            />
+          </div>
         </div>
       </li>
     </div>

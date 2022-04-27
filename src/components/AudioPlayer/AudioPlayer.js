@@ -127,10 +127,12 @@ const AudioPlayer = () => {
     dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
     dispatchAudioPlayerState({ type: "PAUSE" });
   };
-  const handleAudioReady = () => {
+  const handleAudioStart = () => {
+    console.log("handle audio ready");
     if (playlistEnded) {
       handlePause();
     } else {
+      console.log("handle audio ready (handlePlay())");
       handlePlay();
     }
   };
@@ -175,22 +177,28 @@ const AudioPlayer = () => {
   };
   //This will load the song whenever the loadedSongURL changes
   useEffect(() => {
-    console.log("Loading new song");
-    load(loadedSongURL);
+    if (loadedSongURL) {
+      console.log("Loading new song");
+      load(loadedSongURL);
+    }
   }, [loadedSongURL]);
 
+  //This useEffect is used to receive messages from the a songItem component
+  // If a SongItem component pauses/plays the audio this will fire..
+  // Or if the state of the AudioPlayerContext changes..
   useEffect(() => {
-    // console.log("second use effect Audio Player");
-    if (!isSongPlaying) {
+    if (!isSongPlaying && playing) {
+      console.log("second use effect Audio Player, CONDITION 1");
       // console.log("2nd use effect pause");
       dispatchAudioPlayerState({ type: "PAUSE" });
-    } else {
+    } else if (isSongPlaying && !playing) {
+      console.log("second use effect Audio Player, CONDITION 2");
       // console.log("2nd use effect play");
       // console.log(player.current.getSecondsLoaded());
       // console.log(audioPlayerState);
       dispatchAudioPlayerState({ type: "PLAY" });
     }
-  }, [isSongPlaying]);
+  }, [isSongPlaying, playing]);
 
   return (
     <div className={styles["audio-player"]}>
@@ -202,8 +210,8 @@ const AudioPlayer = () => {
         playing={playing}
         volume={volume}
         muted={muted}
-        // onReady={}
-        onStart={handleAudioReady}
+        onReady={(e) => console.log("track is loaded")}
+        onStart={handleAudioStart}
         onPlay={handlePlay}
         onPause={handlePause}
         // onBuffer={() => console.log("onBuffer")}

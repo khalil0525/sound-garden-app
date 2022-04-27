@@ -14,7 +14,7 @@ export const useCollection = (collection, _query) => {
   // hook is used in a component there will only be 1 instance of it during
   // mount/unmounting. This use ref will persist and only cause the useEffect
   // to fire if the .current value of it changes.
-  console.log(_query);
+
   const query = useRef(_query).current;
 
   useEffect(() => {

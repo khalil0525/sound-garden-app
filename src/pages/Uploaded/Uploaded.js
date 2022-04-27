@@ -12,7 +12,7 @@ export default function Uploaded() {
     <div className={styles.uploaded}>
       <h1>Uploaded</h1>
 
-      <SongList songs={documents}></SongList>
+      <SongList songs={documents} />
     </div>
   );
 }
