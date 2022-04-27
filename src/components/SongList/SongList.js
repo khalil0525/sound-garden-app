@@ -8,8 +8,7 @@ const SongList = ({ songs }) => {
 
   return (
     <div className={styles["song-list"]}>
-      <h1>Uploaded Tracks</h1>
-      <ul>
+      <ul className={styles["song-list__list"]}>
         {songs &&
           songs.map((song, index) => (
             <SongItem

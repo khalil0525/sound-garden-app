@@ -50,15 +50,21 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
     setIsPlaying((prevState) => !prevState);
   };
 
-  const handleSongDownloadClick = async () => {
+  const handleSongDownloadClick = () => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = "blob";
     xhr.onload = (event) => {
       const blob = xhr.response;
+      let a = document.createElement("a");
+      a.href = window.URL.createObjectURL(xhr.response);
+      console.log();
+      a.download = song.filePath.split("_")[1]; // Name the file anything you'd like.
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
     };
     xhr.open("GET", song.URL);
     xhr.send();
-
     // Or inserted into an <img> element
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
@@ -132,7 +138,10 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
         </div>
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
-            <button className={styles["actionContainer-downloadBtn"]}>
+            <button
+              className={styles["actionContainer-downloadBtn"]}
+              onClick={handleSongDownloadClick}
+            >
               <img
                 className={styles["actionContainer_downloadBtn-icon"]}
                 src="img/Download.svg"

@@ -1,0 +1,7 @@
+.song-list {
+}
+.song-list__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

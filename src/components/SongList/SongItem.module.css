@@ -1,6 +1,6 @@
 .song-item {
-  padding: 1rem;
-  border: 1px grey solid;
+  padding: 2rem;
+  /* border: 1px grey solid; */
 }
 .song-item__content {
   display: grid;

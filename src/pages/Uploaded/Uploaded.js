@@ -10,7 +10,7 @@ export default function Uploaded() {
 
   return (
     <div className={styles.uploaded}>
-      <h1>Uploaded</h1>
+      <h1>Uploaded Tracks</h1>
 
       <SongList songs={documents} />
     </div>
