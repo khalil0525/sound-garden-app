@@ -224,85 +224,87 @@ const AudioPlayer = () => {
 
       {/* AUDIO PLAYER MAIN CONTAINER ************************ */}
       <div className={styles["audio-player__container"]}>
-        {/* Grey DIV ************************ */}
-        <div className={styles["audio-player__upper"]}>
-          <div className={styles["audio-player_controls"]}>
-            {/* SEEK  */}
-            <div className={styles["audio-player_controls_seek"]}>
-              <Duration seconds={duration * played} />
+        <div className={styles["audio-player__contents"]}>
+          {/* Grey DIV ************************ */}
+          <div className={styles["audio-player__upper"]}>
+            <div className={styles["audio-player_controls"]}>
+              {/* SEEK  */}
+              <div className={styles["audio-player_controls_seek"]}>
+                <Duration seconds={duration * played} />
+                <input
+                  type="range"
+                  min={0}
+                  max={0.999999}
+                  step="any"
+                  value={played}
+                  onChange={handleSeekChange}
+                  onMouseDown={handleSeekMouseDown}
+                  onMouseUp={handleSeekMouseUp}
+                />
+                <Duration seconds={duration * (1 - played)} />
+              </div>
+            </div>
+          </div>
+          {/* ORANGE DIV ************************ */}
+
+          <div className={styles["audio-player__lower"]}>
+            {/* PREVIOUS/PLAY&PAUSE/NEXT */}
+            {/* {loadedSongURL && ()} */}
+            <div className={styles["audio-player_controls_main"]}>
+              <button
+                disabled={!loadedSongURL}
+                className={styles["audio-player_controls_main_previous"]}
+                onClick={handlePreviousClick}
+              >
+                <img
+                  src="/img/Expand_right_stop.svg"
+                  alt="Audio player previous button"
+                ></img>
+              </button>
+
+              <button
+                disabled={!loadedSongURL}
+                onClick={handlePlayPause}
+                className={styles["audio-player_controls_main_play"]}
+              >
+                {playing ? (
+                  // Pause button img
+                  <img
+                    src="/img/pause-svgrepo-com.svg"
+                    alt="Audio player pause button"
+                  ></img>
+                ) : (
+                  // Play button img
+                  <img
+                    src="/img/Arrow_drop_right.svg"
+                    alt="Audio player play button"
+                  ></img>
+                )}
+              </button>
+
+              <button
+                disabled={!loadedSongURL}
+                className={styles["audio-player_controls_main_next"]}
+                onClick={handleNextClick}
+              >
+                <img
+                  src="/img/Expand_right_stop.svg"
+                  alt="Audio player previous button"
+                ></img>
+              </button>
+            </div>
+
+            {/* VOLUME */}
+            <div className={styles["audio-player_controls_volume"]}>
               <input
                 type="range"
                 min={0}
-                max={0.999999}
+                max={1}
                 step="any"
-                value={played}
-                onChange={handleSeekChange}
-                onMouseDown={handleSeekMouseDown}
-                onMouseUp={handleSeekMouseUp}
+                value={volume}
+                onChange={handleVolumeChange}
               />
-              <Duration seconds={duration * (1 - played)} />
             </div>
-          </div>
-        </div>
-        {/* ORANGE DIV ************************ */}
-
-        <div className={styles["audio-player__lower"]}>
-          {/* PREVIOUS/PLAY&PAUSE/NEXT */}
-          {/* {loadedSongURL && ()} */}
-          <div className={styles["audio-player_controls_main"]}>
-            <button
-              disabled={!loadedSongURL}
-              className={styles["audio-player_controls_main_previous"]}
-              onClick={handlePreviousClick}
-            >
-              <img
-                src="/img/Expand_right_stop.svg"
-                alt="Audio player previous button"
-              ></img>
-            </button>
-
-            <button
-              disabled={!loadedSongURL}
-              onClick={handlePlayPause}
-              className={styles["audio-player_controls_main_play"]}
-            >
-              {playing ? (
-                // Pause button img
-                <img
-                  src="/img/pause-svgrepo-com.svg"
-                  alt="Audio player pause button"
-                ></img>
-              ) : (
-                // Play button img
-                <img
-                  src="/img/Arrow_drop_right.svg"
-                  alt="Audio player play button"
-                ></img>
-              )}
-            </button>
-
-            <button
-              disabled={!loadedSongURL}
-              className={styles["audio-player_controls_main_next"]}
-              onClick={handleNextClick}
-            >
-              <img
-                src="/img/Expand_right_stop.svg"
-                alt="Audio player previous button"
-              ></img>
-            </button>
-          </div>
-
-          {/* VOLUME */}
-          <div className={styles["audio-player_controls_volume"]}>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step="any"
-              value={volume}
-              onChange={handleVolumeChange}
-            />
           </div>
         </div>
       </div>

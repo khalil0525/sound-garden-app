@@ -9,6 +9,8 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 
 let initialState = {
   songFile: null,
+  songPhotoFile: null,
+  songPhotoURL: null,
   artistName: "",
   songName: "",
   genreType: "none",
@@ -21,6 +23,13 @@ const uploadReducer = (state, action) => {
         ...state,
         songFile: action.payload,
       };
+    case "PHOTO_FILE_CHANGED":
+      return {
+        ...state,
+        songPhotoFile: action.payload,
+        songPhotoURL: URL.createObjectURL(action.payload),
+      };
+
     case "ARTIST_NAME_CHANGE":
       return {
         ...state,
@@ -60,8 +69,15 @@ const Upload = () => {
     initialState
   );
   //Destruct values from the reducer state
-  const { songFile, artistName, songName, genreType, formIsValid } =
-    songUploadState;
+  const {
+    songFile,
+    songPhotoFile,
+    songPhotoURL,
+    artistName,
+    songName,
+    genreType,
+    formIsValid,
+  } = songUploadState;
   //Cloud storage hook
   const {
     addFile,
@@ -75,7 +91,7 @@ const Upload = () => {
   // path === "songs/" ? "music" : "images"
   //HANDLER FUNCTIONS
 
-  const handleFileChange = (event) => {
+  const handleSongFileChange = (event) => {
     //Check if the file the user is passing is an audio file
     // Otherwise don't accept it.
     if (event.target.files[0].type.split("/")[0] === "audio") {
@@ -114,6 +130,17 @@ const Upload = () => {
       type: "CANCEL_UPLOAD",
     });
   };
+  const handleSongPhotoFileChange = (event) => {
+    if (event.target.files[0].type.split("/")[0] === "image") {
+      dispatchSongUploadState({
+        type: "PHOTO_FILE_CHANGED",
+        payload: event.target.files[0],
+      });
+    } else {
+      event.target.value = "";
+    }
+  };
+
   const handleArtistNameChange = (event) => {
     dispatchSongUploadState({
       type: "ARTIST_NAME_CHANGE",
@@ -144,7 +171,7 @@ const Upload = () => {
         <div className={styles["upload-container"]}>
           {!songFile && (
             <div className={styles["file-picker"]}>
-              <input type="file" onChange={handleFileChange}></input>
+              <input type="file" onChange={handleSongFileChange}></input>
             </div>
           )}
           {songFile && (
@@ -152,6 +179,25 @@ const Upload = () => {
               <LoadingBar progress={uploadProgress} song={songFile.name} />
               {!cloudStorageResponse.success && (
                 <>
+                  <div className={styles["photo-picker"]}>
+                    <img
+                      className={styles["photo-picker-photo"]}
+                      src={
+                        songPhotoFile
+                          ? songPhotoURL
+                          : "img/blank_image_placeholder.svg"
+                      }
+                      alt="Song Cover Art"
+                      width="160"
+                      height="160"
+                    />
+
+                    <input
+                      type="file"
+                      onChange={handleSongPhotoFileChange}
+                      disabled={cloudStorageResponse.isPending}
+                    />
+                  </div>
                   <label htmlFor="artist-name">Artist:</label>
                   <input
                     type="text"

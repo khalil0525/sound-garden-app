@@ -1,5 +1,5 @@
 .audio-player {
-  padding: 2rem;
+  padding: 2rem 0 0 1rem;
 }
 .audio-player__container {
   display: flex;
