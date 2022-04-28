@@ -10,7 +10,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   // away from a page where this song component is, when we come back and it
   // is still playing we can set its state to playing
   const [isPlaying, setIsPlaying] = useState(
-    () => loadedSongURL === song.URL && isSongPlaying
+    () => loadedSongURL === song.songURL && isSongPlaying
   );
 
   //***********************************************************
@@ -23,7 +23,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   // from that other page
   //***********************************************************
   const handlePlayPauseClick = () => {
-    if (loadedSongURL !== song.URL) {
+    if (loadedSongURL !== song.songURL) {
       //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
@@ -63,7 +63,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
       document.body.appendChild(a);
       a.click();
     };
-    xhr.open("GET", song.URL);
+    xhr.open("GET", song.songURL);
     xhr.send();
     // Or inserted into an <img> element
     // const img = document.getElementById("myimg");
@@ -82,13 +82,13 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   useEffect(() => {
     // If globally no song is playing OR song was changed and this songItem isPlaying
     // Set isPlaying to false.
-    if ((!isSongPlaying || loadedSongURL !== song.URL) && isPlaying) {
+    if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
       console.log("USEFFECT in SongItem, CONDITION 1", song.title);
       setIsPlaying(false);
     }
     //Otherwise, if globally a song is playing and the URL is this songs
     //
-    else if (isSongPlaying && loadedSongURL === song.URL && !isPlaying) {
+    else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
       console.log(" USEFFECT in SongItem, CONDITION 2");
       setIsPlaying(true);
     }
@@ -108,7 +108,7 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
               {isPlaying ? (
                 <img
                   src="img/pause-svgrepo-com.svg"
-                  alt="Song play button icon"
+                  alt="Song pause button icon"
                   width="36"
                   height="36"
                 />
@@ -167,8 +167,12 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
           <div className={styles["song-item__songPhotoContainer"]}>
             <img
               className={styles["songPhotoContainer-img"]}
-              src="img/blank_image_placeholder.svg"
-              alt="Song img placeholder"
+              src={
+                song.songPhotoURL
+                  ? song.songPhotoURL
+                  : "img/blank_image_placeholder.svg"
+              }
+              alt="Song Cover Art"
             />
           </div>
         </div>

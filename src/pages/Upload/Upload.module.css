@@ -20,6 +20,10 @@
   justify-content: center;
 }
 .photo-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .upload-form {

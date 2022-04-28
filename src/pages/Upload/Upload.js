@@ -80,10 +80,12 @@ const Upload = () => {
   } = songUploadState;
   //Cloud storage hook
   const {
-    addFile,
+    addSongFiles,
+    // addFile,
     response: cloudStorageResponse,
     uploadProgress,
-  } = useCloudStorage("songs/");
+  } = useCloudStorage();
+
   //Fire store hook
   const { addDocument, response: firestoreResponse } = useFirestore("music");
   const { user } = useAuthContext();
@@ -91,18 +93,6 @@ const Upload = () => {
   // path === "songs/" ? "music" : "images"
   //HANDLER FUNCTIONS
 
-  const handleSongFileChange = (event) => {
-    //Check if the file the user is passing is an audio file
-    // Otherwise don't accept it.
-    if (event.target.files[0].type.split("/")[0] === "audio") {
-      dispatchSongUploadState({
-        type: "FILE_CHANGED",
-        payload: event.target.files[0],
-      });
-    } else {
-      event.target.value = "";
-    }
-  };
   const handleSongUpload = async (event) => {
     if (songFile && formIsValid) {
       //Try to add a document to the FireStore database, we will then use this to store the file
@@ -121,7 +111,8 @@ const Upload = () => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
     if (firestoreResponse.success) {
       console.log(firestoreResponse.document);
-      addFile(firestoreResponse.document, user, songFile);
+      // Call to useCloudStorage to add song file
+      addSongFiles(firestoreResponse.document, user, [songFile, songPhotoFile]);
     }
   }, [firestoreResponse.success]);
 
@@ -129,6 +120,18 @@ const Upload = () => {
     dispatchSongUploadState({
       type: "CANCEL_UPLOAD",
     });
+  };
+  const handleSongFileChange = (event) => {
+    //Check if the file the user is passing is an audio file
+    // Otherwise don't accept it.
+    if (event.target.files[0].type.split("/")[0] === "audio") {
+      dispatchSongUploadState({
+        type: "FILE_CHANGED",
+        payload: event.target.files[0],
+      });
+    } else {
+      event.target.value = "";
+    }
   };
   const handleSongPhotoFileChange = (event) => {
     if (event.target.files[0].type.split("/")[0] === "image") {
@@ -140,7 +143,6 @@ const Upload = () => {
       event.target.value = "";
     }
   };
-
   const handleArtistNameChange = (event) => {
     dispatchSongUploadState({
       type: "ARTIST_NAME_CHANGE",

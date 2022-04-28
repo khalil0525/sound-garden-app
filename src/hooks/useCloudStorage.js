@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
-import { useFirestore } from "./useFirestore";
-import { useAuthContext } from "./useAuthContext";
+// import { useFirestore } from "./useFirestore";
+// import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
 
 let initialState = {
@@ -10,7 +10,6 @@ let initialState = {
   error: null,
   success: null,
 };
-
 //This reducer combines all of the states that we use in our other custom hooks and new ones.
 const cloudStorageReducer = (state, action) => {
   switch (action.type) {
@@ -23,7 +22,7 @@ const cloudStorageReducer = (state, action) => {
         error: null,
       };
 
-    case "ADDED_FILE":
+    case "ADDED_FILES":
       return {
         ...state,
         isPending: false,
@@ -45,7 +44,7 @@ const cloudStorageReducer = (state, action) => {
   }
 };
 
-export const useCloudStorage = (storageFilePath) => {
+export const useCloudStorage = () => {
   //We are using "initialState" because we don't need to make a new copy of the state every time the hook is used.
   const [response, dispatch] = useReducer(cloudStorageReducer, initialState);
   //This state is used to cancel updating local state when the component that uses this hook is unmounted.
@@ -57,51 +56,50 @@ export const useCloudStorage = (storageFilePath) => {
   //We want to cancel the upload if a user navigates away from page and state updates won't work due to the
   //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
   // And since it's a variable on the same level of our useEffect we can use it to cancel the upload when we navigate away
-  const addedFileRef = useRef();
-  //This about using a ternary for this?..... path === "songs/" ? 'music' : 'images
-  //Our fireStore hook so we can add the data we need from our uploads to it.
-  // const {
-  //   addDocument,
-  //   deleteDocument,
-  //   response: firestoreResponse,
-  // } = useFirestore(path === "songs/" ? "music" : "images");
-  // this is a reference to the Cloud Storage folder we want to perform something on.
-  // const ref = projectStorage.ref(path);
-
-  // only dispatch if not cancelled
+  const addedSongFileRef = useRef();
+  const addedPhotoFileRef = useRef();
   const dispatchIfNotCancelled = (action) => {
     if (!isCancelled) {
       dispatch(action);
     }
   };
 
-  // add a file to the cloud storage
-  const addFile = (fireStoreRef, user, file) => {
-    //Create the file path from the information we received
-    const path =
-      storageFilePath + user.uid + "/" + fireStoreRef.id + "_" + file.name;
-    const fileRef = projectStorage.ref(path);
+  // add song file to the cloud storage
+  const addSongFiles = async (fireStoreDocRef, user, files) => {
+    //Create the song file path from the information we received
+    dispatch({ type: "IS_PENDING" });
+    const songPath =
+      "songs/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[0].name;
 
-    //We can use await because it exepects an object back. When we use .on to
+    // Create a variable to hold the photo upload result, if we have one
 
-    //If we navigate away from the page then we still upload the song. We need to find some way to prevent this. This happens in both of these methods.
-    //There are ways to monitor the task.
+    let photoPath;
+    let photoURL;
 
-    // ALL FUNCTIONS IN FIRE BASE ARE ASYNCHRONOUS. This is why we can run fileRef.put without making this function ASYNC or using await!!
-    // Await will prevent the try block from moving on until it gets the promise back from fileRef.put which is an UploadTask.
+    // Here we try to add the file to the cloud storage first before we add the song.
+    if (files[1]) {
+      console.log("photo upload");
+      photoPath =
+        "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
+      try {
+        const photoPathRef = projectStorage.ref(photoPath);
+        let photoUploadRes = await photoPathRef.put(files[1]);
+        photoURL = await photoUploadRes.ref.getDownloadURL();
+        console.log("photo upload", photoURL);
+      } catch (error) {
+        console.log("Photo upload error: ", error);
+        dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      }
+    }
 
-    //Firebase APIs are sensitive to the performance of your app’s main thread. This means that any Firebase API that needs to deal with data on disk or network
-    //is implemented in an asynchronous style. The functions will return immediately, so you can call them on the main thread without worrying about performance.
-    ///All you have to do is implement callbacks using the patterns established in the documentation and samples.
+    const songFileRef = projectStorage.ref(songPath);
+    addedSongFileRef.current = songFileRef.put(files[0]);
+    console.log(addedSongFileRef);
 
-    addedFileRef.current = fileRef.put(file);
-
-    console.log(addedFileRef);
-
-    addedFileRef.current.on(
+    addedSongFileRef.current.on(
       "state_changed",
       (snapshot) => {
-        dispatch({ type: "IS_PENDING" });
+        // dispatch({ type: "IS_PENDING" });
 
         setUploadProgress(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -114,26 +112,80 @@ export const useCloudStorage = (storageFilePath) => {
       },
       //Callback for completed upload
       () => {
-        console.log(addedFileRef.current.snapshot.ref);
-        addedFileRef.current.snapshot.ref
+        console.log(addedSongFileRef.current.snapshot.ref);
+        addedSongFileRef.current.snapshot.ref
           .getDownloadURL()
           .then((downloadURL) => {
             //Need another ternary or if statement here so we can reuse this hook for songs AND images.
             //Update the URL to the song URL in the cloud storage and the filePath to it's location.
-            fireStoreRef.update({
-              URL: downloadURL,
-              filePath: path,
+            fireStoreDocRef.update({
+              songURL: downloadURL,
+              songFilePath: songPath,
+              songPhotoURL: files[1] ? photoURL : "",
+              songPhotoFilePath: files[1] ? photoPath : "",
             });
             console.log("File URL:", downloadURL);
           });
         dispatchIfNotCancelled({
-          type: "ADDED_FILE",
-          payload: addedFileRef.current,
+          type: "ADDED_FILES",
+          payload: addedSongFileRef.current,
         });
       }
     );
   };
-  // delete a song... We can obtain the storageFilePath from its database entry
+  //This method will be used to add photo files when a user wants to
+  // Update their song cover art
+  // const addFile = (storageFileContainer, fireStoreDocRef, user, file) => {
+  //   //Create the file path from the information we received
+  //   const path =
+  //     storageFileContainer +
+  //     user.uid +
+  //     "/" +
+  //     fireStoreDocRef.id +
+  //     "_" +
+  //     file.name;
+
+  //   const fileRef = projectStorage.ref(path);
+
+  //   addedFileRef.current = fileRef.put(file);
+
+  //   console.log(addedFileRef);
+
+  //   addedFileRef.current.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       dispatch({ type: "IS_PENDING" });
+  //       console.log(uploadProgress, isCancelled);
+  //     },
+  //     //callback for error on upload
+  //     (error) => {
+  //       dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+  //     },
+  //     //Callback for completed upload
+  //     () => {
+  //       console.log(addedFileRef.current.snapshot.ref);
+  //       addedFileRef.current.snapshot.ref
+  //         .getDownloadURL()
+  //         .then((downloadURL) => {
+  //           if (storageFileContainer === "images/") {
+  //             fireStoreDocRef.update({
+  //               photoURL: downloadURL,
+  //               photoFilePath: path,
+  //             });
+  //           }
+
+  //           console.log("File URL:", downloadURL);
+  //         });
+  //       dispatchIfNotCancelled({
+  //         type: "ADDED_FILE",
+  //         payload: addedFileRef.current,
+  //       });
+  //     }
+  //   );
+  // };
+  // delete a song or photo...
+  // We can obtain the storageFilePath from its database entry
+  // We can delete a whole song + it's photo or delete a photo after we change it on a song
   const deleteFile = (storageFilePath) => {};
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
@@ -143,13 +195,13 @@ export const useCloudStorage = (storageFilePath) => {
       console.log("CLEAN UP");
       //Don't need to wrap with if because this has no effect on a complete or failed task.
       //This will cancel the upload if it is running when we leave the page
-      if (addedFileRef.current) {
-        addedFileRef.current.cancel();
+      if (addedSongFileRef.current) {
+        addedSongFileRef.current.cancel();
       }
 
       setIsCancelled(true);
     };
   }, []);
 
-  return { addFile, deleteFile, response, uploadProgress };
+  return { addSongFiles, deleteFile, response, uploadProgress };
 };

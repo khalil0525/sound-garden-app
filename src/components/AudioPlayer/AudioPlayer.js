@@ -305,6 +305,34 @@ const AudioPlayer = () => {
                 onChange={handleVolumeChange}
               />
             </div>
+
+            <div className={styles["audio-player__trackDetailsContainer"]}>
+              <div className={styles["trackDetailsContainer-songArt"]}>
+                <img
+                  className={styles["trackDetailsContainer-songArt-photo"]}
+                  src={
+                    loadedSongURL && playlist[playlistIndex].songPhotoURL
+                      ? playlist[playlistIndex].songPhotoURL
+                      : "img/blank_image_placeholder.svg"
+                  }
+                  alt="Song Cover Art"
+                  width="64"
+                  height="64"
+                />
+              </div>
+              <div className={styles["trackDetailsContainer-songDetails"]}>
+                <p
+                  className={styles["trackDetailsContainer-songDetails-title"]}
+                >
+                  {loadedSongURL && playlist[playlistIndex].title}
+                </p>
+                <p
+                  className={styles["trackDetailsContainer-songDetails-artist"]}
+                >
+                  {loadedSongURL && playlist[playlistIndex].artist}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

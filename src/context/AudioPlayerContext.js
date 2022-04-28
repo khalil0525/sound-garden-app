@@ -14,7 +14,7 @@ export const audioPlayerReducer = (state, action) => {
         playlist: action.payload.playlistSongs,
         playlistIndex: action.payload.songIndex,
         loadedSongURL:
-          action.payload.playlistSongs[action.payload.songIndex].URL,
+          action.payload.playlistSongs[action.payload.songIndex].songURL,
         isSongPlaying: true,
       };
     // This action occures when we click to play different songs to play in a
@@ -23,14 +23,14 @@ export const audioPlayerReducer = (state, action) => {
       return {
         ...state,
         playlistIndex: action.payload,
-        loadedSongURL: state.playlist[action.payload].URL,
+        loadedSongURL: state.playlist[action.payload].songURL,
         isSongPlaying: true,
       };
     case "PLAYLIST_ENDED":
       return {
         ...state,
         playlistIndex: 0,
-        loadedSongURL: state.playlist[0].URL,
+        loadedSongURL: state.playlist[0].songURL,
         isSongPlaying: true,
         playlistEnded: true,
       };
@@ -38,14 +38,14 @@ export const audioPlayerReducer = (state, action) => {
       return {
         ...state,
         playlistIndex: state.playlistIndex - 1,
-        loadedSongURL: state.playlist[state.playlistIndex - 1].URL,
+        loadedSongURL: state.playlist[state.playlistIndex - 1].songURL,
         isSongPlaying: true,
       };
     case "LOAD_NEXT_SONG":
       return {
         ...state,
         playlistIndex: state.playlistIndex + 1,
-        loadedSongURL: state.playlist[state.playlistIndex + 1].URL,
+        loadedSongURL: state.playlist[state.playlistIndex + 1].songURL,
         isSongPlaying: true,
       };
 
