@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
+import WaveSurfer from "wavesurfer.js";
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
@@ -62,6 +63,11 @@ const AudioPlayer = () => {
   } = audioPlayerState;
   //Ref to ReactPlayer
   const player = useRef();
+  //Ref to wavesurfer WaveForm div
+  const waveFormRef = useRef();
+  //Ref to wavesurfer to save instance in between re-renders
+  const wavesurfer = useRef();
+  //
   //Audio player context
   const {
     loadedSongURL,
@@ -180,6 +186,9 @@ const AudioPlayer = () => {
     if (loadedSongURL) {
       console.log("Loading new song");
       load(loadedSongURL);
+      if (player.current.getInternalPlayer() !== null)
+        console.log("player context: ", player.current.getInternalPlayer());
+      // wavesurfer.current.getAudioContext(player.current);
     }
   }, [loadedSongURL]);
 
@@ -199,6 +208,27 @@ const AudioPlayer = () => {
       dispatchAudioPlayerState({ type: "PLAY" });
     }
   }, [isSongPlaying, playing]);
+
+  // useEffect(() => {
+  //   wavesurfer.current = WaveSurfer.create({
+  //     container: waveFormRef.current,
+  //     waveColor: "darkgay",
+  //     progressColor: "lightgray",
+  //     barGap: 1,
+  //     barWidth: 2,
+  //   });
+  //   wavesurfer.current.on("ready", function () {
+  //     wavesurfer.current.play();
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   wavesurfer.current = WaveSurfer.create({ container: waveFormRef.current });
+  //   wavesurfer.current.on("ready", function () {
+  //     wavesurfer.current.play();
+  //   });
+  //   return () => wavesurfer.current.destroy();
+  // }, [loadedSongURL]);
 
   return (
     <div className={styles["audio-player"]}>
@@ -231,6 +261,10 @@ const AudioPlayer = () => {
             {/* SEEK  */}
             <div className={styles["audio-player__controls-seek"]}>
               <Duration seconds={duration * played} />
+              <div
+                className={styles["audio-player__controls-seek-waveForm"]}
+                ref={waveFormRef}
+              />
               <input
                 type="range"
                 min={0}
