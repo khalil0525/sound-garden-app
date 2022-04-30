@@ -186,9 +186,6 @@ const AudioPlayer = () => {
     if (loadedSongURL) {
       console.log("Loading new song");
       load(loadedSongURL);
-      if (player.current.getInternalPlayer() !== null)
-        console.log("player context: ", player.current.getInternalPlayer());
-      // wavesurfer.current.getAudioContext(player.current);
     }
   }, [loadedSongURL]);
 
