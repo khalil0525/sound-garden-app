@@ -4,10 +4,13 @@ import WaveSurfer from "wavesurfer.js";
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
+
 let initialState = {
   url: null,
   playing: false,
-  volume: 0.5,
+  volume: localStorage.getItem("volume")
+    ? parseFloat(localStorage.getItem("volume"))
+    : 0.5,
   muted: false,
   played: 0,
   loaded: 0,
@@ -206,26 +209,11 @@ const AudioPlayer = () => {
     }
   }, [isSongPlaying, playing]);
 
-  // useEffect(() => {
-  //   wavesurfer.current = WaveSurfer.create({
-  //     container: waveFormRef.current,
-  //     waveColor: "darkgay",
-  //     progressColor: "lightgray",
-  //     barGap: 1,
-  //     barWidth: 2,
-  //   });
-  //   wavesurfer.current.on("ready", function () {
-  //     wavesurfer.current.play();
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   wavesurfer.current = WaveSurfer.create({ container: waveFormRef.current });
-  //   wavesurfer.current.on("ready", function () {
-  //     wavesurfer.current.play();
-  //   });
-  //   return () => wavesurfer.current.destroy();
-  // }, [loadedSongURL]);
+  //This useEffect is used to store the user's volume settings in localStorage when it changes.
+  useEffect(() => {
+    localStorage.setItem("volume", volume);
+    // console.log("Setting volume", volume);
+  }, [volume]);
 
   return (
     <div className={styles["audio-player"]}>
