@@ -6,13 +6,16 @@ import styles from "./Uploaded.module.css";
 import ActionBar from "../../components/ActionBar/ActionBar";
 export default function Uploaded() {
   const { user } = useAuthContext();
-  const { documents, error } = useCollection("music", ["uid", "==", user.uid]);
+  const { documents: musicDocuments, error: musicError } = useCollection(
+    "music",
+    ["uid", "==", user.uid]
+  );
 
   return (
     <div className={styles.uploaded}>
       <ActionBar />
       <h1 className={styles["header_text"]}>Uploaded Tracks</h1>
-      <SongList songs={documents} />
+      <SongList songs={musicDocuments} user={user} />
     </div>
   );
 }

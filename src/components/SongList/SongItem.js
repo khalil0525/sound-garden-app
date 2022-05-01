@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./SongItem.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
-const SongItem = ({ song, playlistSongs, songIndex }) => {
+import { useFirestore } from "../../hooks/useFirestore";
+import { useCollection } from "../../hooks/useCollection";
+
+// import { ReactComponent as LikeIcon } from "/Heart_fill.svg";
+const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   // const [url, setUrl] = useState(song.URL);
   const { loadedSongURL, isSongPlaying, playlist, dispatchAudioPlayerContext } =
     useAudioPlayerContext();
+
   //This state anonymous fucntion replaced a useEffect, it will run a function only when
   // this component mounts for the first time.. It ensures that if we navigate
   // away from a page where this song component is, when we come back and it
@@ -12,6 +17,17 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   const [isPlaying, setIsPlaying] = useState(
     () => loadedSongURL === song.songURL && isSongPlaying
   );
+  // This is the state that controls the like button and helps send/receive data to firestore collection()
+  // This receives either undefined or a document from the likes collection
+  // We set the inital state for isLiked based on if that document was found
+  const [isLiked, setIsLiked] = useState(() => liked !== undefined);
+
+  const {
+    addDocument,
+    deleteDocument,
+    response: firestoreResponse,
+    error,
+  } = useFirestore("likes");
 
   //***********************************************************
   // We only change playlists when we click play on a song
@@ -22,6 +38,12 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
   // the song at. However, we will be able to Play/pause the track
   // from that other page
   //***********************************************************
+  // useEffect(() => {
+  //   if () {
+  //     setIsLiked(true);
+  //   }
+  // }, [likedSongDocument]);
+
   const handlePlayPauseClick = () => {
     if (loadedSongURL !== song.songURL) {
       //If we are on the same playlist but not playing the current song
@@ -69,6 +91,16 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
+
+  const handleLikeClick = () => {
+    setIsLiked((prevState) => !prevState);
+    if (!isLiked) {
+      addDocument({ uid: user.uid, likedSongID: song.id });
+    } else {
+      deleteDocument(liked.id);
+    }
+  };
+  // useEffect(() => console.log(likedSongDocument));
   //If we navigate to a different page than where this song is located and come back
   //We want to reset the set the state so that the play/pause stays the same.
   // This will fire up whenever this component is loaded
@@ -94,6 +126,11 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
     }
   }, [loadedSongURL, isSongPlaying, isPlaying, song]);
 
+  // useEffect(() => {
+  //   likeRef.current = isLiked;
+  //   if (likeRef.current) {
+  //   }
+  // }, [isLiked, song, user, addDocument]);
   //CREATE USEFFECT TO HANDLE SONGS THAT ARE ALREADY PLAYING TO SET isPLAYING TO FALSE
 
   return (
@@ -142,7 +179,13 @@ const SongItem = ({ song, playlistSongs, songIndex }) => {
         </div>
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
-            <button className={styles["actionContainer-likeBtn"]}>
+            <button
+              className={`${styles["actionContainer-likeBtn"]} ${
+                isLiked && styles["actionContainer-likeBtn--liked"]
+              } `}
+              onClick={handleLikeClick}
+              disabled={firestoreResponse.isPending}
+            >
               <img
                 className={styles["actionContainer_likeBtn-icon"]}
                 src="img/Heart_greyfill.svg"

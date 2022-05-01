@@ -30,7 +30,7 @@ const firestoreReducer = (state, action) => {
         success: true,
         error: null,
       };
-    case "QUERIED_DOCUMENT":
+    case "DELETED_DOCUMENT":
       return {
         ...state,
         isPending: false,
@@ -87,7 +87,19 @@ export const useFirestore = (collection) => {
   };
 
   // delete a document
-  const deleteDocument = (id) => {};
+  const deleteDocument = async (id) => {
+    dispatch({ type: "IS_PENDING" });
+
+    try {
+      const deletedDocument = await ref.doc(id).delete();
+      dispatchIfNotCancelled({
+        type: "DELETED_DOCUMENT",
+        payload: deletedDocument,
+      });
+    } catch (err) {
+      dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
+    }
+  };
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
