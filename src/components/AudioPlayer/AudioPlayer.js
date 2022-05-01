@@ -35,6 +35,8 @@ const audioPlayerReducer = (state, action) => {
       return { ...state, ...action.payload };
     case "DURATION_CHANGE":
       return { ...state, duration: action.payload };
+    // case "LOAD_CACHED_SONG":
+    // return {...state, ...action.payload}
     case "LOAD_SONG":
       return { ...state, ...action.payload };
     case "PLAY":
