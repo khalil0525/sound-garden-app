@@ -79,8 +79,9 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
       const blob = xhr.response;
       let a = document.createElement("a");
       a.href = window.URL.createObjectURL(xhr.response);
-      console.log();
-      a.download = song.filePath.split("_")[1]; // Name the file anything you'd like.
+
+      a.download =
+        song.songFilePath.split("_")[song.songFilePath.split("_").length - 1]; // Name the file anything you'd like.
       a.style.display = "none";
       document.body.appendChild(a);
       a.click();
@@ -95,11 +96,14 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   const handleLikeClick = () => {
     setIsLiked((prevState) => !prevState);
     if (!isLiked) {
-      addDocument({ uid: user.uid, likedSongID: song.id });
+      addDocument({ uid: user.uid, likedSongID: song.docID });
     } else {
-      deleteDocument(liked.id);
+      deleteDocument(liked.docID);
     }
   };
+  useEffect(() => {
+    console.log(liked);
+  }, []);
   // useEffect(() => console.log(likedSongDocument));
   //If we navigate to a different page than where this song is located and come back
   //We want to reset the set the state so that the play/pause stays the same.

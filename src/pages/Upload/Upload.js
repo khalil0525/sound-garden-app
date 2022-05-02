@@ -93,7 +93,7 @@ const Upload = () => {
   // path === "songs/" ? "music" : "images"
   //HANDLER FUNCTIONS
 
-  const handleSongUpload = async (event) => {
+  const handleSongUpload = (event) => {
     if (songFile && formIsValid) {
       //Try to add a document to the FireStore database, we will then use this to store the file
       // URL and generate a unique filename
@@ -110,7 +110,6 @@ const Upload = () => {
   useEffect(() => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
     if (firestoreResponse.success) {
-      console.log(firestoreResponse.document);
       // Call to useCloudStorage to add song file
       addSongFiles(firestoreResponse.document, user, [songFile, songPhotoFile]);
     }
@@ -173,7 +172,11 @@ const Upload = () => {
         <div className={styles["upload-container"]}>
           {!songFile && (
             <div className={styles["file-picker"]}>
-              <input type="file" onChange={handleSongFileChange}></input>
+              <input
+                type="file"
+                onChange={handleSongFileChange}
+                accept=".mp3, .ogg, .wav"
+              ></input>
             </div>
           )}
           {songFile && (
@@ -198,6 +201,7 @@ const Upload = () => {
                       type="file"
                       onChange={handleSongPhotoFileChange}
                       disabled={cloudStorageResponse.isPending}
+                      accept="image/*"
                     />
                   </div>
                   <label htmlFor="artist-name">Artist:</label>

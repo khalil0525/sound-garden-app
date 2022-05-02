@@ -77,6 +77,8 @@ export const useFirestore = (collection) => {
       const createdAt = timestamp.fromDate(new Date());
       // This will return to us a document reference for the document we just added
       const addedDocument = await ref.add({ ...doc, createdAt });
+      // Add the documentID to the document
+      await addedDocument.update({ docID: addedDocument.id });
       dispatchIfNotCancelled({
         type: "ADDED_DOCUMENT",
         payload: addedDocument,

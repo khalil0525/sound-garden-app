@@ -27,12 +27,15 @@ const SongList = ({ songs, user }) => {
           songs.map((song, index) => (
             <SongItem
               song={song}
-              key={song.id}
+              key={song.docID}
               playlistSongs={songs}
               songIndex={index}
-              liked={likedSongDocuments.find(
-                (likedDoc) => likedDoc.likedSongID === song.id
-              )}
+              liked={
+                likedSongDocuments &&
+                likedSongDocuments.find(
+                  (likedDoc) => likedDoc.likedSongID === song.docID
+                )
+              }
               user={user}
             />
           ))}
