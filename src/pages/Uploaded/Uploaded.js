@@ -4,6 +4,8 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
 import styles from "./Uploaded.module.css";
 import ActionBar from "../../components/ActionBar/ActionBar";
+import Scrollbar from "../../components/UI/Scrollbar";
+
 export default function Uploaded() {
   const { user } = useAuthContext();
   const { documents: musicDocuments, error: musicError } = useCollection(
@@ -14,6 +16,7 @@ export default function Uploaded() {
   return (
     <div className={styles.uploaded}>
       <ActionBar />
+
       <h1 className={styles["header_text"]}>Uploaded Tracks</h1>
       <SongList songs={musicDocuments} user={user} />
     </div>

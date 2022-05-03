@@ -12,6 +12,7 @@ import SideNavigation from "./components/SideNavigation/SideNavigation";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Upload from "./pages/Upload/Upload";
 import Search from "./pages/Search/Search";
+import { Scrollbars } from "react-custom-scrollbars";
 
 function App() {
   // Getting the context of the user to see if they're logged in
@@ -28,37 +29,40 @@ function App() {
         function so that we can still use CSS grid from the app class */}
           <SideNavigation />
           {/* Within this div we will render different pages */}
+
           <div className={styles.page}>
-            <Routes>
-              <Route path="/" element={<Home />}></Route>
-              <Route path="/genres" element={<Genres />}></Route>
-              <Route path="/artists" element={<Artists />}></Route>
-              <Route
-                path="/liked"
-                element={user ? <Liked /> : <Navigate to="/" />}
-              ></Route>
-              <Route
-                path="/uploaded"
-                element={user ? <Uploaded /> : <Navigate to="/" />}
-              ></Route>
-              <Route
-                path="/login"
-                element={!user ? <Login /> : <Navigate to="/" />}
-              ></Route>
-              <Route
-                path="/profile"
-                element={user ? <Profile /> : <Navigate to="/login" />}
-              ></Route>
-              <Route path="/search" element={<Search />}></Route>
-              <Route
-                path="/upload"
-                element={user ? <Upload /> : <Navigate to="/login" />}
-              ></Route>
-              <Route
-                path="/register"
-                element={!user ? <Register /> : <Navigate to="/" />}
-              ></Route>
-            </Routes>
+            <Scrollbars thumbSize={200}>
+              <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/genres" element={<Genres />}></Route>
+                <Route path="/artists" element={<Artists />}></Route>
+                <Route
+                  path="/liked"
+                  element={user ? <Liked /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  path="/uploaded"
+                  element={user ? <Uploaded /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  path="/login"
+                  element={!user ? <Login /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  path="/profile"
+                  element={user ? <Profile /> : <Navigate to="/login" />}
+                ></Route>
+                <Route path="/search" element={<Search />}></Route>
+                <Route
+                  path="/upload"
+                  element={user ? <Upload /> : <Navigate to="/login" />}
+                ></Route>
+                <Route
+                  path="/register"
+                  element={!user ? <Register /> : <Navigate to="/" />}
+                ></Route>
+              </Routes>
+            </Scrollbars>
           </div>
         </BrowserRouter>
       )}

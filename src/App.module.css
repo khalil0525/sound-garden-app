@@ -13,6 +13,6 @@
   max-width: 80vw;
 
   grid-column: 2/-1;
-  overflow: scroll;
-  overflow-x: hidden;
+  /* overflow: scroll;
+  overflow-x: hidden; */
 }
