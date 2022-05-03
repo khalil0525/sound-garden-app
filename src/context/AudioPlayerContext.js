@@ -9,6 +9,8 @@ let initialState = {
   playlist: null,
   playlistIndex: 0,
   playlistEnded: false,
+  currentSongPlayedTime: 0,
+  seekingFromSongItem: false,
 };
 
 //Reducer init function - This will be given to our reducer but it'll only be used if we previously loaded a playlist
@@ -47,6 +49,7 @@ export const audioPlayerReducer = (state, action) => {
         loadedSongURL:
           action.payload.playlistSongs[action.payload.songIndex].songURL,
         isSongPlaying: true,
+        currentSongPlayedTime: 0,
       };
     // This action occures when we click to play different songs to play in a
     // playlist
@@ -56,6 +59,7 @@ export const audioPlayerReducer = (state, action) => {
         playlistIndex: action.payload,
         loadedSongURL: state.playlist[action.payload].songURL,
         isSongPlaying: true,
+        currentSongPlayedTime: 0,
       };
     case "PLAYLIST_ENDED":
       return {
@@ -64,12 +68,14 @@ export const audioPlayerReducer = (state, action) => {
         loadedSongURL: state.playlist[0].songURL,
         isSongPlaying: true,
         playlistEnded: true,
+        currentSongPlayedTime: 0,
       };
     case "LOAD_PREVIOUS_SONG":
       return {
         ...state,
         playlistIndex: state.playlistIndex - 1,
         loadedSongURL: state.playlist[state.playlistIndex - 1].songURL,
+        currentSongPlayedTime: 0,
         isSongPlaying: true,
       };
     case "LOAD_NEXT_SONG":
@@ -77,6 +83,7 @@ export const audioPlayerReducer = (state, action) => {
         ...state,
         playlistIndex: state.playlistIndex + 1,
         loadedSongURL: state.playlist[state.playlistIndex + 1].songURL,
+        currentSongPlayedTime: 0,
         isSongPlaying: true,
       };
 
@@ -90,6 +97,22 @@ export const audioPlayerReducer = (state, action) => {
       return {
         ...state,
         isSongPlaying: false,
+      };
+    case "PLAYED_TIME_CHANGE":
+      return {
+        ...state,
+        currentSongPlayedTime: action.payload,
+      };
+    case "SEEK_FROM_SONG_ITEM":
+      return {
+        ...state,
+        currentSongPlayedTime: action.payload,
+        seekingFromSongItem: true,
+      };
+    case "SEEK_FROM_SONG_ITEM_COMPLETE":
+      return {
+        ...state,
+        seekingFromSongItem: false,
       };
     default:
       console.log("DEFAULT STATE");
@@ -124,7 +147,7 @@ export const AudioPlayerContextProvider = ({ children }) => {
   }, [playlist]);
 
   // Output the AuthContext state everytime we get a change
-  console.log("AudioPlayerContext state: ", state);
+  // console.log("AudioPlayerContext state: ", state);
   return (
     <AudioPlayerContext.Provider
       value={{ ...state, dispatchAudioPlayerContext }}

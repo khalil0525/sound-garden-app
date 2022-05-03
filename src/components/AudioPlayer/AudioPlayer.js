@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
-import WaveSurfer from "wavesurfer.js";
+
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
@@ -69,9 +69,9 @@ const AudioPlayer = () => {
   //Ref to ReactPlayer
   const player = useRef();
   //Ref to wavesurfer WaveForm div
-  const waveFormRef = useRef();
+
   //Ref to wavesurfer to save instance in between re-renders
-  const wavesurfer = useRef();
+
   //
   //Audio player context
   const {
@@ -81,6 +81,8 @@ const AudioPlayer = () => {
     playlistEnded,
     playlistIndex,
     playlist,
+    currentSongPlayedTime,
+    seekingFromSongItem,
   } = useAudioPlayerContext();
 
   //Function to load songs
@@ -150,6 +152,7 @@ const AudioPlayer = () => {
   const handleSeekMouseDown = (event) => {
     console.log("MOUSE DOWN");
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_DOWN" });
+    dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN" });
   };
 
   const handleSeekChange = (event) => {
@@ -162,8 +165,10 @@ const AudioPlayer = () => {
   };
 
   const handleSeekMouseUp = (event) => {
+    console.log(event.target.value);
     console.log("MOUSE UP");
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_UP" });
+
     player.current.seekTo(parseFloat(event.target.value));
   };
 
@@ -171,6 +176,11 @@ const AudioPlayer = () => {
     // We only want to update time slider if we are not currently seeking
     if (!seeking) {
       dispatchAudioPlayerState({ type: "PROGRESS_CHANGE", payload: state });
+      dispatchAudioPlayerContext({
+        type: "PLAYED_TIME_CHANGE",
+        payload: state.played,
+      });
+      // console.log(state);
     }
   };
   const handleDuration = (songDuration) => {
@@ -216,6 +226,13 @@ const AudioPlayer = () => {
     localStorage.setItem("volume", volume);
     // console.log("Setting volume", volume);
   }, [volume]);
+  //This useEffect is used when a SongItem sends us a position to seek to
+  useEffect(() => {
+    if (seekingFromSongItem) {
+      player.current.seekTo(parseFloat(currentSongPlayedTime));
+      dispatchAudioPlayerContext({ type: "SEEK_FROM_SONG_ITEM_COMPLETE" });
+    }
+  }, [currentSongPlayedTime, seekingFromSongItem, dispatchAudioPlayerContext]);
 
   return (
     <div className={styles["audio-player"]}>
@@ -248,10 +265,7 @@ const AudioPlayer = () => {
             {/* SEEK  */}
             <div className={styles["audio-player__controls-seek"]}>
               <Duration seconds={duration * played} />
-              <div
-                className={styles["audio-player__controls-seek-waveForm"]}
-                ref={waveFormRef}
-              />
+
               <input
                 type="range"
                 min={0}

@@ -1,22 +1,61 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./SongItem.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useCollection } from "../../hooks/useCollection";
+import Duration from "../AudioPlayer/Duration";
 
+let initialState = {
+  playing: false,
+  isMounted: false,
+  played: 0,
+  duration: 0,
+  seeking: false,
+};
+
+const songItemReducer = (state, action) => {
+  switch (action.type) {
+    case "PLAY_PAUSE_CLICK":
+      return { ...state, playing: !state.playing };
+    case "SEEK_POSITION_CHANGE":
+      return { ...state, played: action.payload };
+    case "SEEK_MOUSE_DOWN":
+      return { ...state, seeking: true };
+    case "SEEK_MOUSE_UP":
+      return { ...state, seeking: false };
+    case "PROGRESS_CHANGE":
+      return { ...state, played: action.payload };
+    case "PLAY":
+      return { ...state, playing: true };
+    case "PAUSE":
+      return { ...state, playing: false };
+    case "SONG_MOUNTED":
+      return { ...state, isMounted: true, played: 0 };
+    case "SONG_DISMOUNTED":
+      return { ...state, isMounted: false, played: 0, playing: false };
+    default:
+      return { ...state };
+  }
+};
 // import { ReactComponent as LikeIcon } from "/Heart_fill.svg";
 const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
-  // const [url, setUrl] = useState(song.URL);
-  const { loadedSongURL, isSongPlaying, playlist, dispatchAudioPlayerContext } =
-    useAudioPlayerContext();
+  const [songItemState, dispatchSongItemState] = useReducer(
+    songItemReducer,
+    initialState
+  );
+  const { playing, isMounted, played, duration, seeking } = songItemState;
+  const {
+    loadedSongURL,
+    isSongPlaying,
+    playlist,
+    currentSongPlayedTime,
+    dispatchAudioPlayerContext,
+  } = useAudioPlayerContext();
 
   //This state anonymous fucntion replaced a useEffect, it will run a function only when
   // this component mounts for the first time.. It ensures that if we navigate
   // away from a page where this song component is, when we come back and it
   // is still playing we can set its state to playing
-  const [isPlaying, setIsPlaying] = useState(
-    () => loadedSongURL === song.songURL && isSongPlaying
-  );
   // This is the state that controls the like button and helps send/receive data to firestore collection()
   // This receives either undefined or a document from the likes collection
   // We set the inital state for isLiked based on if that document was found
@@ -60,16 +99,15 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
         });
       }
     } //else it's paused
-    else if (isPlaying) {
+    else if (playing) {
+      dispatchSongItemState({ type: "PAUSE" });
       dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
     } else {
+      dispatchSongItemState({ type: "PLAY" });
       dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
     }
-    // console.log("global", JSON.stringify(playlist));
-    // console.log("local", JSON.stringify(playlistSongs));
-    // console.log(JSON.stringify(playlistSongs) === JSON.stringify(playlist));
-    //We always set the playing state to its previous state regardless of the above
-    setIsPlaying((prevState) => !prevState);
+    dispatchSongItemState({ type: "PLAY_PAUSE_CLICK" });
+    // setIsPlaying((prevState) => !prevState);
   };
 
   const handleSongDownloadClick = () => {
@@ -101,41 +139,79 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
       deleteDocument(liked.docID);
     }
   };
-  useEffect(() => {
-    console.log(liked);
-  }, []);
-  // useEffect(() => console.log(likedSongDocument));
-  //If we navigate to a different page than where this song is located and come back
-  //We want to reset the set the state so that the play/pause stays the same.
-  // This will fire up whenever this component is loaded
-  // useEffect(() => {
-  //   if (loadedSongURL === song.URL && isSongPlaying) {
-  //     setIsPlaying(true);
-  //   }
-  //   console.log("First USEFFECT in SongItem");
-  // }, []);
 
+  const handleSeekMouseDown = () => {
+    if (isMounted) {
+      console.log("MOUSE DOWN");
+      dispatchSongItemState({ type: "SEEK_MOUSE_DOWN" });
+    }
+  };
+
+  const handleSeekChange = (event) => {
+    console.log("seekChange", event.target.value);
+    if (isMounted) {
+      dispatchSongItemState({
+        type: "SEEK_POSITION_CHANGE",
+        payload: parseFloat(event.target.value),
+      });
+    }
+  };
+
+  const handleSeekMouseUp = (event) => {
+    if (isMounted) {
+      console.log(event.target.value);
+      console.log("MOUSE UP");
+      dispatchSongItemState({ type: "SEEK_MOUSE_UP" });
+      dispatchAudioPlayerContext({
+        type: "SEEK_FROM_SONG_ITEM",
+        payload: event.target.value,
+      });
+    }
+  };
+
+  // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT
+  // IS AT.
+  // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
+  useEffect(() => {
+    if (loadedSongURL === song.songURL && !isMounted) {
+      dispatchSongItemState({ type: "SONG_MOUNTED" });
+      console.log("Song MOUNTED: ", song.title);
+    } else if (loadedSongURL !== song.songURL && isMounted) {
+      dispatchSongItemState({ type: "SONG_DISMOUNTED" });
+      console.log("Song DISMOUNTED: ", song.title);
+    }
+  }, [loadedSongURL, song.songURL, isMounted, song.title]);
+
+  // Change the current time based on the global played state
+  useEffect(() => {
+    if (isSongPlaying && isMounted && !seeking) {
+      dispatchSongItemState({
+        type: "PROGRESS_CHANGE",
+        payload: currentSongPlayedTime,
+      });
+    }
+  }, [isSongPlaying, isMounted, currentSongPlayedTime, seeking]);
+
+  // When we press pause from the AudioPlayer this will be triggered to activate
+  // The play state inside of the songItem
   useEffect(() => {
     // If globally no song is playing OR song was changed and this songItem isPlaying
     // Set isPlaying to false.
-    if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
+    if ((!isSongPlaying || !isMounted) && playing) {
+      // if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
       console.log("USEFFECT in SongItem, CONDITION 1", song.title);
-      setIsPlaying(false);
+      dispatchSongItemState({ type: "PAUSE" });
+      // setIsPlaying(false);
     }
     //Otherwise, if globally a song is playing and the URL is this songs
     //
-    else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
+    else if (isSongPlaying && isMounted && !playing) {
+      // else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
       console.log(" USEFFECT in SongItem, CONDITION 2");
-      setIsPlaying(true);
+      dispatchSongItemState({ type: "PLAY" });
+      // setIsPlaying(true);
     }
-  }, [loadedSongURL, isSongPlaying, isPlaying, song]);
-
-  // useEffect(() => {
-  //   likeRef.current = isLiked;
-  //   if (likeRef.current) {
-  //   }
-  // }, [isLiked, song, user, addDocument]);
-  //CREATE USEFFECT TO HANDLE SONGS THAT ARE ALREADY PLAYING TO SET isPLAYING TO FALSE
+  }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
 
   return (
     <div className={styles["song-item"]}>
@@ -146,7 +222,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               className={styles["titleContainer__playBtn"]}
               onClick={handlePlayPauseClick}
             >
-              {isPlaying ? (
+              {playing ? (
                 <img
                   src="img/pause-svgrepo-com.svg"
                   alt="Song pause button icon"
@@ -180,6 +256,21 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               {song.genre}
             </span>
           </div>
+        </div>
+        <div className={styles["song-item__seekControl"]}>
+          <Duration seconds={song.duration * played} />
+
+          <input
+            type="range"
+            min={0}
+            max={0.999999}
+            step="any"
+            value={played}
+            onChange={handleSeekChange}
+            onMouseDown={handleSeekMouseDown}
+            onMouseUp={handleSeekMouseUp}
+          />
+          <Duration seconds={song.duration * (1 - played)} />
         </div>
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>

@@ -96,7 +96,7 @@ export const useCloudStorage = () => {
     addedSongFileRef.current = songFileRef.put(files[0]);
     console.log(addedSongFileRef);
 
-    addedSongFileRef.current.on(
+    const unsubscribe = addedSongFileRef.current.on(
       "state_changed",
       (snapshot) => {
         // dispatch({ type: "IS_PENDING" });
@@ -130,6 +130,7 @@ export const useCloudStorage = () => {
           type: "ADDED_FILES",
           payload: addedSongFileRef.current,
         });
+        unsubscribe();
       }
     );
   };

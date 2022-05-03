@@ -24,7 +24,6 @@ export const useCollection = (
   const query = useRef(_query).current;
   const collection = useRef(_collection).current;
   const collectionFilterVariable = useRef(_collectionFilterVariable).current;
-  const dataForQuery = useRef();
   useEffect(() => {
     let ref =
       typeof collection === "object"
@@ -52,18 +51,14 @@ export const useCollection = (
 
         //If we have a query that requires information from 2 collections
         if (query.length === 2) {
-          console.log("here", documents);
-
           const extractResults =
             results && results.length > 0
               ? results.map((doc) => {
                   return doc[collectionFilterVariable];
                 })
               : [null];
-          // console.log("here", documents);
           let secondResults = [];
           while (extractResults.length) {
-            console.log("at the top");
             const batch = extractResults.splice(0, 10);
             try {
               secondResults.push(
@@ -95,59 +90,16 @@ export const useCollection = (
       },
       (error) => {
         console.log(error);
-        console.log("erooooooor");
         setError("could not fetch the Data");
       }
     );
-    // console.log("here");
 
     //Filter the results based on the collectionFilterVariable
 
     //Unsubscribe on unmount
     return () => unsubscribe();
-  }, [collection, query]);
+  }, [collection, query, collectionFilterVariable]);
 
-  // useEffect(() => {
-  //   if (
-  //     (documents === null || documents.length === 0) &&
-  //     dataForQuery.current !== null &&
-  //     query.length === 2
-  //   ) {
-  //     console.log("here", documents);
-  //     let ref = projectFirestore.collection(collection[1]);
-  //     const extractResults = dataForQuery.current
-  //       ? dataForQuery.current.map((doc) => {
-  //           return doc[collectionFilterVariable];
-  //         })
-  //       : [null];
-  //     // console.log("here", documents);
-  //     console.log(query);
-  //     if (query) {
-  //       ref = ref.where(...query[1], extractResults);
-  //       console.log("HEEEEEEEEEEEEEERE");
-  //     }
-  //     try {
-  //       const docs = ref.get().then((snapshot) => {
-  //         let results = [];
-  //         console.log("inside function");
-
-  //         snapshot.docs.forEach((doc) => {
-  //           //Convert the timestamp to a date
-  //           const timestamp = doc.data().createdAt.toDate().toDateString();
-  //           results.push({ ...doc.data(), createdAt: timestamp });
-  //         });
-
-  //         setDocuments(results);
-  //         setError(null);
-  //       });
-  //     } catch (error) {
-  //       setError("could not fetch the Data");
-  //     }
-
-  //     //Unsubscribe on unmount
-  //     // return () => unsubscribe();
-  //   }
-  // }, [query, collection, collectionFilterVariable, documents]);
   return { documents, error };
 };
 // get docments based on query... docProperty === property to look at in our documents.... queryString === what the docProperty value should be = to

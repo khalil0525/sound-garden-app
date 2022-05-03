@@ -11,6 +11,9 @@ let initialState = {
   songFile: null,
   songPhotoFile: null,
   songPhotoURL: null,
+  songDuration: null,
+  songDurationIsValid: false,
+  uploadIsReady: false,
   artistName: "",
   songName: "",
   genreType: "none",
@@ -22,6 +25,13 @@ const uploadReducer = (state, action) => {
       return {
         ...state,
         songFile: action.payload,
+      };
+    case "SONG_DURATION_CHANGED":
+      return {
+        ...state,
+        songDuration: action.payload,
+        songDurationIsValid: true,
+        uploadIsReady: state.artistName.length > 0 && state.songName.length > 0,
       };
     case "PHOTO_FILE_CHANGED":
       return {
@@ -35,6 +45,10 @@ const uploadReducer = (state, action) => {
         ...state,
         artistName: action.payload,
         formIsValid: action.payload.length > 0 && state.songName.length > 0,
+        uploadIsReady:
+          action.payload.length > 0 &&
+          state.songName.length > 0 &&
+          state.songDurationIsValid,
       };
 
     case "SONG_NAME_CHANGE":
@@ -42,6 +56,10 @@ const uploadReducer = (state, action) => {
         ...state,
         songName: action.payload,
         formIsValid: action.payload.length > 0 && state.artistName.length > 0,
+        uploadIsReady:
+          action.payload.length > 0 &&
+          state.artistName.length > 0 &&
+          state.songDurationIsValid,
       };
     case "GENRE_TYPE_CHANGE":
       return {
@@ -68,6 +86,7 @@ const Upload = () => {
     uploadReducer,
     initialState
   );
+
   //Destruct values from the reducer state
   const {
     songFile,
@@ -77,7 +96,11 @@ const Upload = () => {
     songName,
     genreType,
     formIsValid,
+    songDuration,
+    songDurationIsValid,
+    uploadIsReady,
   } = songUploadState;
+
   //Cloud storage hook
   const {
     addSongFiles,
@@ -94,14 +117,14 @@ const Upload = () => {
   //HANDLER FUNCTIONS
 
   const handleSongUpload = (event) => {
-    if (songFile && formIsValid) {
+    if (songFile && formIsValid && uploadIsReady) {
       //Try to add a document to the FireStore database, we will then use this to store the file
       // URL and generate a unique filename
       addDocument({
         artist: artistName,
         genre: genreType,
         title: songName,
-        // URL: downloadURL,
+        duration: songDuration,
         uid: user.uid,
       });
     }
@@ -132,6 +155,48 @@ const Upload = () => {
       event.target.value = "";
     }
   };
+  useEffect(() => {
+    const getAudioDuration = () => {
+      // Obtain the uploaded file, you can change the logic if you are working with multiupload
+      // Create instance of FileReader
+      let reader = new FileReader();
+      // When the file has been succesfully read
+      reader.onload = (event) => {
+        // Create an instance of AudioContext
+        let audioContext = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        audioContext.decodeAudioData(event.target.result, (buffer) => {
+          let duration = buffer.duration;
+
+          if (duration) {
+            console.log(duration);
+            dispatchSongUploadState({
+              type: "SONG_DURATION_CHANGED",
+              payload: duration,
+            });
+          }
+          console.log(
+            "The duration of the song is of: " + duration + " seconds"
+          );
+        });
+      };
+      // In case that the file couldn't be read
+      reader.onerror = (event) => {
+        console.error("An error ocurred reading the file: ", event);
+      };
+      // Read file as an ArrayBuffer, important !
+      reader.readAsArrayBuffer(songFile);
+    };
+    if (songFile != null) {
+      getAudioDuration();
+    }
+    // return () => getAudioDuration();
+  }, [songFile]);
+
+  useEffect(() => {
+    console.log(songUploadState);
+  }, [songUploadState]);
+
   const handleSongPhotoFileChange = (event) => {
     if (event.target.files[0].type.split("/")[0] === "image") {
       dispatchSongUploadState({
@@ -235,7 +300,7 @@ const Upload = () => {
                       <div onClick={handleCancelClick}>Cancel</div>
                       <button
                         onClick={handleSongUpload}
-                        disabled={!formIsValid}
+                        disabled={!uploadIsReady}
                       >
                         Upload
                       </button>
