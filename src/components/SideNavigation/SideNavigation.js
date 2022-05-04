@@ -96,11 +96,6 @@ const SideNavigation = () => {
               </NavLink>
             </>
           )}
-
-          {/* Logout button temp */}
-          {user && !isPending && <button onClick={logout}>Logout</button>}
-          {user && isPending && <button disabled>Loading..</button>}
-          {user && error && <p>{error}</p>}
         </nav>
       </div>
 
@@ -141,6 +136,10 @@ const SideNavigation = () => {
             </nav>
           </>
         )}
+        {/* Logout button temp */}
+        {user && !isPending && <button onClick={logout}>Logout</button>}
+        {user && isPending && <button disabled>Loading..</button>}
+        {user && error && <p>{error}</p>}
       </div>
 
       <div className={styles["audioplayer_container"]}>

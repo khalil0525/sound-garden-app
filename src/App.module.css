@@ -9,7 +9,7 @@
 
 .page {
   background-color: white;
-  border-radius: 32px;
+  border-radius: 34px;
   max-width: 80vw;
 
   grid-column: 2/-1;

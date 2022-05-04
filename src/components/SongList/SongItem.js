@@ -293,7 +293,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               Like
             </button>
             <button
-              className={styles["actionContainer-downloadBtn"]}
+              className={styles["actionContainer_downloadBtn"]}
               onClick={handleSongDownloadClick}
             >
               <img
@@ -303,6 +303,32 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               />
               Download
             </button>
+            {user.uid === song.uid && (
+              <>
+                <button
+                  className={styles["actionContainer_editBtn"]}
+                  // onClick={handleSongDownloadClick}
+                >
+                  <img
+                    className={styles["actionContainer_editBtn-icon"]}
+                    src={downloadIcon}
+                    alt="Song Download Icon"
+                  />
+                  Edit
+                </button>
+                <button
+                  className={styles["actionContainer_deleteBtn"]}
+                  // onClick={handleSongDownloadClick}
+                >
+                  <img
+                    className={styles["actionContainer_deleteBtn-icon"]}
+                    src={downloadIcon}
+                    alt="Song Download Icon"
+                  />
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </div>
         <div className={styles["song-item__aside"]}>
