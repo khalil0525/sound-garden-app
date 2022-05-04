@@ -1,9 +1,12 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
-
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
+
+import previous_NextIcon from "../../images/Expand_right_stop.svg";
+import pauseIcon from "../../images/pause-svgrepo-com.svg";
+import playIcon from "../../images/Arrow_drop_right.svg";
 
 let initialState = {
   url: null,
@@ -292,7 +295,7 @@ const AudioPlayer = () => {
               onClick={handlePreviousClick}
             >
               <img
-                src="/img/Expand_right_stop.svg"
+                src={previous_NextIcon}
                 alt="Audio player previous button"
               ></img>
             </button>
@@ -304,16 +307,10 @@ const AudioPlayer = () => {
             >
               {playing ? (
                 // Pause button img
-                <img
-                  src="/img/pause-svgrepo-com.svg"
-                  alt="Audio player pause button"
-                ></img>
+                <img src={pauseIcon} alt="Audio player pause button"></img>
               ) : (
                 // Play button img
-                <img
-                  src="/img/Arrow_drop_right.svg"
-                  alt="Audio player play button"
-                ></img>
+                <img src={playIcon} alt="Audio player play button"></img>
               )}
             </button>
 
@@ -323,7 +320,7 @@ const AudioPlayer = () => {
               onClick={handleNextClick}
             >
               <img
-                src="/img/Expand_right_stop.svg"
+                src={previous_NextIcon}
                 alt="Audio player previous button"
               ></img>
             </button>

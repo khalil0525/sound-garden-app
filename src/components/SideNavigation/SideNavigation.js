@@ -3,6 +3,14 @@ import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLogout } from "../../hooks/useLogout";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
+
+import soundGardenLogo from "../../images/soundgarden.jpg";
+import { ReactComponent as LikedIcon } from "../../images/Favorite_duotone.svg";
+import { ReactComponent as HomeIcon } from "../../images/Home_fill.svg";
+import { ReactComponent as ArtistIcon } from "../../images/User_duotone_line.svg";
+import { ReactComponent as GenreIcon } from "../../images/Mic_alt_duotone.svg";
+import { ReactComponent as UploadedIcon } from "../../images/Upload_duotone_line.svg";
+// import {ReactComponent as }
 const SideNavigation = () => {
   const { user } = useAuthContext();
   const { logout, error, isPending } = useLogout();
@@ -11,7 +19,7 @@ const SideNavigation = () => {
     <div className={styles.sidebar}>
       <div className={styles["sidebar-header"]}>
         {/* <h1>Sound Garden</h1> */}
-        <img src="/img/soundgarden.jpg" alt="Soundgarden logo"></img>
+        <img src={soundGardenLogo} alt="Soundgarden logo"></img>
 
         {/* Conditionally render the users displayName */}
         {user && (
@@ -22,102 +30,124 @@ const SideNavigation = () => {
         )}
       </div>
 
-      <div className={styles.navigation}>
-        <div className={styles["navigation-main"]}>
-          <h4>Menu</h4>
-          <nav className={styles.navbar}>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? styles["active-nav-item"] : undefined
-              }
-            >
-              <img src="/img/Home_fill.svg" alt="Home button icon" />
+      {/* <div className={styles["navigation-container"]}> */}
+      <div className={styles["navigation-menu"]}>
+        <h4 className={styles["navigation-header-text"]}>Menu</h4>
+        <nav className={styles.navbar}>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? styles["active-nav-item"] : undefined
+            }
+          >
+            <div className={styles["navbar-item-contents"]}>
+              <HomeIcon
+                className={styles["navbar-item-contents-icon"]}
+                alt="Home button icon"
+              />
               <div>Home</div>
-            </NavLink>
-            <NavLink
-              to="/genres"
-              className={({ isActive }) =>
-                isActive ? styles["active-nav-item"] : undefined
-              }
-            >
-              <img src="/img/Mic_alt_duotone.svg" alt="Genre button icon" />
+            </div>
+          </NavLink>
+          <NavLink
+            to="/genres"
+            className={({ isActive }) =>
+              isActive ? styles["active-nav-item"] : undefined
+            }
+          >
+            <div className={styles["navbar-item-contents"]}>
+              <GenreIcon
+                className={styles["navbar-item-contents-icon"]}
+                alt="Genre button icon"
+              />
               <div>Genres</div>
-            </NavLink>
-            <NavLink
-              to="/artists"
-              className={({ isActive }) =>
-                isActive ? styles["active-nav-item"] : undefined
-              }
-            >
-              <img src="/img/User_duotone_line.svg" alt="Artist button icon" />
+            </div>
+          </NavLink>
+          <NavLink
+            to="/artists"
+            className={({ isActive }) =>
+              isActive ? styles["active-nav-item"] : undefined
+            }
+          >
+            <div className={styles["navbar-item-contents"]}>
+              <ArtistIcon
+                className={styles["navbar-item-contents-icon"]}
+                alt="Artist button icon"
+              />
               <div>Artists</div>
-            </NavLink>
-            {!user && (
-              <>
-                <NavLink
-                  to="/login"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <div>Login temp</div>
-                </NavLink>
-                <NavLink
-                  to="/register"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <div>Register temp</div>
-                </NavLink>
-              </>
-            )}
-
-            {/* Logout button temp */}
-            {user && !isPending && <button onClick={logout}>Logout</button>}
-            {user && isPending && <button disabled>Loading..</button>}
-            {user && error && <p>{error}</p>}
-          </nav>
-        </div>
-
-        {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
-        <div className={styles["navigation-library"]}>
-          {user && (
+            </div>
+          </NavLink>
+          {!user && (
             <>
-              <h4>Library</h4>
-              <nav className={styles.navbar}>
-                <NavLink
-                  to="/liked"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <img
-                    src="/img/favorite_duotone.svg"
-                    alt="Artist button icon"
-                  />
-                  <div>Liked</div>
-                </NavLink>
-                <NavLink
-                  to="/uploaded"
-                  className={({ isActive }) =>
-                    isActive ? styles["active-nav-item"] : undefined
-                  }
-                >
-                  <img
-                    src="/img/Upload_duotone_line.svg"
-                    alt="Artist button icon"
-                  />
-                  <div>Uploaded</div>
-                </NavLink>
-              </nav>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  isActive ? styles["active-nav-item"] : undefined
+                }
+              >
+                <div>Login temp</div>
+              </NavLink>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  isActive ? styles["active-nav-item"] : undefined
+                }
+              >
+                <div>Register temp</div>
+              </NavLink>
             </>
           )}
-        </div>
+
+          {/* Logout button temp */}
+          {user && !isPending && <button onClick={logout}>Logout</button>}
+          {user && isPending && <button disabled>Loading..</button>}
+          {user && error && <p>{error}</p>}
+        </nav>
+      </div>
+
+      {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
+      <div className={styles["navigation-library"]}>
+        {user && (
+          <>
+            <h4 className={styles["navigation-header-text"]}>Library</h4>
+            <nav className={styles.navbar}>
+              <NavLink
+                to="/liked"
+                className={({ isActive }) =>
+                  isActive ? styles["active-nav-item"] : undefined
+                }
+              >
+                <div className={styles["navbar-item-contents"]}>
+                  <LikedIcon
+                    className={styles["navbar-item-contents-icon"]}
+                    alt="Liked link icon"
+                  />
+                  <div>Liked</div>
+                </div>
+              </NavLink>
+              <NavLink
+                to="/uploaded"
+                className={({ isActive }) =>
+                  isActive ? styles["active-nav-item"] : undefined
+                }
+              >
+                <div className={styles["navbar-item-contents"]}>
+                  <UploadedIcon
+                    className={styles["navbar-item-contents-icon"]}
+                    alt="Uploaded link icon"
+                  />
+                  <div>Uploaded</div>
+                </div>
+              </NavLink>
+            </nav>
+          </>
+        )}
+      </div>
+
+      <div className={styles["audioplayer_container"]}>
         <AudioPlayer />
       </div>
     </div>
+    // </div>
   );
 };
 

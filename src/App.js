@@ -12,7 +12,8 @@ import SideNavigation from "./components/SideNavigation/SideNavigation";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Upload from "./pages/Upload/Upload";
 import Search from "./pages/Search/Search";
-import { Scrollbars } from "react-custom-scrollbars";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
 
 function App() {
   // Getting the context of the user to see if they're logged in
@@ -31,7 +32,10 @@ function App() {
           {/* Within this div we will render different pages */}
 
           <div className={styles.page}>
-            <Scrollbars thumbSize={200}>
+            <SimpleBar
+              autoHide={false}
+              style={{ "overflow-x": "hidden", height: "91vh", top: "2rem" }}
+            >
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/genres" element={<Genres />}></Route>
@@ -62,7 +66,7 @@ function App() {
                   element={!user ? <Register /> : <Navigate to="/" />}
                 ></Route>
               </Routes>
-            </Scrollbars>
+            </SimpleBar>
           </div>
         </BrowserRouter>
       )}

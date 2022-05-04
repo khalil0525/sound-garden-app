@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./ActionBar.module.css";
+import uploadIcon from "../../images/Upload_duotone_line.svg";
+import searchIcon from "../../images/Search.svg";
+
 const ActionBar = () => {
   return (
     <div className={styles.actionbar}>
@@ -8,11 +11,11 @@ const ActionBar = () => {
           <button>profile</button>
         </Link>
         <Link to="/upload">
-          <img src="/img/Upload_duotone_line.svg" alt="Upload button icon" />
+          <img src={uploadIcon} alt="Upload button icon" />
         </Link>
         <Link to="/search">
           <button>
-            <img src="/img/Search.svg" alt="Search button icon" />
+            <img src={searchIcon} alt="Search button icon" />
           </button>
         </Link>
       </nav>

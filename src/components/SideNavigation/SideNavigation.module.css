@@ -2,15 +2,19 @@
   /* background-color: #fff; */
   /* grid-column: 1/2; */
   max-width: 20vw;
-  height: 95vh;
-  display: flex;
-  flex-direction: column;
+  height: inherit;
+  /* display: flex;
+  flex-direction: column; */
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
 
   /* gap: 10rem; */
 }
 
 .sidebar-header {
-  margin: 3rem 0 3rem 3rem;
+  grid-row: 1/1;
+  margin: 3rem 0 3rem 5rem;
 
   display: flex;
   flex-direction: column;
@@ -39,30 +43,34 @@
   font-weight: 600;
   color: #ffffff;
 }
-.navigation {
+/* .navigation-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-
-  margin-top: 3rem;
-}
-.navigation h4 {
-  font-weight: 400;
-  font-size: 2rem;
-  margin-left: 3rem;
-  margin-bottom: 1rem;
-  color: #ffffff;
-}
-.navigation-main {
+  width: 18vw;
+  margin-top: 2rem;
+} */
+.navigation-menu {
+  grid-row: 2/2;
 }
 .navigation-library {
+  grid-row: 3/3;
 }
+.navigation-header-text {
+  font-weight: 400;
+  font-size: 2rem;
+
+  margin-bottom: 0.4rem;
+
+  padding: 1rem 3.2rem 1rem 5rem;
+  color: #ffffff;
+}
+
 .navbar {
   display: flex;
   flex-direction: column;
-
-  margin-bottom: 3rem;
+  margin-bottom: 1.2rem;
 }
 
 .navbar a:link,
@@ -70,14 +78,8 @@
   font-size: 2rem;
   font-weight: 400;
   text-decoration: none;
-  color: #ffffff;
-
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-
-  opacity: 0.5;
-  padding: 1rem 3rem;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 1rem 3.2rem 1rem 5rem;
 
   /* Style for active class */
 }
@@ -85,11 +87,34 @@
   background: rgba(252, 100, 70, 0.514);
 }
 .navbar a.active-nav-item {
-  background: rgba(250, 57, 18, 0.226);
-  border-left: 4px solid orangered;
-  opacity: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(249, 51, 14, 0.4) 0%,
+    rgba(253, 99, 44, 0) 91.02%
+  );
+  box-shadow: inset 4px 0 0 #f9310e;
   color: #fff;
 }
+
+.navbar-item-contents {
+  display: flex;
+  gap: 1rem;
+}
+.navbar-item-contents-icon {
+  stroke: rgba(255, 255, 255, 0.2);
+}
+.navbar-item-contents img {
+}
+.navbar a img {
+  stroke: rgba(255, 255, 255, 0.5);
+  width: 2.4rem;
+  height: 2.4rem;
+}
 .navbar a div {
-  width: 16rem;
+  z-index: 2;
+}
+
+.audioplayer_container {
+  grid-row: 4/4;
+  margin: 2rem auto 0 auto;
 }

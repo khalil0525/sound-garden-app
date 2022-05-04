@@ -4,6 +4,11 @@ import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useCollection } from "../../hooks/useCollection";
 import Duration from "../AudioPlayer/Duration";
+import pauseIcon from "../../images/pause-svgrepo-com.svg";
+import playIcon from "../../images/Arrow_drop_right.svg";
+import downloadIcon from "../../images/Download.svg";
+import placeholderImage from "../../images/blank_image_placeholder.svg";
+import { ReactComponent as HeartIcon } from "../../images/Heart_greyfill.svg";
 
 let initialState = {
   playing: false,
@@ -224,14 +229,14 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
             >
               {playing ? (
                 <img
-                  src="img/pause-svgrepo-com.svg"
+                  src={pauseIcon}
                   alt="Song pause button icon"
                   width="36"
                   height="36"
                 />
               ) : (
                 <img
-                  src="img/Arrow_drop_right.svg"
+                  src={playIcon}
                   alt="Song play button icon"
                   width="36"
                   height="36"
@@ -281,9 +286,8 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               onClick={handleLikeClick}
               disabled={firestoreResponse.isPending}
             >
-              <img
+              <HeartIcon
                 className={styles["actionContainer_likeBtn-icon"]}
-                src="img/Heart_greyfill.svg"
                 alt="Song Like Icon"
               />
               Like
@@ -294,7 +298,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
             >
               <img
                 className={styles["actionContainer_downloadBtn-icon"]}
-                src="img/Download.svg"
+                src={downloadIcon}
                 alt="Song Download Icon"
               />
               Download
@@ -305,11 +309,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
           <div className={styles["song-item__songPhotoContainer"]}>
             <img
               className={styles["songPhotoContainer-img"]}
-              src={
-                song.songPhotoURL
-                  ? song.songPhotoURL
-                  : "img/blank_image_placeholder.svg"
-              }
+              src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
               alt="Song Cover Art"
             />
           </div>
