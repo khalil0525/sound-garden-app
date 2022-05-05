@@ -1,15 +1,12 @@
 import styles from "./Genres.module.css";
-
+import ActionBar from "../../components/ActionBar/ActionBar";
+import { useAuthContext } from "../../hooks/useAuthContext";
 export default function Genres() {
+  const { user } = useAuthContext();
   return (
     <div className={styles.genres}>
+      <ActionBar user={user} />
       <h2>Genres</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae qui
-        deserunt expedita quod recusandae porro a quaerat impedit, unde
-        doloremque aut culpa praesentium eum suscipit itaque earum rerum nulla?
-        Corrupti.
-      </p>
     </div>
   );
 }

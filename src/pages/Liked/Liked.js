@@ -18,28 +18,9 @@ export default function Liked() {
       "likedSongID"
     );
 
-  // const { documents: musicDocuments, error: musicError } = useCollection(
-  //   "music",
-  //   ["docID", "in"]
-  // );
-
-  // useEffect(() => {
-  //   const filter = likedSongDocuments
-  //     ? likedSongDocuments.map((likedSong) => {
-  //         return likedSong.likedSongID;
-  //       })
-  //     : [null];
-
-  //   setFilteredLikedSongDocuments(filter);
-  //   console.log(filter);
-  //   console.log(filteredLikedSongDocuments);
-  //   console.log(likedSongDocuments);
-  //   console.log(musicDocuments);
-  // }, [likedSongDocuments]);
-
   return (
     <div className={styles.liked}>
-      <ActionBar />
+      <ActionBar user={user} />
       <h1 className={styles["header_text"]}>Liked Tracks</h1>
       {likedSongDocuments && likedSongDocuments.length > 0 ? (
         <SongList songs={likedSongDocuments} user={user} />

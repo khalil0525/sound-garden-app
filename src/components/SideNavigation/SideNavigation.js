@@ -10,6 +10,7 @@ import { ReactComponent as HomeIcon } from "../../images/Home_fill.svg";
 import { ReactComponent as ArtistIcon } from "../../images/User_duotone_line.svg";
 import { ReactComponent as GenreIcon } from "../../images/Mic_alt_duotone.svg";
 import { ReactComponent as UploadedIcon } from "../../images/Upload_duotone_line.svg";
+
 // import {ReactComponent as }
 const SideNavigation = () => {
   const { user } = useAuthContext();
@@ -19,12 +20,13 @@ const SideNavigation = () => {
     <div className={styles.sidebar}>
       <div className={styles["sidebar-header"]}>
         {/* <h1>Sound Garden</h1> */}
-        <img src={soundGardenLogo} alt="Soundgarden logo"></img>
-
+        <div className={styles["sidebar-header-image"]}>
+          <img src={soundGardenLogo} alt="Soundgarden logo"></img>
+        </div>
         {/* Conditionally render the users displayName */}
         {user && (
           <>
-            <p className={styles["welcome-text"]}>Hi,</p>
+            <p className={styles["welcome-text"]}>Hi</p>
             <p className={styles.username}>{user.displayName}</p>
           </>
         )}
@@ -76,26 +78,6 @@ const SideNavigation = () => {
               <div>Artists</div>
             </div>
           </NavLink>
-          {!user && (
-            <>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  isActive ? styles["active-nav-item"] : undefined
-                }
-              >
-                <div>Login temp</div>
-              </NavLink>
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  isActive ? styles["active-nav-item"] : undefined
-                }
-              >
-                <div>Register temp</div>
-              </NavLink>
-            </>
-          )}
         </nav>
       </div>
 

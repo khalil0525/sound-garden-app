@@ -1,10 +1,35 @@
 .actionbar {
-  background-color: blue;
   padding: 0.5rem 3rem;
+  background-color: #fff;
 }
-.actionbar-nav {
+.actionbar__nav {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  gap: 2rem;
+  justify-content: center;
+  gap: 1rem;
+}
+.actionbar__profileLink {
+  width: 4.2rem;
+  height: 4.2rem;
+
+  filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
+  border-radius: 25px;
+}
+.actionbar__profileLink-img {
+  display: flex;
+  align-self: center;
+  width: inherit;
+
+  border-radius: 10.18rem;
+}
+
+.actionbar__uploadLink {
+  width: 4.2rem;
+  height: 4.2rem;
+
+  color: #fff;
+  background: linear-gradient(180deg, #fd4d2d 0%, #f9330e 100%);
+  box-shadow: 3px 4px 15px rgba(0, 0, 0, 0.12);
+  border-radius: 25px;
+  padding: 1rem;
 }
