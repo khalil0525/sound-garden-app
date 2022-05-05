@@ -3,6 +3,7 @@ import styles from "./SongItem.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useCollection } from "../../hooks/useCollection";
+import { useCloudStorage } from "../../hooks/useCloudStorage";
 import Duration from "../AudioPlayer/Duration";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
@@ -56,23 +57,26 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     currentSongPlayedTime,
     dispatchAudioPlayerContext,
   } = useAudioPlayerContext();
-
-  //This state anonymous fucntion replaced a useEffect, it will run a function only when
-  // this component mounts for the first time.. It ensures that if we navigate
-  // away from a page where this song component is, when we come back and it
-  // is still playing we can set its state to playing
-  // This is the state that controls the like button and helps send/receive data to firestore collection()
-  // This receives either undefined or a document from the likes collection
+  const { documents: usersLikedSongDocuments } = useCollection("likes", [
+    "likedSongID",
+    "==",
+    song.docID,
+  ]);
   // We set the inital state for isLiked based on if that document was found
   const [isLiked, setIsLiked] = useState(() => liked !== undefined);
 
   const {
-    addDocument,
-    deleteDocument,
+    addDocument: addLikedDocument,
+    deleteDocument: deleteLikedDocument,
     response: firestoreResponse,
-    error,
   } = useFirestore("likes");
 
+  const {
+    deleteDocument: deleteSongDocument,
+    response: deleteSongDocumentResponse,
+  } = useFirestore("music");
+
+  const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
   //***********************************************************
   // We only change playlists when we click play on a song
   // that is not apart of the current playlist.
@@ -135,13 +139,16 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
+  const handleDeleteClick = async () => {
+    deleteSongFiles(song);
+  };
 
   const handleLikeClick = () => {
     setIsLiked((prevState) => !prevState);
     if (!isLiked) {
-      addDocument({ uid: user.uid, likedSongID: song.docID });
+      addLikedDocument({ uid: user.uid, likedSongID: song.docID });
     } else {
-      deleteDocument(liked.docID);
+      deleteLikedDocument(liked.docID);
     }
   };
 
@@ -217,6 +224,31 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
       // setIsPlaying(true);
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
+
+  //This useEffect fires if we delete the song and get a success message back
+  // It will then delete the likes on this song and then the song document itself.
+  useEffect(() => {
+    if (cloudStorageResponse.success) {
+      if (usersLikedSongDocuments) {
+        usersLikedSongDocuments.forEach((doc) => {
+          deleteLikedDocument(doc.docID);
+        });
+      }
+      deleteSongDocument(song.docID);
+    }
+  }, [
+    cloudStorageResponse.success,
+    deleteSongDocument,
+    song.docID,
+    usersLikedSongDocuments,
+    deleteLikedDocument,
+  ]);
+
+  // useEffect(() => {
+  //   if (usersLikedSongDocuments) {
+  //     console.log(usersLikedSongDocuments);
+  //   }
+  // }, [usersLikedSongDocuments]);
 
   return (
     <div className={styles["song-item"]}>
@@ -318,7 +350,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
                 </button>
                 <button
                   className={styles["actionContainer_deleteBtn"]}
-                  // onClick={handleSongDownloadClick}
+                  onClick={handleDeleteClick}
                 >
                   <img
                     className={styles["actionContainer_deleteBtn-icon"]}

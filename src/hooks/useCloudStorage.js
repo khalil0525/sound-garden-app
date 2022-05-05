@@ -30,11 +30,19 @@ const cloudStorageReducer = (state, action) => {
         success: true,
         error: null,
       };
+    case "DELETED_FILES":
+      return {
+        ...state,
+        isPending: false,
+        file: action.payload,
+        success: true,
+        error: null,
+      };
 
     case "ERROR":
       return {
         isPending: false,
-        document: null,
+        file: null,
         success: false,
         error: action.payload,
       };
@@ -57,7 +65,6 @@ export const useCloudStorage = () => {
   //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
   // And since it's a variable on the same level of our useEffect we can use it to cancel the upload when we navigate away
   const addedSongFileRef = useRef();
-  const addedPhotoFileRef = useRef();
   const dispatchIfNotCancelled = (action) => {
     if (!isCancelled) {
       dispatch(action);
@@ -130,10 +137,41 @@ export const useCloudStorage = () => {
           type: "ADDED_FILES",
           payload: addedSongFileRef.current,
         });
-        unsubscribe();
       }
     );
   };
+
+  const deleteSongFiles = async (songInformation) => {
+    const { songFilePath, songPhotoFilePath } = songInformation;
+    try {
+      const deletedFile = await projectStorage
+        .ref(songFilePath)
+        .delete()
+        .then(() => {
+          if (songPhotoFilePath !== "") {
+            projectStorage
+              .ref(songPhotoFilePath)
+              .delete()
+              .then(() => {
+                console.log("Deleted song file and song art file");
+              })
+              .catch((error) => {
+                console.log("Error deleting photo!:  ", error);
+                dispatchIfNotCancelled({
+                  type: "ERROR",
+                  payload: error.message,
+                });
+              });
+          }
+        });
+      console.log("DELETE COMPLETED");
+      dispatchIfNotCancelled({ type: "DELETED_FILES", payload: deletedFile });
+    } catch (error) {
+      console.log("Error deleting song file!!:  ", error);
+      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+    }
+  };
+
   //This method will be used to add photo files when a user wants to
   // Update their song cover art
   // const addFile = (storageFileContainer, fireStoreDocRef, user, file) => {
@@ -204,5 +242,11 @@ export const useCloudStorage = () => {
     };
   }, []);
 
-  return { addSongFiles, deleteFile, response, uploadProgress };
+  return {
+    addSongFiles,
+    deleteFile,
+    deleteSongFiles,
+    response,
+    uploadProgress,
+  };
 };

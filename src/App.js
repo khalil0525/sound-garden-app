@@ -34,7 +34,7 @@ function App() {
           <div className={styles.page}>
             <SimpleBar
               autoHide={false}
-              style={{ "overflow-x": "hidden", height: "91vh", top: "2rem" }}
+              style={{ overflowX: "hidden", height: "91vh", top: "2rem" }}
             >
               <Routes>
                 <Route path="/" element={<Home />}></Route>

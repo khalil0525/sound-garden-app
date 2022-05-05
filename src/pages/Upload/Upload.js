@@ -6,7 +6,7 @@ import LoadingBar from "../../components/LoadingBar/LoadingBar";
 import styles from "./Upload.module.css";
 import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
+import placeholderImage from "../../images/blank_image_placeholder.svg";
 let initialState = {
   songFile: null,
   songPhotoFile: null,
@@ -252,11 +252,7 @@ const Upload = () => {
                   <div className={styles["photo-picker"]}>
                     <img
                       className={styles["photo-picker-photo"]}
-                      src={
-                        songPhotoFile
-                          ? songPhotoURL
-                          : "img/blank_image_placeholder.svg"
-                      }
+                      src={songPhotoFile ? songPhotoURL : placeholderImage}
                       alt="Song Cover Art"
                       width="160"
                       height="160"

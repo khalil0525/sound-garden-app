@@ -89,7 +89,8 @@ export const useCollection = (
         }
       },
       (error) => {
-        console.log(error);
+        console.log(error + collection);
+
         setError("could not fetch the Data");
       }
     );
