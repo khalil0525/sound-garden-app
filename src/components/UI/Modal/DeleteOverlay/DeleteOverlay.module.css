@@ -1,0 +1,40 @@
+.modal {
+  position: fixed;
+  top: 30vh;
+  left: 10%;
+  width: 80%;
+  z-index: 100;
+  overflow: hidden;
+  border-radius: 18px;
+  background-color: #fff;
+}
+
+.header {
+  background: linear-gradient(360deg, #fd4d2d 0%, #f9330e 100%);
+  padding: 1rem;
+}
+
+.header h2 {
+  margin: 0;
+  color: white;
+}
+
+.content {
+  padding: 1rem;
+  font-size: 1.6rem;
+}
+
+.actions {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-right: 0.8rem;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    left: calc(50% - 20rem);
+    width: 40rem;
+  }
+}

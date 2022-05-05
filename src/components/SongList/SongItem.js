@@ -9,7 +9,10 @@ import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
 import downloadIcon from "../../images/Download.svg";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
+import editIcon from "../../images/pencil_solid.svg";
+import deleteIcon from "../../images/trash_solid.svg";
 import { ReactComponent as HeartIcon } from "../../images/Heart_greyfill.svg";
+import Modal from "../UI/Modal/Modal";
 
 let initialState = {
   playing: false,
@@ -49,6 +52,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     songItemReducer,
     initialState
   );
+  const [isDeleting, setIsDeleting] = useState(false);
   const { playing, isMounted, played, duration, seeking } = songItemState;
   const {
     loadedSongURL,
@@ -86,11 +90,6 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   // the song at. However, we will be able to Play/pause the track
   // from that other page
   //***********************************************************
-  // useEffect(() => {
-  //   if () {
-  //     setIsLiked(true);
-  //   }
-  // }, [likedSongDocument]);
 
   const handlePlayPauseClick = () => {
     if (loadedSongURL !== song.songURL) {
@@ -139,7 +138,8 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
-  const handleDeleteClick = async () => {
+
+  const handleDeleteSong = async () => {
     deleteSongFiles(song);
   };
 
@@ -340,6 +340,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               />
               Download
             </button>
+
             {user.uid === song.uid && (
               <>
                 <button
@@ -348,23 +349,30 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
                 >
                   <img
                     className={styles["actionContainer_editBtn-icon"]}
-                    src={downloadIcon}
+                    src={editIcon}
                     alt="Song Download Icon"
                   />
                   Edit
                 </button>
                 <button
                   className={styles["actionContainer_deleteBtn"]}
-                  onClick={handleDeleteClick}
+                  onClick={() => setIsDeleting(true)}
                 >
                   <img
                     className={styles["actionContainer_deleteBtn-icon"]}
-                    src={downloadIcon}
+                    src={deleteIcon}
                     alt="Song Download Icon"
                   />
                   Delete
                 </button>
               </>
+            )}
+            {isDeleting && (
+              <Modal
+                action="delete"
+                onConfirm={handleDeleteSong}
+                onCancel={() => setIsDeleting(false)}
+              />
             )}
           </div>
         </div>
