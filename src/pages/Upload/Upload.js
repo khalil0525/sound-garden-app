@@ -77,11 +77,6 @@ const uploadReducer = (state, action) => {
 };
 
 const Upload = () => {
-  // const [songFile, setSongFile] = useState(null);
-  // const [artistName, setArtistName] = useState("");
-  // const [songName, setSongName] = useState("");
-  // const [genreType, setGenreType] = useState("");
-  // const [formIsValid, setFormIsValid] = useState(false);
   const [songUploadState, dispatchSongUploadState] = useReducer(
     uploadReducer,
     initialState
@@ -132,11 +127,22 @@ const Upload = () => {
 
   useEffect(() => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
-    if (firestoreResponse.success) {
+    if (
+      firestoreResponse.success &&
+      !cloudStorageResponse.isPending &&
+      !cloudStorageResponse.success
+    ) {
       // Call to useCloudStorage to add song file
       addSongFiles(firestoreResponse.document, user, [songFile, songPhotoFile]);
     }
-  }, [firestoreResponse.success]);
+  }, [
+    firestoreResponse,
+    cloudStorageResponse,
+    addSongFiles,
+    user,
+    songFile,
+    songPhotoFile,
+  ]);
 
   const handleCancelClick = () => {
     dispatchSongUploadState({

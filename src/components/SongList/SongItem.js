@@ -235,6 +235,10 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
         });
       }
       deleteSongDocument(song.docID);
+      dispatchAudioPlayerContext({
+        type: "SONG_DELETED_FROM_PLAYLIST",
+        payload: song.docID,
+      });
     }
   }, [
     cloudStorageResponse.success,
@@ -242,6 +246,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     song.docID,
     usersLikedSongDocuments,
     deleteLikedDocument,
+    dispatchAudioPlayerContext,
   ]);
 
   // useEffect(() => {

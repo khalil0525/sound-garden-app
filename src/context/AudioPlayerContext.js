@@ -27,7 +27,10 @@ const init = (initialReducerState) => {
       ...initialReducerState,
       playlistIndex: parsedPlaylistIndex,
       playlist: playlistFromLocalStorage,
-      loadedSongURL: playlistFromLocalStorage[parsedPlaylistIndex].songURL,
+      loadedSongURL:
+        playlistFromLocalStorage.length > 0
+          ? playlistFromLocalStorage[parsedPlaylistIndex].songURL
+          : null,
     };
   } else {
     return {
@@ -49,6 +52,31 @@ export const audioPlayerReducer = (state, action) => {
         loadedSongURL:
           action.payload.playlistSongs[action.payload.songIndex].songURL,
         isSongPlaying: true,
+        currentSongPlayedTime: 0,
+      };
+    case "SONG_DELETED_FROM_PLAYLIST":
+      const newPlaylist = state.playlist
+        ? state.playlist.filter((song) => {
+            return song.docID !== action.payload;
+          })
+        : state.playlist;
+      const newPlaylistIndex =
+        newPlaylist && newPlaylist.length > state.playlistIndex
+          ? state.playlistIndex
+          : 0;
+
+      const newLoadedSong =
+        newPlaylist && newPlaylist.length !== 0
+          ? newPlaylist[newPlaylistIndex].songURL
+          : null;
+      const newIsPlaying = newLoadedSong !== null ? true : false;
+
+      return {
+        ...state,
+        playlist: newPlaylist,
+        loadedSongURL: newLoadedSong,
+        playlistIndex: newPlaylistIndex,
+        isSongPlaying: newIsPlaying,
         currentSongPlayedTime: 0,
       };
     // This action occures when we click to play different songs to play in a

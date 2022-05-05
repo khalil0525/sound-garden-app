@@ -7,7 +7,7 @@ import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import previous_NextIcon from "../../images/Expand_right_stop.svg";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
-
+import placeholderImage from "../../images/blank_image_placeholder.svg";
 let initialState = {
   url: null,
   playing: false,
@@ -345,7 +345,7 @@ const AudioPlayer = () => {
                 src={
                   loadedSongURL && playlist[playlistIndex].songPhotoURL
                     ? playlist[playlistIndex].songPhotoURL
-                    : "img/blank_image_placeholder.svg"
+                    : placeholderImage
                 }
                 alt="Song Cover Art"
                 width="64"
