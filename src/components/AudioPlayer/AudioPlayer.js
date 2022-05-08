@@ -3,6 +3,7 @@ import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
 import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
+import AudioPlayerMarquee from "./AudioPlayerMarquee";
 
 import previous_NextIcon from "../../images/Expand_right_stop.svg";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
@@ -353,13 +354,14 @@ const AudioPlayer = () => {
               />
             </div>
             <div className={styles["audio-player__trackDetails-songDetails"]}>
-              <p
+              <AudioPlayerMarquee
                 className={
                   styles["audio-player__trackDetails-songDetails-title"]
                 }
               >
                 {loadedSongURL && playlist[playlistIndex].title}
-              </p>
+              </AudioPlayerMarquee>
+
               <p
                 className={
                   styles["audio-player__trackDetails-songDetails-artist"]
