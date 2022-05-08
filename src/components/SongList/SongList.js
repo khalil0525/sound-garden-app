@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./SongList.module.css";
 import SongItem from "./SongItem";
 import { useCollection } from "../../hooks/useCollection";
 
 //We receive a song prop from whichever parent component calls this
-const SongList = ({ songs, user }) => {
+const SongList = ({ songs, user, className }) => {
   // const { documents: likedSongDocuments, error: likedSongDocumentError } =
   //   useCollection("likes", ["uid", "==", user.uid]);
   const { documents: likedSongDocuments, response: collectionResponse } =
@@ -21,7 +21,7 @@ const SongList = ({ songs, user }) => {
   //   : [];
 
   return (
-    <div className={styles["song-list"]}>
+    <div className={`${styles["song-list"]} ${className} `}>
       <ul className={styles["song-list__list"]}>
         {songs &&
           songs.map((song, index) => (

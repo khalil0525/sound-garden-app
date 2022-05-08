@@ -1,0 +1,38 @@
+.actionsearchbar {
+  display: flex;
+
+  align-items: center;
+
+  width: 17.3rem;
+  height: 4.2rem;
+  border: 1.3px solid #fa3712;
+  filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
+  border-radius: 118px;
+}
+.actionsearchbar__contents {
+  display: flex;
+  margin-left: 1rem;
+}
+
+.actionsearchbar img {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+.actionsearchbar input {
+  margin-left: 0.6rem;
+  border: none;
+  background: none;
+  width: 12rem;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  opacity: 0.3;
+}
+.actionsearchbar input:focus {
+  border: none;
+  outline: none;
+  opacity: 1;
+}

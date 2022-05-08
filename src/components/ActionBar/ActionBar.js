@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./ActionBar.module.css";
 import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.svg";
-import searchIcon from "../../images/Search.svg";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
+import ActionSearchBar from "./ActionSearchBar";
 const ActionBar = (props) => {
   return (
-    <div className={styles.actionbar}>
+    <div className={`${styles.actionbar} ${props.className}`}>
       <nav className={styles["actionbar__nav"]}>
         {!props.user ? (
           <>
@@ -29,10 +29,10 @@ const ActionBar = (props) => {
         <Link to="/upload" className={styles["actionbar__uploadLink"]}>
           <UploadIcon alt="Upload button icon" />
         </Link>
+        <ActionSearchBar />
+        {/* <Link to="/search">
 
-        <Link to="/search">
-          <img src={searchIcon} alt="Search button icon" />
-        </Link>
+        </Link> */}
       </nav>
     </div>
   );

@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { projectFirestore } from "../../firebase/config";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import SongList from "../../components/SongList/SongList";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -20,10 +18,14 @@ export default function Liked() {
 
   return (
     <div className={styles.liked}>
-      <ActionBar user={user} />
+      <ActionBar className={styles["liked__actionBar"]} user={user} />
       <h1 className={styles["header_text"]}>Liked Tracks</h1>
       {likedSongDocuments && likedSongDocuments.length > 0 ? (
-        <SongList songs={likedSongDocuments} user={user} />
+        <SongList
+          className={styles["liked__songList"]}
+          songs={likedSongDocuments}
+          user={user}
+        />
       ) : (
         <h1>You haven't liked any songs yet!</h1>
       )}
