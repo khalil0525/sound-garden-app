@@ -16,10 +16,22 @@ const Search = () => {
 
   return (
     <div className={styles.search}>
-      <ActionBar query={query} user={user} />
-      <h1>Search results for "{query}"</h1>
+      <ActionBar
+        className={styles["search__actionBar"]}
+        query={query}
+        user={user}
+      />
+      <div className={styles["search__header"]}>
+        <h1 className={styles["search__queryText"]}>
+          Search results for "{query}"
+        </h1>
+      </div>
       {results.length ? (
-        <SongList songs={results} user={user} />
+        <SongList
+          className={styles["search__songList"]}
+          songs={results}
+          user={user}
+        />
       ) : (
         <h1>The search yielded no results!</h1>
       )}

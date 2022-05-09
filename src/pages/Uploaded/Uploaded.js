@@ -14,10 +14,14 @@ export default function Uploaded() {
 
   return (
     <div className={styles.uploaded}>
-      <ActionBar user={user} />
+      <ActionBar className={styles["uploaded__actionBar"]} user={user} />
 
-      <h1 className={styles["header_text"]}>Uploaded Tracks</h1>
-      <SongList songs={musicDocuments} user={user} />
+      {/* <h1 className={styles["header_text"]}>Uploaded Tracks</h1> */}
+      <SongList
+        className={styles["uploaded__songList"]}
+        songs={musicDocuments}
+        user={user}
+      />
     </div>
   );
 }
