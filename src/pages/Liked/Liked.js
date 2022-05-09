@@ -19,7 +19,7 @@ export default function Liked() {
   return (
     <div className={styles.liked}>
       <ActionBar className={styles["liked__actionBar"]} user={user} />
-      <h1 className={styles["header_text"]}>Liked Tracks</h1>
+      {/* <h1 className={styles["header_text"]}>Liked Tracks</h1> */}
       {likedSongDocuments && likedSongDocuments.length > 0 ? (
         <SongList
           className={styles["liked__songList"]}
@@ -27,7 +27,9 @@ export default function Liked() {
           user={user}
         />
       ) : (
-        <h1>You haven't liked any songs yet!</h1>
+        <h1 className={styles["liked__songList"]}>
+          You haven't liked any songs yet!
+        </h1>
       )}
     </div>
   );
