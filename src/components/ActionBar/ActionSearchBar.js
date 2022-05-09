@@ -1,39 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import searchIcon from "../../images/Search.svg";
 import styles from "./ActionSearchBar.module.css";
-import algoliasearch from "algoliasearch";
+// import algoliasearch from "algoliasearch";
+import { useAlgoliaSearch } from "../../hooks/useAlgoliaSearch";
 
 const ActionSearchBar = ({ queryString }) => {
   const [searchText, setSearchText] = useState(() =>
     queryString ? queryString : ""
   );
-  const navigate = useNavigate();
-  const algoliaClient = algoliasearch(
-    "RM45T5M6YJ",
-    "04f3df8c65a977d567d539ce2da52bc0"
-  );
-  const index = algoliaClient.initIndex("soundgarden_music");
+  const { searchForDocuments, error } = useAlgoliaSearch();
 
   const handleSearchTextChange = (event) => {
     setSearchText(event.target.value);
   };
+
   const handleSearchClick = async () => {
-    if (searchText.length > 0) {
-      try {
-        await index.search(searchText).then(({ hits }) => {
-          // console.log(hits);
-          navigate("/search", {
-            replace: false,
-            state: {
-              results: hits,
-              query: searchText,
-            },
-          });
-        });
-      } catch (err) {
-        console.log("Error occured: ", err);
-      }
+    if (searchText.trim().length > 0 && searchText !== queryString) {
+      searchForDocuments(searchText);
     }
   };
 

@@ -17,7 +17,7 @@ const Search = () => {
   return (
     <div className={styles.search}>
       <ActionBar query={query} user={user} />
-      <h1>Search results for "{query}" </h1>
+      <h1>Search results for "{query}"</h1>
       {results.length ? (
         <SongList songs={results} user={user} />
       ) : (

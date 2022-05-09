@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { projectFirestore } from "../firebase/config";
-
+import moment from "moment";
 //Colletion can be a string or an array.
 // If we want to comb through 2 collections then we will need to provide a collectionFilterVariable value
 export const useCollection = (
@@ -45,7 +45,9 @@ export const useCollection = (
           //   console.log(extractVariable);
           // }
           //Convert the timestamp to a date
-          const timestamp = doc.data().createdAt.toDate().toDateString();
+          const timestamp = moment(doc.data().createdAt.toDate())
+            .startOf("day")
+            .fromNow();
           results.push({ ...doc.data(), createdAt: timestamp });
         });
 
@@ -69,7 +71,9 @@ export const useCollection = (
                   .then((snapshot2) =>
                     snapshot2.docs.map((res) => ({
                       ...res.data(),
-                      createdAt: res.data().createdAt.toDate().toDateString(),
+                      createdAt: moment(res.data().createdAt.toDate())
+                        .startOf("day")
+                        .fromNow(),
                     }))
                   )
               );

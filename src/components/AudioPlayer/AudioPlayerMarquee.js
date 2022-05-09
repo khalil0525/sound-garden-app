@@ -4,8 +4,8 @@ import Marquee from "react-fast-marquee";
 
 const AudioPlayerMarquee = ({ className, children }) => {
   const [scrollPlaying, setScrollPlaying] = useState(true);
-  const scrollPlayingRef = useRef(scrollPlaying);
-  scrollPlayingRef.current = scrollPlaying;
+  // const scrollPlayingRef = useRef(scrollPlaying);
+  // scrollPlayingRef.current = scrollPlaying;
   // const [songTitleText, setSongTitleText] = useState(() => children);
 
   // useEffect(() => {
