@@ -3,6 +3,7 @@ import styles from "./ActionBar.module.css";
 import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.svg";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
 import ActionSearchBar from "./ActionSearchBar";
+
 const ActionBar = (props) => {
   return (
     <div className={`${styles.actionbar} ${props.className}`}>
@@ -29,10 +30,7 @@ const ActionBar = (props) => {
         <Link to="/upload" className={styles["actionbar__uploadLink"]}>
           <UploadIcon alt="Upload button icon" />
         </Link>
-        <ActionSearchBar />
-        {/* <Link to="/search">
-
-        </Link> */}
+        <ActionSearchBar queryString={props.query} />
       </nav>
     </div>
   );
