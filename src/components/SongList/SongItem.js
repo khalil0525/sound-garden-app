@@ -67,8 +67,12 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     song.docID,
   ]);
   // We set the inital state for isLiked based on if that document was found
-  const [isLiked, setIsLiked] = useState(() => liked !== undefined);
-
+  const [isLiked, setIsLiked] = useState(
+    () => liked !== null && liked !== undefined
+  );
+  useEffect(() => {
+    console.log(liked);
+  });
   const {
     addDocument: addLikedDocument,
     deleteDocument: deleteLikedDocument,
@@ -318,7 +322,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
           <div className={styles["song-item__actionContainer"]}>
             <button
               className={`${styles["actionContainer-likeBtn"]} ${
-                isLiked && styles["actionContainer-likeBtn--liked"]
+                isLiked && user.uid && styles["actionContainer-likeBtn--liked"]
               } ${styles.btn}`}
               onClick={handleLikeClick}
               disabled={firestoreResponse.isPending}

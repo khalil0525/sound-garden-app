@@ -1,6 +1,6 @@
 import { useAuthContext } from "../../hooks/useAuthContext";
 //
-import CollectionResults from "../CollectionResults/CollectionResults";
+import CollectionResults from "../../components/CollectionResults/CollectionResults";
 // import { useEffect } from "react";
 // import SongList from "../../components/SongList/SongList";
 // import { useCollection } from "../../hooks/useCollection";

@@ -5,14 +5,16 @@ export default function Home() {
   const { user } = useAuthContext();
   return (
     <div className={styles.home}>
-      <ActionBar user={user} />
-      <h2>Home</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae qui
-        deserunt expedita quod recusandae porro a quaerat impedit, unde
-        doloremque aut culpa praesentium eum suscipit itaque earum rerum nulla?
-        Corrupti.ddddddd
-      </p>
+      <ActionBar className={styles["home__actionBar"]} user={user} />
+      <div className={styles["home__content"]}>
+        <h2>Home</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae qui
+          deserunt expedita quod recusandae porro a quaerat impedit, unde
+          doloremque aut culpa praesentium eum suscipit itaque earum rerum
+          nulla? Corrupti.ddddddd
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,11 @@
-import ActionBar from "../../components/ActionBar/ActionBar";
-import SongList from "../../components/SongList/SongList";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useCollection } from "../../hooks/useCollection";
-import styles from "./Liked.module.css";
-import CollectionResults from "../CollectionResults/CollectionResults";
+import CollectionResults from "../../components/CollectionResults/CollectionResults";
+// import ActionBar from "../../components/ActionBar/ActionBar";
+// import SongList from "../../components/SongList/SongList";
+
+// import { useCollection } from "../../hooks/useCollection";
+// import styles from "./Liked.module.css";
+
 export default function Liked() {
   const { user } = useAuthContext();
   const query = [

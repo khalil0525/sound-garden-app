@@ -14,7 +14,7 @@ import Upload from "./pages/Upload/Upload";
 import Search from "./pages/Search/Search";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import CollectionResults from "./pages/CollectionResults/CollectionResults";
+import CollectionResults from "./components/CollectionResults/CollectionResults";
 
 function App() {
   // Getting the context of the user to see if they're logged in

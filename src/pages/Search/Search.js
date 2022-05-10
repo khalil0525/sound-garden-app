@@ -30,7 +30,7 @@ const Search = () => {
         <SongList
           className={styles["search__songList"]}
           songs={results}
-          user={user}
+          user={user ? user : "none"}
         />
       ) : (
         <h1>The search yielded no results!</h1>

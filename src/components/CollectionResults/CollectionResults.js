@@ -1,8 +1,8 @@
-import SongList from "../../components/SongList/SongList";
+import SongList from "../SongList/SongList";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
 import styles from "./CollectionResults.module.css";
-import ActionBar from "../../components/ActionBar/ActionBar";
+import ActionBar from "../ActionBar/ActionBar";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -24,12 +24,11 @@ export default function CollectionResults(props) {
   // Returns empty results
   let emptyListMessage =
     location && ["/uploaded", "/liked"].includes(location.pathname)
-      ? `You haven't ${location.pathname.substring(1, -1)} any songs yet!`
+      ? `You haven't ${location.pathname.substring(
+          1,
+          location.pathname.length
+        )} any songs yet!`
       : `No songs avaialble for this ${from}`;
-
-  useEffect(() => {
-    console.log(location);
-  });
 
   return (
     <div className={styles.collectionresults}>
@@ -39,11 +38,12 @@ export default function CollectionResults(props) {
       />
 
       {/* <h1 className={styles["header_text"]}>CollectionResults Tracks</h1> */}
+      {/* We need user? user: "none" so that if we are logged out we can avoid an app error from firebase having no active user.uid to work with */}
       {musicDocuments && musicDocuments.length > 0 ? (
         <SongList
           className={styles["collectionresults__songList"]}
           songs={musicDocuments}
-          user={user}
+          user={user ? user : "none"}
         />
       ) : (
         <h1 className={styles["collectionresults__songList"]}>
