@@ -19,7 +19,15 @@ import CollectionResults from "./pages/CollectionResults/CollectionResults";
 function App() {
   // Getting the context of the user to see if they're logged in
   const { user, authIsReady } = useAuthContext();
-
+  // const likedQuery = [
+  //   ["likes", "music"],
+  //   [
+  //     ["uid", "==", user.uid],
+  //     ["docID", "in"],
+  //   ],
+  //   "likedSongID",
+  // ];
+  // const uploadedQuery = ["music", ["uid", "==", user.uid]];
   return (
     <div className={styles.app}>
       {/* Here we are conditionally rendering our app based on authIsReady

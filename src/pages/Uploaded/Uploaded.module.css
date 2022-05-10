@@ -9,16 +9,9 @@
   grid-column: 3/-1;
   grid-row: 1;
 }
-/* .header_text {
-  font-size: 3.6rem;
-  margin: 3.6rem 0;
-  color: white;
-  background-color: black;
-} */
+
 .uploaded__songList {
   grid-row: 2/-1;
   grid-column: 1/-1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 0 auto;
 }
