@@ -1,11 +1,11 @@
 import SongList from "../../components/SongList/SongList";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
-import styles from "./CardResults.module.css";
+import styles from "./CollectionResults.module.css";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-export default function CardResults() {
+export default function CollectionResults() {
   const { user } = useAuthContext();
   const location = useLocation();
   const { from, search } = location.state;
@@ -17,12 +17,15 @@ export default function CardResults() {
     console.log(location);
   });
   return (
-    <div className={styles.cardresults}>
-      <ActionBar className={styles["cardresults__actionBar"]} user={user} />
+    <div className={styles.collectionresults}>
+      <ActionBar
+        className={styles["collectionresults__actionBar"]}
+        user={user}
+      />
 
-      {/* <h1 className={styles["header_text"]}>cardresults Tracks</h1> */}
+      {/* <h1 className={styles["header_text"]}>CollectionResults Tracks</h1> */}
       <SongList
-        className={styles["cardresults__songList"]}
+        className={styles["collectionresults__songList"]}
         songs={musicDocuments}
         user={user}
       />
