@@ -261,7 +261,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
         <div className={styles["song-item__header"]}>
           <div className={styles["song-item__titleContainer"]}>
             <button
-              className={styles["titleContainer__playBtn"]}
+              className={`${styles["titleContainer__playBtn"]} ${styles.btn}`}
               onClick={handlePlayPauseClick}
             >
               {playing ? (
@@ -319,7 +319,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
             <button
               className={`${styles["actionContainer-likeBtn"]} ${
                 isLiked && styles["actionContainer-likeBtn--liked"]
-              } `}
+              } ${styles.btn}`}
               onClick={handleLikeClick}
               disabled={firestoreResponse.isPending}
             >
@@ -330,7 +330,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               Like
             </button>
             <button
-              className={styles["actionContainer_downloadBtn"]}
+              className={`${styles["actionContainer_downloadBtn"]} ${styles.btn}`}
               onClick={handleSongDownloadClick}
             >
               <img
@@ -344,7 +344,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
             {user.uid === song.uid && (
               <>
                 <button
-                  className={styles["actionContainer_editBtn"]}
+                  className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
                   // onClick={handleSongDownloadClick}
                 >
                   <img
@@ -355,7 +355,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
                   Edit
                 </button>
                 <button
-                  className={styles["actionContainer_deleteBtn"]}
+                  className={`${styles["actionContainer_deleteBtn"]} ${styles.btn}`}
                   onClick={() => setIsDeleting(true)}
                 >
                   <img

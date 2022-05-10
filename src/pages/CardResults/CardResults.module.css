@@ -1,9 +1,9 @@
-.uploaded {
+.cardresults {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 1fr auto;
 }
-.uploaded__actionBar {
+.cardresults__actionBar {
   display: flex;
   justify-content: flex-end;
   grid-column: 3/-1;
@@ -15,7 +15,7 @@
   color: white;
   background-color: black;
 } */
-.uploaded__songList {
+.cardresults__songList {
   grid-row: 2/-1;
   grid-column: 1/-1;
   display: flex;

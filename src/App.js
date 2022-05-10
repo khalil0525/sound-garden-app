@@ -14,6 +14,7 @@ import Upload from "./pages/Upload/Upload";
 import Search from "./pages/Search/Search";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
+import CardResults from "./pages/CardResults/CardResults";
 
 function App() {
   // Getting the context of the user to see if they're logged in
@@ -39,7 +40,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/genres" element={<Genres />}></Route>
+                <Route path="/genres/:type" element={<CardResults />}></Route>
                 <Route path="/artists" element={<Artists />}></Route>
+                <Route path="/artists/:id" element={<CardResults />}></Route>
                 <Route
                   path="/liked"
                   element={user ? <Liked /> : <Navigate to="/" />}

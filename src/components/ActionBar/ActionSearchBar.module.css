@@ -18,6 +18,9 @@
   width: 2.4rem;
   height: 2.4rem;
 }
+.actionsearchbar img:hover {
+  cursor: pointer;
+}
 .actionsearchbar input {
   margin-left: 0.6rem;
   border: none;

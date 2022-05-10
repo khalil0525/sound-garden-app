@@ -20,7 +20,7 @@ const ActionSearchBar = ({ queryString }) => {
       searchForDocuments(searchText);
     }
   };
-  const handleEnterPressed = async (event) => {
+  const handleEnterPressed = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleSearch();
