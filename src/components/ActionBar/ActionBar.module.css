@@ -9,10 +9,14 @@
   gap: 1rem;
 }
 .actionbar__profileLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 4.2rem;
   height: 4.2rem;
-
+  background-image: url("/src/images/blank_image_placeholder.svg");
   filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
+  stroke: #fff;
   border-radius: 25px;
 }
 .actionbar__profileLink-img {

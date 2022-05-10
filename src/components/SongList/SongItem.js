@@ -53,6 +53,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     initialState
   );
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { playing, isMounted, played, duration, seeking } = songItemState;
   const {
     loadedSongURL,
@@ -70,9 +71,9 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   const [isLiked, setIsLiked] = useState(
     () => liked !== null && liked !== undefined
   );
-  useEffect(() => {
-    console.log(liked);
-  });
+  // useEffect(() => {
+  //   console.log(liked);
+  // });
   const {
     addDocument: addLikedDocument,
     deleteDocument: deleteLikedDocument,
@@ -142,6 +143,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
+  const handleEditSong = async () => {};
 
   const handleDeleteSong = async () => {
     deleteSongFiles(song);
@@ -349,7 +351,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
               <>
                 <button
                   className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
-                  // onClick={handleSongDownloadClick}
+                  onClick={() => setIsEditing(true)}
                 >
                   <img
                     className={styles["actionContainer_editBtn-icon"]}
@@ -370,6 +372,14 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
                   Delete
                 </button>
               </>
+            )}
+            {isEditing && (
+              <Modal
+                action="edit"
+                song={song}
+                onConfirm={handleEditSong}
+                onCancel={() => setIsEditing(false)}
+              />
             )}
             {isDeleting && (
               <Modal

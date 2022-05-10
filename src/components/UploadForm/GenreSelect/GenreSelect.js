@@ -16,6 +16,7 @@ const GenreSelect = ({ onGenreTypeChange, genreValue, disabled }) => {
         <option value="alternative rock">Alternative Rock</option>
         <option value="ambient">Ambient</option>
         <option value="classical">Classical</option>
+        <option value="country">Country</option>
         <option value="dance & edm">Dance & EDM</option>
         <option value="dancehall">Dancehall</option>
         <option value="deep house">Deep House</option>

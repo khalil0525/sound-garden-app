@@ -2,6 +2,7 @@ import React from "react";
 
 import ReactDOM from "react-dom";
 import DeleteOverlay from "./DeleteOverlay/DeleteOverlay";
+import EditOverlay from "./EditOverlay/EditOverlay";
 // import Card from "./Card";
 // import Button from "./Button";
 import styles from "./Modal.module.css";
@@ -15,6 +16,13 @@ const ModalOverlay = (props) => {
     <>
       {props.action === "delete" && (
         <DeleteOverlay onConfirm={props.onConfirm} onCancel={props.onCancel} />
+      )}
+      {props.action === "edit" && (
+        <EditOverlay
+          song={props.song}
+          onConfirm={props.onConfirm}
+          onCancel={props.onCancel}
+        />
       )}
     </>
 
@@ -43,6 +51,7 @@ const Modal = (props) => {
         <ModalOverlay
           // title={props.title}
           // message={props.message}
+          song={props.song}
           action={props.action}
           onConfirm={props.onConfirm}
           onCancel={props.onCancel}

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 
 const AudioPlayerMarquee = ({ className, children }) => {
-  const [scrollPlaying, setScrollPlaying] = useState(true);
+  // const [scrollPlaying, setScrollPlaying] = useState(true);
   // const scrollPlayingRef = useRef(scrollPlaying);
   // scrollPlayingRef.current = scrollPlaying;
   // const [songTitleText, setSongTitleText] = useState(() => children);
@@ -48,7 +48,7 @@ const AudioPlayerMarquee = ({ className, children }) => {
           gradient={false}
           delay={0}
           speed={10}
-          play={scrollPlaying}
+          play={true}
           pauseOnHover={true}
         >
           {children}&emsp;&emsp;

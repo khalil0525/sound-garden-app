@@ -38,6 +38,14 @@ const firestoreReducer = (state, action) => {
         success: true,
         error: null,
       };
+    case "UPDATED_DOCUMENT":
+      return {
+        ...state,
+        isPending: false,
+        document: action.payload,
+        success: true,
+        error: null,
+      };
 
     case "ERROR":
       return {
@@ -102,6 +110,21 @@ export const useFirestore = (collection) => {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
     }
   };
+
+  const updateDocument = async (id, newValues) => {
+    dispatch({ type: "IS_PENDING" });
+
+    try {
+      const updatedDocumentRef = await ref.doc(id);
+      const updateDocument = updatedDocumentRef.update({ ...newValues });
+      dispatchIfNotCancelled({
+        type: "UPDATED_DOCUMENT",
+        payload: updatedDocumentRef,
+      });
+    } catch (err) {
+      dispatchIfNotCancelled({ type: "ERROR", payload: "could not update" });
+    }
+  };
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
@@ -111,5 +134,5 @@ export const useFirestore = (collection) => {
     };
   }, []);
 
-  return { addDocument, deleteDocument, response };
+  return { addDocument, deleteDocument, updateDocument, response };
 };

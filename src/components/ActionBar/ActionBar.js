@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./ActionBar.module.css";
 import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.svg";
-import placeholderImage from "../../images/blank_image_placeholder.svg";
+import placeholderImage from "../../images/profile_placeholder.svg";
 import ActionSearchBar from "./ActionSearchBar";
 
 const ActionBar = (props) => {
@@ -20,6 +20,8 @@ const ActionBar = (props) => {
         ) : (
           <Link to="/profile" className={styles["actionbar__profileLink"]}>
             <img
+              width={24}
+              height={24}
               src={placeholderImage}
               alt="Search button icon"
               className={styles["actionbar__profileLink-img"]}

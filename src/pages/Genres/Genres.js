@@ -7,6 +7,7 @@ const genres = [
   "alternative rock",
   "ambient",
   "classical",
+  "country",
   "dance & edm",
   "dancehall",
   "deep house",

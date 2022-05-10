@@ -30,7 +30,31 @@ const cloudStorageReducer = (state, action) => {
         success: true,
         error: null,
       };
+    case "ADDED_FILE":
+      return {
+        ...state,
+        isPending: false,
+        file: action.payload,
+        success: true,
+        error: null,
+      };
     case "DELETED_FILES":
+      return {
+        ...state,
+        isPending: false,
+        file: action.payload,
+        success: true,
+        error: null,
+      };
+    case "DELETED_FILE":
+      return {
+        ...state,
+        isPending: false,
+        file: action.payload,
+        success: true,
+        error: null,
+      };
+    case "REPLACED_FILE":
       return {
         ...state,
         isPending: false,
@@ -83,7 +107,7 @@ export const useCloudStorage = () => {
     let photoPath;
     let photoURL;
 
-    // Here we try to add the file to the cloud storage first before we add the song.
+    // Here we try to add the photo file to the cloud storage first before we add the song.
     if (files[1]) {
       console.log("photo upload");
       photoPath =
@@ -171,61 +195,126 @@ export const useCloudStorage = () => {
       dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
     }
   };
+  const addFile = async (
+    fireStoreDocRef,
+    collection,
+    user,
+    newFile,
+    newFilePropertyName
+  ) => {
+    dispatch({ type: "IS_PENDING" });
+    const newFilePath =
+      collection + user.uid + "/" + fireStoreDocRef.id + "_" + newFile.name;
+    try {
+      const addedFile = await projectStorage
+        .ref(newFilePath)
+        .put(newFile)
+        .then((snapshot) => {
+          console.log(newFilePath);
+          snapshot.ref
+            .getDownloadURL()
+            .then((downloadURL) => {
+              //Need another ternary or if statement here so we can reuse this hook for songs AND images.
+              //Update the URL to the song URL in the cloud storage and the filePath to it's location.
+              let newFilePathVariableName = `${newFilePropertyName}FilePath`;
+              let newFileURLVariableName = `${newFilePropertyName}URL`;
 
-  //This method will be used to add photo files when a user wants to
-  // Update their song cover art
-  // const addFile = (storageFileContainer, fireStoreDocRef, user, file) => {
-  //   //Create the file path from the information we received
-  //   const path =
-  //     storageFileContainer +
-  //     user.uid +
-  //     "/" +
-  //     fireStoreDocRef.id +
-  //     "_" +
-  //     file.name;
-
-  //   const fileRef = projectStorage.ref(path);
-
-  //   addedFileRef.current = fileRef.put(file);
-
-  //   console.log(addedFileRef);
-
-  //   addedFileRef.current.on(
-  //     "state_changed",
-  //     (snapshot) => {
-  //       dispatch({ type: "IS_PENDING" });
-  //       console.log(uploadProgress, isCancelled);
-  //     },
-  //     //callback for error on upload
-  //     (error) => {
-  //       dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
-  //     },
-  //     //Callback for completed upload
-  //     () => {
-  //       console.log(addedFileRef.current.snapshot.ref);
-  //       addedFileRef.current.snapshot.ref
-  //         .getDownloadURL()
-  //         .then((downloadURL) => {
-  //           if (storageFileContainer === "images/") {
-  //             fireStoreDocRef.update({
-  //               photoURL: downloadURL,
-  //               photoFilePath: path,
-  //             });
-  //           }
-
-  //           console.log("File URL:", downloadURL);
-  //         });
-  //       dispatchIfNotCancelled({
-  //         type: "ADDED_FILE",
-  //         payload: addedFileRef.current,
-  //       });
-  //     }
-  //   );
-  // };
+              fireStoreDocRef.update({
+                [newFilePathVariableName]: newFilePath,
+                [newFileURLVariableName]: downloadURL,
+              });
+              console.log("FILE ADD COMPLETED");
+              dispatchIfNotCancelled({
+                type: "ADDED_FILE",
+                payload: snapshot.ref,
+              });
+            })
+            .catch((error) => {
+              console.log("Error adding file!!:  ", error);
+              dispatchIfNotCancelled({
+                type: "ERROR",
+                payload: error.message,
+              });
+            });
+        });
+    } catch (error) {
+      console.log("Error adding file!!:  ", error);
+      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+    }
+  };
   // delete a song or photo...
   // We can obtain the storageFilePath from its database entry
   // We can delete a whole song + it's photo or delete a photo after we change it on a song
-  const deleteFile = (storageFilePath) => {};
+  const deleteFile = async (storageFilePath) => {
+    dispatch({ type: "IS_PENDING" });
+    try {
+      const deletedFile = await projectStorage.ref(storageFilePath).delete();
+      console.log("DELETE COMPLETED");
+      dispatchIfNotCancelled({ type: "DELETED_FILE", payload: deletedFile });
+    } catch (error) {
+      console.log("Error deleting song file!!:  ", error);
+      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+    }
+  };
+
+  const replaceFile = async (
+    fireStoreDocRef,
+    storageFilePathToDelete,
+    newFile,
+    newFilePropertyName
+  ) => {
+    // photoPath =
+    // "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
+    const newFilePath =
+      storageFilePathToDelete.split("_")[0] + "_" + newFile.name;
+    try {
+      const replacedFile = await projectStorage
+        .ref(storageFilePathToDelete)
+        .delete()
+        .then(() => {
+          console.log(newFilePath);
+          const newFileRef = projectStorage.ref(newFilePath);
+          const addedFile = newFileRef
+            .put(newFile)
+            .then((snapshot) => {
+              snapshot.ref
+                .getDownloadURL()
+                .then((downloadURL) => {
+                  //Need another ternary or if statement here so we can reuse this hook for songs AND images.
+                  //Update the URL to the song URL in the cloud storage and the filePath to it's location.
+                  let newFilePathVariableName = `${newFilePropertyName}FilePath`;
+                  let newFileURLVariableName = `${newFilePropertyName}URL`;
+                  // console.log(newFilePathVariableName, newFileURLVariableName);
+                  // console.log(newFilePath, downloadURL);
+                  // console.log(fireStoreDocRef);
+                  fireStoreDocRef.update({
+                    [newFilePathVariableName]: newFilePath,
+                    [newFileURLVariableName]: downloadURL,
+                  });
+                  console.log("REPLACE COMPLETED");
+                  dispatchIfNotCancelled({
+                    type: "REPLACED_FILE",
+                    payload: snapshot.ref,
+                  });
+                })
+                .catch((error) => {
+                  console.log("Error replacing song file!!:  ", error);
+                  dispatchIfNotCancelled({
+                    type: "ERROR",
+                    payload: error.message,
+                  });
+                });
+            })
+            .catch((error) => {
+              console.log("Error replacing song file!!:  ", error);
+              dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+            });
+        });
+    } catch (error) {
+      console.log("Error replacing song file!!:  ", error);
+      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+    }
+  };
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
@@ -244,8 +333,10 @@ export const useCloudStorage = () => {
 
   return {
     addSongFiles,
+    addFile,
     deleteFile,
     deleteSongFiles,
+    replaceFile,
     response,
     uploadProgress,
   };
