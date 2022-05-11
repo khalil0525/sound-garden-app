@@ -72,11 +72,6 @@ const AudioPlayer = () => {
   } = audioPlayerState;
   //Ref to ReactPlayer
   const player = useRef();
-  //Ref to wavesurfer WaveForm div
-
-  //Ref to wavesurfer to save instance in between re-renders
-
-  //
   //Audio player context
   const {
     loadedSongURL,
@@ -105,6 +100,7 @@ const AudioPlayer = () => {
     }
     dispatchAudioPlayerState({ type: "PLAY_PAUSE_CLICK" });
   };
+
   const handlePreviousClick = () => {
     const elapsedTime = duration * played;
     if ((elapsedTime < 4 || !isSongPlaying) && playlistIndex !== 0) {
@@ -119,6 +115,7 @@ const AudioPlayer = () => {
       player.current.seekTo(0.0);
     }
   };
+
   const handleNextClick = () => {
     console.log("onEnded");
     if (playlistIndex < playlist.length - 1) {

@@ -204,7 +204,13 @@ export const useCloudStorage = () => {
   ) => {
     dispatch({ type: "IS_PENDING" });
     const newFilePath =
-      collection + user.uid + "/" + fireStoreDocRef.id + "_" + newFile.name;
+      collection +
+      "/" +
+      user.uid +
+      "/" +
+      fireStoreDocRef.id +
+      "_" +
+      newFile.name;
     try {
       const addedFile = await projectStorage
         .ref(newFilePath)
@@ -265,6 +271,7 @@ export const useCloudStorage = () => {
   ) => {
     // photoPath =
     // "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
+    dispatch({ type: "IS_PENDING" });
     const newFilePath =
       storageFilePathToDelete.split("_")[0] + "_" + newFile.name;
     try {

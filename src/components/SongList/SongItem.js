@@ -54,6 +54,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   );
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [edited, setEdited] = useState(false);
   const { playing, isMounted, played, duration, seeking } = songItemState;
   const {
     loadedSongURL,
@@ -143,7 +144,10 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
-  const handleEditSong = async () => {};
+  const handleEditSong = () => {
+    setIsEditing(false);
+    setEdited(true);
+  };
 
   const handleDeleteSong = async () => {
     deleteSongFiles(song);
@@ -231,6 +235,17 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
 
+  // When we edit a song this will ensure that we get a new version of our playlist
+  useEffect(() => {
+    if (edited && JSON.stringify(playlist) !== JSON.stringify(playlistSongs)) {
+      dispatchAudioPlayerContext({
+        type: "SONG_EDITED_IN_PLAYLIST",
+        payload: playlistSongs,
+      });
+      setEdited(false);
+      console.log("PLAYLIST EDITED");
+    }
+  }, [edited, playlist, playlistSongs, dispatchAudioPlayerContext]);
   //This useEffect fires if we delete the song and get a success message back
   // It will then delete the likes on this song and then the song document itself.
   useEffect(() => {

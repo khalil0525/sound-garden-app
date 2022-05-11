@@ -54,6 +54,11 @@ export const audioPlayerReducer = (state, action) => {
         isSongPlaying: true,
         currentSongPlayedTime: 0,
       };
+    case "SONG_EDITED_IN_PLAYLIST":
+      return {
+        ...state,
+        playlist: action.payload,
+      };
     case "SONG_DELETED_FROM_PLAYLIST":
       const newPlaylist = state.playlist
         ? state.playlist.filter((song) => {

@@ -1,18 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { useCloudStorage } from "../../../../hooks/useCloudStorage";
 import { useFirestore } from "../../../../hooks/useFirestore";
 import styles from "./EditOverlay.module.css";
 import GenreSelect from "../../../UploadForm/GenreSelect/GenreSelect";
 import placeholderImage from "../../../../images/blank_image_placeholder.svg";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
+
+const editOverlayReducer = (state, action) => {
+  switch (action.type) {
+    case "PHOTO_FILE_CHANGED":
+      return {
+        ...state,
+        songPhotoFile: action.payload,
+        songPhotoFileURL: URL.createObjectURL(action.payload),
+        propertyChangeOccurred: true,
+        editSaveReady: state.formIsValid,
+      };
+    case "SONG_TITLE_CHANGE":
+      return {
+        ...state,
+        songTitle: action.payload,
+        formIsValid: action.payload.length > 0,
+        propertyChangeOccurred: true,
+        editSaveReady: action.payload.length > 0,
+      };
+    case "SONG_GENRE_CHANGE":
+      return {
+        ...state,
+        songGenre: action.payload,
+        propertyChangeOccurred: true,
+        editSaveReady: state.formIsValid,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const EditOverlay = (props) => {
-  const [songTitle, setSongTitle] = useState(() => props.song.title);
-  const [songPhotoFile, setSongPhotoFile] = useState(null);
-  const [songPhotoFileURL, setSongPhotoFileURL] = useState(() =>
-    props.song.songPhotoURL ? props.song.songPhotoURL : null
+  let initialState = {
+    songPhotoFileURL: props.song.songPhotoURL ? props.song.songPhotoURL : "",
+    songTitle: props.song.title,
+    songGenre: props.song.genre,
+    songPhotoFile: null,
+    formIsValid: true,
+    editSaveReady: false,
+    propertyChangeOccurred: false,
+  };
+  const [editSongState, dispatchEditSongState] = useReducer(
+    editOverlayReducer,
+    initialState
   );
-  const [songGenre, setSongGenre] = useState(() => props.song.genre);
-  const [propertyChangeOccurred, setPropertyChangeOccurred] = useState(false);
+  const {
+    songPhotoFile,
+    songPhotoFileURL,
+    songTitle,
+    songGenre,
+    editSaveReady,
+  } = editSongState;
+
   const { user } = useAuthContext();
   const {
     replaceFile,
@@ -25,49 +71,42 @@ const EditOverlay = (props) => {
 
   const handleSongPhotoFileChange = (event) => {
     if (event.target.files[0].type.split("/")[0] === "image") {
-      setSongPhotoFile(event.target.files[0]);
-      setSongPhotoFileURL(URL.createObjectURL(event.target.files[0]));
-      // dispatchSongUploadState({
-      //   type: "PHOTO_FILE_CHANGED",
-      //   payload: event.target.files[0],
-      // });
+      dispatchEditSongState({
+        type: "PHOTO_FILE_CHANGED",
+        payload: event.target.files[0],
+      });
     } else {
       event.target.value = "";
     }
   };
 
   const handleSongNameChange = (event) => {
-    setSongTitle(event.target.value);
-    // dispatchSongUploadState({
-    //   type: "SONG_NAME_CHANGE",
-    //   payload: event.target.value,
-    // });
+    dispatchEditSongState({
+      type: "SONG_TITLE_CHANGE",
+      payload: event.target.value,
+    });
   };
   const handleGenreTypeChange = (event) => {
-    setSongGenre(event.target.value);
-    // dispatchSongUploadState({
-    //   type: "GENRE_TYPE_CHANGE",
-    //   payload: event.target.value,
-    // });
-    // setGenreType(event.target.value);
+    dispatchEditSongState({
+      type: "SONG_GENRE_CHANGE",
+      payload: event.target.value,
+    });
   };
   const handleSongUpdate = () => {
     let newValues = { title: songTitle, genre: songGenre };
-    if (propertyChangeOccurred) {
+    if (editSaveReady) {
       updateDocument(props.song.docID, newValues);
     }
-    // if (songFile && formIsValid && uploadIsReady) {
-    //   //Try to add a document to the FireStore database, we will then use this to store the file
-    //   // URL and generate a unique filename
-    //   addDocument({
-    //     artist: artistName,
-    //     genre: genreType,
-    //     title: songName,
-    //     duration: songDuration,
-    //     uid: user.uid,
-    //   });
-    // }
   };
+  useEffect(() => {
+    if (
+      cloudStorageResponse.success ||
+      (songPhotoFile === null && firestoreResponse.success)
+    ) {
+      props.onConfirm();
+    }
+  }, [cloudStorageResponse, firestoreResponse.success, songPhotoFile, props]);
+
   useEffect(() => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
     if (
@@ -76,6 +115,7 @@ const EditOverlay = (props) => {
       !cloudStorageResponse.success &&
       songPhotoFile !== null
     ) {
+      //If the song previously didn't have a photo
       if (props.song.songPhotoURL === "") {
         addFile(
           firestoreResponse.document,
@@ -85,6 +125,7 @@ const EditOverlay = (props) => {
           "songPhoto"
         );
       } else {
+        //If the song previously had a photo
         replaceFile(
           firestoreResponse.document,
           props.song.songPhotoFilePath,
@@ -105,22 +146,6 @@ const EditOverlay = (props) => {
     props.song.songPhotoFilePath,
     props.song.songPhotoURL,
   ]);
-  // useEffect(() => {
-  //   console.log(props.song.songPhotoFilePath.split("_"));
-  // });
-  useEffect(() => {
-    const { songPhotoURL, title, genre } = props.song;
-    if (
-      songPhotoURL !== songPhotoFileURL ||
-      title !== songTitle ||
-      genre !== songGenre
-    ) {
-      setPropertyChangeOccurred(true);
-    }
-  }, [props.song, songPhotoFileURL, songTitle, songGenre]);
-
-  // setSongName(event.target.value);
-  // setFormIsValid(event.target.value.length > 0 && artistName.length > 0);
 
   return (
     <div className={styles.modal}>
@@ -160,14 +185,11 @@ const EditOverlay = (props) => {
             genreValue={songGenre}
           />
           {/* */}
-          {!cloudStorageResponse.isPending && (
+          {!cloudStorageResponse.isPending && !cloudStorageResponse.success && (
             <div className={styles["action-container"]}>
               <div onClick={props.onCancel}>Cancel</div>
               {/*  */}
-              <button
-                onClick={handleSongUpdate}
-                disabled={!propertyChangeOccurred}
-              >
+              <button onClick={handleSongUpdate} disabled={!editSaveReady}>
                 Save Changes
               </button>
             </div>
