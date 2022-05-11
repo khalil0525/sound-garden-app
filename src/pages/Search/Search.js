@@ -5,7 +5,7 @@ import ActionBar from "../../components/ActionBar/ActionBar";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import SongList from "../../components/SongList/SongList";
 
-const Search = () => {
+const Search = ({ scrollRef }) => {
   const { user } = useAuthContext();
   let location = useLocation();
   const { results, query } = location.state;
@@ -29,11 +29,14 @@ const Search = () => {
       {results.length ? (
         <SongList
           className={styles["search__songList"]}
+          scrollRef={scrollRef}
           songs={results}
           user={user ? user : "none"}
         />
       ) : (
-        <h1>The search yielded no results!</h1>
+        <h1 className={styles["search__songList"]}>
+          The search yielded no results!
+        </h1>
       )}
     </div>
   );

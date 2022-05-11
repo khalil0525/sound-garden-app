@@ -46,15 +46,22 @@ const songItemReducer = (state, action) => {
       return { ...state };
   }
 };
-// import { ReactComponent as LikeIcon } from "/Heart_fill.svg";
-const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
+
+const SongItem = ({
+  song,
+  playlistSongs,
+  songPlaylistLocation,
+  songIndex,
+  liked,
+  user,
+}) => {
   const [songItemState, dispatchSongItemState] = useReducer(
     songItemReducer,
     initialState
   );
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [edited, setEdited] = useState(false);
+  // const [edited, setEdited] = useState(false);
   const { playing, isMounted, played, duration, seeking } = songItemState;
   const {
     loadedSongURL,
@@ -62,6 +69,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
     playlist,
     currentSongPlayedTime,
     dispatchAudioPlayerContext,
+    playlistLocation,
   } = useAudioPlayerContext();
   const { documents: usersLikedSongDocuments } = useCollection("likes", [
     "likedSongID",
@@ -109,7 +117,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
         console.log("songs", playlistSongs);
         dispatchAudioPlayerContext({
           type: "PLAYLIST_CHANGE",
-          payload: { playlistSongs, songIndex },
+          payload: { playlistSongs, songIndex, songPlaylistLocation },
         });
       }
     } //else it's paused
@@ -146,7 +154,7 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
   };
   const handleEditSong = () => {
     setIsEditing(false);
-    setEdited(true);
+    // setEdited(true);
   };
 
   const handleDeleteSong = async () => {
@@ -237,15 +245,24 @@ const SongItem = ({ song, playlistSongs, songIndex, liked, user }) => {
 
   // When we edit a song this will ensure that we get a new version of our playlist
   useEffect(() => {
-    if (edited && JSON.stringify(playlist) !== JSON.stringify(playlistSongs)) {
+    if (
+      playlistLocation === songPlaylistLocation &&
+      JSON.stringify(playlist) !== JSON.stringify(playlistSongs)
+    ) {
       dispatchAudioPlayerContext({
         type: "SONG_EDITED_IN_PLAYLIST",
         payload: playlistSongs,
       });
-      setEdited(false);
+
       console.log("PLAYLIST EDITED");
     }
-  }, [edited, playlist, playlistSongs, dispatchAudioPlayerContext]);
+  }, [
+    playlistLocation,
+    songPlaylistLocation,
+    playlist,
+    playlistSongs,
+    dispatchAudioPlayerContext,
+  ]);
   //This useEffect fires if we delete the song and get a success message back
   // It will then delete the likes on this song and then the song document itself.
   useEffect(() => {

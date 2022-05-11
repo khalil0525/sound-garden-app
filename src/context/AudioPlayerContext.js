@@ -11,6 +11,7 @@ let initialState = {
   playlistEnded: false,
   currentSongPlayedTime: 0,
   seekingFromSongItem: false,
+  playlistLocation: null,
 };
 
 //Reducer init function - This will be given to our reducer but it'll only be used if we previously loaded a playlist
@@ -23,6 +24,8 @@ const init = (initialReducerState) => {
       localStorage.getItem("playlist")
     );
     let parsedPlaylistIndex = parseInt(indexFromLocalStorage);
+    let playlistLocationFromLocalStorage =
+      localStorage.getItem("playlistLocation");
     return {
       ...initialReducerState,
       playlistIndex: parsedPlaylistIndex,
@@ -30,6 +33,10 @@ const init = (initialReducerState) => {
       loadedSongURL:
         playlistFromLocalStorage.length > 0
           ? playlistFromLocalStorage[parsedPlaylistIndex].songURL
+          : null,
+      playlistLocation:
+        playlistFromLocalStorage.length > 0
+          ? playlistLocationFromLocalStorage
           : null,
     };
   } else {
@@ -51,6 +58,7 @@ export const audioPlayerReducer = (state, action) => {
         playlistIndex: action.payload.songIndex,
         loadedSongURL:
           action.payload.playlistSongs[action.payload.songIndex].songURL,
+        playlistLocation: action.payload.songPlaylistLocation,
         isSongPlaying: true,
         currentSongPlayedTime: 0,
       };
@@ -162,7 +170,7 @@ export const AudioPlayerContextProvider = ({ children }) => {
     init
   );
   //Extract playlist and playlistIndex from our reducer state
-  const { playlist, playlistIndex } = state;
+  const { playlist, playlistIndex, playlistLocation } = state;
   // This will check if a user is logged in after page refresh or when they first load the site
   useEffect(() => {
     console.log(state.loadedSongURL);
@@ -178,6 +186,10 @@ export const AudioPlayerContextProvider = ({ children }) => {
       localStorage.setItem("playlist", JSON.stringify(playlist));
     }
   }, [playlist]);
+
+  useEffect(() => {
+    localStorage.setItem("playlistLocation", playlistLocation);
+  }, [playlistLocation]);
 
   // Output the AuthContext state everytime we get a change
   // console.log("AudioPlayerContext state: ", state);

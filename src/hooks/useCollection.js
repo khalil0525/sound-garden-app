@@ -24,7 +24,12 @@ export const useCollection = (
   const query = useRef(_query).current;
   const collection = useRef(_collection).current;
   const collectionFilterVariable = useRef(_collectionFilterVariable).current;
+
   useEffect(() => {
+    if (collection === "skip") {
+      return;
+    }
+
     let ref =
       typeof collection === "object"
         ? projectFirestore.collection(collection[0])

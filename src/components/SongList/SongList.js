@@ -1,35 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SongList.module.css";
 import SongItem from "./SongItem";
 import { useCollection } from "../../hooks/useCollection";
-
+import InfiniteScroll from "react-infinite-scroll-component";
 //We receive a song prop from whichever parent component calls this
-const SongList = ({ songs, user, className }) => {
+const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   // const { documents: likedSongDocuments, error: likedSongDocumentError } =
   //   useCollection("likes", ["uid", "==", user.uid]);
   //  We need user? user: "none" so that if we are logged out we can avoid an app error from firebase having no active user.uid to work with
   const { documents: likedSongDocuments, response: collectionResponse } =
     useCollection("likes", ["uid", "==", user.uid ? user.uid : "none"]);
-  // const [songs, setSongs] = useState([]);
 
-  // Here we are extracting the tracks that the user has liked from our useCollection call.
-  // We will use this to do a check on each generated songItem to see if their ID is inside of this array.
-
-  // const likes = likedSongDocuments
-  //   ? likedSongDocuments.map((likedSongObject) => {
-  //       return likedSongObject.likedSongID;
-  //     })
-  //   : [];
   useEffect(() => {
+    console.log(scrollRef);
     console.log(likedSongDocuments);
   });
 
+  const [count, setCount] = useState({
+    prev: 0,
+    next: 10,
+  });
+  const [hasMore, setHasMore] = useState(true);
+  const [current, setCurrent] = useState(songs.slice(count.prev, count.next));
+  const getMoreData = () => {
+    if (current.length === songs.length) {
+      setHasMore(false);
+      return;
+    }
+    setTimeout(() => {
+      setCurrent(current.concat(songs.slice(count.prev + 10, count.next + 10)));
+    }, 2000);
+    setCount((prevState) => ({
+      prev: prevState.prev + 10,
+      next: prevState.next + 10,
+    }));
+  };
   return (
     <div className={`${styles["song-list"]} ${className} `}>
-      <ul className={styles["song-list__list"]}>
-        {songs &&
+      <InfiniteScroll
+        dataLength={current.length}
+        next={getMoreData}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+        className={styles["song-list__list"]}
+        scrollableTarget={scrollRef.current}
+      >
+        {/* <ul > */}
+        {current &&
           likedSongDocuments &&
-          songs.map((song, index) => (
+          current.map((song, index) => (
             <SongItem
               song={song}
               key={song.docID}
@@ -41,10 +60,12 @@ const SongList = ({ songs, user, className }) => {
                   (likedDoc) => likedDoc.likedSongID === song.docID
                 )
               }
+              songPlaylistLocation={playlistLocation}
               user={user}
             />
           ))}
-      </ul>
+        {/* </ul> */}
+      </InfiniteScroll>
     </div>
   );
 };

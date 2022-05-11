@@ -6,7 +6,7 @@ import CollectionResults from "../../components/CollectionResults/CollectionResu
 // import { useCollection } from "../../hooks/useCollection";
 // import styles from "./Uploaded.module.css";
 // import ActionBar from "../../components/ActionBar/ActionBar";
-export default function Uploaded() {
+export default function Uploaded({ scrollRef }) {
   const { user } = useAuthContext();
   const query = ["music", ["uid", "==", user.uid]];
   // const { documents: musicDocuments, error: musicError } = useCollection(
@@ -15,7 +15,7 @@ export default function Uploaded() {
   // );
 
   return (
-    <CollectionResults query={query} />
+    <CollectionResults scrollRef={scrollRef} query={query} />
     // <div className={styles.uploaded}>
     //   <ActionBar className={styles["uploaded__actionBar"]} user={user} />
 

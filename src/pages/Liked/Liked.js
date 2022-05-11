@@ -6,7 +6,7 @@ import CollectionResults from "../../components/CollectionResults/CollectionResu
 // import { useCollection } from "../../hooks/useCollection";
 // import styles from "./Liked.module.css";
 
-export default function Liked() {
+export default function Liked({ scrollRef }) {
   const { user } = useAuthContext();
   const query = [
     ["likes", "music"],
@@ -27,7 +27,7 @@ export default function Liked() {
   //   );
 
   return (
-    <CollectionResults query={query} />
+    <CollectionResults scrollRef={scrollRef} query={query} />
     // <div className={styles.liked}>
     //   <ActionBar className={styles["liked__actionBar"]} user={user} />
     //   {/* <h1 className={styles["header_text"]}>Liked Tracks</h1> */}
