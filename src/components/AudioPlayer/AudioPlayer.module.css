@@ -42,6 +42,13 @@
   justify-content: space-between;
   opacity: none;
 }
+.audio-player__controls-seek-duration {
+  font-family: "Inter";
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+  color: #ffffff;
+}
 /* .audio-player__controls-seek-waveForm {
   padding: 5rem;
   width: 1rem;

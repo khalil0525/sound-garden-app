@@ -1,7 +1,7 @@
 import styles from "./SideNavigation.module.css";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useLogout } from "../../hooks/useLogout";
+
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 
 import soundGardenLogo from "../../images/soundgarden.jpg";
@@ -14,7 +14,7 @@ import { ReactComponent as UploadedIcon } from "../../images/Upload_duotone_line
 // import {ReactComponent as }
 const SideNavigation = () => {
   const { user } = useAuthContext();
-  const { logout, error, isPending } = useLogout();
+
   return (
     //This className
     <div className={styles.sidebar}>
@@ -118,10 +118,6 @@ const SideNavigation = () => {
             </nav>
           </>
         )}
-        {/* Logout button temp */}
-        {user && !isPending && <button onClick={logout}>Logout</button>}
-        {user && isPending && <button disabled>Loading..</button>}
-        {user && error && <p>{error}</p>}
       </div>
 
       <div className={styles["audioplayer_container"]}>

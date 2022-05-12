@@ -5,6 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthContextProvider } from "./context/AuthContext";
 import { AudioPlayerContextProvider } from "./context/AudioPlayerContext";
+import "./fonts/Inter/Inter-Medium.ttf";
+import "./fonts/Inter/Inter-Regular.ttf";
+import "./fonts/Inter/Inter-Bold.ttf";
+import "./fonts/Inter/Inter-SemiBold.ttf";
 
 ReactDOM.render(
   <React.StrictMode>

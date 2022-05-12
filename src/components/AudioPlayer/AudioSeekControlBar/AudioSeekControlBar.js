@@ -4,6 +4,7 @@ import styles from "./AudioSeekControlBar.module.css";
 
 const AudioSeekControlBar = ({
   className,
+  durationClassName,
   duration,
   played,
   onChange,
@@ -12,7 +13,7 @@ const AudioSeekControlBar = ({
 }) => {
   return (
     <div className={`${styles.audioseekcontrolbar} ${className}`}>
-      <Duration seconds={duration * played} />
+      <Duration className={durationClassName} seconds={duration * played} />
 
       <input
         type="range"
@@ -24,7 +25,10 @@ const AudioSeekControlBar = ({
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
       />
-      <Duration seconds={duration * (1 - played)} />
+      <Duration
+        className={durationClassName}
+        seconds={duration * (1 - played)}
+      />
     </div>
   );
 };

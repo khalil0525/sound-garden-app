@@ -266,6 +266,7 @@ const AudioPlayer = () => {
             {/* SEEK  */}
             <AudioSeekControlBar
               className={styles["audio-player__controls-seek"]}
+              durationClassName={styles["audio-player__controls-seek-duration"]}
               duration={duration}
               played={played}
               onChange={handleSeekChange}

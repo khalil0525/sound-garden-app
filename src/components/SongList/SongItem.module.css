@@ -187,6 +187,16 @@
   justify-content: center;
   gap: 0.6rem;
 }
+.song-item__duration {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: none;
+  font-size: 1.2rem;
+  line-height: 1.9rem;
+
+  color: #161618;
+}
 .song-item__seekControl input {
   width: 60rem;
 }

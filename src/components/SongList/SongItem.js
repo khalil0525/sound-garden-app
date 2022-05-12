@@ -339,12 +339,14 @@ const SongItem = ({
         </div>
         <AudioSeekControlBar
           className={styles["song-item__seekControl"]}
+          durationClassName={styles["song-item__duration"]}
           duration={song.duration}
           played={played}
           onChange={handleSeekChange}
           onMouseDown={handleSeekMouseDown}
           onMouseUp={handleSeekMouseUp}
         />
+
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
             <button
