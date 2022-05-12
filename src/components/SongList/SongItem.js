@@ -4,7 +4,7 @@ import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useCollection } from "../../hooks/useCollection";
 import { useCloudStorage } from "../../hooks/useCloudStorage";
-import Duration from "../AudioPlayer/Duration";
+import AudioSeekControlBar from "../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
 import downloadIcon from "../../images/Download.svg";
@@ -337,21 +337,14 @@ const SongItem = ({
             </span>
           </div>
         </div>
-        <div className={styles["song-item__seekControl"]}>
-          <Duration seconds={song.duration * played} />
-
-          <input
-            type="range"
-            min={0}
-            max={0.999999}
-            step="any"
-            value={played}
-            onChange={handleSeekChange}
-            onMouseDown={handleSeekMouseDown}
-            onMouseUp={handleSeekMouseUp}
-          />
-          <Duration seconds={song.duration * (1 - played)} />
-        </div>
+        <AudioSeekControlBar
+          className={styles["song-item__seekControl"]}
+          duration={song.duration}
+          played={played}
+          onChange={handleSeekChange}
+          onMouseDown={handleSeekMouseDown}
+          onMouseUp={handleSeekMouseUp}
+        />
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
             <button

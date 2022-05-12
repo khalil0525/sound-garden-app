@@ -1,14 +1,14 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
-import Duration from "./Duration";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
+import AudioSeekControlBar from "./AudioSeekControlBar/AudioSeekControlBar";
 import AudioPlayerMarquee from "./AudioPlayerMarquee";
-
 import previous_NextIcon from "../../images/Expand_right_stop.svg";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
+
 let initialState = {
   url: null,
   playing: false,
@@ -264,21 +264,14 @@ const AudioPlayer = () => {
         <div className={styles["audio-player__upper"]}>
           <div className={styles["audio-player__controls"]}>
             {/* SEEK  */}
-            <div className={styles["audio-player__controls-seek"]}>
-              <Duration seconds={duration * played} />
-
-              <input
-                type="range"
-                min={0}
-                max={0.999999}
-                step="any"
-                value={played}
-                onChange={handleSeekChange}
-                onMouseDown={handleSeekMouseDown}
-                onMouseUp={handleSeekMouseUp}
-              />
-              <Duration seconds={duration * (1 - played)} />
-            </div>
+            <AudioSeekControlBar
+              className={styles["audio-player__controls-seek"]}
+              duration={duration}
+              played={played}
+              onChange={handleSeekChange}
+              onMouseDown={handleSeekMouseDown}
+              onMouseUp={handleSeekMouseUp}
+            />
           </div>
         </div>
         {/* ORANGE DIV ************************ */}
