@@ -112,15 +112,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 17rem;
+
   justify-content: center;
+  gap: 0.4rem;
+  width: 17rem;
   margin-left: 1.2rem;
 }
 .audio-player__trackDetails-songDetails-title {
-  font-style: normal;
   font-weight: 400;
   font-size: 1.4rem;
-  line-height: 17px;
+  line-height: 1.7rem;
   color: #ffffff;
 
   overflow: hidden;
@@ -128,7 +129,7 @@
 .audio-player__trackDetails-songDetails-artist {
   font-weight: 400;
   font-size: 1.4rem;
-  line-height: 17px;
+  line-height: 1.7rem;
 
   color: #ffffff;
   opacity: 0.5;

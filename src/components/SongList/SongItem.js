@@ -320,21 +320,31 @@ const SongItem = ({
             </button>
 
             <div className={styles["titleContainer__songTitle"]}>
-              <p className={styles["titleContainer__songTitle-artist"]}>
+              <span className={styles["titleContainer__songTitle-artist"]}>
                 {song.artist}
-              </p>
-              <p className={styles["titleContainer__songTitle-title"]}>
+              </span>
+              <span className={styles["titleContainer__songTitle-title"]}>
                 {song.title}
-              </p>
+              </span>
             </div>
-          </div>
-          <div className={styles["titleContainer__additional"]}>
-            <p className={styles["titleContainer__additional-uploadDate"]}>
-              {song.createdAt}
-            </p>
-            <span className={styles["titleContainer__additional-genre"]}>
-              {song.genre}
-            </span>
+            <div className={styles["titleContainer__additional"]}>
+              <div
+                className={styles["titleContainer__additional-dateContainer"]}
+              >
+                <span
+                  className={styles["titleContainer__additional-uploadDate"]}
+                >
+                  {song.createdAt}
+                </span>
+              </div>
+              <div
+                className={styles["titleContainer__additional-genreContainer"]}
+              >
+                <span className={styles["titleContainer__additional-genre"]}>
+                  {song.genre}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <AudioSeekControlBar
