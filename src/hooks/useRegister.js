@@ -32,16 +32,17 @@ export const useRegister = () => {
       // add display name to user
       await res.user.updateProfile({ displayName });
       // add a record in firestore to store users displayName and unique profile link
-      console.log(res.user);
-      // await projectFirestore
-      //   .collection("profileURLS")
-      //   .doc("user_0525234")
-      //   .set({ uid: res.user.uid });
 
       await projectFirestore
         .collection("users")
         .doc(res.user.uid)
-        .set({ displayName, profileURL: "user_41242533" });
+        .set({ displayName });
+      console.log(res.user.uid);
+      // Perform check to see if profileURL exists inside collection profileURLS
+      await projectFirestore
+        .collection("users")
+        .doc(res.user.uid)
+        .update({ profileURL: "user-0525" });
       // dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
       //update state
