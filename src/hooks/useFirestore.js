@@ -30,6 +30,14 @@ const firestoreReducer = (state, action) => {
         success: true,
         error: null,
       };
+    case "RETRIEVED_DOCUMENT":
+      return {
+        ...state,
+        isPending: false,
+        document: action.payload,
+        success: true,
+        error: null,
+      };
     case "DELETED_DOCUMENT":
       return {
         ...state,
@@ -110,6 +118,18 @@ export const useFirestore = (collection) => {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
     }
   };
+  const getDocument = async (id) => {
+    dispatch({ type: "IS_PENDING" });
+    try {
+      const retrievedDocument = await ref.doc(id).get();
+      dispatchIfNotCancelled({
+        type: "RETRIEVED_DOCUMENT",
+        payload: retrievedDocument.data(),
+      });
+    } catch (err) {
+      dispatchIfNotCancelled({ type: "ERROR", payload: "could not retrieve" });
+    }
+  };
 
   const updateDocument = async (id, newValues) => {
     dispatch({ type: "IS_PENDING" });
@@ -134,5 +154,5 @@ export const useFirestore = (collection) => {
     };
   }, []);
 
-  return { addDocument, deleteDocument, updateDocument, response };
+  return { addDocument, getDocument, deleteDocument, updateDocument, response };
 };

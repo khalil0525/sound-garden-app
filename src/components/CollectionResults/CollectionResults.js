@@ -35,9 +35,6 @@ export default function CollectionResults(props) {
     ...searchParams
   );
 
-  useEffect(() => {
-    console.log(location);
-  });
   // This is the error message that will be displayed when the query
   // Returns empty results
   let emptyListMessage =

@@ -14,7 +14,6 @@ let initialState = {
   songDuration: null,
   songDurationIsValid: false,
   uploadIsReady: false,
-  artistName: "",
   songName: "",
   genreType: "none",
   formIsValid: false,
@@ -31,7 +30,7 @@ const uploadReducer = (state, action) => {
         ...state,
         songDuration: action.payload,
         songDurationIsValid: true,
-        uploadIsReady: state.artistName.length > 0 && state.songName.length > 0,
+        uploadIsReady: state.songName.length > 0,
       };
     case "PHOTO_FILE_CHANGED":
       return {
@@ -40,26 +39,12 @@ const uploadReducer = (state, action) => {
         songPhotoURL: URL.createObjectURL(action.payload),
       };
 
-    case "ARTIST_NAME_CHANGE":
-      return {
-        ...state,
-        artistName: action.payload,
-        formIsValid: action.payload.length > 0 && state.songName.length > 0,
-        uploadIsReady:
-          action.payload.length > 0 &&
-          state.songName.length > 0 &&
-          state.songDurationIsValid,
-      };
-
     case "SONG_NAME_CHANGE":
       return {
         ...state,
         songName: action.payload,
-        formIsValid: action.payload.length > 0 && state.artistName.length > 0,
-        uploadIsReady:
-          action.payload.length > 0 &&
-          state.artistName.length > 0 &&
-          state.songDurationIsValid,
+        formIsValid: action.payload.length > 0,
+        uploadIsReady: action.payload.length > 0 && state.songDurationIsValid,
       };
     case "GENRE_TYPE_CHANGE":
       return {
@@ -87,7 +72,6 @@ const Upload = () => {
     songFile,
     songPhotoFile,
     songPhotoURL,
-    artistName,
     songName,
     genreType,
     formIsValid,
@@ -116,11 +100,10 @@ const Upload = () => {
       //Try to add a document to the FireStore database, we will then use this to store the file
       // URL and generate a unique filename
       addDocument({
-        artist: artistName,
+        artist: user.uid,
         genre: genreType,
         title: songName,
         duration: songDuration,
-        uid: user.uid,
       });
     }
   };
@@ -133,6 +116,7 @@ const Upload = () => {
       !cloudStorageResponse.success
     ) {
       // Call to useCloudStorage to add song file
+      console.log("Reacehed useEffect");
       addSongFiles(firestoreResponse.document, user, [songFile, songPhotoFile]);
     }
   }, [
@@ -160,6 +144,29 @@ const Upload = () => {
     } else {
       event.target.value = "";
     }
+  };
+  const handleSongPhotoFileChange = (event) => {
+    if (event.target.files[0].type.split("/")[0] === "image") {
+      dispatchSongUploadState({
+        type: "PHOTO_FILE_CHANGED",
+        payload: event.target.files[0],
+      });
+    } else {
+      event.target.value = "";
+    }
+  };
+  const handleSongNameChange = (event) => {
+    dispatchSongUploadState({
+      type: "SONG_NAME_CHANGE",
+      payload: event.target.value,
+    });
+  };
+  const handleGenreTypeChange = (event) => {
+    dispatchSongUploadState({
+      type: "GENRE_TYPE_CHANGE",
+      payload: event.target.value,
+    });
+    // setGenreType(event.target.value);
   };
   useEffect(() => {
     const getAudioDuration = () => {
@@ -203,40 +210,6 @@ const Upload = () => {
     console.log(songUploadState);
   }, [songUploadState]);
 
-  const handleSongPhotoFileChange = (event) => {
-    if (event.target.files[0].type.split("/")[0] === "image") {
-      dispatchSongUploadState({
-        type: "PHOTO_FILE_CHANGED",
-        payload: event.target.files[0],
-      });
-    } else {
-      event.target.value = "";
-    }
-  };
-  const handleArtistNameChange = (event) => {
-    dispatchSongUploadState({
-      type: "ARTIST_NAME_CHANGE",
-      payload: event.target.value,
-    });
-    // setArtistName();
-    // setFormIsValid(event.target.value.length > 0 && songName.length > 0);
-  };
-  const handleSongNameChange = (event) => {
-    dispatchSongUploadState({
-      type: "SONG_NAME_CHANGE",
-      payload: event.target.value,
-    });
-    // setSongName(event.target.value);
-    // setFormIsValid(event.target.value.length > 0 && artistName.length > 0);
-  };
-  const handleGenreTypeChange = (event) => {
-    dispatchSongUploadState({
-      type: "GENRE_TYPE_CHANGE",
-      payload: event.target.value,
-    });
-    // setGenreType(event.target.value);
-  };
-
   return (
     <>
       <div className={styles["upload"]}>
@@ -271,15 +244,6 @@ const Upload = () => {
                       accept="image/*"
                     />
                   </div>
-                  <label htmlFor="artist-name">Artist:</label>
-                  <input
-                    type="text"
-                    id="artist-name"
-                    name="artist-name"
-                    value={artistName}
-                    onChange={handleArtistNameChange}
-                    disabled={cloudStorageResponse.isPending}
-                  ></input>
 
                   <label htmlFor="song-name">Song Name:</label>
                   <input

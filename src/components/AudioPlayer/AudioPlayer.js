@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
+import { useFirestore } from "../../hooks/useFirestore";
 import AudioSeekControlBar from "./AudioSeekControlBar/AudioSeekControlBar";
 import AudioPlayerMarquee from "./AudioPlayerMarquee";
 import previous_NextIcon from "../../images/Expand_right_stop.svg";
@@ -83,6 +84,8 @@ const AudioPlayer = () => {
     currentSongPlayedTime,
     seekingFromSongItem,
   } = useAudioPlayerContext();
+  const { getDocument: getArtistName, response: getArtistNameResponse } =
+    useFirestore("users");
 
   //Function to load songs
   const load = (url) => {
@@ -235,6 +238,12 @@ const AudioPlayer = () => {
     }
   }, [currentSongPlayedTime, seekingFromSongItem, dispatchAudioPlayerContext]);
 
+  useEffect(() => {
+    if (url) {
+      getArtistName(playlist[playlistIndex].artist);
+    }
+  }, [url]);
+
   return (
     <div className={styles["audio-player"]}>
       <ReactPlayer
@@ -358,7 +367,9 @@ const AudioPlayer = () => {
                   styles["audio-player__trackDetails-songDetails-artist"]
                 }
               >
-                {loadedSongURL && playlist[playlistIndex].artist}
+                {loadedSongURL && getArtistNameResponse.document
+                  ? getArtistNameResponse.document.displayName
+                  : ""}
               </p>
             </div>
           </div>

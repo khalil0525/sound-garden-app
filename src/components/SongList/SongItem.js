@@ -71,6 +71,7 @@ const SongItem = ({
     dispatchAudioPlayerContext,
     playlistLocation,
   } = useAudioPlayerContext();
+
   const { documents: usersLikedSongDocuments } = useCollection("likes", [
     "likedSongID",
     "==",
@@ -93,6 +94,9 @@ const SongItem = ({
     deleteDocument: deleteSongDocument,
     response: deleteSongDocumentResponse,
   } = useFirestore("music");
+
+  const { getDocument: getArtistName, response: getArtistNameResponse } =
+    useFirestore("users");
 
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
   //***********************************************************
@@ -152,9 +156,9 @@ const SongItem = ({
     // const img = document.getElementById("myimg");
     // img.setAttribute("src", url);
   };
+
   const handleEditSong = () => {
     setIsEditing(false);
-    // setEdited(true);
   };
 
   const handleDeleteSong = async () => {
@@ -292,6 +296,13 @@ const SongItem = ({
   //     console.log(usersLikedSongDocuments);
   //   }
   // }, [usersLikedSongDocuments]);
+  useEffect(() => {
+    getArtistName(song.artist);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(getArtistNameResponse.document);
+  // });
 
   return (
     <div className={styles["song-item"]}>
@@ -321,7 +332,9 @@ const SongItem = ({
 
             <div className={styles["titleContainer__songTitle"]}>
               <span className={styles["titleContainer__songTitle-artist"]}>
-                {song.artist}
+                {getArtistNameResponse.document
+                  ? getArtistNameResponse.document.displayName
+                  : ""}
               </span>
               <span className={styles["titleContainer__songTitle-title"]}>
                 {song.title}
@@ -384,7 +397,7 @@ const SongItem = ({
               Download
             </button>
 
-            {user.uid === song.uid && (
+            {user.uid === song.artist && (
               <>
                 <button
                   className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}

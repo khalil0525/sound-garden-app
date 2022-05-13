@@ -3,6 +3,7 @@ import styles from "./SongList.module.css";
 import SongItem from "./SongItem";
 import { useCollection } from "../../hooks/useCollection";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useFirestore } from "../../hooks/useFirestore";
 //We receive a song prop from whichever parent component calls this
 const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   // const { documents: likedSongDocuments, error: likedSongDocumentError } =
@@ -11,10 +12,10 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   const { documents: likedSongDocuments, response: collectionResponse } =
     useCollection("likes", ["uid", "==", user.uid ? user.uid : "none"]);
 
-  useEffect(() => {
-    console.log(scrollRef);
-    console.log(likedSongDocuments);
-  });
+  // useEffect(() => {
+  //   console.log(scrollRef);
+  //   console.log(likedSongDocuments);
+  // });
 
   const [count, setCount] = useState({
     prev: 0,

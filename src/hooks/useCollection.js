@@ -53,7 +53,11 @@ export const useCollection = (
           const timestamp = moment(doc.data().createdAt.toDate())
             .startOf("day")
             .fromNow();
-          results.push({ ...doc.data(), createdAt: timestamp });
+
+          results.push({
+            ...doc.data(),
+            createdAt: timestamp,
+          });
         });
 
         //If we have a query that requires information from 2 collections
@@ -110,29 +114,19 @@ export const useCollection = (
     return () => unsubscribe();
   }, [collection, query, collectionFilterVariable]);
 
+  const getDisplayName = async (id) => {
+    let data;
+    try {
+      const nameRef = projectFirestore.collection("users").doc(id);
+      console.log(nameRef);
+      const name = await nameRef.get();
+      console.log(name);
+      data = name.data().displayName;
+    } catch (err) {
+      data = null;
+    }
+    return data;
+  };
+
   return { documents, error };
 };
-// get docments based on query... docProperty === property to look at in our documents.... queryString === what the docProperty value should be = to
-// const getDocument = async (docProperty, queryString) => {
-//   dispatch({ type: "IS_PENDING" });
-//   try {
-//     const queryDocuments = await ref
-//       .where(docProperty, "==", queryString)
-//       .get();
-
-// let res = [];
-// query
-//   .get()
-//   .then((querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//       // doc.data() is never undefined for query doc snapshots
-//       console.log(doc.id, " => ", doc.data());
-//       res = [...res, doc.data()];
-//     });
-//     console.log(res);
-//
-// })
-// .catch((error) => {
-//   console.log("Error getting documents: ", error);
-// });
-// };
