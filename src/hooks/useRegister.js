@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { projectAuth, projectFirestore } from "../firebase/config";
-
+import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "./useAuthContext";
 export const useRegister = () => {
   const [isCancelled, setIsCancelled] = useState(false);
@@ -13,6 +13,7 @@ export const useRegister = () => {
   // Async function that trys to register a user, if registration is unsuccessful
   // It throws an error
   const { dispatch } = useAuthContext();
+
   const register = async (email, password, displayName) => {
     setError(null);
     setIsPending(true);
@@ -32,18 +33,19 @@ export const useRegister = () => {
       // add display name to user
       await res.user.updateProfile({ displayName });
       // add a record in firestore to store users displayName and unique profile link
-
       await projectFirestore
         .collection("users")
         .doc(res.user.uid)
         .set({ displayName });
       console.log(res.user.uid);
-      // Perform check to see if profileURL exists inside collection profileURLS
+      //Generate random profile link with UUID
+      const genProfile = `user-${uuidv4().slice(0, 13)}`;
+      // Update the users document with its randomly generated profile link
       await projectFirestore
         .collection("users")
         .doc(res.user.uid)
-        .update({ profileURL: "user-0525" });
-      // dispatch login action
+        .update({ profileURL: genProfile });
+      //dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
       //update state
       if (!isCancelled) {
