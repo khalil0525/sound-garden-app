@@ -12,7 +12,6 @@ import Register from "./pages/Register/Register";
 import SideNavigation from "./components/SideNavigation/SideNavigation";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Upload from "./pages/Upload/Upload";
-import Search from "./pages/Search/Search";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import CollectionResults from "./components/CollectionResults/CollectionResults";

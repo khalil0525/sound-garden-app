@@ -11,7 +11,9 @@ const Duration = ({ className, seconds }) => {
     }
     return `${mm}:${ss}`;
   };
-
+  // When this fires it will add a "0" to the time string and extract
+  // The last numbers in the string.
+  // e.g: 0 + "1" -> "01"... 0 + "12" -> 12
   const pad = (string) => {
     return ("0" + string).slice(-2);
   };
