@@ -1,5 +1,6 @@
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
+import { useEffect } from "react";
 // import ActionBar from "../../components/ActionBar/ActionBar";
 // import SongList from "../../components/SongList/SongList";
 
@@ -8,14 +9,16 @@ import CollectionResults from "../../components/CollectionResults/CollectionResu
 
 export default function Liked({ scrollRef }) {
   const { user } = useAuthContext();
+
   const query = [
     ["likes", "music"],
     [
-      ["uid", "==", user.uid],
+      ["__name__", "==", user.uid],
       ["docID", "in"],
     ],
-    "likedSongID",
+    "likes",
   ];
+
   // const { documents: likedSongDocuments, error: likedSongError } =
   //   useCollection(
   //     ["likes", "music"],

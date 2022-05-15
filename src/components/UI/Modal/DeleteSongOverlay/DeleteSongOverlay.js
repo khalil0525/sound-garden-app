@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./DeleteOverlay.module.css";
-const DeleteOverlay = (props) => {
+import styles from "./DeleteSongOverlay.module.css";
+const DeleteSongOverlay = (props) => {
   return (
     <div className={styles.modal}>
       <header className={styles.header}>
@@ -25,4 +25,4 @@ const DeleteOverlay = (props) => {
   );
 };
 
-export default DeleteOverlay;
+export default DeleteSongOverlay;

@@ -72,31 +72,42 @@ const SongItem = ({
     playlistLocation,
   } = useAudioPlayerContext();
 
-  const { documents: usersLikedSongDocuments } = useCollection("likes", [
-    "likedSongID",
-    "==",
-    song.docID,
-  ]);
+  // const { documents: usersLikedSongDocuments } = useCollection("likes", [
+  //   "likedSongID",
+  //   "==",
+  //   song.docID,
+  // ]);
+
+  // New like system
+
+  const {
+    getDocument: getLikedDocument,
+    updateDocument: updateLikedDocument,
+    response: firestoreLikedDocumentResponse,
+  } = useFirestore("likes");
+
   // We set the inital state for isLiked based on if that document was found
-  const [isLiked, setIsLiked] = useState(
-    () => liked !== null && liked !== undefined
+  const [isLiked, setIsLiked] = useState(() =>
+    user.uid ? liked.includes(song.docID) : false
   );
   // useEffect(() => {
   //   console.log(liked);
   // });
-  const {
-    addDocument: addLikedDocument,
-    deleteDocument: deleteLikedDocument,
-    response: firestoreResponse,
-  } = useFirestore("likes");
+  // const {
+  //   addDocument: addLikedDocument,
+  //   deleteDocument: deleteLikedDocument,
+  //   response: firestoreResponse,
+  // } = useFirestore("likes");
 
+  // Used to change the artist id into their displayName
+  // const { getDocument: getArtistName, response: getArtistNameResponse } =
+  //   useFirestore("users");
+
+  // These 2 hooks are used to delete a song document/files
   const {
     deleteDocument: deleteSongDocument,
     response: deleteSongDocumentResponse,
   } = useFirestore("music");
-
-  const { getDocument: getArtistName, response: getArtistNameResponse } =
-    useFirestore("users");
 
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
   //***********************************************************
@@ -166,11 +177,22 @@ const SongItem = ({
   };
 
   const handleLikeClick = () => {
-    setIsLiked((prevState) => !prevState);
-    if (!isLiked) {
-      addLikedDocument({ uid: user.uid, likedSongID: song.docID });
-    } else {
-      deleteLikedDocument(liked.docID);
+    // setIsLiked((prevState) => !prevState);
+    // if (!isLiked) {
+    //   addLikedDocument({ uid: user.uid, likedSongID: song.docID });
+    // } else {
+    //   deleteLikedDocument(liked.docID);
+    // }
+    if (user.uid) {
+      setIsLiked((prevState) => !prevState);
+      let newState;
+      if (!isLiked) {
+        newState = { likes: [...liked, song.docID] };
+        updateLikedDocument(user.uid, newState);
+      } else {
+        newState = { likes: liked.filter((like) => like !== song.docID) };
+        updateLikedDocument(user.uid, newState);
+      }
     }
   };
 
@@ -202,7 +224,6 @@ const SongItem = ({
       });
     }
   };
-
   // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT
   // IS AT.
   // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
@@ -269,40 +290,27 @@ const SongItem = ({
   ]);
   //This useEffect fires if we delete the song and get a success message back
   // It will then delete the likes on this song and then the song document itself.
-  useEffect(() => {
-    if (cloudStorageResponse.success) {
-      if (usersLikedSongDocuments) {
-        usersLikedSongDocuments.forEach((doc) => {
-          deleteLikedDocument(doc.docID);
-        });
-      }
-      deleteSongDocument(song.docID);
-      dispatchAudioPlayerContext({
-        type: "SONG_DELETED_FROM_PLAYLIST",
-        payload: song.docID,
-      });
-    }
-  }, [
-    cloudStorageResponse.success,
-    deleteSongDocument,
-    song.docID,
-    usersLikedSongDocuments,
-    deleteLikedDocument,
-    dispatchAudioPlayerContext,
-  ]);
-
   // useEffect(() => {
-  //   if (usersLikedSongDocuments) {
-  //     console.log(usersLikedSongDocuments);
+  //   if (cloudStorageResponse.success) {
+  //     if (usersLikedSongDocuments) {
+  //       usersLikedSongDocuments.forEach((doc) => {
+  //         deleteLikedDocument(doc.docID);
+  //       });
+  //     }
+  //     deleteSongDocument(song.docID);
+  //     dispatchAudioPlayerContext({
+  //       type: "SONG_DELETED_FROM_PLAYLIST",
+  //       payload: song.docID,
+  //     });
   //   }
-  // }, [usersLikedSongDocuments]);
-  useEffect(() => {
-    getArtistName(song.artist);
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(getArtistNameResponse.document);
-  // });
+  // }, [
+  //   cloudStorageResponse.success,
+  //   deleteSongDocument,
+  //   song.docID,
+  //   usersLikedSongDocuments,
+  //   deleteLikedDocument,
+  //   dispatchAudioPlayerContext,
+  // ]);
 
   return (
     <div className={styles["song-item"]}>
@@ -332,9 +340,7 @@ const SongItem = ({
 
             <div className={styles["titleContainer__songTitle"]}>
               <span className={styles["titleContainer__songTitle-artist"]}>
-                {getArtistNameResponse.document
-                  ? getArtistNameResponse.document.displayName
-                  : ""}
+                {song.artist}
               </span>
               <span className={styles["titleContainer__songTitle-title"]}>
                 {song.title}
@@ -377,7 +383,7 @@ const SongItem = ({
                 isLiked && user.uid && styles["actionContainer-likeBtn--liked"]
               } ${styles.btn}`}
               onClick={handleLikeClick}
-              disabled={firestoreResponse.isPending}
+              disabled={firestoreLikedDocumentResponse.isPending}
             >
               <HeartIcon
                 className={styles["actionContainer_likeBtn-icon"]}
@@ -397,7 +403,7 @@ const SongItem = ({
               Download
             </button>
 
-            {user.uid === song.artist && (
+            {user.uid === song.userID && (
               <>
                 <button
                   className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
@@ -425,7 +431,7 @@ const SongItem = ({
             )}
             {isEditing && (
               <Modal
-                action="edit"
+                action="editSongInformation"
                 song={song}
                 onConfirm={handleEditSong}
                 onCancel={() => setIsEditing(false)}
@@ -433,7 +439,7 @@ const SongItem = ({
             )}
             {isDeleting && (
               <Modal
-                action="delete"
+                action="deleteSong"
                 onConfirm={handleDeleteSong}
                 onCancel={() => setIsDeleting(false)}
               />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { projectAuth, projectFirestore } from "../firebase/config";
+import { projectAuth, projectFirestore, timestamp } from "../firebase/config";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "./useAuthContext";
 export const useRegister = () => {
@@ -33,10 +33,11 @@ export const useRegister = () => {
       // add display name to user
       await res.user.updateProfile({ displayName });
       // add a record in firestore to store users displayName and unique profile link
+      const createdAt = timestamp.fromDate(new Date());
       await projectFirestore
         .collection("users")
         .doc(res.user.uid)
-        .set({ displayName });
+        .set({ displayName, createdAt });
       console.log(res.user.uid);
       //Generate random profile link with UUID
       const genProfile = `user-${uuidv4().slice(0, 13)}`;
@@ -44,7 +45,13 @@ export const useRegister = () => {
       await projectFirestore
         .collection("users")
         .doc(res.user.uid)
-        .update({ profileURL: genProfile });
+        .update({ profileURL: genProfile, userID: res.user.uid });
+      // Create a liked tracks collection for this users
+      await projectFirestore
+        .collection("likes")
+        .doc(res.user.uid)
+        .set({ createdAt, likes: [] });
+      console.log(res.user.uid);
       //dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
       //update state

@@ -1,41 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./SongList.module.css";
 import SongItem from "./SongItem";
 import { useCollection } from "../../hooks/useCollection";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useFirestore } from "../../hooks/useFirestore";
+
 //We receive a song prop from whichever parent component calls this
 const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
-  // const { documents: likedSongDocuments, error: likedSongDocumentError } =
-  //   useCollection("likes", ["uid", "==", user.uid]);
-  //  We need user? user: "none" so that if we are logged out we can avoid an app error from firebase having no active user.uid to work with
-  const { documents: likedSongDocuments, response: collectionResponse } =
-    useCollection("likes", ["uid", "==", user.uid ? user.uid : "none"]);
-
-  // useEffect(() => {
-  //   console.log(scrollRef);
-  //   console.log(likedSongDocuments);
-  // });
+  //New Like system
+  const {
+    documents: likedSongDocuments,
+    response: likedSongDocumentsResponse,
+  } = useCollection("likes", ["__name__", "==", user.uid ? user.uid : "none"]);
 
   const [count, setCount] = useState({
     prev: 0,
-    next: 10,
+    next: 4,
   });
   const [hasMore, setHasMore] = useState(true);
   const [current, setCurrent] = useState(songs.slice(count.prev, count.next));
+  const songsRef = useRef(songs);
+
   const getMoreData = () => {
     if (current.length === songs.length) {
       setHasMore(false);
       return;
     }
     setTimeout(() => {
-      setCurrent(current.concat(songs.slice(count.prev + 10, count.next + 10)));
+      setCurrent(current.concat(songs.slice(count.prev + 4, count.next + 4)));
     }, 2000);
     setCount((prevState) => ({
-      prev: prevState.prev + 10,
-      next: prevState.next + 10,
+      prev: prevState.prev + 4,
+      next: prevState.next + 4,
     }));
   };
+  // This is used to reload the songList whenever a songs properties are updated
+  useEffect(() => {
+    if (JSON.stringify(songsRef.current) !== JSON.stringify(songs)) {
+      songsRef.current = songs;
+      setCurrent(songs.slice(0, count.next));
+    }
+  }, [songs, count.next]);
+
   return (
     <div className={`${styles["song-list"]} ${className} `}>
       <InfiniteScroll
@@ -56,10 +61,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
               playlistSongs={songs}
               songIndex={index}
               liked={
-                likedSongDocuments &&
-                likedSongDocuments.find(
-                  (likedDoc) => likedDoc.likedSongID === song.docID
-                )
+                user.uid && likedSongDocuments && likedSongDocuments[0].likes
               }
               songPlaylistLocation={playlistLocation}
               user={user}

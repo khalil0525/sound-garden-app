@@ -8,7 +8,7 @@ import CollectionResults from "../../components/CollectionResults/CollectionResu
 // import ActionBar from "../../components/ActionBar/ActionBar";
 export default function Uploaded({ scrollRef }) {
   const { user } = useAuthContext();
-  const query = ["music", ["artist", "==", user.uid]];
+  const query = ["music", ["userID", "==", user.uid]];
   // const { documents: musicDocuments, error: musicError } = useCollection(
   //   "music",
   //   ["uid", "==", user.uid]

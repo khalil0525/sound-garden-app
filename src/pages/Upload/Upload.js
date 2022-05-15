@@ -100,10 +100,11 @@ const Upload = () => {
       //Try to add a document to the FireStore database, we will then use this to store the file
       // URL and generate a unique filename
       addDocument({
-        artist: user.uid,
+        artist: user.displayName,
         genre: genreType,
         title: songName,
         duration: songDuration,
+        userID: user.uid,
       });
     }
   };
@@ -207,8 +208,8 @@ const Upload = () => {
   }, [songFile]);
 
   useEffect(() => {
-    console.log(songUploadState);
-  }, [songUploadState]);
+    console.log(firestoreResponse);
+  }, [firestoreResponse]);
 
   return (
     <>

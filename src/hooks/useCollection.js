@@ -51,7 +51,7 @@ export const useCollection = (
           // }
           //Convert the timestamp to a date
           const timestamp = moment(doc.data().createdAt.toDate())
-            .startOf("day")
+            .startOf("hour")
             .fromNow();
 
           results.push({
@@ -60,14 +60,19 @@ export const useCollection = (
           });
         });
 
-        //If we have a query that requires information from 2 collections
+        // If we have a query that requires information from 2 collections
+        // We expect to get an array of documents with each document having
+        // and array of document IDs for a particular collection
         if (query.length === 2) {
+          console.log(results);
           const extractResults =
             results && results.length > 0
               ? results.map((doc) => {
+                  console.log("doc", doc);
                   return doc[collectionFilterVariable];
                 })
               : [null];
+          console.log(extractResults);
           let secondResults = [];
           while (extractResults.length) {
             const batch = extractResults.splice(0, 10);
@@ -75,13 +80,13 @@ export const useCollection = (
               secondResults.push(
                 projectFirestore
                   .collection(collection[1])
-                  .where(...query[1], batch)
+                  .where(...query[1], ...batch)
                   .get()
                   .then((snapshot2) =>
                     snapshot2.docs.map((res) => ({
                       ...res.data(),
                       createdAt: moment(res.data().createdAt.toDate())
-                        .startOf("day")
+                        .startOf("hour")
                         .fromNow(),
                     }))
                   )
@@ -114,19 +119,19 @@ export const useCollection = (
     return () => unsubscribe();
   }, [collection, query, collectionFilterVariable]);
 
-  const getDisplayName = async (id) => {
-    let data;
-    try {
-      const nameRef = projectFirestore.collection("users").doc(id);
-      console.log(nameRef);
-      const name = await nameRef.get();
-      console.log(name);
-      data = name.data().displayName;
-    } catch (err) {
-      data = null;
-    }
-    return data;
-  };
+  // const getDisplayName = async (id) => {
+  //   let data;
+  //   try {
+  //     const nameRef = projectFirestore.collection("users").doc(id);
+  //     console.log(nameRef);
+  //     const name = await nameRef.get();
+  //     console.log(name);
+  //     data = name.data().displayName;
+  //   } catch (err) {
+  //     data = null;
+  //   }
+  //   return data;
+  // };
 
   return { documents, error };
 };

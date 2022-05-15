@@ -3,7 +3,6 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
 import styles from "./CollectionResults.module.css";
 import ActionBar from "../ActionBar/ActionBar";
-import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function CollectionResults(props) {

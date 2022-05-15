@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { useCloudStorage } from "../../../../hooks/useCloudStorage";
 import { useFirestore } from "../../../../hooks/useFirestore";
-import styles from "./EditOverlay.module.css";
+import styles from "./EditProfileOverlay.module.css";
 import GenreSelect from "../../../UploadForm/GenreSelect/GenreSelect";
 import placeholderImage from "../../../../images/blank_image_placeholder.svg";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
 
-const editOverlayReducer = (state, action) => {
+const editSongOverlayReducer = (state, action) => {
   switch (action.type) {
     case "PHOTO_FILE_CHANGED":
       return {
@@ -16,7 +16,7 @@ const editOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         editSaveReady: state.formIsValid,
       };
-    case "SONG_TITLE_CHANGE":
+    case "FIRST_NAME_CHANGE":
       return {
         ...state,
         songTitle: action.payload,
@@ -24,7 +24,7 @@ const editOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         editSaveReady: action.payload.length > 0,
       };
-    case "SONG_GENRE_CHANGE":
+    case "LAST_NAME_CHANGE":
       return {
         ...state,
         songGenre: action.payload,
@@ -37,7 +37,7 @@ const editOverlayReducer = (state, action) => {
   }
 };
 
-const EditOverlay = (props) => {
+const EditSongOverlay = (props) => {
   let initialState = {
     songPhotoFileURL: props.song.songPhotoURL ? props.song.songPhotoURL : "",
     songTitle: props.song.title,
@@ -48,7 +48,7 @@ const EditOverlay = (props) => {
     propertyChangeOccurred: false,
   };
   const [editSongState, dispatchEditSongState] = useReducer(
-    editOverlayReducer,
+    editSongOverlayReducer,
     initialState
   );
   const {
@@ -200,4 +200,4 @@ const EditOverlay = (props) => {
   );
 };
 
-export default EditOverlay;
+export default EditSongOverlay;
