@@ -34,18 +34,22 @@ export const useRegister = () => {
       await res.user.updateProfile({ displayName });
       // add a record in firestore to store users displayName and unique profile link
       const createdAt = timestamp.fromDate(new Date());
-      await projectFirestore
-        .collection("users")
-        .doc(res.user.uid)
-        .set({ displayName, createdAt });
+      await projectFirestore.collection("users").doc(res.user.uid).set({
+        displayName,
+        createdAt,
+        userID: res.user.uid,
+        firstName: "",
+        lastName: "",
+        profilePhotoURL: "",
+        profilePhotoFilePath: "",
+      });
       console.log(res.user.uid);
       //Generate random profile link with UUID
       const genProfile = `user-${uuidv4().slice(0, 13)}`;
       // Update the users document with its randomly generated profile link
-      await projectFirestore
-        .collection("users")
-        .doc(res.user.uid)
-        .update({ profileURL: genProfile, userID: res.user.uid });
+      await projectFirestore.collection("users").doc(res.user.uid).update({
+        profileURL: genProfile,
+      });
       // Create a liked tracks collection for this users
       await projectFirestore
         .collection("likes")
