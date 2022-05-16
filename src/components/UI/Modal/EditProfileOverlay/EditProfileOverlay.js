@@ -5,39 +5,117 @@ import styles from "./EditProfileOverlay.module.css";
 
 import placeholderImage from "../../../../images/blank_image_placeholder.svg";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
-
-const editSongOverlayReducer = (state, action) => {
+//    profileURLChanged: false,
+// displayNameChanged: false,
+// firstNameChanged: false,
+// lastNameChanged: false,
+const editProfileOverlayReducer = (state, action) => {
   switch (action.type) {
     case "PHOTO_FILE_CHANGED":
       return {
         ...state,
-        songPhotoFile: action.payload,
-        songPhotoFileURL: URL.createObjectURL(action.payload),
+        profilePhotoFile: action.payload,
+        profilePhotoFileURL: URL.createObjectURL(action.payload),
         propertyChangeOccurred: true,
         editSaveReady: state.formIsValid,
       };
     case "FIRST_NAME_CHANGE":
+      let trimmedFirstName = action.payload.trimStart().trimEnd();
       return {
         ...state,
-        songTitle: action.payload,
-        formIsValid: action.payload.length > 0,
+        firstName: action.payload,
         propertyChangeOccurred: true,
-        editSaveReady: action.payload.length > 0,
+        firstNameChanged:
+          trimmedFirstName !== state.props.userInformation.firstName,
+        editSaveReady:
+          state.formIsValid &&
+          (state.lastNameChanged ||
+            state.displayNameChanged ||
+            state.profilePhotoFile ||
+            state.profileURLChanged ||
+            (trimmedFirstName.length <= 35 &&
+              trimmedFirstName !== state.props.userInformation.firstName)),
+        formIsValid:
+          state.displayName.length >= 5 &&
+          state.displayName.length <= 35 &&
+          state.profileURL.length >= 5 &&
+          state.profileURL.length <= 35 &&
+          state.lastName.length <= 35 &&
+          trimmedFirstName.length <= 35,
       };
     case "LAST_NAME_CHANGE":
+      let trimmedLastName = action.payload.trimStart().trimEnd();
       return {
         ...state,
-        songGenre: action.payload,
+        lastName: action.payload,
         propertyChangeOccurred: true,
-        editSaveReady: state.formIsValid,
+        lastNameChanged:
+          trimmedLastName !== state.props.userInformation.lastName,
+        editSaveReady:
+          state.formIsValid &&
+          (state.firstNameChanged ||
+            state.displayNameChanged ||
+            state.profilePhotoFile ||
+            state.profileURLChanged ||
+            (trimmedLastName.length <= 35 &&
+              trimmedLastName !== state.props.userInformation.lastName)),
+        formIsValid:
+          state.displayName.length >= 5 &&
+          state.displayName.length <= 35 &&
+          state.profileURL.length >= 5 &&
+          state.profileURL.length <= 35 &&
+          state.firstName.length <= 35 &&
+          trimmedLastName.length <= 35,
       };
     case "DISPLAY_NAME_CHANGE":
+      let trimmedDisplayName = action.payload.trimStart().trimEnd();
       return {
         ...state,
+        displayName: action.payload,
+        propertyChangeOccurred: true,
+        displayNameChanged:
+          trimmedDisplayName !== state.props.userInformation.displayName,
+        editSaveReady:
+          state.formIsValid &&
+          (state.firstNameChanged ||
+            state.lastNameChanged ||
+            state.profilePhotoFile ||
+            state.profileURLChanged ||
+            (trimmedDisplayName.length >= 5 &&
+              trimmedDisplayName.length <= 35 &&
+              trimmedDisplayName !== state.props.userInformation.displayName)),
+        formIsValid:
+          state.profileURL.length >= 5 &&
+          state.profileURL.length <= 35 &&
+          state.firstName.length <= 35 &&
+          state.lastName.length <= 35 &&
+          trimmedDisplayName.length >= 5 &&
+          trimmedDisplayName.length <= 35,
       };
     case "PROFILE_URL_CHANGE":
+      let trimmedProfileURL = action.payload.trimStart().trimEnd();
       return {
         ...state,
+        profileURL: trimmedProfileURL,
+        propertyChangeOccurred: true,
+        profileURLChanged:
+          trimmedProfileURL !== state.props.userInformation.profileURL,
+        editSaveReady:
+          state.formIsValid &&
+          (state.firstNameChanged ||
+            state.lastNameChanged ||
+            state.displayNameChanged ||
+            state.profilePhotoFile ||
+            (trimmedProfileURL.length >= 5 &&
+              trimmedProfileURL.length <= 35 &&
+              trimmedProfileURL !== state.props.userInformation.profileURL)),
+        formIsValid:
+          state.displayName.length >= 5 &&
+          state.displayName.length <= 35 &&
+          state.firstName.length <= 35 &&
+          state.lastName.length <= 35 &&
+          trimmedProfileURL.length >= 5 &&
+          trimmedProfileURL.length <= 35,
       };
 
     default:
@@ -60,9 +138,12 @@ const EditProfileOverlay = (props) => {
     propertyChangeOccurred: false,
     profileURLChanged: false,
     displayNameChanged: false,
+    firstNameChanged: false,
+    lastNameChanged: false,
+    props: props,
   };
   const [editProfileState, dispatchEditProfileState] = useReducer(
-    editSongOverlayReducer,
+    editProfileOverlayReducer,
     initialState
   );
   const {
@@ -85,8 +166,14 @@ const EditProfileOverlay = (props) => {
   } = useCloudStorage();
 
   //Fire store hook
-  const { updateDocument, response: firestoreResponse } = useFirestore("users");
-
+  const {
+    updateDocument: updateUserDocument,
+    response: firestoreUserResponse,
+  } = useFirestore("users");
+  const {
+    updateMultipleDocuments: updateSongDocuments,
+    response: firestoreSongsResponse,
+  } = useFirestore("music");
   const handleProfilePhotoFileChange = (event) => {
     if (event.target.files[0].type.split("/")[0] === "image") {
       dispatchEditProfileState({
@@ -124,61 +211,75 @@ const EditProfileOverlay = (props) => {
     });
   };
 
-  const handleSongUpdate = () => {
-    let newValues = { title: songTitle, genre: songGenre };
+  const handleProfileUpdate = () => {
+    let newValues = {
+      firstName: firstName.trimStart().trimEnd(),
+      lastName: lastName.trimStart().trimEnd(),
+      displayName: displayName.trimStart().trimEnd(),
+      profileURL: profileURL,
+    };
     if (editSaveReady) {
-      updateDocument(props.song.docID, newValues);
+      updateUserDocument(user.uid, newValues);
+      if (displayNameChanged) {
+        let newArtistName = { artist: displayName.trimStart().trimEnd() };
+        updateSongDocuments("userID", user.uid, newArtistName);
+      }
     }
   };
 
-  // useEffect(() => {
-  //   if (
-  //     cloudStorageResponse.success ||
-  //     (songPhotoFile === null && firestoreResponse.success)
-  //   ) {
-  //     props.onConfirm();
-  //   }
-  // }, [cloudStorageResponse, firestoreResponse.success, songPhotoFile, props]);
+  useEffect(() => {
+    if (
+      cloudStorageResponse.success ||
+      (profilePhotoFile === null && firestoreUserResponse.success)
+    ) {
+      props.onConfirm();
+    }
+  }, [
+    cloudStorageResponse,
+    firestoreUserResponse.success,
+    profilePhotoFile,
+    props,
+  ]);
 
-  // useEffect(() => {
-  //   //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
-  //   if (
-  //     firestoreResponse.success &&
-  //     !cloudStorageResponse.isPending &&
-  //     !cloudStorageResponse.success &&
-  //     songPhotoFile !== null
-  //   ) {
-  //     //If the song previously didn't have a photo
-  //     if (props.song.songPhotoURL === "") {
-  //       addFile(
-  //         firestoreResponse.document,
-  //         "/images",
-  //         user,
-  //         songPhotoFile,
-  //         "songPhoto"
-  //       );
-  //     } else {
-  //       //If the song previously had a photo
-  //       replaceFile(
-  //         firestoreResponse.document,
-  //         props.song.songPhotoFilePath,
-  //         songPhotoFile,
-  //         "songPhoto"
-  //       );
-  //     }
-  //     // Call to useCloudStorage to add song file
-  //     console.log(firestoreResponse.document);
-  //   }
-  // }, [
-  //   firestoreResponse,
-  //   cloudStorageResponse,
-  //   replaceFile,
-  //   addFile,
-  //   user,
-  //   songPhotoFile,
-  //   props.song.songPhotoFilePath,
-  //   props.song.songPhotoURL,
-  // ]);
+  useEffect(() => {
+    //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
+    if (
+      firestoreUserResponse.success &&
+      !cloudStorageResponse.isPending &&
+      !cloudStorageResponse.success &&
+      profilePhotoFile !== null
+    ) {
+      //If the song previously didn't have a photo
+      if (props.userInformation.profilePhotoURL === "") {
+        addFile(
+          firestoreUserResponse.document,
+          "/images",
+          user,
+          profilePhotoFile,
+          "profilePhoto"
+        );
+      } else {
+        //If the song previously had a photo
+        replaceFile(
+          firestoreUserResponse.document,
+          props.userInformation.profilePhotoURL,
+          profilePhotoFile,
+          "profilePhoto"
+        );
+      }
+      // Call to useCloudStorage to add song file
+      console.log(firestoreUserResponse.document);
+    }
+  }, [
+    firestoreUserResponse,
+    cloudStorageResponse,
+    replaceFile,
+    addFile,
+    user,
+    profilePhotoFile,
+    props.userInformation.profilePhotoFilePath,
+    props.userInformation.profilePhotoURL,
+  ]);
 
   return (
     <div className={styles.modal}>
@@ -247,7 +348,7 @@ const EditProfileOverlay = (props) => {
             <div className={styles["action-container"]}>
               <div onClick={props.onCancel}>Cancel</div>
               {/*  */}
-              <button onClick={handleSongUpdate} disabled={!editSaveReady}>
+              <button onClick={handleProfileUpdate} disabled={!editSaveReady}>
                 Save Changes
               </button>
             </div>

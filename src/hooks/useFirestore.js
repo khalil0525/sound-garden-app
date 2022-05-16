@@ -145,6 +145,33 @@ export const useFirestore = (collection) => {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not update" });
     }
   };
+  const updateMultipleDocuments = async (
+    fieldName,
+    valueToLookFor,
+    newValues
+  ) => {
+    dispatch({ type: "IS_PENDING" });
+
+    try {
+      const documentsToUpdate = await ref
+        .where(fieldName, "==", valueToLookFor)
+        .get();
+      const batch = projectFirestore.batch();
+      documentsToUpdate.docs.forEach((doc) => {
+        batch.update(doc.ref, newValues);
+      });
+      await batch.commit();
+      dispatchIfNotCancelled({
+        type: "UPDATED_DOCUMENT",
+        payload: documentsToUpdate,
+      });
+    } catch (err) {
+      dispatchIfNotCancelled({
+        type: "ERROR",
+        payload: "could not update documents!",
+      });
+    }
+  };
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
@@ -154,5 +181,12 @@ export const useFirestore = (collection) => {
     };
   }, []);
 
-  return { addDocument, getDocument, deleteDocument, updateDocument, response };
+  return {
+    addDocument,
+    getDocument,
+    deleteDocument,
+    updateDocument,
+    updateMultipleDocuments,
+    response,
+  };
 };
