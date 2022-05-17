@@ -4,7 +4,6 @@ import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.s
 import placeholderImage from "../../images/profile_placeholder.svg";
 import ActionSearchBar from "./ActionSearchBar";
 import React from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
 
 const ActionBar = (props) => {
   return (
