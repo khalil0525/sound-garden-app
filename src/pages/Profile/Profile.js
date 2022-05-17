@@ -5,6 +5,7 @@ import editIcon from "../../images/pencil_solid.svg";
 import { useEffect, useState } from "react";
 import Modal from "../../components/UI/Modal/Modal";
 import { useCollection } from "../../hooks/useCollection";
+import ActionBar from "../../components/ActionBar/ActionBar";
 export default function Profile() {
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
@@ -16,26 +17,34 @@ export default function Profile() {
   const handleEditProfile = () => {
     setIsEditing(false);
   };
-  useEffect(() => {
-    console.log(profileDocuments && profileDocuments[0]);
-  });
+  // useEffect(() => {
+  //   console.log(profileDocuments && profileDocuments[0]);
+  // });
 
   return (
     <div className={styles.profile}>
-      <h2>Profile</h2>
-      {profileDocuments && user.uid === profileDocuments[0].userID && (
-        <button
-          // className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
-          onClick={() => setIsEditing(true)}
-        >
-          <img
-            // className={styles["actionContainer_editBtn-icon"]}
-            src={editIcon}
-            alt="Profile edit Icon"
-          />
-          Edit
-        </button>
-      )}
+      <ActionBar className={styles["profile__actionBar"]} user={user} />
+
+      <div className={styles["profile__content"]}>
+        <h2>Profile</h2>
+        {profileDocuments && user.uid === profileDocuments[0].userID && (
+          <button
+            // className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
+            onClick={() => setIsEditing(true)}
+          >
+            <img
+              // className={styles["actionContainer_editBtn-icon"]}
+              src={editIcon}
+              alt="Profile edit Icon"
+            />
+            Edit
+          </button>
+        )}
+        {/* Logout button temp */}
+        {!isPending && <button onClick={logout}>Logout</button>}
+        {isPending && <button disabled>Loading..</button>}
+        {error && <p>{error}</p>}
+      </div>
 
       {isEditing && (
         <Modal
@@ -45,16 +54,6 @@ export default function Profile() {
           onCancel={() => setIsEditing(false)}
         />
       )}
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae qui
-        deserunt expedita quod recusandae porro a quaerat impedit, unde
-        doloremque aut culpa praesentium eum suscipit itaque earum rerum nulla?
-        Corrupti.
-      </p>
-      {/* Logout button temp */}
-      {!isPending && <button onClick={logout}>Logout</button>}
-      {isPending && <button disabled>Loading..</button>}
-      {error && <p>{error}</p>}
     </div>
   );
 }

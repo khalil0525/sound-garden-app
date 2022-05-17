@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
+import { useAuthContext } from "./useAuthContext";
 // import { useFirestore } from "./useFirestore";
 // import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
@@ -94,6 +95,7 @@ export const useCloudStorage = () => {
       dispatch(action);
     }
   };
+  const { dispatch: dispatchToAuthContext } = useAuthContext();
 
   // add song file to the cloud storage
   const addSongFiles = async (fireStoreDocRef, user, files) => {
@@ -229,6 +231,9 @@ export const useCloudStorage = () => {
                 [newFilePathVariableName]: newFilePath,
                 [newFileURLVariableName]: downloadURL,
               });
+              if (newFilePropertyName === "profilePhoto") {
+                user.updateProfile({ photoURL: downloadURL });
+              }
               console.log("FILE ADD COMPLETED");
               dispatchIfNotCancelled({
                 type: "ADDED_FILE",
@@ -267,7 +272,8 @@ export const useCloudStorage = () => {
     fireStoreDocRef,
     storageFilePathToDelete,
     newFile,
-    newFilePropertyName
+    newFilePropertyName,
+    user
   ) => {
     // photoPath =
     // "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
@@ -298,6 +304,13 @@ export const useCloudStorage = () => {
                     [newFilePathVariableName]: newFilePath,
                     [newFileURLVariableName]: downloadURL,
                   });
+                  if (newFilePropertyName === "profilePhoto") {
+                    user.updateProfile({ photoURL: downloadURL }).then(() => {
+                      dispatchToAuthContext({
+                        type: "REFRESH_AUTH_INFORMATION",
+                      });
+                    });
+                  }
                   console.log("REPLACE COMPLETED");
                   dispatchIfNotCancelled({
                     type: "REPLACED_FILE",

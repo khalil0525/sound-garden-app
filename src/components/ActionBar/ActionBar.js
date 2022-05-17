@@ -3,6 +3,8 @@ import styles from "./ActionBar.module.css";
 import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.svg";
 import placeholderImage from "../../images/profile_placeholder.svg";
 import ActionSearchBar from "./ActionSearchBar";
+import React from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const ActionBar = (props) => {
   return (
@@ -20,9 +22,7 @@ const ActionBar = (props) => {
         ) : (
           <Link to="/profile" className={styles["actionbar__profileLink"]}>
             <img
-              width={24}
-              height={24}
-              src={placeholderImage}
+              src={props.user.photoURL ? props.user.photoURL : placeholderImage}
               alt="Search button icon"
               className={styles["actionbar__profileLink-img"]}
             />

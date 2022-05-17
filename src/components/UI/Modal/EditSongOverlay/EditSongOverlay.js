@@ -130,7 +130,8 @@ const EditSongOverlay = (props) => {
           firestoreResponse.document,
           props.song.songPhotoFilePath,
           songPhotoFile,
-          "songPhoto"
+          "songPhoto",
+          user
         );
       }
       // Call to useCloudStorage to add song file

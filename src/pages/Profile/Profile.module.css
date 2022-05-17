@@ -1,5 +1,17 @@
 .profile {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 1fr auto;
+}
+
+.profile__actionBar {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-end;
+  grid-column: 3/-1;
+  grid-row: 1;
+}
+.profile__content {
+  grid-row: 2/-1;
+  grid-column: 1/-1;
+  margin: 0 auto;
 }

@@ -13,7 +13,14 @@ export const authReducer = (state, action) => {
       return { ...state, user: null };
 
     case "AUTH_IS_READY":
-      return { ...state, user: action.payload, authIsReady: true };
+      return {
+        ...state,
+        user: action.payload,
+        authIsReady: true,
+        refreshUserTriggered: false,
+      };
+    case "REFRESH_AUTH_INFORMATION":
+      return { ...state, refreshUserTriggered: true };
     //if action type doesn't match any other state in our switch statement
     default:
       return state;
@@ -25,8 +32,25 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
     authIsReady: false,
+    refreshUserTriggered: false,
   });
+  const { user, refreshUserTriggered } = state;
   // This will check if a user is logged in after page refresh or when they first load the site
+  useEffect(() => {
+    const reloadUser = async () => {
+      try {
+        await projectAuth.currentUser.reload();
+        console.log("Triggered", refreshUserTriggered);
+        console.log(projectAuth.currentUser);
+        dispatch({ type: "AUTH_IS_READY", payload: projectAuth.currentUser });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (refreshUserTriggered) {
+      reloadUser();
+    }
+  }, [refreshUserTriggered, user]);
   useEffect(() => {
     //This function (onAuthStateChanged) will return an "unsub" function after it is called
     //This is why we called unsub() in the function, this is considered
@@ -40,6 +64,7 @@ export const AuthContextProvider = ({ children }) => {
       unsub();
     });
   }, []);
+
   // Output the AuthContext state everytime we get a change
   console.log("AuthContext state: ", state);
   return (

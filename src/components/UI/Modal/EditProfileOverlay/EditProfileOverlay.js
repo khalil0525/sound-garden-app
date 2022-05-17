@@ -161,7 +161,7 @@ const EditProfileOverlay = (props) => {
   } = editProfileState;
   const profileURLCurrent = useRef(profileURL);
   profileURLCurrent.current = profileURL;
-  const { user } = useAuthContext();
+  const { user, dispatch: dispatchToAuthContext } = useAuthContext();
   const {
     replaceFile,
     addFile,
@@ -222,6 +222,7 @@ const EditProfileOverlay = (props) => {
       profileURL: profileURL,
     };
     if (editSaveReady) {
+      user.updateProfile({ displayName: newValues.displayName });
       updateUserDocument(user.uid, newValues);
     }
   };
@@ -279,6 +280,7 @@ const EditProfileOverlay = (props) => {
         firestoreUserResponse.success &&
         cloudStorageResponse.success)
     ) {
+      dispatchToAuthContext({ type: "REFRESH_AUTH_INFORMATION" });
       props.onConfirm();
     }
   }, [
@@ -288,6 +290,7 @@ const EditProfileOverlay = (props) => {
     firestoreSongsResponse.success,
     profilePhotoFile,
     props,
+    dispatchToAuthContext,
   ]);
 
   // This handles uploading a users photo to the cloud storage
@@ -321,7 +324,8 @@ const EditProfileOverlay = (props) => {
           firestoreUserResponse.document,
           props.userInformation.profilePhotoFilePath,
           profilePhotoFile,
-          "profilePhoto"
+          "profilePhoto",
+          user
         );
       }
       // Call to useCloudStorage to add song file
