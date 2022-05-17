@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useRef, useReducer } from "react";
 import { useCloudStorage } from "../../../../hooks/useCloudStorage";
 import { useFirestore } from "../../../../hooks/useFirestore";
 import styles from "./EditProfileOverlay.module.css";
@@ -17,7 +17,11 @@ const editProfileOverlayReducer = (state, action) => {
         profilePhotoFile: action.payload,
         profilePhotoFileURL: URL.createObjectURL(action.payload),
         propertyChangeOccurred: true,
-        editSaveReady: state.formIsValid,
+        editSaveReady:
+          state.firstNameValid &&
+          state.lastNameValid &&
+          state.displayNameValid &&
+          state.profileURLValid,
       };
     case "FIRST_NAME_CHANGE":
       let trimmedFirstName = action.payload.trimStart().trimEnd();
@@ -27,21 +31,17 @@ const editProfileOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         firstNameChanged:
           trimmedFirstName !== state.props.userInformation.firstName,
+        firstNameValid: trimmedFirstName.length <= 35,
         editSaveReady:
-          state.formIsValid &&
           (state.lastNameChanged ||
             state.displayNameChanged ||
             state.profilePhotoFile ||
             state.profileURLChanged ||
-            (trimmedFirstName.length <= 35 &&
-              trimmedFirstName !== state.props.userInformation.firstName)),
-        formIsValid:
-          state.displayName.length >= 5 &&
-          state.displayName.length <= 35 &&
-          state.profileURL.length >= 5 &&
-          state.profileURL.length <= 35 &&
-          state.lastName.length <= 35 &&
-          trimmedFirstName.length <= 35,
+            trimmedFirstName !== state.props.userInformation.firstName) &&
+          trimmedFirstName.length <= 35 &&
+          state.lastNameValid &&
+          state.displayNameValid &&
+          state.profileURLValid,
       };
     case "LAST_NAME_CHANGE":
       let trimmedLastName = action.payload.trimStart().trimEnd();
@@ -51,21 +51,17 @@ const editProfileOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         lastNameChanged:
           trimmedLastName !== state.props.userInformation.lastName,
+        lastNameValid: trimmedLastName.length <= 35,
         editSaveReady:
-          state.formIsValid &&
           (state.firstNameChanged ||
             state.displayNameChanged ||
             state.profilePhotoFile ||
             state.profileURLChanged ||
-            (trimmedLastName.length <= 35 &&
-              trimmedLastName !== state.props.userInformation.lastName)),
-        formIsValid:
-          state.displayName.length >= 5 &&
-          state.displayName.length <= 35 &&
-          state.profileURL.length >= 5 &&
-          state.profileURL.length <= 35 &&
-          state.firstName.length <= 35 &&
-          trimmedLastName.length <= 35,
+            trimmedLastName !== state.props.userInformation.lastName) &&
+          trimmedLastName.length <= 35 &&
+          state.firstNameValid &&
+          state.displayNameValid &&
+          state.profileURLValid,
       };
     case "DISPLAY_NAME_CHANGE":
       let trimmedDisplayName = action.payload.trimStart().trimEnd();
@@ -75,22 +71,19 @@ const editProfileOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         displayNameChanged:
           trimmedDisplayName !== state.props.userInformation.displayName,
+        displayNameValid:
+          trimmedDisplayName.length >= 1 && trimmedDisplayName.length <= 48,
         editSaveReady:
-          state.formIsValid &&
           (state.firstNameChanged ||
             state.lastNameChanged ||
             state.profilePhotoFile ||
             state.profileURLChanged ||
-            (trimmedDisplayName.length >= 5 &&
-              trimmedDisplayName.length <= 35 &&
-              trimmedDisplayName !== state.props.userInformation.displayName)),
-        formIsValid:
-          state.profileURL.length >= 5 &&
-          state.profileURL.length <= 35 &&
-          state.firstName.length <= 35 &&
-          state.lastName.length <= 35 &&
-          trimmedDisplayName.length >= 5 &&
-          trimmedDisplayName.length <= 35,
+            trimmedDisplayName !== state.props.userInformation.displayName) &&
+          trimmedDisplayName.length >= 1 &&
+          trimmedDisplayName.length <= 48 &&
+          state.lastNameValid &&
+          state.firstNameValid &&
+          state.profileURLValid,
       };
     case "PROFILE_URL_CHANGE":
       let trimmedProfileURL = action.payload.trimStart().trimEnd();
@@ -100,22 +93,19 @@ const editProfileOverlayReducer = (state, action) => {
         propertyChangeOccurred: true,
         profileURLChanged:
           trimmedProfileURL !== state.props.userInformation.profileURL,
+        profileURLValid:
+          trimmedProfileURL.length >= 5 && trimmedProfileURL.length <= 35,
         editSaveReady:
-          state.formIsValid &&
           (state.firstNameChanged ||
             state.lastNameChanged ||
-            state.displayNameChanged ||
             state.profilePhotoFile ||
-            (trimmedProfileURL.length >= 5 &&
-              trimmedProfileURL.length <= 35 &&
-              trimmedProfileURL !== state.props.userInformation.profileURL)),
-        formIsValid:
-          state.displayName.length >= 5 &&
-          state.displayName.length <= 35 &&
-          state.firstName.length <= 35 &&
-          state.lastName.length <= 35 &&
+            state.displayNameChanged ||
+            trimmedProfileURL !== state.props.userInformation.profileURL) &&
           trimmedProfileURL.length >= 5 &&
-          trimmedProfileURL.length <= 35,
+          trimmedProfileURL.length <= 35 &&
+          state.lastNameValid &&
+          state.firstNameValid &&
+          state.displayNameValid,
       };
 
     default:
@@ -140,12 +130,18 @@ const EditProfileOverlay = (props) => {
     displayNameChanged: false,
     firstNameChanged: false,
     lastNameChanged: false,
+    profileURLValid: true,
+    displayNameValid: true,
+    firstNameValid: true,
+    lastNameValid: true,
     props: props,
   };
   const [editProfileState, dispatchEditProfileState] = useReducer(
     editProfileOverlayReducer,
     initialState
   );
+  // This is for the error text that shows up under the profileURL change box
+  const previouslyTriedProfileURL = useRef();
   const {
     firstName,
     lastName,
@@ -154,10 +150,17 @@ const EditProfileOverlay = (props) => {
     profilePhotoFileURL,
     profilePhotoFile,
     profileURLChanged,
+    firstNameChanged,
+    lastNameChanged,
     displayNameChanged,
+    profileURLValid,
+    firstNameValid,
+    lastNameValid,
+    displayNameValid,
     editSaveReady,
   } = editProfileState;
-
+  const profileURLCurrent = useRef(profileURL);
+  profileURLCurrent.current = profileURL;
   const { user } = useAuthContext();
   const {
     replaceFile,
@@ -220,34 +223,88 @@ const EditProfileOverlay = (props) => {
     };
     if (editSaveReady) {
       updateUserDocument(user.uid, newValues);
-      if (displayNameChanged) {
-        let newArtistName = { artist: displayName.trimStart().trimEnd() };
-        updateSongDocuments("userID", user.uid, newArtistName);
-      }
     }
   };
 
+  // This handles changing a variable that controls the error message if a user
+  // Enters a profile URL that is already in use.
   useEffect(() => {
     if (
-      cloudStorageResponse.success ||
-      (profilePhotoFile === null && firestoreUserResponse.success)
+      firestoreUserResponse.success === false &&
+      previouslyTriedProfileURL.current !== profileURLCurrent.current
+    ) {
+      console.log("changed current");
+      previouslyTriedProfileURL.current = profileURLCurrent.current;
+    }
+    console.log(firestoreUserResponse.success);
+  }, [firestoreUserResponse.success]);
+
+  // This useEffect handles changing the artist name on all of a users songs when they change their display name
+  useEffect(() => {
+    if (
+      displayNameChanged &&
+      firestoreUserResponse.success &&
+      !firestoreSongsResponse.success &&
+      !firestoreSongsResponse.isPending
+    ) {
+      let newArtistName = { artist: displayName.trimStart().trimEnd() };
+      updateSongDocuments("userID", user.uid, newArtistName);
+    }
+  }, [
+    displayNameChanged,
+    updateSongDocuments,
+    displayName,
+    user.uid,
+    firestoreUserResponse.success,
+    firestoreSongsResponse.success,
+    firestoreSongsResponse.isPending,
+  ]);
+  // This handles exiting the change menu when everything has successfully completed
+  useEffect(() => {
+    if (
+      (displayNameChanged &&
+        profilePhotoFile === null &&
+        firestoreSongsResponse.success &&
+        firestoreUserResponse.success) ||
+      (!displayNameChanged &&
+        profilePhotoFile === null &&
+        firestoreUserResponse.success) ||
+      (displayNameChanged &&
+        profilePhotoFile !== null &&
+        firestoreSongsResponse.success &&
+        firestoreUserResponse.success &&
+        cloudStorageResponse.success) ||
+      (!displayNameChanged &&
+        profilePhotoFile !== null &&
+        firestoreUserResponse.success &&
+        cloudStorageResponse.success)
     ) {
       props.onConfirm();
     }
   }, [
     cloudStorageResponse,
     firestoreUserResponse.success,
+    displayNameChanged,
+    firestoreSongsResponse.success,
     profilePhotoFile,
     props,
   ]);
 
+  // This handles uploading a users photo to the cloud storage
   useEffect(() => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
     if (
-      firestoreUserResponse.success &&
-      !cloudStorageResponse.isPending &&
-      !cloudStorageResponse.success &&
-      profilePhotoFile !== null
+      (!displayNameChanged &&
+        profilePhotoFile !== null &&
+        firestoreUserResponse.success &&
+        !cloudStorageResponse.isPending &&
+        !cloudStorageResponse.success) ||
+      (displayNameChanged &&
+        profilePhotoFile !== null &&
+        firestoreUserResponse.success &&
+        firestoreSongsResponse.success &&
+        !cloudStorageResponse.isPending &&
+        !cloudStorageResponse.success)
     ) {
       //If the song previously didn't have a photo
       if (props.userInformation.profilePhotoURL === "") {
@@ -262,7 +319,7 @@ const EditProfileOverlay = (props) => {
         //If the song previously had a photo
         replaceFile(
           firestoreUserResponse.document,
-          props.userInformation.profilePhotoURL,
+          props.userInformation.profilePhotoFilePath,
           profilePhotoFile,
           "profilePhoto"
         );
@@ -277,6 +334,8 @@ const EditProfileOverlay = (props) => {
     addFile,
     user,
     profilePhotoFile,
+    displayNameChanged,
+    firestoreSongsResponse.success,
     props.userInformation.profilePhotoFilePath,
     props.userInformation.profilePhotoURL,
   ]);
@@ -301,6 +360,7 @@ const EditProfileOverlay = (props) => {
               accept="image/*"
             />
           </div>
+
           <label htmlFor="display-name">Display Name:</label>
           {/*  */}
           <input
@@ -311,6 +371,10 @@ const EditProfileOverlay = (props) => {
             disabled={cloudStorageResponse.isPending}
             onChange={handleDisplayNameChange}
           ></input>
+          {displayNameChanged && !displayNameValid ? (
+            <p>Your artist name must be shorter than 48 characters! </p>
+          ) : null}
+
           <label htmlFor="profile-url">Profile URL :</label>
           {/*  */}
           <input
@@ -321,6 +385,17 @@ const EditProfileOverlay = (props) => {
             disabled={cloudStorageResponse.isPending}
             onChange={handleProfileURLChange}
           ></input>
+          {profileURLChanged &&
+          previouslyTriedProfileURL.current === profileURL &&
+          firestoreUserResponse.success === false ? (
+            <p>This profile URL is already in use. Try a different one.</p>
+          ) : null}
+          {profileURLChanged && !profileURLValid && profileURL.length < 5 ? (
+            <p>Your profile URL must be 5 characters or more </p>
+          ) : null}
+          {profileURLChanged && !profileURLValid && profileURL.length > 35 ? (
+            <p>Your profile URL must be 35 characters or less </p>
+          ) : null}
 
           <label htmlFor="first-name">First Name:</label>
           {/*  */}
@@ -332,6 +407,10 @@ const EditProfileOverlay = (props) => {
             disabled={cloudStorageResponse.isPending}
             onChange={handleFirstNameChange}
           ></input>
+          {firstNameChanged && !firstNameValid ? (
+            <p>Your first name must be shorter than 35 characters! </p>
+          ) : null}
+
           <label htmlFor="last-name">Last Name:</label>
           {/*  */}
           <input
@@ -342,7 +421,9 @@ const EditProfileOverlay = (props) => {
             disabled={cloudStorageResponse.isPending}
             onChange={handleLastNameChange}
           ></input>
-
+          {lastNameChanged && !lastNameValid ? (
+            <p>Your last name must be shorter than 35 characters! </p>
+          ) : null}
           {/* */}
           {!cloudStorageResponse.isPending && !cloudStorageResponse.success && (
             <div className={styles["action-container"]}>
