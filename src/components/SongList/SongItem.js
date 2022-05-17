@@ -1,8 +1,7 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styles from "./SongItem.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
 import { useFirestore } from "../../hooks/useFirestore";
-import { useCollection } from "../../hooks/useCollection";
 import { useCloudStorage } from "../../hooks/useCloudStorage";
 import AudioSeekControlBar from "../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
@@ -288,29 +287,22 @@ const SongItem = ({
     playlistSongs,
     dispatchAudioPlayerContext,
   ]);
-  //This useEffect fires if we delete the song and get a success message back
+  // This useEffect fires if we delete the song and get a success message back
   // It will then delete the likes on this song and then the song document itself.
-  // useEffect(() => {
-  //   if (cloudStorageResponse.success) {
-  //     if (usersLikedSongDocuments) {
-  //       usersLikedSongDocuments.forEach((doc) => {
-  //         deleteLikedDocument(doc.docID);
-  //       });
-  //     }
-  //     deleteSongDocument(song.docID);
-  //     dispatchAudioPlayerContext({
-  //       type: "SONG_DELETED_FROM_PLAYLIST",
-  //       payload: song.docID,
-  //     });
-  //   }
-  // }, [
-  //   cloudStorageResponse.success,
-  //   deleteSongDocument,
-  //   song.docID,
-  //   usersLikedSongDocuments,
-  //   deleteLikedDocument,
-  //   dispatchAudioPlayerContext,
-  // ]);
+  useEffect(() => {
+    if (cloudStorageResponse.success) {
+      deleteSongDocument(song.docID);
+      dispatchAudioPlayerContext({
+        type: "SONG_DELETED_FROM_PLAYLIST",
+        payload: song.docID,
+      });
+    }
+  }, [
+    cloudStorageResponse.success,
+    deleteSongDocument,
+    song.docID,
+    dispatchAudioPlayerContext,
+  ]);
 
   return (
     <div className={styles["song-item"]}>

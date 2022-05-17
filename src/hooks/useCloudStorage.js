@@ -1,6 +1,5 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { projectStorage } from "../firebase/config";
-import { useAuthContext } from "./useAuthContext";
 // import { useFirestore } from "./useFirestore";
 // import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
@@ -83,7 +82,7 @@ export const useCloudStorage = () => {
   const [isCancelled, setIsCancelled] = useState(false);
   //This state is used to hold the progress of the upload
   const [uploadProgress, setUploadProgress] = useState();
-  // const { user } = useAuthContext();
+
   //Essentially, useRef is like a “box” that can hold a mutable value in its .current property
   //We want to cancel the upload if a user navigates away from page and state updates won't work due to the
   //Fact that the current state snapshot isn't always the most update. useRef.current will ALWAYS be up to date
@@ -94,7 +93,6 @@ export const useCloudStorage = () => {
       dispatch(action);
     }
   };
-  const { dispatch: dispatchToAuthContext } = useAuthContext();
   // add song file to the cloud storage
   const addSongFiles = async (fireStoreDocRef, user, files) => {
     //Create the song file path from the information we received
@@ -125,7 +123,7 @@ export const useCloudStorage = () => {
     addedSongFileRef.current = songFileRef.put(files[0]);
     console.log(addedSongFileRef);
 
-    addedSongFileRef.current.on(
+    const unsubscribe = addedSongFileRef.current.on(
       "state_changed",
       (snapshot) => {
         // dispatch({ type: "IS_PENDING" });
@@ -159,14 +157,15 @@ export const useCloudStorage = () => {
           type: "ADDED_FILES",
           payload: addedSongFileRef.current,
         });
+        unsubscribe();
       }
     );
   };
 
   const deleteSongFiles = async (songInformation) => {
     const { songFilePath, songPhotoFilePath } = songInformation;
+    dispatch({ type: "IS_PENDING" });
     try {
-      dispatch({ type: "IS_PENDING" });
       const refToDeleteSong = projectStorage.ref(songFilePath);
       await refToDeleteSong.delete();
       if (songPhotoFilePath !== "") {
@@ -209,16 +208,17 @@ export const useCloudStorage = () => {
     newFile,
     newFilePropertyName
   ) => {
-    const newFilePath =
-      collection +
-      "/" +
-      user.uid +
-      "/" +
-      fireStoreDocRef.id +
-      "_" +
-      newFile.name;
+    dispatch({ type: "IS_PENDING" });
+
     try {
-      dispatch({ type: "IS_PENDING" });
+      const newFilePath =
+        collection +
+        "/" +
+        user.uid +
+        "/" +
+        fireStoreDocRef.id +
+        "_" +
+        newFile.name;
       const fileRef = projectStorage.ref(newFilePath);
       const addedFile = await fileRef.put(newFile);
       const downloadURL = await addedFile.ref.getDownloadURL();
@@ -249,10 +249,11 @@ export const useCloudStorage = () => {
     newFilePropertyName,
     user
   ) => {
-    const newFilePath =
-      storageFilePathToDelete.split("_")[0] + "_" + newFile.name;
+    dispatch({ type: "IS_PENDING" });
+
     try {
-      dispatch({ type: "IS_PENDING" });
+      const newFilePath =
+        storageFilePathToDelete.split("_")[0] + "_" + newFile.name;
       const fileToDeleteRef = projectStorage.ref(storageFilePathToDelete);
       await fileToDeleteRef.delete();
       const newFileRef = projectStorage.ref(newFilePath);
