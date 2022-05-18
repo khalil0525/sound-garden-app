@@ -4,6 +4,9 @@ import ReactDOM from "react-dom";
 import DeleteSongOverlay from "./DeleteSongOverlay/DeleteSongOverlay";
 import EditSongOverlay from "./EditSongOverlay/EditSongOverlay";
 import EditProfileOverlay from "./EditProfileOverlay/EditProfileOverlay";
+import SignInOverlay from "./SignInOverlay/SignInOverlay";
+import CreateAccountOverlay from "./CreateAccountOverlay/CreateAccountOverlay";
+
 // import Card from "./Card";
 // import Button from "./Button";
 import styles from "./Modal.module.css";
@@ -15,6 +18,15 @@ const Backdrop = (props) => {
 const ModalOverlay = (props) => {
   return (
     <>
+      {props.action === "signIn" && (
+        <SignInOverlay onConfirm={props.onConfirm} onCancel={props.onCancel} />
+      )}
+      {props.action === "createAccount" && (
+        <CreateAccountOverlay
+          onConfirm={props.onConfirm}
+          onCancel={props.onCancel}
+        />
+      )}
       {props.action === "deleteSong" && (
         <DeleteSongOverlay
           onConfirm={props.onConfirm}

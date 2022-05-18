@@ -70,13 +70,13 @@ function App() {
                     )
                   }
                 />
-                <Route
+                {/* <Route
                   path="/login"
                   element={!user ? <Login /> : <Navigate to="/" />}
-                />
+                /> */}
                 <Route
                   path="/profile"
-                  element={user ? <Profile /> : <Navigate to="/login" />}
+                  element={user ? <Profile /> : <Navigate to="/" />}
                 ></Route>
                 <Route
                   path="/search"
@@ -84,12 +84,12 @@ function App() {
                 />
                 <Route
                   path="/upload"
-                  element={user ? <Upload /> : <Navigate to="/login" />}
+                  element={user ? <Upload /> : <Navigate to="/" />}
                 />
-                <Route
+                {/* <Route
                   path="/register"
                   element={!user ? <Register /> : <Navigate to="/" />}
-                />
+                /> */}
               </Routes>
             </SimpleBar>
           </div>
