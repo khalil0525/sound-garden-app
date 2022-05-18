@@ -71,12 +71,6 @@ const SongItem = ({
     playlistLocation,
   } = useAudioPlayerContext();
 
-  // const { documents: usersLikedSongDocuments } = useCollection("likes", [
-  //   "likedSongID",
-  //   "==",
-  //   song.docID,
-  // ]);
-
   // New like system
 
   const {
@@ -89,18 +83,6 @@ const SongItem = ({
   const [isLiked, setIsLiked] = useState(() =>
     user.uid ? liked.includes(song.docID) : false
   );
-  // useEffect(() => {
-  //   console.log(liked);
-  // });
-  // const {
-  //   addDocument: addLikedDocument,
-  //   deleteDocument: deleteLikedDocument,
-  //   response: firestoreResponse,
-  // } = useFirestore("likes");
-
-  // Used to change the artist id into their displayName
-  // const { getDocument: getArtistName, response: getArtistNameResponse } =
-  //   useFirestore("users");
 
   // These 2 hooks are used to delete a song document/files
   const {

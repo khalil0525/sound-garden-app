@@ -173,10 +173,10 @@ const EditProfileOverlay = (props) => {
     updateDocument: updateUserDocument,
     response: firestoreUserResponse,
   } = useFirestore("users");
-  const {
-    updateMultipleDocuments: updateSongDocuments,
-    response: firestoreSongsResponse,
-  } = useFirestore("music");
+  // const {
+  //   updateMultipleDocuments: updateSongDocuments,
+  //   response: firestoreSongsResponse,
+  // } = useFirestore("music");
   const handleProfilePhotoFileChange = (event) => {
     if (event.target.files[0].type.split("/")[0] === "image") {
       dispatchEditProfileState({
@@ -241,38 +241,50 @@ const EditProfileOverlay = (props) => {
   }, [firestoreUserResponse.success]);
 
   // This useEffect handles changing the artist name on all of a users songs when they change their display name
-  useEffect(() => {
-    if (
-      displayNameChanged &&
-      firestoreUserResponse.success &&
-      !firestoreSongsResponse.success &&
-      !firestoreSongsResponse.isPending
-    ) {
-      let newArtistName = { artist: displayName.trimStart().trimEnd() };
-      updateSongDocuments("userID", user.uid, newArtistName);
-    }
-  }, [
-    displayNameChanged,
-    updateSongDocuments,
-    displayName,
-    user.uid,
-    firestoreUserResponse.success,
-    firestoreSongsResponse.success,
-    firestoreSongsResponse.isPending,
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     displayNameChanged &&
+  //     firestoreUserResponse.success &&
+  //     !firestoreSongsResponse.success &&
+  //     !firestoreSongsResponse.isPending
+  //   ) {
+  //     let newArtistName = { artist: displayName.trimStart().trimEnd() };
+  //     updateSongDocuments("userID", user.uid, newArtistName);
+  //   }
+  // }, [
+  //   displayNameChanged,
+  //   updateSongDocuments,
+  //   displayName,
+  //   user.uid,
+  //   firestoreUserResponse.success,
+  //   firestoreSongsResponse.success,
+  //   firestoreSongsResponse.isPending,
+  // ]);
   // This handles exiting the change menu when everything has successfully completed
+  // if (
+  //   (displayNameChanged &&
+  //     profilePhotoFile === null &&
+  //     firestoreSongsResponse.success &&
+  //     firestoreUserResponse.success) ||
+  //   (!displayNameChanged &&
+  //     profilePhotoFile === null &&
+  //     firestoreUserResponse.success) ||
+  //   (displayNameChanged &&
+  //     profilePhotoFile !== null &&
+  //     firestoreSongsResponse.success &&
+  //     firestoreUserResponse.success &&
+  //     cloudStorageResponse.success) ||
+  //   (!displayNameChanged &&
+  //     profilePhotoFile !== null &&
+  //     firestoreUserResponse.success &&
+  //     cloudStorageResponse.success)
   useEffect(() => {
     if (
-      (displayNameChanged &&
-        profilePhotoFile === null &&
-        firestoreSongsResponse.success &&
-        firestoreUserResponse.success) ||
+      (profilePhotoFile === null && firestoreUserResponse.success) ||
       (!displayNameChanged &&
         profilePhotoFile === null &&
         firestoreUserResponse.success) ||
-      (displayNameChanged &&
-        profilePhotoFile !== null &&
-        firestoreSongsResponse.success &&
+      (profilePhotoFile !== null &&
         firestoreUserResponse.success &&
         cloudStorageResponse.success) ||
       (!displayNameChanged &&
@@ -287,7 +299,7 @@ const EditProfileOverlay = (props) => {
     cloudStorageResponse,
     firestoreUserResponse.success,
     displayNameChanged,
-    firestoreSongsResponse.success,
+    // firestoreSongsResponse.success,
     profilePhotoFile,
     props,
     dispatchToAuthContext,
@@ -296,16 +308,27 @@ const EditProfileOverlay = (props) => {
   // This handles uploading a users photo to the cloud storage
   useEffect(() => {
     //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
+    // if (
+    //   (!displayNameChanged &&
+    //     profilePhotoFile !== null &&
+    //     firestoreUserResponse.success &&
+    //     !cloudStorageResponse.isPending &&
+    //     !cloudStorageResponse.success) ||
+    //   (displayNameChanged &&
+    //     profilePhotoFile !== null &&
+    //     firestoreUserResponse.success &&
+    //     firestoreSongsResponse.success &&
+    //     !cloudStorageResponse.isPending &&
+    //     !cloudStorageResponse.success)
+    // ) {
     if (
       (!displayNameChanged &&
         profilePhotoFile !== null &&
         firestoreUserResponse.success &&
         !cloudStorageResponse.isPending &&
         !cloudStorageResponse.success) ||
-      (displayNameChanged &&
-        profilePhotoFile !== null &&
+      (profilePhotoFile !== null &&
         firestoreUserResponse.success &&
-        firestoreSongsResponse.success &&
         !cloudStorageResponse.isPending &&
         !cloudStorageResponse.success)
     ) {
@@ -339,7 +362,7 @@ const EditProfileOverlay = (props) => {
     user,
     profilePhotoFile,
     displayNameChanged,
-    firestoreSongsResponse.success,
+    // firestoreSongsResponse.success,
     props.userInformation.profilePhotoFilePath,
     props.userInformation.profilePhotoURL,
   ]);
@@ -391,7 +414,8 @@ const EditProfileOverlay = (props) => {
           ></input>
           {profileURLChanged &&
           previouslyTriedProfileURL.current === profileURL &&
-          firestoreUserResponse.success === false ? (
+          firestoreUserResponse.success === false &&
+          !firestoreUserResponse.isPending ? (
             <p>This profile URL is already in use. Try a different one.</p>
           ) : null}
           {profileURLChanged && !profileURLValid && profileURL.length < 5 ? (
