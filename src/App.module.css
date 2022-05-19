@@ -6,7 +6,11 @@
   grid-template-columns: 1fr 5fr;
   column-gap: 0.2rem;
 }
-
+.sideNavigation {
+  max-width: 20vw;
+  height: inherit;
+  grid-column: 1;
+}
 .page {
   background-color: white;
   border-radius: 34px;

@@ -12,39 +12,40 @@ import { ReactComponent as GenreIcon } from "../../images/Mic_alt_duotone.svg";
 import { ReactComponent as UploadedIcon } from "../../images/Upload_duotone_line.svg";
 
 // import {ReactComponent as }
-const SideNavigation = () => {
+const SideNavigation = ({ className }) => {
   const { user } = useAuthContext();
 
   return (
     //This className
-    <div className={styles.sidebar}>
-      <div className={styles["sidebar-header"]}>
-        {/* <h1>Sound Garden</h1> */}
-        <div className={styles["sidebar-header-image"]}>
+    <div className={`${styles.sideNavigation} ${className}`}>
+      <div className={styles["sideNavigation__header"]}>
+        <div className={styles["sideNavigation__header-imageContainer"]}>
           <img src={soundGardenLogo} alt="Soundgarden logo"></img>
         </div>
         {/* Conditionally render the users displayName */}
         {user && (
           <>
-            <p className={styles["welcome-text"]}>Hi</p>
-            <p className={styles.username}>{user.displayName}</p>
+            <p className={styles["sideNavigation__header-welcomeText"]}>Hi</p>
+            <p className={styles["sideNavigation__header-artistNameText"]}>
+              {user.displayName}
+            </p>
           </>
         )}
       </div>
 
       {/* <div className={styles["navigation-container"]}> */}
-      <div className={styles["navigation-menu"]}>
-        <h4 className={styles["navigation-header-text"]}>Menu</h4>
-        <nav className={styles.navbar}>
+      <div className={styles["sideNavigation__mainMenu"]}>
+        <h4 className={styles["sideNavigation__menuHeaderText"]}>Menu</h4>
+        <nav className={styles["sideNavigation__navbar"]}>
           <NavLink
             to="/"
             className={({ isActive }) =>
-              isActive ? styles["active-nav-item"] : undefined
+              isActive ? styles["navbar__activeItem"] : undefined
             }
           >
-            <div className={styles["navbar-item-contents"]}>
+            <div className={styles["navbar__itemContent"]}>
               <HomeIcon
-                className={styles["navbar-item-contents-icon"]}
+                className={styles["navbar__itemContent-icon"]}
                 alt="Home button icon"
               />
               <div>Home</div>
@@ -53,12 +54,12 @@ const SideNavigation = () => {
           <NavLink
             to="/genres"
             className={({ isActive }) =>
-              isActive ? styles["active-nav-item"] : undefined
+              isActive ? styles["navbar__activeItem"] : undefined
             }
           >
-            <div className={styles["navbar-item-contents"]}>
+            <div className={styles["navbar__itemContent"]}>
               <GenreIcon
-                className={styles["navbar-item-contents-icon"]}
+                className={styles["navbar__itemContent-icon"]}
                 alt="Genre button icon"
               />
               <div>Genres</div>
@@ -67,12 +68,12 @@ const SideNavigation = () => {
           <NavLink
             to="/artists"
             className={({ isActive }) =>
-              isActive ? styles["active-nav-item"] : undefined
+              isActive ? styles["navbar__activeItem"] : undefined
             }
           >
-            <div className={styles["navbar-item-contents"]}>
+            <div className={styles["navbar__itemContent"]}>
               <ArtistIcon
-                className={styles["navbar-item-contents-icon"]}
+                className={styles["navbar__itemContent-icon"]}
                 alt="Artist button icon"
               />
               <div>Artists</div>
@@ -82,20 +83,22 @@ const SideNavigation = () => {
       </div>
 
       {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
-      <div className={styles["navigation-library"]}>
+      <div className={styles["sideNavigation__libraryMenu"]}>
         {user && (
           <>
-            <h4 className={styles["navigation-header-text"]}>Library</h4>
-            <nav className={styles.navbar}>
+            <h4 className={styles["sideNavigation__menuHeaderText"]}>
+              Library
+            </h4>
+            <nav className={styles["sideNavigation__navbar"]}>
               <NavLink
                 to="/liked"
                 className={({ isActive }) =>
-                  isActive ? styles["active-nav-item"] : undefined
+                  isActive ? styles["navbar__activeItem"] : undefined
                 }
               >
-                <div className={styles["navbar-item-contents"]}>
+                <div className={styles["navbar__itemContent"]}>
                   <LikedIcon
-                    className={styles["navbar-item-contents-icon"]}
+                    className={styles["navbar__itemContent-icon"]}
                     alt="Liked link icon"
                   />
                   <div>Liked</div>
@@ -104,12 +107,12 @@ const SideNavigation = () => {
               <NavLink
                 to="/uploaded"
                 className={({ isActive }) =>
-                  isActive ? styles["active-nav-item"] : undefined
+                  isActive ? styles["navbar__activeItem"] : undefined
                 }
               >
-                <div className={styles["navbar-item-contents"]}>
+                <div className={styles["navbar__itemContent"]}>
                   <UploadedIcon
-                    className={styles["navbar-item-contents-icon"]}
+                    className={styles["navbar__itemContent-icon"]}
                     alt="Uploaded link icon"
                   />
                   <div>Uploaded</div>
@@ -120,7 +123,7 @@ const SideNavigation = () => {
         )}
       </div>
 
-      <div className={styles["audioplayer_container"]}>
+      <div className={styles["sideNavigation__audioplayerContainer"]}>
         <AudioPlayer />
       </div>
     </div>

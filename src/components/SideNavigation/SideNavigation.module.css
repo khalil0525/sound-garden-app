@@ -1,82 +1,70 @@
-.sidebar {
-  /* background-color: #fff; */
-  /* grid-column: 1/2; */
-  max-width: 20vw;
-  height: inherit;
-  /* display: flex;
-  flex-direction: column; */
+.sideNavigation {
+  max-width: 100%;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
-
-  /* gap: 10rem; */
+  color: #ffffff;
 }
 
-.sidebar-header {
+.sideNavigation__header {
   grid-row: 1/1;
-  margin: 3rem 0 3rem 5rem;
+
+  max-width: inherit;
+
+  padding: 2rem 4rem;
+  margin: 1rem;
 
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-/* .sidebar-header h1 {
-  font-size: 4.8rem;
-  font-weight: 700;
-  color: orange;
-} */
-
-.sidebar-header-image {
+.sideNavigation__header-imageContainer {
   border-radius: 20px;
   width: 8rem;
   height: 8rem;
-
   box-shadow: 0 10px 140px rgba(251, 80, 47, 0.9);
 }
-.sidebar-header-image img {
+.sideNavigation__header-imageContainer img {
   width: 100%;
   height: 100%;
   border-radius: 12px;
 }
-.welcome-text {
+.sideNavigation__header-welcomeText {
   font-size: 2.4rem;
   font-weight: 400;
   line-height: 2.9rem;
   opacity: 0.5;
-  color: #ffffff;
 }
-.username {
+.sideNavigation__header-artistNameText {
   font-size: 3.2rem;
   font-weight: 600;
   line-height: 3.9rem;
-  color: #ffffff;
 }
-
-.navigation-menu {
+.sideNavigation__mainMenu {
+  max-width: inherit;
   grid-row: 2/2;
 }
-.navigation-library {
+.sideNavigation__libraryMenu {
+  max-width: inherit;
   grid-row: 3/3;
 }
-.navigation-header-text {
+.sideNavigation__menuHeaderText {
   font-weight: 400;
   font-size: 2rem;
   line-height: 2.4rem;
 
   margin-bottom: 0.2rem;
-
   padding: 1rem 3.2rem 1rem 5rem;
-  color: #ffffff;
 }
 
-.navbar {
+.sideNavigation__navbar {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.2rem;
 }
 
-.navbar a:link,
-.navbar a:visited {
+.sideNavigation__navbar a:link,
+.sideNavigation__navbar a:visited {
   font-size: 2rem;
   font-weight: 400;
 
@@ -87,10 +75,10 @@
 
   /* Style for active class */
 }
-.navbar a:hover {
+.sideNavigation__navbar a:hover {
   background: rgba(252, 100, 70, 0.514);
 }
-.navbar a.active-nav-item {
+.sideNavigation__navbar a.navbar__activeItem {
   background: linear-gradient(
     90deg,
     rgba(249, 51, 14, 0.4) 0%,
@@ -100,21 +88,20 @@
   color: #fff;
 }
 
-.navbar-item-contents {
+.navbar__itemContent {
   display: flex;
   gap: 1rem;
 }
-/* .navbar-item-contents-icon {
+/* .navbar__itemContent-icon {
   stroke: rgba(255, 255, 255, 0.2);
   width: 2.4rem;
   height: 2.4rem;
 }
+*/
 
-.navbar a img {
-  stroke: rgba(255, 255, 255, 0.5);
-} */
+.sideNavigation__audioplayerContainer {
+  max-width: inherit;
 
-.audioplayer_container {
   grid-row: 4/4;
-  margin: 2rem auto 0 auto;
+  /* margin: 2rem auto 0 auto; */
 }
