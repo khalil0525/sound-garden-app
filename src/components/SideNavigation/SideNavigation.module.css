@@ -101,7 +101,5 @@
 
 .sideNavigation__audioplayerContainer {
   max-width: inherit;
-
   grid-row: 4/4;
-  /* margin: 2rem auto 0 auto; */
 }

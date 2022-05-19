@@ -158,12 +158,6 @@ const SongItem = ({
   };
 
   const handleLikeClick = () => {
-    // setIsLiked((prevState) => !prevState);
-    // if (!isLiked) {
-    //   addLikedDocument({ uid: user.uid, likedSongID: song.docID });
-    // } else {
-    //   deleteLikedDocument(liked.docID);
-    // }
     if (user.uid) {
       setIsLiked((prevState) => !prevState);
       let newState;
@@ -180,6 +174,7 @@ const SongItem = ({
   const handleSeekMouseDown = () => {
     if (isMounted) {
       console.log("MOUSE DOWN");
+      dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN_FROM_SONG_ITEM" });
       dispatchSongItemState({ type: "SEEK_MOUSE_DOWN" });
     }
   };
@@ -187,6 +182,10 @@ const SongItem = ({
   const handleSeekChange = (event) => {
     console.log("seekChange", event.target.value);
     if (isMounted) {
+      dispatchAudioPlayerContext({
+        type: "SEEK_CHANGE_FROM_SONG_ITEM",
+        payload: parseFloat(event.target.value),
+      });
       dispatchSongItemState({
         type: "SEEK_POSITION_CHANGE",
         payload: parseFloat(event.target.value),
@@ -198,11 +197,11 @@ const SongItem = ({
     if (isMounted) {
       console.log(event.target.value);
       console.log("MOUSE UP");
-      dispatchSongItemState({ type: "SEEK_MOUSE_UP" });
       dispatchAudioPlayerContext({
-        type: "SEEK_FROM_SONG_ITEM",
+        type: "SEEK_MOUSE_UP_FROM_SONG_ITEM",
         payload: event.target.value,
       });
+      dispatchSongItemState({ type: "SEEK_MOUSE_UP" });
     }
   };
   // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT

@@ -2,7 +2,6 @@ import React, { useEffect, useReducer, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import styles from "./AudioPlayer.module.css";
 import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
-// import { useFirestore } from "../../hooks/useFirestore";
 import AudioSeekControlBar from "./AudioSeekControlBar/AudioSeekControlBar";
 import AudioPlayerMarquee from "./AudioPlayerMarquee";
 import previous_NextIcon from "../../images/Expand_right_stop.svg";
@@ -40,8 +39,6 @@ const audioPlayerReducer = (state, action) => {
       return { ...state, ...action.payload };
     case "DURATION_CHANGE":
       return { ...state, duration: action.payload };
-    // case "LOAD_CACHED_SONG":
-    // return {...state, ...action.payload}
     case "LOAD_SONG":
       return { ...state, ...action.payload };
     case "PLAY":
@@ -83,6 +80,7 @@ const AudioPlayer = () => {
     playlist,
     currentSongPlayedTime,
     seekingFromSongItem,
+    seekingFromSongItemComplete,
   } = useAudioPlayerContext();
   // const { getDocument: getArtistName, response: getArtistNameResponse } =
   //   useFirestore("users");
@@ -155,8 +153,8 @@ const AudioPlayer = () => {
   };
   const handleSeekMouseDown = (event) => {
     console.log("MOUSE DOWN");
+    dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN_FROM_AUDIO_PLAYER" });
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_DOWN" });
-    dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN" });
   };
 
   const handleSeekChange = (event) => {
@@ -171,6 +169,10 @@ const AudioPlayer = () => {
   const handleSeekMouseUp = (event) => {
     console.log(event.target.value);
     console.log("MOUSE UP");
+    dispatchAudioPlayerContext({
+      type: "SEEK_MOUSE_UP_FROM_AUDIO_PLAYER",
+      payload: parseFloat(event.target.value),
+    });
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_UP" });
 
     player.current.seekTo(parseFloat(event.target.value));
@@ -179,11 +181,11 @@ const AudioPlayer = () => {
   const handleProgress = (state) => {
     // We only want to update time slider if we are not currently seeking
     if (!seeking) {
-      dispatchAudioPlayerState({ type: "PROGRESS_CHANGE", payload: state });
       dispatchAudioPlayerContext({
         type: "PLAYED_TIME_CHANGE",
         payload: state.played,
       });
+      dispatchAudioPlayerState({ type: "PROGRESS_CHANGE", payload: state });
       // console.log(state);
     }
   };
@@ -230,13 +232,33 @@ const AudioPlayer = () => {
     localStorage.setItem("volume", volume);
     // console.log("Setting volume", volume);
   }, [volume]);
-  //This useEffect is used when a SongItem sends us a position to seek to
+
+  //This is used when a SongItem sends us a position to seek to,
+  // It causes the AudioPlayer to scrub through the song
   useEffect(() => {
     if (seekingFromSongItem) {
+      dispatchAudioPlayerState({ type: "SEEK_MOUSE_DOWN" });
+      dispatchAudioPlayerState({
+        type: "SEEK_POSITION_CHANGE",
+        payload: parseFloat(currentSongPlayedTime),
+      });
       player.current.seekTo(parseFloat(currentSongPlayedTime));
-      dispatchAudioPlayerContext({ type: "SEEK_FROM_SONG_ITEM_COMPLETE" });
     }
   }, [currentSongPlayedTime, seekingFromSongItem, dispatchAudioPlayerContext]);
+
+  // When a user lifts their mouse from a SongItem seek change,
+  // This will trigger in order to stop seeking in the audio player
+  useEffect(() => {
+    if (seekingFromSongItemComplete && seeking) {
+      dispatchAudioPlayerContext({ type: "SEEK_FROM_SONG_ITEM_COMPLETE" });
+      dispatchAudioPlayerState({ type: "SEEK_MOUSE_UP" });
+    }
+  }, [
+    currentSongPlayedTime,
+    dispatchAudioPlayerContext,
+    seeking,
+    seekingFromSongItemComplete,
+  ]);
 
   // useEffect(() => {
   //   if (url) {
@@ -266,9 +288,6 @@ const AudioPlayer = () => {
         onDuration={handleDuration}
       />
 
-      {/* AUDIO PLAYER MAIN CONTAINER ************************ */}
-
-      {/* <div className={styles["audio-player__contents"]}> */}
       {/* Grey DIV ************************ */}
       <div className={styles["audio-player__upper"]}>
         <div className={styles["audio-player__controls"]}>

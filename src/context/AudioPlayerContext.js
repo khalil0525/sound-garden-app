@@ -11,6 +11,8 @@ let initialState = {
   playlistEnded: false,
   currentSongPlayedTime: 0,
   seekingFromSongItem: false,
+  seekingFromSongItemComplete: false,
+  seekingFromAudioPlayer: false,
   playlistLocation: null,
 };
 
@@ -144,16 +146,47 @@ export const audioPlayerReducer = (state, action) => {
         ...state,
         currentSongPlayedTime: action.payload,
       };
-    case "SEEK_FROM_SONG_ITEM":
+    //FOR SEEKING FROM THE SONG ITEM*****************
+    case "SEEK_MOUSE_DOWN_FROM_SONG_ITEM":
+      return {
+        ...state,
+        seekingFromSongItem: true,
+      };
+    case "SEEK_CHANGE_FROM_SONG_ITEM":
       return {
         ...state,
         currentSongPlayedTime: action.payload,
-        seekingFromSongItem: true,
+      };
+    case "SEEK_MOUSE_UP_FROM_SONG_ITEM":
+      return {
+        ...state,
+        currentSongPlayedTime: action.payload,
+        seekingFromSongItem: false,
+        seekingFromSongItemComplete: true,
       };
     case "SEEK_FROM_SONG_ITEM_COMPLETE":
       return {
         ...state,
-        seekingFromSongItem: false,
+        seekingFromSongItemComplete: false,
+      };
+
+    //FOR SEEKING FROM THE AUDIOPLAYER*************************
+    case "SEEK_MOUSE_DOWN_FROM_AUDIO_PLAYER":
+      return {
+        ...state,
+        seekingFromAudioPlayer: true,
+      };
+    //We dont need this because the song item should scrub live
+    // case "SEEK_CHANGE_FROM_AUDIO_PLAYER":
+    //   return {
+    //     ...state,
+    //     currentSongPlayedTime: action.payload,
+    //   };
+    case "SEEK_MOUSE_UP_FROM_AUDIO_PLAYER":
+      return {
+        ...state,
+        seekingFromAudioPlayer: false,
+        currentSongPlayedTime: action.payload,
       };
     default:
       console.log("DEFAULT STATE");
