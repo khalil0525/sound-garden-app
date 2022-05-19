@@ -26,10 +26,14 @@ export const useCollection = (
   const collectionFilterVariable = useRef(_collectionFilterVariable).current;
 
   useEffect(() => {
+    //This is used when we are pulling information from a Algolia search
+    //Instead of a FireStore collection
     if (collection === "skip") {
       return;
     }
 
+    //When we do a query on two collection we will store 2 strings in an array
+    //Otherwise we just receive a string
     let ref =
       typeof collection === "object"
         ? projectFirestore.collection(collection[0])
@@ -44,11 +48,6 @@ export const useCollection = (
         let results = [];
 
         snapshot.docs.forEach((doc) => {
-          // if (query.length === 2) {
-          //   let extractData = doc.data();
-          //   let extractVariable = extractData[collectionFilterVariable];
-          //   console.log(extractVariable);
-          // }
           //Convert the timestamp to a date
           const timestamp = moment(doc.data().createdAt.toDate())
             .startOf("hour")
@@ -118,20 +117,6 @@ export const useCollection = (
     //Unsubscribe on unmount
     return () => unsubscribe();
   }, [collection, query, collectionFilterVariable]);
-
-  // const getDisplayName = async (id) => {
-  //   let data;
-  //   try {
-  //     const nameRef = projectFirestore.collection("users").doc(id);
-  //     console.log(nameRef);
-  //     const name = await nameRef.get();
-  //     console.log(name);
-  //     data = name.data().displayName;
-  //   } catch (err) {
-  //     data = null;
-  //   }
-  //   return data;
-  // };
 
   return { documents, error };
 };

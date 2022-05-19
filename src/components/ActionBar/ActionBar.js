@@ -14,12 +14,6 @@ const ActionBar = (props) => {
       <nav className={styles["actionbar__nav"]}>
         {!props.user ? (
           <>
-            {/* <Link to="/login">
-              <div>Sign in</div>
-            </Link>
-            <Link to="/register">
-              <div>Create account</div>
-            </Link> */}
             <button onClick={() => setIsSigningIn(true)}>Sign in</button>
             <button onClick={() => setIsCreatingAccount(true)}>
               Create Account

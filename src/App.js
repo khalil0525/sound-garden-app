@@ -7,8 +7,6 @@ import Artists from "./pages/Artists/Artists";
 import Liked from "./pages/Liked/Liked";
 import Uploaded from "./pages/Uploaded/Uploaded";
 import Profile from "./pages/Profile/Profile";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
 import SideNavigation from "./components/SideNavigation/SideNavigation";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Upload from "./pages/Upload/Upload";
@@ -70,10 +68,6 @@ function App() {
                     )
                   }
                 />
-                {/* <Route
-                  path="/login"
-                  element={!user ? <Login /> : <Navigate to="/" />}
-                /> */}
                 <Route
                   path="/profile"
                   element={user ? <Profile /> : <Navigate to="/" />}
@@ -86,10 +80,6 @@ function App() {
                   path="/upload"
                   element={user ? <Upload /> : <Navigate to="/" />}
                 />
-                {/* <Route
-                  path="/register"
-                  element={!user ? <Register /> : <Navigate to="/" />}
-                /> */}
               </Routes>
             </SimpleBar>
           </div>

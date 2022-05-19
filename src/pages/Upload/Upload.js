@@ -7,6 +7,9 @@ import styles from "./Upload.module.css";
 import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
+import ActionBar from "../../components/ActionBar/ActionBar";
+import { FileUploader } from "react-drag-drop-files";
+
 let initialState = {
   songFile: null,
   songPhotoFile: null,
@@ -20,7 +23,7 @@ let initialState = {
 };
 const uploadReducer = (state, action) => {
   switch (action.type) {
-    case "FILE_CHANGED":
+    case "SONG_FILE_CHANGED":
       return {
         ...state,
         songFile: action.payload,
@@ -134,16 +137,14 @@ const Upload = () => {
       type: "CANCEL_UPLOAD",
     });
   };
-  const handleSongFileChange = (event) => {
+  const handleSongFileChange = (file) => {
     //Check if the file the user is passing is an audio file
     // Otherwise don't accept it.
-    if (event.target.files[0].type.split("/")[0] === "audio") {
+    if (file["type"].split("/")[0] === "audio") {
       dispatchSongUploadState({
-        type: "FILE_CHANGED",
-        payload: event.target.files[0],
+        type: "SONG_FILE_CHANGED",
+        payload: file,
       });
-    } else {
-      event.target.value = "";
     }
   };
   const handleSongPhotoFileChange = (event) => {
@@ -214,15 +215,18 @@ const Upload = () => {
   return (
     <>
       <div className={styles["upload"]}>
+        <ActionBar className={styles["upload__actionBar"]} user={user} />
         <div className={styles["upload-container"]}>
           {!songFile && (
-            <div className={styles["file-picker"]}>
-              <input
-                type="file"
-                onChange={handleSongFileChange}
-                accept=".mp3, .ogg, .wav"
-              ></input>
-            </div>
+            <FileUploader
+              // classes={`${styles["file-picker"]}`}
+              handleChange={handleSongFileChange}
+              name="file"
+              multiple={false}
+              hoverTitle="Drop audio file here"
+              types={["mp3", "ogg", "wav"]}
+              maxSize={200}
+            />
           )}
           {songFile && (
             <div className={styles["upload-form"]}>

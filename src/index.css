@@ -37,7 +37,7 @@ html {
 }
 
 body {
-  margin: 0;
+  /* margin: 0; */
   position: relative;
   /* max-width: 100vw; */
   background: #161618;
