@@ -68,10 +68,7 @@ function App() {
                     )
                   }
                 />
-                <Route
-                  path="/profile"
-                  element={user ? <Profile /> : <Navigate to="/" />}
-                ></Route>
+                <Route path="/:profileURL" element={<Profile />}></Route>
                 <Route
                   path="/search"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}

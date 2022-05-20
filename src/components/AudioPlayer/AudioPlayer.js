@@ -8,6 +8,7 @@ import previous_NextIcon from "../../images/Expand_right_stop.svg";
 import pauseIcon from "../../images/pause-svgrepo-com.svg";
 import playIcon from "../../images/Arrow_drop_right.svg";
 import placeholderImage from "../../images/blank_image_placeholder.svg";
+import Button from "../UI/Button/Button";
 
 let initialState = {
   url: null,
@@ -307,43 +308,33 @@ const AudioPlayer = () => {
 
       <div className={styles["audio-player__lower"]}>
         {/* PREVIOUS/PLAY&PAUSE/NEXT */}
-        {/* {loadedSongURL && ()} */}
         <div className={styles["audio-player__controls-main"]}>
-          <button
+          {/* PREVIOUS BUTTON */}
+          <Button
             disabled={!loadedSongURL}
             className={styles["audio-player__controls-main-previous"]}
             onClick={handlePreviousClick}
-          >
-            <img
-              src={previous_NextIcon}
-              alt="Audio player previous button"
-            ></img>
-          </button>
-
-          <button
+            iconImage={previous_NextIcon}
+            altText="Audio player previous button icon"
+          />
+          {/* PLAY BUTTON */}
+          <Button
             disabled={!loadedSongURL}
             onClick={handlePlayPause}
             className={styles["audio-player__controls-main-play"]}
-          >
-            {playing ? (
-              // Pause button img
-              <img src={pauseIcon} alt="Audio player pause button"></img>
-            ) : (
-              // Play button img
-              <img src={playIcon} alt="Audio player play button"></img>
-            )}
-          </button>
-
-          <button
+            iconImage={playing ? pauseIcon : playIcon}
+            altText={
+              playing ? "Audio player pause button" : "Audio player play button"
+            }
+          />
+          {/* NEXT BUTTON */}
+          <Button
             disabled={!loadedSongURL}
             className={styles["audio-player__controls-main-next"]}
             onClick={handleNextClick}
-          >
-            <img
-              src={previous_NextIcon}
-              alt="Audio player previous button"
-            ></img>
-          </button>
+            iconImage={previous_NextIcon}
+            altText="Audio player next button icon"
+          />
         </div>
 
         {/* VOLUME */}

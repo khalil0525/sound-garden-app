@@ -12,6 +12,7 @@ import editIcon from "../../images/pencil_solid.svg";
 import deleteIcon from "../../images/trash_solid.svg";
 import { ReactComponent as HeartIcon } from "../../images/Heart_greyfill.svg";
 import Modal from "../UI/Modal/Modal";
+import Button from "../UI/Button/Button";
 
 let initialState = {
   playing: false,
@@ -290,26 +291,14 @@ const SongItem = ({
       <li className={styles["song-item__content"]}>
         <div className={styles["song-item__header"]}>
           <div className={styles["song-item__titleContainer"]}>
-            <button
-              className={`${styles["titleContainer__playBtn"]} ${styles.btn}`}
+            <Button
+              className={`${styles["titleContainer__playBtn"]} `}
               onClick={handlePlayPauseClick}
-            >
-              {playing ? (
-                <img
-                  src={pauseIcon}
-                  alt="Song pause button icon"
-                  width="36"
-                  height="36"
-                />
-              ) : (
-                <img
-                  src={playIcon}
-                  alt="Song play button icon"
-                  width="36"
-                  height="36"
-                />
-              )}
-            </button>
+              iconImage={playing ? pauseIcon : playIcon}
+              altText={
+                playing ? "Song pause button icon" : "Song play button icon"
+              }
+            />
 
             <div className={styles["titleContainer__songTitle"]}>
               <span className={styles["titleContainer__songTitle-artist"]}>
@@ -351,55 +340,54 @@ const SongItem = ({
 
         <div className={styles["song-item__footer"]}>
           <div className={styles["song-item__actionContainer"]}>
-            <button
-              className={`${styles["actionContainer-likeBtn"]} ${
+            <Button
+              className={`${styles["actionContainer__btn"]} ${
                 isLiked && user.uid && styles["actionContainer-likeBtn--liked"]
-              } ${styles.btn}`}
+              } `}
               onClick={handleLikeClick}
               disabled={firestoreLikedDocumentResponse.isPending}
+              buttonSize="small"
+              iconImage={(className) => (
+                <HeartIcon className={className} alt="Song Like Icon" />
+              )}
             >
-              <HeartIcon
-                className={styles["actionContainer_likeBtn-icon"]}
-                alt="Song Like Icon"
-              />
               Like
-            </button>
-            <button
-              className={`${styles["actionContainer_downloadBtn"]} ${styles.btn}`}
+            </Button>
+            <Button
+              className={styles["actionContainer__btn"]}
               onClick={handleSongDownloadClick}
+              buttonSize="small"
+              iconClasses={styles["actionContainer_downloadBtn-icon"]}
+              iconImage={downloadIcon}
+              altText="Song Download Icon"
             >
-              <img
-                className={styles["actionContainer_downloadBtn-icon"]}
-                src={downloadIcon}
-                alt="Song Download Icon"
-              />
               Download
-            </button>
+            </Button>
 
             {user.uid === song.userID && (
               <>
-                <button
-                  className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
+                <Button
+                  className={`${styles["actionContainer__btn"]}`}
                   onClick={() => setIsEditing(true)}
+                  disabled={isEditing}
+                  buttonSize="small"
+                  iconClasses={styles["actionContainer_editBtn-icon"]}
+                  iconImage={editIcon}
+                  altText="Song Edit Icon"
                 >
-                  <img
-                    className={styles["actionContainer_editBtn-icon"]}
-                    src={editIcon}
-                    alt="Song Download Icon"
-                  />
                   Edit
-                </button>
-                <button
-                  className={`${styles["actionContainer_deleteBtn"]} ${styles.btn}`}
+                </Button>
+                <Button
+                  className={styles["actionContainer__btn"]}
                   onClick={() => setIsDeleting(true)}
+                  disabled={isDeleting}
+                  buttonSize="small"
+                  iconClasses={styles["actionContainer_deleteBtn-icon"]}
+                  iconImage={deleteIcon}
+                  altText="Song Delete Icon"
                 >
-                  <img
-                    className={styles["actionContainer_deleteBtn-icon"]}
-                    src={deleteIcon}
-                    alt="Song Download Icon"
-                  />
                   Delete
-                </button>
+                </Button>
               </>
             )}
             {isEditing && (

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Modal from "../../components/UI/Modal/Modal";
 import { useCollection } from "../../hooks/useCollection";
 import ActionBar from "../../components/ActionBar/ActionBar";
+import Button from "../../components/UI/Button/Button";
 export default function Profile() {
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
@@ -28,21 +29,26 @@ export default function Profile() {
       <div className={styles["profile__content"]}>
         <h2>Profile</h2>
         {profileDocuments && user.uid === profileDocuments[0].userID && (
-          <button
-            // className={`${styles["actionContainer_editBtn"]} ${styles.btn}`}
+          <Button
             onClick={() => setIsEditing(true)}
+            disabled={isEditing}
+            buttonSize="large"
+            iconImage={editIcon}
+            altText="Profile edit Icon"
           >
-            <img
-              // className={styles["actionContainer_editBtn-icon"]}
-              src={editIcon}
-              alt="Profile edit Icon"
-            />
             Edit
-          </button>
+          </Button>
         )}
         {/* Logout button temp */}
-        {!isPending && <button onClick={logout}>Logout</button>}
-        {isPending && <button disabled>Loading..</button>}
+        {!isPending ? (
+          <Button onClick={logout} buttonSize="large">
+            Logout
+          </Button>
+        ) : (
+          <Button disabled buttonSize="large">
+            Loading..
+          </Button>
+        )}
         {error && <p>{error}</p>}
       </div>
 

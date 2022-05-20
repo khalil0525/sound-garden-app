@@ -1,2 +1,3 @@
-.audioseekcontrolbar {
+.audioseekcontrolbar input {
+  cursor: pointer;
 }

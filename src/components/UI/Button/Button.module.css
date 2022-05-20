@@ -1,0 +1,26 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+.btn-small {
+  padding: 0.2rem 0.9rem 0.2rem 0.8rem;
+  font-size: 1.1rem;
+}
+
+.icon-small {
+  width: 1.8rem;
+  height: 1.4rem;
+}
+
+.btn-large {
+  padding: 0.2rem 1.1rem 0.2rem 1rem;
+  font-size: 1.4rem;
+}
+
+.icon-large {
+  width: 1.8rem;
+  height: 1.8rem;
+}

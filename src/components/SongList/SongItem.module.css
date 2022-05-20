@@ -2,9 +2,7 @@
   padding: 2rem;
   /* border: 1px grey solid; */
 }
-.btn {
-  cursor: pointer;
-}
+
 .song-item__content {
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -31,6 +29,7 @@
   display: inline-block;
   position: relative;
   background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+
   width: 4rem;
   height: 4rem;
   border: none;
@@ -108,77 +107,51 @@
 .song-item__actionContainer {
   display: flex;
   gap: 0.5rem;
-  width: 55rem;
 }
-.actionContainer-likeBtn {
+.song-item__actionContainer:first-child {
   margin-left: 1rem;
-  width: 5rem;
-  height: 2rem;
-  padding: 0.2rem 0.8rem;
-
-  font-size: 1.1rem;
+}
+/* BUTTONS */
+.actionContainer__btn {
+  background: #fff;
+  border: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.3rem;
+}
+.actionContainer__btn:hover {
+  border-color: #ccc;
+}
+/* .actionContainer-likeBtn {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .actionContainer-likeBtn--liked {
-  border: 1px solid #ff3a16;
-  border-radius: 0.4rem;
+  box-shadow: 0 0 0 1px #ff3a16;
+  /* border: 1px solid #ff3a16; */
+
   color: #ff3a16;
 }
-.actionContainer_likeBtn-icon {
-  width: 1.8rem;
-  height: 1.4rem;
-}
 
-.actionContainer_downloadBtn {
-  width: 8rem;
-  height: 2rem;
-  padding: 0.2rem 0.8rem;
-
-  font-size: 1.1rem;
+/* .actionContainer_downloadBtn {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.actionContainer_downloadBtn-icon {
-  width: 1.8rem;
-  height: 1.4rem;
 }
 
 .actionContainer_editBtn {
-  width: 5.4rem;
-  height: 2rem;
-  padding: 0.2rem 0.8rem;
-
-  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.actionContainer_editBtn-icon {
-  width: 1.8rem;
-  height: 1.4rem;
 }
 
 .actionContainer_deleteBtn {
-  width: 7rem;
-  height: 2rem;
-  padding: 0.2rem 0.8rem;
-
-  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.actionContainer_deleteBtn-icon {
-  width: 1.8rem;
-  height: 1.4rem;
-}
+} */
 
 .song-item__aside {
   grid-column: 1/1;

@@ -60,7 +60,8 @@
   margin-bottom: 1.2rem;
 }
 /* previous/play/pause controls */
-.audio-player__controls-main-previous {
+.audio-player__controls-main-previous,
+.audio-player__controls-main-next {
   border: none;
   background-color: transparent;
   outline: none;
@@ -82,16 +83,15 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 3.6rem;
 }
-.audio-player__controls-main-next {
-  border: none;
-  background-color: transparent;
-  outline: none;
-}
+
 /* volume controls */
 .audio-player__controls-volume {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+}
+.audio-player__controls-volume input {
+  cursor: pointer;
 }
 .audio-player__trackDetails {
   display: flex;
