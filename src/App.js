@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./App.module.css";
 import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -13,11 +13,14 @@ import Upload from "./pages/Upload/Upload";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import CollectionResults from "./components/CollectionResults/CollectionResults";
+import { useCollection } from "./hooks/useCollection";
 
 function App() {
   // Getting the context of the user to see if they're logged in
   const { user, authIsReady } = useAuthContext();
+
   const scrollableNodeRef = React.createRef();
+  useEffect(() => {});
   return (
     <div className={styles.app}>
       {/* Here we are conditionally rendering our app based on authIsReady
@@ -45,7 +48,7 @@ function App() {
                 />
                 <Route path="/artists" element={<Artists />}></Route>
                 <Route
-                  path="/artists/:id"
+                  path="/artists/:artistName"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
                 />
                 <Route
@@ -68,7 +71,8 @@ function App() {
                     )
                   }
                 />
-                <Route path="/:profileURL" element={<Profile />}></Route>
+                <Route path="*" element={<Home />} />
+                <Route path="/profile/:profileURL" element={<Profile />} />
                 <Route
                   path="/search"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}

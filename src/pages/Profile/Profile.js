@@ -7,59 +7,78 @@ import Modal from "../../components/UI/Modal/Modal";
 import { useCollection } from "../../hooks/useCollection";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import Button from "../../components/UI/Button/Button";
+import { useLocation, useParams } from "react-router-dom";
+
 export default function Profile() {
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
 
+  const location = useLocation();
+  const params = useParams();
+  const URL = params.profileURL;
   const { documents: profileDocuments, error: profileDocumentsError } =
-    useCollection("users", ["__name__", "==", user.uid ? user.uid : "none"]);
+    useCollection("users", ["profileURL", "==", URL]);
 
   const [isEditing, setIsEditing] = useState(false);
   const handleEditProfile = () => {
     setIsEditing(false);
   };
   // useEffect(() => {
-  //   console.log(profileDocuments && profileDocuments[0]);
-  // });
+  //   window.location.reload();
+  // }, [URL]);
+  useEffect(() => {
+    console.log(location);
+    console.log(params);
+    console.log(profileDocuments);
+  });
 
   return (
-    <div className={styles.profile}>
-      <ActionBar className={styles["profile__actionBar"]} user={user} />
+    <>
+      {profileDocuments && profileDocuments.length ? (
+        <div className={styles.profile}>
+          <ActionBar className={styles["profile__actionBar"]} user={user} />
 
-      <div className={styles["profile__content"]}>
-        <h2>Profile</h2>
-        {profileDocuments && user.uid === profileDocuments[0].userID && (
-          <Button
-            onClick={() => setIsEditing(true)}
-            disabled={isEditing}
-            buttonSize="large"
-            iconImage={editIcon}
-            altText="Profile edit Icon"
-          >
-            Edit
-          </Button>
-        )}
-        {/* Logout button temp */}
-        {!isPending ? (
-          <Button onClick={logout} buttonSize="large">
-            Logout
-          </Button>
-        ) : (
-          <Button disabled buttonSize="large">
-            Loading..
-          </Button>
-        )}
-        {error && <p>{error}</p>}
-      </div>
+          <div className={styles["profile__content"]}>
+            <h2>Profile</h2>
+            {profileDocuments && user.uid === profileDocuments[0].userID && (
+              <Button
+                onClick={() => setIsEditing(true)}
+                disabled={isEditing}
+                buttonSize="large"
+                iconImage={editIcon}
+                altText="Profile edit Icon"
+              >
+                Edit
+              </Button>
+            )}
+            {/* Logout button temp */}
+            {/* Logout button should only show when the :ProfileURL belongs to */}
+            {profileDocuments &&
+              user.uid === profileDocuments[0].userID &&
+              (!isPending ? (
+                <Button onClick={logout} buttonSize="large">
+                  Logout
+                </Button>
+              ) : (
+                <Button disabled buttonSize="large">
+                  Loading..
+                </Button>
+              ))}
+            {error && <p>{error}</p>}
+          </div>
 
-      {isEditing && (
-        <Modal
-          action="editProfileInformation"
-          userInformation={profileDocuments[0]}
-          onConfirm={handleEditProfile}
-          onCancel={() => setIsEditing(false)}
-        />
+          {isEditing && (
+            <Modal
+              action="editProfileInformation"
+              userInformation={profileDocuments[0]}
+              onConfirm={handleEditProfile}
+              onCancel={() => setIsEditing(false)}
+            />
+          )}
+        </div>
+      ) : (
+        <h1>We can’t find that user.</h1>
       )}
-    </div>
+    </>
   );
 }
