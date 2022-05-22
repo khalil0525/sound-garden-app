@@ -8,6 +8,8 @@ import { useCollection } from "../../hooks/useCollection";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import Button from "../../components/UI/Button/Button";
 import { useLocation, useParams } from "react-router-dom";
+import placeholderImage from "../../images/profile_placeholder.svg";
+import CollectionResults from "../../components/CollectionResults/CollectionResults";
 
 export default function Profile() {
   const { logout, error, isPending } = useLogout();
@@ -23,9 +25,7 @@ export default function Profile() {
   const handleEditProfile = () => {
     setIsEditing(false);
   };
-  // useEffect(() => {
-  //   window.location.reload();
-  // }, [URL]);
+
   useEffect(() => {
     console.log(location);
     console.log(params);
@@ -39,45 +39,72 @@ export default function Profile() {
           <ActionBar className={styles["profile__actionBar"]} user={user} />
 
           <div className={styles["profile__content"]}>
-            <h2>Profile</h2>
-            {profileDocuments && user.uid === profileDocuments[0].userID && (
-              <Button
-                onClick={() => setIsEditing(true)}
-                disabled={isEditing}
-                buttonSize="large"
-                iconImage={editIcon}
-                altText="Profile edit Icon"
-              >
-                Edit
-              </Button>
-            )}
-            {/* Logout button temp */}
-            {/* Logout button should only show when the :ProfileURL belongs to */}
-            {profileDocuments &&
-              user.uid === profileDocuments[0].userID &&
-              (!isPending ? (
-                <Button onClick={logout} buttonSize="large">
-                  Logout
+            <div className={styles["profile__headerContainer"]}>
+              <div className={styles["profile__header"]}>
+                <div className={styles["profile__header-imgContainer"]}>
+                  <img
+                    src={
+                      profileDocuments[0].profilePhotoURL
+                        ? profileDocuments[0].profilePhotoURL
+                        : placeholderImage
+                    }
+                    alt="User profile"
+                  />
+                </div>
+                <div className={styles["profile__header-textContainer"]}>
+                  <h2 className={styles["profile__header-displayName"]}>
+                    {profileDocuments[0].displayName}
+                  </h2>
+                  {profileDocuments[0].firstName ||
+                  profileDocuments[0].lastName ? (
+                    <h3 className={styles["profile__header-firstLastName"]}>
+                      {profileDocuments[0].firstName +
+                        " " +
+                        profileDocuments[0].lastName}
+                    </h3>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+            <div className={styles["profile__profileActions"]}>
+              {/* Logout button temp */}
+              {/* Logout button should only show when the :ProfileURL belongs to */}
+              {profileDocuments && user.uid === profileDocuments[0].userID && (
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  disabled={isEditing}
+                  buttonSize="large"
+                  iconImage={editIcon}
+                  altText="Profile edit Icon"
+                >
+                  Edit
                 </Button>
-              ) : (
-                <Button disabled buttonSize="large">
-                  Loading..
-                </Button>
-              ))}
-            {error && <p>{error}</p>}
+              )}
+              {profileDocuments &&
+                user.uid === profileDocuments[0].userID &&
+                (!isPending ? (
+                  <Button onClick={logout} buttonSize="large">
+                    Logout
+                  </Button>
+                ) : (
+                  <Button disabled buttonSize="large">
+                    Loading..
+                  </Button>
+                ))}
+              {error && <p>{error}</p>}
+            </div>
           </div>
-
-          {isEditing && (
-            <Modal
-              action="editProfileInformation"
-              userInformation={profileDocuments[0]}
-              onConfirm={handleEditProfile}
-              onCancel={() => setIsEditing(false)}
-            />
-          )}
         </div>
       ) : (
         <h1>We can’t find that user.</h1>
+      )}
+      {isEditing && (
+        <Modal
+          action="editProfileInformation"
+          userInformation={profileDocuments[0]}
+          onConfirm={handleEditProfile}
+          onCancel={() => setIsEditing(false)}
+        />
       )}
     </>
   );
