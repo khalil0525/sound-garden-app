@@ -11,13 +11,14 @@ import { useLocation, useParams } from "react-router-dom";
 import placeholderImage from "../../images/profile_placeholder.svg";
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
 
-export default function Profile() {
+export default function Profile({ scrollRef }) {
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
 
   const location = useLocation();
   const params = useParams();
   const URL = params.profileURL;
+  const query = ["music", ["userID", "==", user.uid]];
   const { documents: profileDocuments, error: profileDocumentsError } =
     useCollection("users", ["profileURL", "==", URL]);
 
@@ -93,6 +94,7 @@ export default function Profile() {
                 ))}
               {error && <p>{error}</p>}
             </div>
+            <CollectionResults scrollRef={scrollRef} query={query} />
           </div>
         </div>
       ) : (

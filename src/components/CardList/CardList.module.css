@@ -7,3 +7,13 @@
   gap: 1.6rem;
   flex-wrap: wrap;
 }
+.cardlist__list a:link,
+.cardlist__list a:visited {
+  text-decoration: none;
+  color: #fff;
+}
+.cardlist__list a:hover,
+.cardlist__list a:active {
+  text-decoration: none;
+  color: #fff;
+}

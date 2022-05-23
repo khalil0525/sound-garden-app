@@ -48,7 +48,7 @@ function App() {
                 />
                 <Route path="/artists" element={<Artists />}></Route>
                 <Route
-                  path="/artists/:artistName"
+                  path="/artists/:letter"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
                 />
                 <Route
@@ -72,7 +72,10 @@ function App() {
                   }
                 />
                 <Route path="*" element={<Home />} />
-                <Route path="/profile/:profileURL" element={<Profile />} />
+                <Route
+                  path="/profile/:profileURL"
+                  element={<Profile scrollRef={scrollableNodeRef} />}
+                />
                 <Route
                   path="/search"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}

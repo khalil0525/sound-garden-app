@@ -39,7 +39,7 @@ export default function Genres() {
   return (
     <div className={styles.genres}>
       <ActionBar className={styles["genres__actionBar"]} user={user} />
-      {/* <h2>Genres</h2> */}
+
       <CardList
         className={styles["genres__cardList"]}
         list={genres}

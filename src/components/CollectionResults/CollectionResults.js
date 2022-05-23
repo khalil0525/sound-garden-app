@@ -4,6 +4,7 @@ import { useCollection } from "../../hooks/useCollection";
 import styles from "./CollectionResults.module.css";
 import ActionBar from "../ActionBar/ActionBar";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function CollectionResults(props) {
   const { user } = useAuthContext();
@@ -43,14 +44,18 @@ export default function CollectionResults(props) {
           location.pathname.length
         )} any songs yet!`
       : `No songs avaialble for this ${from}`;
-
+  useEffect(() => {
+    console.log(from, search);
+  });
   return (
     <div className={styles.collectionresults}>
-      <ActionBar
-        className={styles["collectionresults__actionBar"]}
-        query={algoliaQuery}
-        user={user}
-      />
+      {location.pathname.split("/")[1] !== "profile" && (
+        <ActionBar
+          className={styles["collectionresults__actionBar"]}
+          query={algoliaQuery}
+          user={user}
+        />
+      )}
       <div className={styles["collectionresults__header"]}>
         {location.pathname === "/search" ? (
           <h1 className={styles["search__queryText"]}>
