@@ -1,6 +1,8 @@
 import styles from "./Home.module.css";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import UploadForm from "../../components/UploadForm/UploadForm";
+
 export default function Home() {
   const { user } = useAuthContext();
   return (
@@ -14,6 +16,7 @@ export default function Home() {
           doloremque aut culpa praesentium eum suscipit itaque earum rerum
           nulla? Corrupti.ddddddd
         </p>
+        <UploadForm />
       </div>
     </div>
   );

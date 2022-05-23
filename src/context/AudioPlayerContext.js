@@ -25,6 +25,7 @@ const init = (initialReducerState) => {
     const playlistFromLocalStorage = JSON.parse(
       localStorage.getItem("playlist")
     );
+    console.log("Playlist: ", playlistFromLocalStorage);
     let parsedPlaylistIndex = parseInt(indexFromLocalStorage);
     let playlistLocationFromLocalStorage =
       localStorage.getItem("playlistLocation");
@@ -33,11 +34,11 @@ const init = (initialReducerState) => {
       playlistIndex: parsedPlaylistIndex,
       playlist: playlistFromLocalStorage,
       loadedSongURL:
-        playlistFromLocalStorage.length > 0
+        playlistFromLocalStorage !== null && playlistFromLocalStorage.length > 0
           ? playlistFromLocalStorage[parsedPlaylistIndex].songURL
           : null,
       playlistLocation:
-        playlistFromLocalStorage.length > 0
+        playlistFromLocalStorage !== null && playlistFromLocalStorage.length > 0
           ? playlistLocationFromLocalStorage
           : null,
     };
