@@ -1,5 +1,6 @@
 .sideNavigation {
-  max-width: 100%;
+  /* width: 100%; */
+  max-width: inherit;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
@@ -9,19 +10,18 @@
 .sideNavigation__header {
   grid-row: 1/1;
 
-  max-width: inherit;
-
-  padding: 2rem 4rem;
-  margin: 1rem;
+  /* padding: 2rem 4rem;
+  margin: 1rem; */
 
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  /* gap: 2rem; */
 }
 .sideNavigation__header-imageContainer {
   border-radius: 20px;
-  width: 8rem;
-  height: 8rem;
+  /* max-width: 8rem;
+  height: 8rem; */
+
   box-shadow: 0 10px 140px rgba(251, 80, 47, 0.9);
 }
 .sideNavigation__header-imageContainer img {
@@ -30,13 +30,13 @@
   border-radius: 12px;
 }
 .sideNavigation__header-welcomeText {
-  font-size: 2.4rem;
+  /* font-size: 2.4rem; */
   font-weight: 400;
   line-height: 2.9rem;
   opacity: 0.5;
 }
 .sideNavigation__header-artistNameText {
-  font-size: 3.2rem;
+  /* font-size: 3.2rem; */
   font-weight: 600;
   line-height: 3.9rem;
 }
@@ -50,7 +50,7 @@
 }
 .sideNavigation__menuHeaderText {
   font-weight: 400;
-  font-size: 2rem;
+  /* font-size: 2rem; */
   line-height: 2.4rem;
 
   margin-bottom: 0.2rem;
@@ -100,6 +100,71 @@
 */
 
 .sideNavigation__audioplayerContainer {
-  max-width: inherit;
+  /* max-width: inherit; */
   grid-row: 4/4;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .sideNavigation__header {
+    padding: 0rem 4rem;
+    margin: 0 1rem;
+    gap: 1rem;
+  }
+  .sideNavigation__header-imageContainer {
+    max-width: 6rem;
+    height: 6rem;
+  }
+  .sideNavigation__header-welcomeText {
+    font-size: 2rem;
+  }
+  .sideNavigation__header-artistNameText {
+    font-size: 3.2rem;
+  }
+  .sideNavigation__menuHeaderText {
+    font-size: 1.8rem;
+  }
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1600px) {
+  .sideNavigation__header {
+    padding: 2rem 4rem;
+    margin: 1rem;
+    gap: 2rem;
+  }
+  .sideNavigation__header-imageContainer {
+    max-width: 8rem;
+    height: 8rem;
+  }
+  .sideNavigation__header-welcomeText {
+    font-size: 2rem;
+  }
+  .sideNavigation__header-artistNameText {
+    font-size: 3.2rem;
+  }
+  .sideNavigation__menuHeaderText {
+    font-size: 1.8rem;
+  }
+
+  .sideNavigation__header-welcomeText {
+    font-size: 2.4rem;
+  }
+  /* .sideNavigation__header-artistNameText {
+    font-size: 3.2rem;
+    font-weight: 600;
+    line-height: 3.9rem;
+  } */
+
+  .sideNavigation__menuHeaderText {
+    font-size: 2rem;
+  }
 }

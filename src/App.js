@@ -13,7 +13,6 @@ import Upload from "./pages/Upload/Upload";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 import CollectionResults from "./components/CollectionResults/CollectionResults";
-import { useCollection } from "./hooks/useCollection";
 
 function App() {
   // Getting the context of the user to see if they're logged in

@@ -112,7 +112,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
+  text-overflow: ellipsis;
   justify-content: center;
   gap: 0.4rem;
   width: 17rem;
@@ -133,4 +133,11 @@
 
   color: #ffffff;
   opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    left: calc(50% - 20rem);
+    width: 40rem;
+  }
 }
