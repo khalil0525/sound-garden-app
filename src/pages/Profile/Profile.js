@@ -22,9 +22,13 @@ export default function Profile({ scrollRef }) {
   const { documents: profileDocuments, error: profileDocumentsError } =
     useCollection("users", ["profileURL", "==", URL]);
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [isEditingHeader, setIsEditingHeader] = useState(false);
   const handleEditProfile = () => {
-    setIsEditing(false);
+    setIsEditingProfile(false);
+  };
+  const handleEditHeader = () => {
+    setIsEditingHeader(false);
   };
 
   useEffect(() => {
@@ -52,18 +56,39 @@ export default function Profile({ scrollRef }) {
                     alt="User profile"
                   />
                 </div>
-                <div className={styles["profile__header-textContainer"]}>
-                  <h2 className={styles["profile__header-displayName"]}>
-                    {profileDocuments[0].displayName}
-                  </h2>
-                  {profileDocuments[0].firstName ||
-                  profileDocuments[0].lastName ? (
-                    <h3 className={styles["profile__header-firstLastName"]}>
-                      {profileDocuments[0].firstName +
-                        " " +
-                        profileDocuments[0].lastName}
-                    </h3>
-                  ) : null}
+                <div className={styles["profile__header-content"]}>
+                  <div className={styles["profile__header-textContainer"]}>
+                    <h2 className={styles["profile__header-displayName"]}>
+                      {profileDocuments[0].displayName}
+                    </h2>
+                    {profileDocuments[0].firstName ||
+                    profileDocuments[0].lastName ? (
+                      <h3 className={styles["profile__header-firstLastName"]}>
+                        {profileDocuments[0].firstName +
+                          " " +
+                          profileDocuments[0].lastName}
+                      </h3>
+                    ) : null}
+                  </div>
+                  <div className={styles["profile__header-editContainer"]}>
+                    <Button
+                      onClick={() => setIsEditingHeader(true)}
+                      // disabled={isEditingHeader}
+                      buttonSize="large"
+                      // iconImage={editIcon}
+                      altText="Profile edit Icon"
+                      className={styles["editContainer-updateBtn"]}
+                    >
+                      Update image
+                    </Button>
+                    {/* { ( */}
+                    {isEditingHeader && (
+                      <ul className={styles["editContainer-menu"]}>
+                        <Button buttonSize="large">Replace image</Button>
+                        <Button buttonSize="large">Delete image</Button>
+                      </ul>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,8 +97,8 @@ export default function Profile({ scrollRef }) {
               {/* Logout button should only show when the :ProfileURL belongs to */}
               {profileDocuments && user.uid === profileDocuments[0].userID && (
                 <Button
-                  onClick={() => setIsEditing(true)}
-                  disabled={isEditing}
+                  onClick={() => setIsEditingProfile(true)}
+                  disabled={isEditingProfile}
                   buttonSize="large"
                   iconImage={editIcon}
                   altText="Profile edit Icon"
@@ -100,12 +125,12 @@ export default function Profile({ scrollRef }) {
       ) : (
         <h1>We can’t find that user.</h1>
       )}
-      {isEditing && (
+      {isEditingProfile && (
         <Modal
           action="editProfileInformation"
           userInformation={profileDocuments[0]}
           onConfirm={handleEditProfile}
-          onCancel={() => setIsEditing(false)}
+          onCancel={() => setIsEditingProfile(false)}
         />
       )}
     </>
