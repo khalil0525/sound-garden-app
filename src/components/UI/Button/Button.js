@@ -11,6 +11,8 @@ const Button = ({
   className,
   children,
   onClick,
+  onFocus = null,
+  onBlur = null,
 }) => {
   // This will be returned if we get an image. We can either get an Icon or a string
   // That is a reference to the Image.
@@ -20,6 +22,8 @@ const Button = ({
         className={`${styles[`btn-${buttonSize}`]} ${className} ${styles.btn}`}
         disabled={disabled}
         onClick={onClick}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
         {typeof iconImage === "string" ? (
           <img
@@ -41,6 +45,8 @@ const Button = ({
         className={`${styles[`btn-${buttonSize}`]} ${className} ${styles.btn}`}
         disabled={disabled}
         onClick={onClick}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
         {children}
       </button>

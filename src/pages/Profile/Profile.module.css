@@ -85,7 +85,9 @@
   display: inline-block;
   opacity: 0.8;
 }
-
+.profile__header-editContainer .editContainer-updateBtn--focused {
+  display: inline-block;
+}
 .profile__header-editContainer .editContainer-updateBtn:hover {
   opacity: 1;
 }

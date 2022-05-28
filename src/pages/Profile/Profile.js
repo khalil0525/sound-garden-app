@@ -24,6 +24,7 @@ export default function Profile({ scrollRef }) {
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingHeader, setIsEditingHeader] = useState(false);
+  const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
   const handleEditProfile = () => {
     setIsEditingProfile(false);
   };
@@ -72,17 +73,22 @@ export default function Profile({ scrollRef }) {
                   </div>
                   <div className={styles["profile__header-editContainer"]}>
                     <Button
-                      onClick={() => setIsEditingHeader(true)}
+                      onFocus={() => setUpdateButtonToggled(true)}
+                      onBlur={() => setUpdateButtonToggled(false)}
                       // disabled={isEditingHeader}
                       buttonSize="large"
                       // iconImage={editIcon}
+
                       altText="Profile edit Icon"
-                      className={styles["editContainer-updateBtn"]}
+                      className={`${styles["editContainer-updateBtn"]} ${
+                        updateButtonToggled &&
+                        styles["editContainer-updateBtn--focused"]
+                      }`}
                     >
                       Update image
                     </Button>
                     {/* { ( */}
-                    {isEditingHeader && (
+                    {updateButtonToggled && (
                       <ul className={styles["editContainer-menu"]}>
                         <Button buttonSize="large">Replace image</Button>
                         <Button buttonSize="large">Delete image</Button>
