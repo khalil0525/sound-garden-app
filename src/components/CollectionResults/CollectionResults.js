@@ -44,9 +44,9 @@ export default function CollectionResults(props) {
           location.pathname.length
         )} any songs yet!`
       : `No songs avaialble for this ${from}`;
-  useEffect(() => {
-    console.log(from, search);
-  });
+  // useEffect(() => {
+  //   console.log(from, search);
+  // });
   return (
     <div className={styles.collectionresults}>
       {location.pathname.split("/")[1] !== "profile" && (

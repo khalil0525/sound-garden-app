@@ -11,17 +11,23 @@ import { useFirestore } from "../../hooks/useFirestore";
 const ActionBar = (props) => {
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const [profileLink, setProfileLink] = useState();
+  const [profileLink, setProfileLink] = useState(null);
   // const profileLinkRef = useRef(profileLink);
   const { getDocument: getUserDocument, response: getUserDocumentResponse } =
     useFirestore("users");
   // This will run only if user is currently logged in
   useEffect(() => {
-    if (props.user && props.user.uid) {
+    if (
+      props.user &&
+      props.user.uid &&
+      !getUserDocumentResponse.success &&
+      !getUserDocumentResponse.isPending
+    ) {
       getUserDocument(props.user.uid);
       console.log(props.user);
     }
-  }, []);
+  }, [props.user, getUserDocument, getUserDocumentResponse]);
+
   // This will grab the profileURL of the logged in user to make a route to their page.
   useEffect(() => {
     if (!profileLink && getUserDocumentResponse.success) {
@@ -29,6 +35,7 @@ const ActionBar = (props) => {
       console.log("here");
     }
   }, [getUserDocumentResponse, profileLink]);
+
   return (
     <div className={`${styles.actionbar} ${props.className}`}>
       <nav className={styles["actionbar__nav"]}>

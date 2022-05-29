@@ -15,6 +15,20 @@
   color: white;
   background-color: black;
 } */
+
+.tempInfo {
+  text-align: center;
+
+  font-size: 2.6rem;
+  margin: 3.6rem 0;
+}
+.tempInfo ul {
+  list-style: none;
+}
+.tempInfo ul li {
+  text-align: ;
+  margin-bottom: 1rem;
+}
 .home__content {
   grid-row: 2/-1;
   grid-column: 1/-1;
