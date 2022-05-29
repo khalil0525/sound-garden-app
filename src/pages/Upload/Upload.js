@@ -213,89 +213,87 @@ const Upload = () => {
   }, [firestoreResponse]);
 
   return (
-    <>
-      <div className={styles["upload"]}>
-        <ActionBar className={styles["upload__actionBar"]} user={user} />
-        <div className={styles["upload-container"]}>
-          {!songFile && (
-            <FileUploader
-              // classes={`${styles["file-picker"]}`}
-              handleChange={handleSongFileChange}
-              name="file"
-              multiple={false}
-              hoverTitle="Drop audio file here"
-              types={["mp3", "ogg", "wav"]}
-              maxSize={200}
-            />
-          )}
-          {songFile && (
-            <div className={styles["upload-form"]}>
-              <LoadingBar progress={uploadProgress} song={songFile.name} />
-              {!cloudStorageResponse.success && (
-                <>
-                  <div className={styles["photo-picker"]}>
-                    <img
-                      className={styles["photo-picker-photo"]}
-                      src={songPhotoFile ? songPhotoURL : placeholderImage}
-                      alt="Song Cover Art"
-                      width="160"
-                      height="160"
-                    />
-
-                    <input
-                      type="file"
-                      onChange={handleSongPhotoFileChange}
-                      disabled={cloudStorageResponse.isPending}
-                      accept="image/*"
-                    />
-                  </div>
-
-                  <label htmlFor="song-name">Song Name:</label>
-                  <input
-                    type="text"
-                    id="song-name"
-                    name="song-name"
-                    value={songName}
-                    onChange={handleSongNameChange}
-                    disabled={cloudStorageResponse.isPending}
-                  ></input>
-
-                  <GenreSelect
-                    onGenreTypeChange={handleGenreTypeChange}
-                    genreValue={genreType}
-                    disabled={cloudStorageResponse.isPending}
+    <div className={styles["upload"]}>
+      <ActionBar className={styles["upload__actionBar"]} user={user} />
+      <div className={styles["upload-container"]}>
+        {!songFile && (
+          <FileUploader
+            // classes={`${styles["file-picker"]}`}
+            handleChange={handleSongFileChange}
+            name="file"
+            multiple={false}
+            hoverTitle="Drop audio file here"
+            types={["mp3", "ogg", "wav"]}
+            maxSize={200}
+          />
+        )}
+        {songFile && (
+          <div className={styles["upload-form"]}>
+            <LoadingBar progress={uploadProgress} song={songFile.name} />
+            {!cloudStorageResponse.success && (
+              <>
+                <div className={styles["photo-picker"]}>
+                  <img
+                    className={styles["photo-picker-photo"]}
+                    src={songPhotoFile ? songPhotoURL : placeholderImage}
+                    alt="Song Cover Art"
+                    width="160"
+                    height="160"
                   />
 
-                  {!cloudStorageResponse.isPending && (
-                    <div className={styles["action-container"]}>
-                      <div onClick={handleCancelClick}>Cancel</div>
-                      <button
-                        onClick={handleSongUpload}
-                        disabled={!uploadIsReady}
-                      >
-                        Upload
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-              {cloudStorageResponse.success && (
-                <>
-                  {/* <div onClick={handleCancelClick}>Upload Another track?</div> */}
-                  <h2>Uploaded Sucessfully!</h2>
-                  <div>
-                    <Link to="/uploaded">Go to your uploaded tracks</Link>
+                  <input
+                    type="file"
+                    onChange={handleSongPhotoFileChange}
+                    disabled={cloudStorageResponse.isPending}
+                    accept="image/*"
+                  />
+                </div>
+
+                <label htmlFor="song-name">Song Name:</label>
+                <input
+                  type="text"
+                  id="song-name"
+                  name="song-name"
+                  value={songName}
+                  onChange={handleSongNameChange}
+                  disabled={cloudStorageResponse.isPending}
+                ></input>
+
+                <GenreSelect
+                  onGenreTypeChange={handleGenreTypeChange}
+                  genreValue={genreType}
+                  disabled={cloudStorageResponse.isPending}
+                />
+
+                {!cloudStorageResponse.isPending && (
+                  <div className={styles["action-container"]}>
+                    <div onClick={handleCancelClick}>Cancel</div>
+                    <button
+                      onClick={handleSongUpload}
+                      disabled={!uploadIsReady}
+                    >
+                      Upload
+                    </button>
                   </div>
-                </>
-              )}
-              {cloudStorageResponse.isPending && (
-                <button disabled>Uploading... Please wait</button>
-              )}
-            </div>
-          )}
-        </div>
+                )}
+              </>
+            )}
+            {cloudStorageResponse.success && (
+              <>
+                {/* <div onClick={handleCancelClick}>Upload Another track?</div> */}
+                <h2>Uploaded Sucessfully!</h2>
+                <div>
+                  <Link to="/uploaded">Go to your uploaded tracks</Link>
+                </div>
+              </>
+            )}
+            {cloudStorageResponse.isPending && (
+              <button disabled>Uploading... Please wait</button>
+            )}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 export default Upload;

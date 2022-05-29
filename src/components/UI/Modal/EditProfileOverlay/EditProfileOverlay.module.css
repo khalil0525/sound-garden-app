@@ -6,7 +6,7 @@
 } */
 .modal {
   position: fixed;
-  top: 30vh;
+  top: 10vh;
   left: 40%;
   z-index: 100;
   overflow: hidden;

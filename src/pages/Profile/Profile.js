@@ -19,7 +19,7 @@ export default function Profile({ scrollRef }) {
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
 
-  const location = useLocation();
+  // const location = useLocation();
   const params = useParams();
   const URL = params.profileURL;
 

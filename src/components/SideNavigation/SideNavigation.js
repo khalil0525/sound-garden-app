@@ -66,6 +66,7 @@ const SideNavigation = ({ className }) => {
             </div>
           </NavLink>
           <NavLink
+            onClick={(e) => e.preventDefault()}
             to="/artists"
             className={({ isActive }) =>
               isActive ? styles["navbar__activeItem"] : undefined
