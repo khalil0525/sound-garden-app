@@ -16,6 +16,9 @@ Sound Garden is a music sharing application that allows users to:
 - View uploaded songs
 - View profile
 - Edit profile details
+- View artists by name (Coming soon)
+- Change profile banner photo (Coming Soon)
+- Search for & View another user's profile (Coming Soon)
 
 ## ☁Overview
 This project was created to give users the ability to share music with each other.
@@ -49,10 +52,13 @@ Some challenges that I faced were caused by the choice of technologies. The **SE
 ### Search for songs
 ![SoundGarden](https://user-images.githubusercontent.com/11954011/176253416-ec7d2465-b688-4e88-83eb-8b6c273b1688.PNG)
 ### View a list of liked Songs
+![LikedSongs](https://user-images.githubusercontent.com/11954011/176271680-5eabce00-c315-413e-950b-77191f826b00.png)
 ### View all songs for a Genre
+![GenresPage](https://user-images.githubusercontent.com/11954011/176271703-b558e3ce-0076-48b5-8828-ed51a44ea1ac.png)
 ### View uploaded songs
+![UploadedSongs](https://user-images.githubusercontent.com/11954011/176271726-e7980121-6ced-44a5-8305-d7c9fcf057fc.png)
 ### View profile
 ![ViewProfile](https://user-images.githubusercontent.com/11954011/176270318-4a8122a1-ae54-4cf8-850b-735681c3f71f.png)
-
 ### Edit profile details
+![EditProfile](https://user-images.githubusercontent.com/11954011/176271742-65676b03-1b1c-46e1-9808-aa96db5135a9.png)
 
