@@ -25,7 +25,7 @@ const SideNavigation = ({ className }) => {
         {/* Conditionally render the users displayName */}
         {user && (
           <>
-            <p className={styles["sideNavigation__header-welcomeText"]}>Hi</p>
+            <p className={styles["sideNavigation__header-greeting"]}>Hi</p>
             <p className={styles["sideNavigation__header-artistNameText"]}>
               {user.displayName}
             </p>
@@ -33,10 +33,11 @@ const SideNavigation = ({ className }) => {
         )}
       </div>
 
-      {/* <div className={styles["navigation-container"]}> */}
-      <div className={styles["sideNavigation__mainMenu"]}>
-        <h4 className={styles["sideNavigation__menuHeaderText"]}>Menu</h4>
+      <div className={styles["sideNavigation__navContainer"]}>
+        {/* <div className={styles["sideNavigation__mainMenu"]}> */}
+
         <nav className={styles["sideNavigation__navbar"]}>
+          <h4 className={styles["sideNavigation__navbarTitle"]}>Menu</h4>
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -48,7 +49,7 @@ const SideNavigation = ({ className }) => {
                 className={styles["navbar__itemContent-icon"]}
                 alt="Home button icon"
               />
-              <div>Home</div>
+              <div className={styles["navbar__itemContent-text"]}>Home</div>
             </div>
           </NavLink>
           <NavLink
@@ -62,7 +63,7 @@ const SideNavigation = ({ className }) => {
                 className={styles["navbar__itemContent-icon"]}
                 alt="Genre button icon"
               />
-              <div>Genres</div>
+              <div className={styles["navbar__itemContent-text"]}>Genres</div>
             </div>
           </NavLink>
           <NavLink
@@ -77,20 +78,18 @@ const SideNavigation = ({ className }) => {
                 className={styles["navbar__itemContent-icon"]}
                 alt="Artist button icon"
               />
-              <div>Artists</div>
+              <div className={styles["navbar__itemContent-text"]}>Artists</div>
             </div>
           </NavLink>
-        </nav>
-      </div>
 
-      {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
-      <div className={styles["sideNavigation__libraryMenu"]}>
-        {user && (
-          <>
-            <h4 className={styles["sideNavigation__menuHeaderText"]}>
-              Library
-            </h4>
-            <nav className={styles["sideNavigation__navbar"]}>
+          {/* </div> */}
+
+          {/* CONDITIONAL CONTENT, SHOW ONLY IF USER LOGGED IN */}
+
+          {user && (
+            <>
+              <h4 className={styles["sideNavigation__navbarTitle"]}>Library</h4>
+
               <NavLink
                 to="/liked"
                 className={({ isActive }) =>
@@ -102,7 +101,9 @@ const SideNavigation = ({ className }) => {
                     className={styles["navbar__itemContent-icon"]}
                     alt="Liked link icon"
                   />
-                  <div>Liked</div>
+                  <div className={styles["navbar__itemContent-text"]}>
+                    Liked
+                  </div>
                 </div>
               </NavLink>
               <NavLink
@@ -116,19 +117,19 @@ const SideNavigation = ({ className }) => {
                     className={styles["navbar__itemContent-icon"]}
                     alt="Uploaded link icon"
                   />
-                  <div>Uploaded</div>
+                  <div className={styles["navbar__itemContent-text"]}>
+                    Uploaded
+                  </div>
                 </div>
               </NavLink>
-            </nav>
-          </>
-        )}
+            </>
+          )}
+        </nav>
       </div>
-
       <div className={styles["sideNavigation__audioplayerContainer"]}>
         <AudioPlayer />
       </div>
     </div>
-    // </div>
   );
 };
 
