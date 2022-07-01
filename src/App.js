@@ -36,7 +36,7 @@ function App() {
             <SimpleBar
               autoHide={false}
               scrollableNodeProps={{ ref: scrollableNodeRef }}
-              style={{ overflowX: "hidden", height: "91vh", top: "2rem" }}
+              style={{ overflowX: "hidden", height: "95vh", top: "2rem" }}
             >
               <Routes>
                 <Route path="/" element={<Home />} />
