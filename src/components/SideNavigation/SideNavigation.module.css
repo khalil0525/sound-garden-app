@@ -137,7 +137,7 @@
   } */
 }
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .sideNavigation {
     /* width: 100%; */
     /* max-width: inherit; */

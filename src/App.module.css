@@ -22,7 +22,7 @@
 @media only screen and (min-width: 768px) {
 }
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .app {
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 5fr;
