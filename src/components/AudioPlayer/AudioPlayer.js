@@ -268,7 +268,7 @@ const AudioPlayer = () => {
   // }, [url]);
 
   return (
-    <div className={styles["audio-player"]}>
+    <div className={styles["audioPlayer"]}>
       <ReactPlayer
         ref={player}
         width={0}
@@ -290,12 +290,12 @@ const AudioPlayer = () => {
       />
 
       {/* Grey DIV ************************ */}
-      <div className={styles["audio-player__upper"]}>
-        <div className={styles["audio-player__controls"]}>
+      <div className={styles["audioPlayer__upper"]}>
+        <div className={styles["audioPlayer__controls"]}>
           {/* SEEK  */}
           <AudioSeekControlBar
-            className={styles["audio-player__controls-seek"]}
-            durationClassName={styles["audio-player__controls-seek-duration"]}
+            className={styles["audioPlayer__controls-seek"]}
+            durationClassName={styles["audioPlayer__controls-seek-duration"]}
             duration={duration}
             played={played}
             onChange={handleSeekChange}
@@ -306,13 +306,13 @@ const AudioPlayer = () => {
       </div>
       {/* ORANGE DIV ************************ */}
 
-      <div className={styles["audio-player__lower"]}>
+      <div className={styles["audioPlayer__lower"]}>
         {/* PREVIOUS/PLAY&PAUSE/NEXT */}
-        <div className={styles["audio-player__controls-main"]}>
+        <div className={styles["audioPlayer__controls-main"]}>
           {/* PREVIOUS BUTTON */}
           <Button
             disabled={!loadedSongURL}
-            className={styles["audio-player__controls-main-previous"]}
+            className={styles["audioPlayer__controls-main-previous"]}
             onClick={handlePreviousClick}
             iconImage={previous_NextIcon}
             altText="Audio player previous button icon"
@@ -321,7 +321,7 @@ const AudioPlayer = () => {
           <Button
             disabled={!loadedSongURL}
             onClick={handlePlayPause}
-            className={styles["audio-player__controls-main-play"]}
+            className={styles["audioPlayer__controls-main-play"]}
             iconImage={playing ? pauseIcon : playIcon}
             altText={
               playing ? "Audio player pause button" : "Audio player play button"
@@ -330,7 +330,7 @@ const AudioPlayer = () => {
           {/* NEXT BUTTON */}
           <Button
             disabled={!loadedSongURL}
-            className={styles["audio-player__controls-main-next"]}
+            className={styles["audioPlayer__controls-main-next"]}
             onClick={handleNextClick}
             iconImage={previous_NextIcon}
             altText="Audio player next button icon"
@@ -338,7 +338,7 @@ const AudioPlayer = () => {
         </div>
 
         {/* VOLUME */}
-        <div className={styles["audio-player__controls-volume"]}>
+        <div className={styles["audioPlayer__controls-volume"]}>
           <input
             type="range"
             min={0}
@@ -349,10 +349,10 @@ const AudioPlayer = () => {
           />
         </div>
 
-        <div className={styles["audio-player__trackDetails"]}>
-          <div className={styles["audio-player__trackDetails-songArt"]}>
+        <div className={styles["audioPlayer__trackDetails"]}>
+          <div className={styles["audioPlayer__trackDetails-songArt"]}>
             <img
-              className={styles["audio-player__trackDetails-songArt-image"]}
+              className={styles["audioPlayer__trackDetails-songArt-image"]}
               src={
                 loadedSongURL && playlist[playlistIndex].songPhotoURL
                   ? playlist[playlistIndex].songPhotoURL
@@ -363,17 +363,15 @@ const AudioPlayer = () => {
               height="64"
             />
           </div>
-          <div className={styles["audio-player__trackDetails-songDetails"]}>
+          <div className={styles["audioPlayer__trackDetails-songDetails"]}>
             <AudioPlayerMarquee
-              className={styles["audio-player__trackDetails-songDetails-title"]}
+              className={styles["audioPlayer__trackDetails-songDetails-title"]}
             >
               {loadedSongURL && playlist[playlistIndex].title}
             </AudioPlayerMarquee>
 
             <p
-              className={
-                styles["audio-player__trackDetails-songDetails-artist"]
-              }
+              className={styles["audioPlayer__trackDetails-songDetails-artist"]}
             >
               {loadedSongURL && playlist[playlistIndex].artist}
             </p>
