@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: flex-end;
 
-  width: 19rem;
+  max-width: 19rem;
   height: 15.8rem;
 
   background: #c4c4c4;
@@ -30,4 +30,6 @@
 .card__title p {
   font-size: 1.6rem;
   font-weight: 700;
+}
+@media only screen and (min-width: 1600px) {
 }

@@ -1,5 +1,5 @@
 .cardlist {
-  width: 85rem;
+  max-width: 85rem;
 }
 .cardlist__list {
   display: flex;
