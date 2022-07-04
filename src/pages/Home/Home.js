@@ -1,7 +1,6 @@
 import styles from "./Home.module.css";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import UploadForm from "../../components/UploadForm/UploadForm";
 
 export default function Home() {
   const { user } = useAuthContext();
@@ -49,10 +48,7 @@ export default function Home() {
               View songs you <strong>uploaded</strong>
             </li>
           </ul>
-          <br />
-          <br /> <strong>The app is currently not optimized for mobile!</strong>
         </p>
-        {/* <UploadForm /> */}
       </div>
     </div>
   );

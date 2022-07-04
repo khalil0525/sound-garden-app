@@ -2,12 +2,12 @@ import styles from "./Profile.module.css";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import editIcon from "../../images/pencil_solid.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../../components/UI/Modal/Modal";
 import { useCollection } from "../../hooks/useCollection";
 import ActionBar from "../../components/ActionBar/ActionBar";
 import Button from "../../components/UI/Button/Button";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import placeholderImage from "../../images/profile_placeholder.svg";
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
 

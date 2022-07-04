@@ -16,30 +16,26 @@ const SignInOverlay = (props) => {
 
   return (
     <div className={styles.modal}>
-      <form className={styles["login-form"]} onSubmit={handleFormSubmit}>
-        <h2>Login</h2>
+      <form className={styles["signInForm"]} onSubmit={handleFormSubmit}>
+        <h2>Sign in</h2>
 
-        <div className={styles["login-form_controls"]}>
-          <div className={styles["login-form_control"]}>
-            <input
-              type="email"
-              value={email}
-              placeholder="Your Email Address"
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
+        <div className={styles["signInForm_controls"]}>
+          <input
+            type="email"
+            value={email}
+            placeholder="Your Email Address"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <div className={styles["login-form_control"]}>
-            <input
-              type="password"
-              value={password}
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          </div>
+          <input
+            type="password"
+            value={password}
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
 
-        <div className={styles["login-form_actions"]}>
+        <div className={styles["signInForm_actions"]}>
           {!isPending && <button type="submit">Login</button>}
           {isPending && (
             <button className="btn" disabled>

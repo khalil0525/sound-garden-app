@@ -106,10 +106,8 @@ const AudioPlayer = () => {
   const handlePreviousClick = () => {
     const elapsedTime = duration * played;
     if ((elapsedTime < 4 || !isSongPlaying) && playlistIndex !== 0) {
-      console.log("first previous condition");
       dispatchAudioPlayerContext({ type: "LOAD_PREVIOUS_SONG" });
     } else {
-      console.log("second previous condition");
       dispatchAudioPlayerContext({
         type: "SEEK_POSITION_CHANGE",
         payload: 0.0,
@@ -119,10 +117,8 @@ const AudioPlayer = () => {
   };
 
   const handleNextClick = () => {
-    console.log("onEnded");
     if (playlistIndex < playlist.length - 1) {
       dispatchAudioPlayerContext({ type: "LOAD_NEXT_SONG" });
-      console.log("LOAD NEXT SONG");
     } else {
       dispatchAudioPlayerContext({ type: "PLAYLIST_ENDED" });
     }
@@ -134,33 +130,26 @@ const AudioPlayer = () => {
     });
   };
   const handlePlay = () => {
-    console.log("handlePlay");
     dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
     dispatchAudioPlayerState({ type: "PLAY" });
   };
   const handlePause = () => {
-    console.log("handlePause");
     dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
     dispatchAudioPlayerState({ type: "PAUSE" });
   };
   const handleAudioStart = () => {
-    console.log("handle audio ready");
     if (playlistEnded) {
       handlePause();
     } else {
-      console.log("handle audio ready (handlePlay())");
       handlePlay();
     }
   };
   const handleSeekMouseDown = (event) => {
-    console.log("MOUSE DOWN");
     dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN_FROM_AUDIO_PLAYER" });
     dispatchAudioPlayerState({ type: "SEEK_MOUSE_DOWN" });
   };
 
   const handleSeekChange = (event) => {
-    console.log("seekChange", event.target.value);
-    console.log(player);
     dispatchAudioPlayerState({
       type: "SEEK_POSITION_CHANGE",
       payload: parseFloat(event.target.value),
@@ -168,8 +157,6 @@ const AudioPlayer = () => {
   };
 
   const handleSeekMouseUp = (event) => {
-    console.log(event.target.value);
-    console.log("MOUSE UP");
     dispatchAudioPlayerContext({
       type: "SEEK_MOUSE_UP_FROM_AUDIO_PLAYER",
       payload: parseFloat(event.target.value),
@@ -187,7 +174,6 @@ const AudioPlayer = () => {
         payload: state.played,
       });
       dispatchAudioPlayerState({ type: "PROGRESS_CHANGE", payload: state });
-      // console.log(state);
     }
   };
   const handleDuration = (songDuration) => {
@@ -206,7 +192,6 @@ const AudioPlayer = () => {
   //This will load the song whenever the loadedSongURL changes
   useEffect(() => {
     if (loadedSongURL) {
-      console.log("Loading new song");
       load(loadedSongURL);
     }
   }, [loadedSongURL]);
@@ -216,14 +201,8 @@ const AudioPlayer = () => {
   // Or if the state of the AudioPlayerContext changes..
   useEffect(() => {
     if (!isSongPlaying && playing) {
-      console.log("second use effect Audio Player, CONDITION 1");
-      // console.log("2nd use effect pause");
       dispatchAudioPlayerState({ type: "PAUSE" });
     } else if (isSongPlaying && !playing) {
-      console.log("second use effect Audio Player, CONDITION 2");
-      // console.log("2nd use effect play");
-      // console.log(player.current.getSecondsLoaded());
-      // console.log(audioPlayerState);
       dispatchAudioPlayerState({ type: "PLAY" });
     }
   }, [isSongPlaying, playing]);
@@ -231,7 +210,6 @@ const AudioPlayer = () => {
   //This useEffect is used to store the user's volume settings in localStorage when it changes.
   useEffect(() => {
     localStorage.setItem("volume", volume);
-    // console.log("Setting volume", volume);
   }, [volume]);
 
   //This is used when a SongItem sends us a position to seek to,
@@ -277,14 +255,14 @@ const AudioPlayer = () => {
         playing={playing}
         volume={volume}
         muted={muted}
-        onReady={(e) => console.log("track is loaded")}
+        // onReady={}
         onStart={handleAudioStart}
         onPlay={handlePlay}
         onPause={handlePause}
-        // onBuffer={() => console.log("onBuffer")}
-        onSeek={(e) => console.log("onSeek", e)}
+        // onBuffer={}
+        // onSeek={}
         onEnded={handleEnded}
-        onError={(e) => console.log("onError", e)}
+        // onError={}
         onProgress={handleProgress}
         onDuration={handleDuration}
       />

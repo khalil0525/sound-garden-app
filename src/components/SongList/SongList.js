@@ -42,13 +42,13 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   }, [songs, count.next]);
 
   return (
-    <div className={`${styles["song-list"]} ${className} `}>
+    <div className={`${styles["songList"]} ${className} `}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={styles["song-list__list"]}
+        className={styles["songList__list"]}
         scrollableTarget={scrollRef.current}
       >
         {/* <ul > */}

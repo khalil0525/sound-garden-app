@@ -4,7 +4,6 @@ import { useCollection } from "../../hooks/useCollection";
 import styles from "./CollectionResults.module.css";
 import ActionBar from "../ActionBar/ActionBar";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function CollectionResults(props) {
   const { user } = useAuthContext();
@@ -48,15 +47,15 @@ export default function CollectionResults(props) {
   //   console.log(from, search);
   // });
   return (
-    <div className={styles.collectionresults}>
+    <div className={styles.collectionResults}>
       {location.pathname.split("/")[1] !== "profile" && (
         <ActionBar
-          className={styles["collectionresults__actionBar"]}
+          className={styles["collectionResults__actionBar"]}
           query={algoliaQuery}
           user={user}
         />
       )}
-      <div className={styles["collectionresults__header"]}>
+      <div className={styles["collectionResults__header"]}>
         {location.pathname === "/search" ? (
           <h1 className={styles["search__queryText"]}>
             Search results for "{algoliaQuery}"
@@ -67,14 +66,14 @@ export default function CollectionResults(props) {
       {location.pathname !== "/search" ? (
         musicDocuments && musicDocuments.length > 0 ? (
           <SongList
-            className={styles["collectionresults__songList"]}
+            className={styles["collectionResults__songList"]}
             songs={musicDocuments}
             user={user ? user : "none"}
             scrollRef={props.scrollRef}
             playlistLocation={location && location.pathname}
           />
         ) : (
-          <h1 className={styles["collectionresults__songList"]}>
+          <h1 className={styles["collectionResults__songList"]}>
             {emptyListMessage}
           </h1>
         )
@@ -84,13 +83,13 @@ export default function CollectionResults(props) {
       {location.pathname === "/search" ? (
         algoliaResults.length ? (
           <SongList
-            className={styles["collectionresults__songList"]}
+            className={styles["collectionResults__songList"]}
             scrollRef={props.scrollRef}
             songs={algoliaResults}
             user={user ? user : "none"}
           />
         ) : (
-          <h1 className={styles["collectionresults__songList"]}>
+          <h1 className={styles["collectionResults__songList"]}>
             The search yielded no results!
           </h1>
         )

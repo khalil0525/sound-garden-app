@@ -1,7 +1,5 @@
 /* Small mobile devices first */
 .sideNavigation {
-  /* width: 100%;
-  max-width: inherit; */
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
@@ -23,9 +21,6 @@
 .sideNavigation__navContainer {
   display: flex;
 }
-/* .sideNavigation__mainMenu,
-.sideNavigation__libraryMenu {
-} */
 
 .sideNavigation__navbar {
   flex: 1 0 auto;
@@ -47,19 +42,11 @@
 
   /* Style for active class */
 }
-/* .sideNavigation__navbar a:hover {
-  background: rgba(252, 100, 70, 0.514);
-} */
+
 .sideNavigation__navbar a.navbar__activeItem {
   color: #fff;
 }
 
-/* .navbar__itemContent-icon {
-  stroke: rgba(255, 255, 255, 0.2);
-  width: 2.4rem;
-  height: 2.4rem;
-}
-*/
 .navbar__itemContent {
   display: flex;
   gap: 1rem;
@@ -74,67 +61,12 @@
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-  /* .sideNavigation__header {
-    padding: 0rem 4rem;
-    margin: 0 1rem;
-    gap: 1rem;
-  }
-  .sideNavigation__header-imageContainer {
-    max-width: 6rem;
-    height: 6rem;
-  }
-  .sideNavigation__header-greeting {
-    font-size: 2rem;
-  }
-  .sideNavigation__header-artistNameText {
-    font-size: 3.2rem;
-  }
-  .sideNavigation__navbarTitle {
-    font-size: 1.8rem;
-  } */
 }
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  /* .sideNavigation__header {
-    padding: 0rem 4rem;
-    margin: 0 1rem;
-    gap: 1rem;
-  }
-  .sideNavigation__header-imageContainer {
-    max-width: 6rem;
-    height: 6rem;
-  }
-
-  .sideNavigation__header-greeting {
-    font-size: 2rem;
-  }
-  .sideNavigation__header-artistNameText {
-    font-size: 3.2rem;
-  }
-  .sideNavigation__navbarTitle {
-    font-size: 1.8rem;
-  } */
 }
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  /* .sideNavigation__header {
-    padding: 0rem 4rem;
-    margin: 0 1rem;
-    gap: 1rem;
-  }
-  .sideNavigation__header-imageContainer {
-    max-width: 6rem;
-    height: 6rem;
-  }
-  .sideNavigation__header-greeting {
-    font-size: 2rem;
-  }
-  .sideNavigation__header-artistNameText {
-    font-size: 3.2rem;
-  }
-  .sideNavigation__navbarTitle {
-    font-size: 1.8rem;
-  } */
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
@@ -162,14 +94,14 @@
     display: block;
     max-width: 6rem;
     height: 6rem;
-
+    border-radius: 1.2rem;
     box-shadow: 0 10px 140px rgba(251, 80, 47, 0.9);
   }
   .sideNavigation__header-imageContainer img {
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
+    border-radius: inherit;
   }
   .sideNavigation__header-greeting {
     display: block;
@@ -226,13 +158,6 @@
     color: #fff;
   }
 
-  /* .sideNavigation__mainMenu {
-    max-width: inherit;
-  }
-  .sideNavigation__libraryMenu {
-    max-width: inherit;
-    grid-row: 3/3;
-  } */
   .navbar__itemContent-text {
     display: block;
   }
@@ -267,12 +192,5 @@
     font-size: 2.6rem;
 
     padding: 1.8rem 3.2rem 1.8rem 5.8rem;
-
-    /* Style for active class */
   }
-  /* .sideNavigation__header-artistNameText {
-    font-size: 3.2rem;
-    font-weight: 600;
-    line-height: 3.9rem;
-  } */
 }

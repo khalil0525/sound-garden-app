@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import searchIcon from "../../images/Search.svg";
-import styles from "./ActionSearchBar.module.css";
+import styles from "./ActionBarSearch.module.css";
 // import algoliasearch from "algoliasearch";
 import { useAlgoliaSearch } from "../../hooks/useAlgoliaSearch";
 
-const ActionSearchBar = ({ queryString }) => {
+const ActionBarSearch = ({ queryString }) => {
   const [searchText, setSearchText] = useState(() =>
     queryString ? queryString : ""
   );
@@ -20,6 +20,7 @@ const ActionSearchBar = ({ queryString }) => {
       searchForDocuments(searchText);
     }
   };
+
   const handleEnterPressed = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -27,25 +28,19 @@ const ActionSearchBar = ({ queryString }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(searchText);
-  // }, [searchText]);
-
   return (
-    <div className={styles.actionsearchbar}>
-      <div className={styles["actionsearchbar__contents"]}>
-        <img src={searchIcon} alt="Search button icon" onClick={handleSearch} />
+    <div className={styles.actionBarSearch}>
+      <img src={searchIcon} alt="Search button icon" onClick={handleSearch} />
 
-        <input
-          type="text"
-          placeholder="Type here to search"
-          value={searchText}
-          onChange={handleSearchTextChange}
-          onKeyPress={handleEnterPressed}
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Type here to search"
+        value={searchText}
+        onChange={handleSearchTextChange}
+        onKeyPress={handleEnterPressed}
+      />
     </div>
   );
 };
 
-export default ActionSearchBar;
+export default ActionBarSearch;

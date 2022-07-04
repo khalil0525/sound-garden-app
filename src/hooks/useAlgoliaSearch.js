@@ -22,7 +22,7 @@ export const useAlgoliaSearch = () => {
           results.push({ ...doc, createdAt: timestamp });
         });
 
-        navigate("/search", {
+        navigate(`/search?q=${queryString}`, {
           replace: false,
           state: {
             results,

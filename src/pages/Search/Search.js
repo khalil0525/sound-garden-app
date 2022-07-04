@@ -10,10 +10,6 @@ const Search = ({ scrollRef }) => {
   let location = useLocation();
   const { results, query } = location.state;
 
-  useEffect(() => {
-    console.log(location.state);
-  });
-
   return (
     <div className={styles.search}>
       <ActionBar

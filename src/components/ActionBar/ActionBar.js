@@ -4,7 +4,7 @@ import styles from "./ActionBar.module.css";
 import { ReactComponent as UploadIcon } from "../../images/Upload_duotone_line.svg";
 import placeholderImage from "../../images/profile_placeholder.svg";
 import Modal from "../UI/Modal/Modal";
-import ActionSearchBar from "./ActionSearchBar";
+import ActionBarSearch from "./ActionBarSearch";
 import Button from "../UI/Button/Button";
 import { useFirestore } from "../../hooks/useFirestore";
 
@@ -24,7 +24,6 @@ const ActionBar = (props) => {
       !getUserDocumentResponse.isPending
     ) {
       getUserDocument(props.user.uid);
-      console.log(props.user);
     }
   }, [props.user, getUserDocument, getUserDocumentResponse]);
 
@@ -32,13 +31,12 @@ const ActionBar = (props) => {
   useEffect(() => {
     if (!profileLink && getUserDocumentResponse.success) {
       setProfileLink(getUserDocumentResponse.document.profileURL);
-      console.log("here");
     }
   }, [getUserDocumentResponse, profileLink]);
 
   return (
-    <div className={`${styles.actionbar} ${props.className}`}>
-      <nav className={styles["actionbar__nav"]}>
+    <div className={`${styles.actionBar} ${props.className}`}>
+      <nav className={styles["actionBar__nav"]}>
         {!props.user ? (
           <>
             <Button
@@ -74,20 +72,20 @@ const ActionBar = (props) => {
         ) : (
           <Link
             to={`/profile/${profileLink && profileLink}`}
-            className={styles["actionbar__profileLink"]}
+            className={styles["actionBar__profileLink"]}
           >
             <img
               src={props.user.photoURL ? props.user.photoURL : placeholderImage}
               alt="Search button icon"
-              className={styles["actionbar__profileLink-img"]}
+              className={styles["actionBar__profileLink-img"]}
             />
           </Link>
         )}
 
-        <Link to="/upload" className={styles["actionbar__uploadLink"]}>
+        <Link to="/upload" className={styles["actionBar__uploadLink"]}>
           <UploadIcon alt="Upload button icon" />
         </Link>
-        <ActionSearchBar queryString={props.query} />
+        <ActionBarSearch queryString={props.query} />
       </nav>
     </div>
   );

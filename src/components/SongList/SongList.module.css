@@ -1,6 +1,6 @@
-.song-list {
+.songList {
 }
-.song-list__list {
+.songList__list {
   display: flex;
   flex-direction: column;
   gap: 2rem;

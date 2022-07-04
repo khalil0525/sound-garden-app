@@ -15,47 +15,41 @@ const CreateAccountOverlay = (props) => {
 
   return (
     <div className={styles.modal}>
-      <form className={styles["register-form"]} onSubmit={handleFormSubmit}>
+      <form className={styles["registerForm"]} onSubmit={handleFormSubmit}>
         <h2>Create a New Account</h2>
 
-        <div className={styles["register-form_controls"]}>
-          <div className={styles["register-form_control"]}>
-            <input
-              type="email"
-              value={email}
-              placeholder="Your Email Address"
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
+        <div className={styles["registerForm_controls"]}>
+          <input
+            type="email"
+            value={email}
+            placeholder="Your Email Address"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <div className={styles["register-form_control"]}>
-            <input
-              type="password"
-              value={password}
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          </div>
+          <input
+            type="password"
+            value={password}
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-          <div className={styles["register-form_control"]}>
-            <input
-              type="text"
-              value={displayName}
-              placeholder="Username"
-              onChange={(e) => setDisplayName(e.target.value)}
-            ></input>
-          </div>
+          <input
+            type="text"
+            value={displayName}
+            placeholder="Username"
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
         </div>
         {/* We are conditionally rendering buttons based on isPending, which
       is a piece of state in our useRegister hook which will be set to true
       when the create user attempts to process */}
         {!isPending && (
-          <div className={styles["register-form_actions"]}>
+          <div className={styles["registerForm_actions"]}>
             <button type="submit">Register</button>
           </div>
         )}
         {isPending && (
-          <div className={styles["register-form_actions"]}>
+          <div className={styles["registerForm_actions"]}>
             <button disabled>loading</button>
           </div>
         )}

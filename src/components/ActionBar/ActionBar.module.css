@@ -1,14 +1,14 @@
-.actionbar {
+.actionBar {
   padding: 0.5rem 3rem;
   background-color: #fff;
 }
-.actionbar__nav {
+.actionBar__nav {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 }
-.actionbar__profileLink {
+.actionBar__profileLink {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,8 +18,10 @@
   filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
   stroke: #fff;
   border-radius: 25px;
+
+  order: 3;
 }
-.actionbar__profileLink-img {
+.actionBar__profileLink-img {
   display: flex;
   align-self: center;
   width: 100%;
@@ -27,13 +29,47 @@
   border-radius: 10.18rem;
 }
 
-.actionbar__uploadLink {
-  width: 4.2rem;
-  height: 4.2rem;
+.actionBar__uploadLink {
+  display: none;
+}
 
-  color: #fff;
-  background: linear-gradient(180deg, #fd4d2d 0%, #f9330e 100%);
-  box-shadow: 3px 4px 15px rgba(0, 0, 0, 0.12);
-  border-radius: 25px;
-  padding: 1rem;
+@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
+  /* .actionBar__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  } */
+
+  .actionBar__profileLink {
+    order: 0;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4.2rem;
+    height: 4.2rem;
+    background-image: url("/src/images/blank_image_placeholder.svg");
+    filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
+    stroke: #fff;
+    border-radius: 25px; */
+  }
+  /* .actionBar__profileLink-img {
+    display: flex;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 10.18rem;
+  } */
+
+  .actionBar__uploadLink {
+    display: block;
+    width: 4.2rem;
+    height: 4.2rem;
+
+    color: #fff;
+    background: linear-gradient(180deg, #fd4d2d 0%, #f9330e 100%);
+    box-shadow: 3px 4px 15px rgba(0, 0, 0, 0.12);
+    border-radius: 25px;
+    padding: 1rem;
+  }
 }
