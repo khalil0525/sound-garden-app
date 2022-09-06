@@ -66,6 +66,6 @@ Some challenges that I faced were caused by the choice of technologies. The **SE
 Khalil Collins
 
 [![Github Profile](https://user-images.githubusercontent.com/11954011/176273000-707b1d41-9837-4f02-bac9-3126e1bcd260.png)](https://github.com/khalil0525)
-[![LinkedIn Profile](https://user-images.githubusercontent.com/11954011/176273060-72918a45-23ce-48b7-90f0-9b5debb0258f.png)](https://www.linkedin.com/in/khalilcollins/)
+[![LinkedIn Profile](https://user-images.githubusercontent.com/11954011/176273060-72918a45-23ce-48b7-90f0-9b5debb0258f.png)](https://www.linkedin.com/in/khalil-collins/)
 
 
