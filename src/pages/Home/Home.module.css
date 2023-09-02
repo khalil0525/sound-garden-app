@@ -1,46 +1,52 @@
 .home {
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 1fr auto;
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	grid-template-rows: 1fr auto;
 }
 .home__actionBar {
-  grid-column: 1/-1;
+	grid-column: 1/-1;
 }
 
 .home__content {
-  grid-row: 2/-1;
-  grid-column: 1/-1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	grid-row: 2/-1;
+	grid-column: 1/-1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .tempInfo {
-  text-align: center;
+	text-align: center;
 
-  font-size: 1.6rem;
-  margin: 3.6rem 0;
+	font-size: 1.6rem;
+	margin: 3.6rem 0;
 }
 .tempInfo ul {
-  list-style: none;
+	list-style: none;
 }
 .tempInfo ul li {
-  margin-bottom: 1rem;
+	margin-bottom: 1rem;
+}
+
+.home__cardList {
+	grid-row: 2/-1;
+	grid-column: 1/-1;
+	margin: 0 auto;
 }
 
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
-  .home__actionBar {
-    grid-column: 3/-1;
-    grid-row: 1;
-    display: flex;
-    justify-content: flex-end;
-  }
+	.home__actionBar {
+		grid-column: 3/-1;
+		grid-row: 1;
+		display: flex;
+		justify-content: flex-end;
+	}
 
-  .home__content {
-    width: 100%;
-  }
+	.home__content {
+		width: 100%;
+	}
 
-  .tempInfo {
-    font-size: 2.6rem;
-  }
+	.tempInfo {
+		font-size: 2.6rem;
+	}
 }

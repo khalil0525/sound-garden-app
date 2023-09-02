@@ -10,9 +10,9 @@ const Card = (props) => {
 			{title && (
 				<div className={styles["card__title"]}>
 					<p>{title.toUpperCase()}</p>
+					{content && <div className={styles["card__content"]}>{content}</div>}
 				</div>
 			)}
-			{content && <div className={styles["card__content"]}>{content}</div>}
 		</li>
 	);
 };

@@ -5,6 +5,11 @@ import Card from "../../components/CardList/Card";
 import CardList from "../../components/CardList/CardList";
 import Button from "../../components/UI/Button/Button";
 
+const tempList = [
+	{ title: "Top 50 tamil", content: "50 tracks", background: "" },
+	{ title: "Weekly Hits", content: "100 tracks", background: "" },
+	{ title: "Tolly Hit track", content: "60 Tracks", background: "" },
+];
 export default function Home() {
 	const { user } = useAuthContext();
 	return (
@@ -25,11 +30,11 @@ export default function Home() {
 				<Button>Listen Now</Button>
 			</Card>
 			<div>
-				<CardList>
-					<Card></Card>
-					<Card></Card>
-					<Card></Card>
-				</CardList>
+				<CardList
+					className={styles["genres__cardList"]}
+					list={tempList}
+					page={""}
+				/>
 			</div>
 		</div>
 	);

@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting --project ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+          args: deploy --only hosting --project sound-garden-eeeed
 
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
