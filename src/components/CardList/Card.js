@@ -1,12 +1,21 @@
 import React from "react";
-import PropTypes from "prop-types"; // Import PropTypes for prop type validation
+import PropTypes from "prop-types";
 import styles from "./Card.module.css";
 
 const Card = (props) => {
 	const { background, title, content } = props;
 
+	const cardClasses = [styles.card];
+
+	if (background) {
+		cardClasses.push(styles[background]);
+	}
+
 	return (
-		<li className={`${styles.card} ${background ? styles[background] : ""}`}>
+		<li
+			className={styles.card}
+			style={background ? { backgroundImage: `url(${background})` } : {}}
+		>
 			{title && (
 				<div className={styles["card__title"]}>
 					<p>{title.toUpperCase()}</p>
@@ -17,11 +26,10 @@ const Card = (props) => {
 	);
 };
 
-// Define propTypes for prop type validation
 Card.propTypes = {
-	background: PropTypes.string, // Background CSS class name
-	title: PropTypes.string, // Title text
-	content: PropTypes.node, // Content (can be JSX)
+	background: PropTypes.string,
+	title: PropTypes.string,
+	content: PropTypes.node,
 };
 
 export default Card;

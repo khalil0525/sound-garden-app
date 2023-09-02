@@ -42,6 +42,7 @@ const ActionBar = (props) => {
 							onClick={() => setIsSigningIn(true)}
 							disabled={isSigningIn}
 							buttonSize="large"
+							className={styles["actionBar__button"]}
 						>
 							Sign in
 						</Button>
@@ -49,6 +50,7 @@ const ActionBar = (props) => {
 							onClick={() => setIsCreatingAccount(true)}
 							disabled={isCreatingAccount}
 							buttonSize="large"
+							className={styles["actionBar__button"]}
 						>
 							Create Account
 						</Button>

@@ -4,20 +4,23 @@
 	align-items: flex-end;
 
 	max-width: 19rem;
+	min-width: 19rem;
 	height: 15.8rem;
 
-	background: #c4c4c4;
 	border-radius: 20px;
 	list-style: none;
 
 	background: linear-gradient(360deg, #fd4d2d 0%, #f9330e 100%);
+	background-position: center center;
+	background-size: cover; /* Add this line */
 }
 .card__title {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 
-	width: 16.4rem;
+	width: 90%;
 	height: 6rem;
 
 	background: rgba(20, 3, 3, 0.4);

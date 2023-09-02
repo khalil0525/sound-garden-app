@@ -1,19 +1,27 @@
 .cardlist {
-  max-width: 85rem;
+	max-width: 85rem;
 }
+
 .cardlist__list {
-  display: flex;
-  justify-content: center;
-  gap: 1.6rem;
-  flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+	gap: 1.6rem;
+	flex-wrap: wrap;
 }
+
+/* Set a fixed width for each card */
+.cardlist__list .card {
+	flex: 0 0 calc(33.33% - 1.6rem); /* Adjust the width as needed */
+}
+
 .cardlist__list a:link,
 .cardlist__list a:visited {
-  text-decoration: none;
-  color: #fff;
+	text-decoration: none;
+	color: #fff;
 }
+
 .cardlist__list a:hover,
 .cardlist__list a:active {
-  text-decoration: none;
-  color: #fff;
+	text-decoration: none;
+	color: #fff;
 }
