@@ -46,6 +46,11 @@ jobs:
         with:
           name: build
           path: build
+      - name: Set Firebase Project
+        run: firebase use sound-garden-app
+        env:
+          FIREBASE_TOKEN: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
