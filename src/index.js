@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
@@ -9,16 +9,17 @@ import "./fonts/Inter/Inter-Regular.ttf";
 import "./fonts/Inter/Inter-Bold.ttf";
 import "./fonts/Inter/Inter-SemiBold.ttf";
 
-ReactDOM.render(
-  <React.StrictMode>
-    {/* Custom context provider component */}
-    <AudioPlayerContextProvider>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
-    </AudioPlayerContextProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+	<React.StrictMode>
+		{/* Custom context provider component */}
+		<AudioPlayerContextProvider>
+			<AuthContextProvider>
+				<App />
+			</AuthContextProvider>
+		</AudioPlayerContextProvider>
+	</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
