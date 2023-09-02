@@ -26,7 +26,9 @@ export default function Home() {
 			</Card>
 			<div>
 				<CardList>
-					<Card></Card> <Card></Card> <Card></Card>
+					<Card></Card>
+					<Card></Card>
+					<Card></Card>
 				</CardList>
 			</div>
 		</div>
