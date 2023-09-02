@@ -10,7 +10,7 @@ export default function Home() {
 		<div className={styles.home}>
 			<ActionBar className={styles["home__actionBar"]} user={user} />
 
-			<div
+			<Card
 				style={{
 					backgroundColor: "#FD4D2D",
 					borderRadius: "12px",
@@ -19,6 +19,9 @@ export default function Home() {
 			>
 				<img src="/img/woman-listening-to-music.png"></img>
 				<Button>Listen Now</Button>
+			</Card>
+			<div>
+				<Card></Card>
 			</div>
 		</div>
 	);
