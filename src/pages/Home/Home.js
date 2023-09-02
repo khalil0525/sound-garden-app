@@ -17,7 +17,10 @@ export default function Home() {
 					position: "relative",
 				}}
 			>
-				<img src="/img/woman-listening-to-music.png"></img>
+				<img
+					src="/img/woman-listening-to-music.png"
+					alt="woman listening to music"
+				></img>
 				<Button>Listen Now</Button>
 			</Card>
 			<div>
