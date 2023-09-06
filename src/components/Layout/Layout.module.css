@@ -25,15 +25,15 @@
 .actionBarThreeCol {
   grid-column: 3/-1;
 }
-.actionBarOneCol {
-  grid-column: 1/-1;
+.actionBarTwoCol {
+  grid-column: 2/-1;
   grid-row: 1/2;
 }
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .twoColumnlayout {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: 1fr 4fr 4fr;
+    grid-template-rows: 0.5fr 4fr 4fr;
     padding: 1.6rem 2.4rem 0 2.4rem;
     column-gap: 3.6rem;
   }
