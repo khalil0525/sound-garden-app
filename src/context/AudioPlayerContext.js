@@ -25,7 +25,7 @@ const init = (initialReducerState) => {
     const playlistFromLocalStorage = JSON.parse(
       localStorage.getItem("playlist")
     );
-    console.log("Playlist: ", playlistFromLocalStorage);
+
     let parsedPlaylistIndex = parseInt(indexFromLocalStorage);
     let playlistLocationFromLocalStorage =
       localStorage.getItem("playlistLocation");
@@ -206,9 +206,9 @@ export const AudioPlayerContextProvider = ({ children }) => {
   //Extract playlist and playlistIndex from our reducer state
   const { playlist, playlistIndex, playlistLocation } = state;
   // This will check if a user is logged in after page refresh or when they first load the site
-  useEffect(() => {
-    console.log(state.loadedSongURL);
-  }, [state]);
+  // useEffect(() => {
+  //   console.log(state.loadedSongURL);
+  // }, [state]);
 
   //These 2 useEffects are used to store the current playlist and index we're at in localStorage
   useEffect(() => {
@@ -229,8 +229,7 @@ export const AudioPlayerContextProvider = ({ children }) => {
   // console.log("AudioPlayerContext state: ", state);
   return (
     <AudioPlayerContext.Provider
-      value={{ ...state, dispatchAudioPlayerContext }}
-    >
+      value={{ ...state, dispatchAudioPlayerContext }}>
       {children}
     </AudioPlayerContext.Provider>
   );

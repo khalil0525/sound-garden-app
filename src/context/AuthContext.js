@@ -40,8 +40,7 @@ export const AuthContextProvider = ({ children }) => {
     const reloadUser = async () => {
       try {
         await projectAuth.currentUser.reload();
-        console.log("Triggered", refreshUserTriggered);
-        console.log(projectAuth.currentUser);
+
         dispatch({ type: "AUTH_IS_READY", payload: projectAuth.currentUser });
       } catch (err) {
         console.log(err);
@@ -66,7 +65,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   // Output the AuthContext state everytime we get a change
-  console.log("AuthContext state: ", state);
+
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}

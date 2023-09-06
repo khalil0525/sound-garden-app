@@ -12,7 +12,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
     "==",
     user.uid ? user.uid : "none",
   ]);
-  console.log(songs);
+
   const [count, setCount] = useState({
     prev: 0,
     next: 4,
