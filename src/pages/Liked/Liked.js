@@ -13,5 +13,11 @@ export default function Liked({ scrollRef }) {
     "likes",
   ];
 
-  return <CollectionResults scrollRef={scrollRef} query={query} />;
+  return (
+    <CollectionResults
+      scrollRef={scrollRef}
+      query={query}
+      hideActionBar={true}
+    />
+  );
 }

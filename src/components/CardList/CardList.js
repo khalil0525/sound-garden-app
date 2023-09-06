@@ -1,5 +1,5 @@
 import styles from "./CardList.module.css";
-import Card from "./Card";
+import ListCard from "./ListCard";
 import { Link } from "react-router-dom";
 const CardList = ({ list, page, className }) => {
 	console.log(list);
@@ -16,7 +16,7 @@ const CardList = ({ list, page, className }) => {
 							}}
 							key={item.title}
 						>
-							<Card
+							<ListCard
 								title={item.title}
 								content={item.content}
 								background={item.background}

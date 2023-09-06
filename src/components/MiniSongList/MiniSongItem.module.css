@@ -1,0 +1,320 @@
+.songItem {
+  padding: 2rem;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  max-width: 85rem;
+  height: 16rem;
+  align-items: center;
+  gap: 0.4rem;
+
+  list-style: none;
+  /* border: 1px grey solid; */
+}
+
+.songItem__header {
+  grid-column: 2/-1;
+  grid-row: 1;
+}
+.songItem__titleContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.titleContainer__playBtn {
+  align-self: center;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  box-shadow: 0 1px rgba(15, 15, 15, 0.5);
+  margin: 0 0.2rem 0 1rem;
+}
+
+.titleContainer__songTitle {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  justify-content: center;
+}
+.titleContainer__songTitle-artist {
+  /* display: inline-block; */
+  /* max-width: 100%; */
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.6rem;
+  color: #999;
+}
+.titleContainer__songTitle-title {
+  /* display: inline-block;
+  max-width: 100%; */
+  font-size: 1.6rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #333;
+}
+
+.titleContainer__additional {
+  display: none;
+}
+
+.songItem__footer {
+  display: none;
+  /* display: inherit; */
+  grid-column: 2/2;
+  grid-row: 3/3;
+}
+.actionContainer-likeBtn--liked {
+  box-shadow: 0 0 0 1px #ff3a16;
+  /* border: 1px solid #ff3a16; */
+
+  color: #ff3a16;
+}
+/* .actionContainer-likeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.songItem__aside {
+  grid-column: 1/1;
+  grid-row: 1/-1;
+}
+
+.songItem__songPhotoContainer {
+  width: 12rem;
+  height: 12rem;
+}
+.songPhotoContainer-img {
+  width: 100%;
+  height: 100%;
+  /* background-size: cover; */
+  opacity: 1;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.songItem__seekControl {
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-left: 1.6rem;
+}
+.songItem__duration {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: none;
+  font-size: 1.2rem;
+  line-height: 1.9rem;
+
+  color: #161618;
+}
+
+@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
+  .songItem {
+    /* padding: 2rem;
+    display: grid; */
+    grid-template-columns: 1fr 4fr;
+    /* grid-template-rows: 1fr 1fr 1fr; */
+    /* height: 16rem;
+    align-items: center; */
+    /* gap: 0.4rem; */
+    justify-content: flex-start;
+    /* list-style: none; */
+    /* border: 1px grey solid; */
+  }
+
+  .songItem__header {
+    grid-column: 2/3;
+    grid-row: 1;
+  }
+
+  /* .songItem__titleContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  } */
+
+  /* .titleContainer__playBtn {
+    align-self: center;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    box-shadow: 0 1px rgba(15, 15, 15, 0.5);
+    margin: 0 0.2rem 0 1rem;
+  } */
+
+  .titleContainer__songTitle {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  /* .titleContainer__songTitle-artist { */
+  /* display: inline-block; */
+  /* max-width: 100%; */
+  /* font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    color: #999;
+  } */
+
+  /* .titleContainer__songTitle-title {
+    /* display: inline-block;
+  max-width: 100%; */
+  /* font-size: 1.6rem;
+    line-height: 1.2;
+    font-weight: 600;
+    color: #333;
+  } */
+
+  .titleContainer__additional {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-self: flex-start;
+    text-align: right;
+    gap: 0.4rem;
+    margin-left: 0.5rem;
+  }
+
+  .titleContainer__additional-uploadDate {
+    /* margin-left: 20rem; */
+    display: block;
+    color: #ccc;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.6rem;
+  }
+  .titleContainer__additional-genreContainer {
+    display: block;
+    margin-top: 0.2rem;
+    line-height: 1.2rem;
+  }
+  .titleContainer__additional-genre {
+    /* margin-left: 20rem; */
+    padding: 0 0.6rem;
+
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #fff;
+    text-transform: uppercase;
+
+    background-color: #999;
+    border: 1px solid #999;
+    border-radius: 2rem;
+    height: 1.8rem;
+  }
+  .songItem__footer {
+    /* display: inherit; */
+    display: block;
+    /* grid-column: 2/2;
+    grid-row: 3/3; */
+  }
+  .songItem__actionContainer {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .songItem__actionContainer:first-child {
+    margin-left: 1rem;
+  }
+  /* BUTTONS */
+  .actionContainer__btn {
+    background: #fff;
+    border: none;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3rem;
+  }
+  .actionContainer__btn:hover {
+    border-color: #ccc;
+  }
+  /* .actionContainer-likeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+  /* .actionContainer-likeBtn--liked {
+    box-shadow: 0 0 0 1px #ff3a16;
+    /* border: 1px solid #ff3a16; */
+
+  /* color: #ff3a16;
+  }  */
+
+  /* .actionContainer_downloadBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}
+
+.actionContainer_editBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actionContainer_deleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+  /* .songItem__aside {
+    grid-column: 1/1;
+    grid-row: 1/-1;
+  } */
+
+  .songItem__songPhotoContainer {
+    max-width: 16rem;
+    max-height: 16rem;
+  }
+  /* .songPhotoContainer-img {
+    width: 100%;
+    height: 100%;
+    /* background-size: cover; */
+  /* opacity: 1;
+
+    border-radius: 14px;
+
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+  }  */
+  .songItem__seekControl {
+    grid-column: 2/-1;
+    /* grid-row: 2; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* gap: 0.6rem; */
+  }
+  /* .songItem__duration {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: none;
+    font-size: 1.2rem;
+    line-height: 1.9rem;
+
+    color: #161618;
+  } */
+  .songItem__seekControl input {
+    width: 60rem;
+  }
+}

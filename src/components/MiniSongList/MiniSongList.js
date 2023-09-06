@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./SongList.module.css";
-import SongItem from "./SongItem";
+import SongItem from "./MiniSongItem";
 import { useCollection } from "../../hooks/useCollection";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -12,14 +12,13 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
     "==",
     user.uid ? user.uid : "none",
   ]);
-  console.log(songs);
+
   const [count, setCount] = useState({
     prev: 0,
     next: 4,
   });
   const [hasMore, setHasMore] = useState(true);
   const [current, setCurrent] = useState(songs.slice(count.prev, count.next));
-
   const songsRef = useRef(songs);
 
   const getMoreData = () => {
@@ -53,7 +52,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
         className={styles["songList__list"]}
         scrollableTarget={scrollRef.current}>
         {/* <ul > */}
-        {current?.length &&
+        {current &&
           likedSongDocuments &&
           current.map((song, index) => (
             <SongItem

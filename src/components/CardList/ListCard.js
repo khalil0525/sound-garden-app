@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "./Card.module.css";
+import styles from "./ListCard.module.css";
 
-const Card = (props) => {
-	const { background, title, content } = props;
-
+const ListCard = ({ background, title, content }) => {
 	const cardClasses = [styles.card];
 
 	if (background) {
@@ -26,10 +24,10 @@ const Card = (props) => {
 	);
 };
 
-Card.propTypes = {
+ListCard.propTypes = {
 	background: PropTypes.string,
 	title: PropTypes.string,
 	content: PropTypes.node,
 };
 
-export default Card;
+export default ListCard;

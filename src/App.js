@@ -36,16 +36,27 @@ function App() {
             <SimpleBar
               autoHide={false}
               scrollableNodeProps={{ ref: scrollableNodeRef }}
-              style={{ overflowX: "hidden", height: "95vh", top: "2rem" }}
-            >
+              style={{
+                overflowX: "hidden",
+                height: "95vh",
+                paddingTop: "20px",
+              }}>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/genres" element={<Genres />} />
+                <Route
+                  path="/"
+                  element={<Home scrollRef={scrollableNodeRef} />}
+                />
+                <Route
+                  path="/genres"
+                  element={<Genres />}
+                />
                 <Route
                   path="/genres/:type"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
                 />
-                <Route path="/artists" element={<Artists />}></Route>
+                <Route
+                  path="/artists"
+                  element={<Artists />}></Route>
                 <Route
                   path="/artists/:letter"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
@@ -70,7 +81,10 @@ function App() {
                     )
                   }
                 />
-                <Route path="*" element={<Home />} />
+                <Route
+                  path="*"
+                  element={<Home scrollRef={scrollableNodeRef} />}
+                />
                 <Route
                   path="/profile/:profileURL"
                   element={<Profile scrollRef={scrollableNodeRef} />}

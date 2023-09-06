@@ -1,69 +1,179 @@
-.home {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
-	grid-template-rows: 1fr auto;
-}
-.home__actionBar {
-	grid-column: 1/-1;
-}
-
 .home__content {
-	grid-row: 2/-1;
-	grid-column: 1/-1;
-	display: flex;
-	flex-direction: column;
-	align-items: start;
-}
-
-.home__container {
-	/* Styles for the container div */
-	display: flex;
-	flex-direction: column;
-	gap: 1.2rem;
-	margin-bottom: 1.6rem;
-}
-
-.home__title {
-	font-size: 2.4rem;
-	font-weight: bold;
-}
-
-.home__cardList {
-	/* Styles for the CardList component */
+  width: 100%;
 }
 
 .tempInfo {
-	text-align: center;
+  font-size: 2.6rem;
+}
+.home__leftSide {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: inherit;
+  gap: 1.6rem;
+}
+.home__rightSide {
+  display: flex;
+  flex-direction: inherit;
+  gap: 1.6rem;
+}
+.home__container {
+  /* Styles for the container div */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 1.6rem;
+  grid-row: auto;
+}
 
-	font-size: 1.6rem;
-	margin: 3.6rem 0;
-}
-.tempInfo ul {
-	list-style: none;
-}
-.tempInfo ul li {
-	margin-bottom: 1rem;
+.home__title {
+  font-size: 2.4rem;
+  font-weight: bold;
 }
 
 .home__cardList {
-	grid-row: 2/-1;
-	grid-column: 1/-1;
-	margin: 0 auto;
+  align-self: flex-start;
+  margin-left: 0.6rem;
+}
+
+.home__banner {
+  position: relative;
+  width: 100%;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  height: 300px;
+  flex: 1 0 46%;
+  grid-row: 1/2;
+  padding: 3.2rem !important;
+}
+.home__banner_container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+.home__banner_button {
+  border-radius: 32px !important;
+  padding: 1.2rem 0.6rem !important;
+  color: #fa3914;
+  width: 50%;
+}
+.home__banner_container p {
+  font-size: 1.6rem;
+  color: rgb(255, 255, 255, 50%);
+}
+.home__banner_container h1 {
+  font-size: 3.2rem;
+  color: #fff;
+  font-weight: 600;
+}
+.home__banner_img {
+  position: absolute;
+  width: 100%;
+  height: 120%;
+  bottom: -1.5px;
+  left: 200px;
+}
+.home__banner_img img {
+  display: none;
+}
+.home__cardRight {
+  width: 100%;
+  height: 100%;
+  grid-row: 1/2;
 }
 
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
-	.home__actionBar {
-		grid-column: 3/-1;
-		grid-row: 1;
-		display: flex;
-		justify-content: flex-end;
-	}
+  .home__content {
+    width: 100%;
+  }
 
-	.home__content {
-		width: 100%;
-	}
+  .tempInfo {
+    font-size: 2.6rem;
+  }
+  .home__leftSide {
+    display: inherit;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-column: 1/2;
+    grid-row: 1/-1;
+    gap: 1.6rem;
+  }
+  .home__rightSide {
+    display: inherit;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+    gap: 1.6rem;
+  }
+  .home__container {
+    /* Styles for the container div */
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+    grid-row: auto;
+  }
 
-	.tempInfo {
-		font-size: 2.6rem;
-	}
+  .home__title {
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+
+  .home__cardList {
+    align-self: flex-start;
+    margin-left: 0.6rem;
+  }
+
+  .home__banner {
+    position: relative;
+    width: 100%;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    height: 300px;
+    flex: 1 0 46%;
+    grid-row: 1/2;
+    padding: 3.2rem !important;
+  }
+  .home__banner_container {
+    display: flex;
+    width: 45%;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .home__banner_button {
+    border-radius: 32px !important;
+    padding: 1.2rem 0.6rem !important;
+    color: #fa3914;
+    width: 50%;
+  }
+  .home__banner_container p {
+    font-size: 1.6rem;
+    color: rgb(255, 255, 255, 50%);
+  }
+  .home__banner_container h1 {
+    font-size: 3.2rem;
+    color: #fff;
+    font-weight: 600;
+  }
+  .home__banner_img {
+    position: absolute;
+    width: 100%;
+    height: 120%;
+    bottom: -1.5px;
+    left: 200px;
+  }
+  .home__banner_img img {
+    width: 100%;
+    height: 100%;
+  }
+  .home__cardRight {
+    width: 100%;
+    height: 100%;
+    grid-row: 1/2;
+  }
+  .home__playlist {
+  }
 }
