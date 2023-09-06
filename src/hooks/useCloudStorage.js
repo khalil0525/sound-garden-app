@@ -105,14 +105,12 @@ export const useCloudStorage = () => {
     let photoPath, photoURL;
     // Here we try to add the photo file to the cloud storage first before we add the song.
     if (files[1]) {
-      console.log("photo upload");
       photoPath =
         "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
       try {
         const photoPathRef = projectStorage.ref(photoPath);
         let photoUploadRes = await photoPathRef.put(files[1]);
         photoURL = await photoUploadRes.ref.getDownloadURL();
-        console.log("photo upload", photoURL);
       } catch (error) {
         console.log("Photo upload error: ", error);
         dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
@@ -121,7 +119,6 @@ export const useCloudStorage = () => {
 
     const songFileRef = projectStorage.ref(songPath);
     addedSongFileRef.current = songFileRef.put(files[0]);
-    console.log(addedSongFileRef);
 
     const unsubscribe = addedSongFileRef.current.on(
       "state_changed",
@@ -131,7 +128,6 @@ export const useCloudStorage = () => {
         setUploadProgress(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log(uploadProgress, isCancelled);
       },
       //callback for error on upload
       (error) => {
@@ -139,7 +135,6 @@ export const useCloudStorage = () => {
       },
       //Callback for completed upload
       () => {
-        console.log(addedSongFileRef.current.snapshot.ref);
         addedSongFileRef.current.snapshot.ref
           .getDownloadURL()
           .then((downloadURL) => {
@@ -151,7 +146,6 @@ export const useCloudStorage = () => {
               songPhotoURL: files[1] ? photoURL : "",
               songPhotoFilePath: files[1] ? photoPath : "",
             });
-            console.log("File URL:", downloadURL);
           });
         dispatchIfNotCancelled({
           type: "ADDED_FILES",
@@ -171,7 +165,6 @@ export const useCloudStorage = () => {
       if (songPhotoFilePath !== "") {
         const refToDeleteSongPhoto = projectStorage.ref(songPhotoFilePath);
         await refToDeleteSongPhoto.delete();
-        console.log("Deleted song file and song art file");
       }
 
       // const deletedFile = await projectStorage
@@ -231,7 +224,7 @@ export const useCloudStorage = () => {
       if (newFilePropertyName === "profilePhoto") {
         await user.updateProfile({ photoURL: downloadURL });
       }
-      console.log("FILE ADD COMPLETED");
+
       dispatchIfNotCancelled({
         type: "ADDED_FILE",
         payload: addedFile,
@@ -258,7 +251,7 @@ export const useCloudStorage = () => {
       await fileToDeleteRef.delete();
       const newFileRef = projectStorage.ref(newFilePath);
       const addedFile = await newFileRef.put(newFile);
-      console.log(addedFile);
+
       const downloadURL = await addedFile.ref.getDownloadURL();
       let newFilePathVariableName = `${newFilePropertyName}FilePath`;
       let newFileURLVariableName = `${newFilePropertyName}URL`;
@@ -269,7 +262,7 @@ export const useCloudStorage = () => {
       if (newFilePropertyName === "profilePhoto") {
         await user.updateProfile({ photoURL: downloadURL });
       }
-      console.log("REPLACE COMPLETED");
+
       dispatchIfNotCancelled({
         type: "REPLACED_FILE",
         payload: addedFile,
@@ -286,7 +279,7 @@ export const useCloudStorage = () => {
     dispatch({ type: "IS_PENDING" });
     try {
       const deletedFile = await projectStorage.ref(storageFilePath).delete();
-      console.log("DELETE COMPLETED");
+
       dispatchIfNotCancelled({ type: "DELETED_FILE", payload: deletedFile });
     } catch (error) {
       console.log("Error deleting song file!!:  ", error);
@@ -299,7 +292,6 @@ export const useCloudStorage = () => {
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
   useEffect(() => {
     return () => {
-      console.log("CLEAN UP");
       //Don't need to wrap with if because this has no effect on a complete or failed task.
       //This will cancel the upload if it is running when we leave the page
       if (addedSongFileRef.current) {

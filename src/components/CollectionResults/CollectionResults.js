@@ -45,9 +45,7 @@ export default function CollectionResults({
           location.pathname.length
         )} any songs yet!`
       : `No songs available for this ${from}`;
-  // useEffect(() => {
-  //   console.log(from, search);
-  // });
+
   return (
     <div className={styles.collectionResults}>
       {!!hideActionBar && location.pathname.split("/")[1] !== "profile" && (

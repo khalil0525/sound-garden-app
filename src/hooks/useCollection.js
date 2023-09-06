@@ -63,15 +63,13 @@ export const useCollection = (
         // We expect to get an array of documents with each document having
         // and array of document IDs for a particular collection
         if (query.length === 2) {
-          console.log(results);
           const extractResults =
             results && results.length > 0
               ? results.map((doc) => {
-                  console.log("doc", doc);
                   return doc[collectionFilterVariable];
                 })
               : [null];
-          console.log(extractResults);
+
           let secondResults = [];
           while (extractResults.length) {
             const batch = extractResults.splice(0, 10);

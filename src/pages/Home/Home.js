@@ -16,7 +16,6 @@ const tempList = [
   { title: "Tolly Hit track", content: "60 Tracks", background: card3bg },
 ];
 export default function Home({ scrollRef }) {
-  console.log(scrollRef);
   const query = ["music", ["userID", "==", "xCvggxf5HPhL9xBbHOz49BWcsly2"]];
   const { user } = useAuthContext();
   return (

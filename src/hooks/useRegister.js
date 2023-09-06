@@ -24,7 +24,6 @@ export const useRegister = () => {
         email,
         password
       );
-      console.log(res.user);
 
       if (!res) {
         throw new Error("Could not complete signup");
@@ -43,7 +42,7 @@ export const useRegister = () => {
         profilePhotoURL: "",
         profilePhotoFilePath: "",
       });
-      console.log(res.user.uid);
+
       //Generate random profile link with UUID
       const genProfile = `user-${uuidv4().slice(0, 13)}`;
       // Update the users document with its randomly generated profile link
@@ -55,7 +54,7 @@ export const useRegister = () => {
         .collection("likes")
         .doc(res.user.uid)
         .set({ createdAt, likes: [] });
-      console.log(res.user.uid);
+
       //dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
       //update state

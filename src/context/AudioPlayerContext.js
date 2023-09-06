@@ -190,7 +190,6 @@ export const audioPlayerReducer = (state, action) => {
         currentSongPlayedTime: action.payload,
       };
     default:
-      console.log("DEFAULT STATE");
       return state;
   }
 };
