@@ -10,7 +10,6 @@
   grid-row: 2;
 
   font-size: 2.4rem;
-  border-bottom: 1px solid #f2f2f2;
 }
 .collectionResults__actionBar {
   grid-column: 1/-1;
@@ -51,7 +50,6 @@
     grid-row: 2;
 
     font-size: 2.4rem;
-    border-bottom: 1px solid #f2f2f2;
   }
   .collectionResults__actionBar {
     display: flex;

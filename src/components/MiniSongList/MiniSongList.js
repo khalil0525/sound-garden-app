@@ -52,7 +52,6 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
         className={styles["songList__list"]}
         style={{ width: "100%" }}
         scrollableTarget={scrollRef.current}>
-        {/* <ul > */}
         {current &&
           likedSongDocuments &&
           current.map((song, index) => (
@@ -68,7 +67,6 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
               user={user}
             />
           ))}
-        {/* </ul> */}
       </InfiniteScroll>
     </div>
   );

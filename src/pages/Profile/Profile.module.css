@@ -89,6 +89,7 @@
 .profile__header-editContainer {
   max-width: 12rem;
   width: 12rem;
+  height: 3.6rem;
 }
 .profile__header-editContainer .editContainer-updateBtn {
   display: none;
@@ -106,6 +107,7 @@
 .editContainer-menu {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .profile__profileActions {
   display: flex;
