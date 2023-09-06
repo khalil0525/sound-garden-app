@@ -5,7 +5,7 @@ import editIcon from "../../images/pencil_solid.svg";
 import { useState } from "react";
 import Modal from "../../components/UI/Modal/Modal";
 import { useCollection } from "../../hooks/useCollection";
-import ActionBar from "../../components/ActionBar/ActionBar";
+
 import Button from "../../components/UI/Button/Button";
 import { useParams } from "react-router-dom";
 import placeholderImage from "../../images/profile_placeholder.svg";
