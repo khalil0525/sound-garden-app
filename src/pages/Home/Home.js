@@ -62,14 +62,14 @@ export default function Home({ scrollRef }) {
         </div>
       </div>
 
-      <div className={styles["home__rightSide"]}>
+      {/* <div className={styles["home__rightSide"]}>
         <Card className={styles["home__cardRight"]}>
           <h1 className={styles["home__title"]}>Subscribe To Premium Now</h1>
         </Card>
         <div className={styles["home__container"]}>
           <p className={styles["home__title"]}>Top Artists</p>;
         </div>
-      </div>
+      </div> */}
     </TwoColumnLayout>
   );
 }

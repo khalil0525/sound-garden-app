@@ -10,6 +10,7 @@ import Button from "../../components/UI/Button/Button";
 import { useParams } from "react-router-dom";
 import placeholderImage from "../../images/profile_placeholder.svg";
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
+import OneColumnLayout from "../../components/Layout/OneColumnLayout";
 
 export default function Profile({ scrollRef }) {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -39,12 +40,7 @@ export default function Profile({ scrollRef }) {
   // };
 
   return (
-    <div className={styles.profile}>
-      <ActionBar
-        className={styles["profile__actionBar"]}
-        user={user}
-      />
-
+    <OneColumnLayout user={user}>
       {profileDocuments && profileDocuments.length ? (
         <div className={styles["profile__content"]}>
           <div className={styles["profile__headerContainer"]}>
@@ -154,6 +150,6 @@ export default function Profile({ scrollRef }) {
           onCancel={() => setIsEditingProfile(false)}
         />
       )}
-    </div>
+    </OneColumnLayout>
   );
 }

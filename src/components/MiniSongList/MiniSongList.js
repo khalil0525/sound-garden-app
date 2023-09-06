@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./SongList.module.css";
+import styles from "./MiniSongList.module.css";
 import SongItem from "./MiniSongItem";
 import { useCollection } from "../../hooks/useCollection";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -50,6 +50,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
         className={styles["songList__list"]}
+        style={{ width: "100%" }}
         scrollableTarget={scrollRef.current}>
         {/* <ul > */}
         {current &&

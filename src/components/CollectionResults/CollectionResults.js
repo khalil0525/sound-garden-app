@@ -1,8 +1,9 @@
 import SongList from "../SongList/SongList";
+import MiniSongList from "../MiniSongList/MiniSongList";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
 import styles from "./CollectionResults.module.css";
-import ActionBar from "../ActionBar/ActionBar";
+
 import { useLocation } from "react-router-dom";
 
 export default function CollectionResults({
@@ -48,13 +49,6 @@ export default function CollectionResults({
 
   return (
     <div className={styles.collectionResults}>
-      {!!hideActionBar && location.pathname.split("/")[1] !== "profile" && (
-        <ActionBar
-          className={styles["collectionResults__actionBar"]}
-          query={algoliaQuery}
-          user={user}
-        />
-      )}
       <div className={styles["collectionResults__header"]}>
         {location.pathname === "/search" ? (
           <h1 className={styles["search__queryText"]}>
@@ -63,9 +57,25 @@ export default function CollectionResults({
         ) : null}
       </div>
       {/* We need user? user: "none" so that if we are logged out we can avoid an app error from firebase having no active user.uid to work with */}
-      {location.pathname !== "/search" ? (
+      {(location.pathname !== "/search") & (location.pathname !== "/") ? (
         musicDocuments && musicDocuments.length > 0 ? (
           <SongList
+            className={styles["collectionResults__songList"]}
+            songs={musicDocuments}
+            user={user ? user : "none"}
+            scrollRef={scrollRef}
+            playlistLocation={location && location.pathname}
+          />
+        ) : (
+          <h1 className={styles["collectionResults__songList"]}>
+            {emptyListMessage}
+          </h1>
+        )
+      ) : null}
+
+      {location.pathname === "/" ? (
+        musicDocuments && musicDocuments.length > 0 ? (
+          <MiniSongList
             className={styles["collectionResults__songList"]}
             songs={musicDocuments}
             user={user ? user : "none"}

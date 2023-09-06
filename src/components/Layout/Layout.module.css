@@ -1,3 +1,11 @@
+.oneColumnlayout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: 1fr auto;
+  padding: 1.6rem 2.4rem;
+  align-content: center;
+}
+
 .twoColumnlayout {
   display: flex;
   flex-direction: column;
@@ -11,13 +19,11 @@
   padding: 1.6rem 2.4rem;
 }
 
-.oneColumnlayout {
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 1fr auto;
-  padding: 1.6rem 2.4rem;
+.actionBarOneCol {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  align-self: flex-end;
 }
-
 .actionBarTwoCol {
   grid-column: 2/-1;
   grid-row: 1/2;
@@ -25,9 +31,14 @@
 .actionBarThreeCol {
   grid-column: 3/-1;
 }
-.actionBarTwoCol {
-  grid-column: 2/-1;
-  grid-row: 1/2;
+
+.oneColumnlayoutContainer {
+  grid-row: 2/-1;
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 3.2rem;
 }
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .twoColumnlayout {
@@ -36,6 +47,7 @@
     grid-template-rows: 0.5fr 4fr 4fr;
     padding: 1.6rem 2.4rem 0 2.4rem;
     column-gap: 3.6rem;
+    width: 100%;
   }
 
   .threeColumnlayout {

@@ -1,5 +1,6 @@
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
+import OneColumnLayout from "../../components/Layout/OneColumnLayout";
 
 export default function Liked({ scrollRef }) {
   const { user } = useAuthContext();
@@ -14,10 +15,12 @@ export default function Liked({ scrollRef }) {
   ];
 
   return (
-    <CollectionResults
-      scrollRef={scrollRef}
-      query={query}
-      hideActionBar={true}
-    />
+    <OneColumnLayout user={user}>
+      <CollectionResults
+        scrollRef={scrollRef}
+        query={query}
+        hideActionBar={true}
+      />
+    </OneColumnLayout>
   );
 }

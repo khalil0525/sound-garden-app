@@ -1,6 +1,7 @@
 import { useAuthContext } from "../../hooks/useAuthContext";
 //
 import CollectionResults from "../../components/CollectionResults/CollectionResults";
+import OneColumnLayout from "../../components/Layout/OneColumnLayout";
 // import { useEffect } from "react";
 // import SongList from "../../components/SongList/SongList";
 // import { useCollection } from "../../hooks/useCollection";
@@ -15,7 +16,12 @@ export default function Uploaded({ scrollRef }) {
   // );
 
   return (
-    <CollectionResults scrollRef={scrollRef} query={query} />
+    <OneColumnLayout user={user}>
+      <CollectionResults
+        scrollRef={scrollRef}
+        query={query}
+      />
+    </OneColumnLayout>
     // <div className={styles.uploaded}>
     //   <ActionBar className={styles["uploaded__actionBar"]} user={user} />
 
