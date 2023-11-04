@@ -114,19 +114,20 @@
   .audioPlayer__controls-seek {
     display: flex;
     gap: 0.5rem;
-    justify-content: space-between;
+    justify-content: center;
 
-    margin: 2rem 0 0 2.5rem;
-    max-width: 1rem;
+    margin: 2rem auto;
+    width: 100%;
 
     opacity: none;
   }
   .audioPlayer__controls-seek-duration {
-    font-family: "Inter";
+    font-family: 'Inter';
     font-weight: 400;
     font-size: 1.1rem;
     line-height: 1.5rem;
     color: #ffffff;
+    width: 10%;
   }
   .audioPlayer__controls-main {
     display: flex;

@@ -1,3 +1,4 @@
 .audioseekcontrolbar input {
   cursor: pointer;
+  min-width: 60%;
 }
