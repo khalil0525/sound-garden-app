@@ -1,0 +1,14 @@
+:root {
+  --primary-color: #5bcea6;
+  --secondary-color: #ff7a5a;
+  --accent-color: #ffd358;
+  --background-color: #f5f5f5;
+  --text-color: #333333;
+  --highlight-color: #9a4dce;
+  --subtle-accent-color: #b0b0b0;
+}
+
+/* Import design system variables
+@import '../design-system/colors.css';
+@import '../design-system/typography.css';
+@import '../design-system/spacing.css'; */
