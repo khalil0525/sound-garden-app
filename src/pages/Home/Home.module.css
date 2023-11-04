@@ -41,10 +41,10 @@
   flex-direction: row !important;
   justify-content: flex-start !important;
   align-items: flex-start !important;
-  height: 300px;
+  max-height: 300px;
   flex: 1 0 46%;
   grid-row: 1/2;
-  padding: 3.2rem !important;
+  padding: 1.6rem !important;
 }
 .home__banner_container {
   display: flex;
@@ -68,11 +68,9 @@
   font-weight: 600;
 }
 .home__banner_img {
-  position: absolute;
   width: 100%;
   height: 120%;
-  bottom: -1.5px;
-  left: 200px;
+  display: none;
 }
 .home__banner_img img {
   display: none;
@@ -83,7 +81,7 @@
   grid-row: 1/2;
 }
 
-@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
+@media only screen and (min-width: 1100px) and (min-device-height: 768px) and (orientation: landscape) {
   .home__content {
     width: 100%;
   }
@@ -128,6 +126,7 @@
 
   .home__banner {
     position: relative;
+    display: flex;
     width: 100%;
     flex-direction: row !important;
     justify-content: flex-start !important;
@@ -135,12 +134,18 @@
     height: 300px;
     flex: 1 0 46%;
     grid-row: 1/2;
-    padding: 3.2rem !important;
+    padding: 2.4rem !important;
+
+    /* Add box shadow */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
   }
   .home__banner_container {
     display: flex;
-    width: 45%;
+    width: 60%;
+    height: 100%;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     gap: 1.6rem;
   }
   .home__banner_button {
@@ -148,26 +153,35 @@
     padding: 1.2rem 0.6rem !important;
     color: #fa3914;
     width: 50%;
+    justify-self: flex-end;
+
+    /* Add box shadow */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
   }
+
   .home__banner_container p {
     font-size: 1.6rem;
     color: rgb(255, 255, 255, 50%);
   }
   .home__banner_container h1 {
-    font-size: 3.2rem;
+    font-size: 2.4rem;
     color: #fff;
     font-weight: 600;
   }
   .home__banner_img {
-    position: absolute;
-    width: 100%;
-    height: 120%;
-    bottom: -1.5px;
-    left: 200px;
+    position: relative;
+
+    width: 40%;
+    height: 300px;
+    display: block;
   }
   .home__banner_img img {
+    position: absolute;
     width: 100%;
-    height: 100%;
+    height: 110%;
+    bottom: 23px;
+    right: 1.6rem;
+    display: block;
   }
   .home__cardRight {
     width: 100%;
