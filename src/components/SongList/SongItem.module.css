@@ -1,6 +1,5 @@
 .songItem {
   padding: 2rem;
-
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -8,9 +7,9 @@
   height: 16rem;
   align-items: center;
   gap: 0.4rem;
-
   list-style: none;
-  /* border: 1px grey solid; */
+  border: 1px solid #ccc; /* Added border */
+  border-radius: 8px; /* Added border radius */
 }
 
 .songItem__header {
@@ -107,16 +106,16 @@
   display: flex;
   justify-content: center;
   gap: 0.6rem;
-  margin-left: 1.6rem;
+  padding: 1.2rem;
 }
 .songItem__duration {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: none;
   font-size: 1.2rem;
   line-height: 1.9rem;
-
+  max-width: 5%;
   color: #161618;
 }
 
@@ -315,6 +314,6 @@
     color: #161618;
   } */
   .songItem__seekControl input {
-    width: 60rem;
+    width: 100%;
   }
 }
