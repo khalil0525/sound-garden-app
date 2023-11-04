@@ -81,10 +81,19 @@
 } */
 
 .songItem__aside {
+  display: flex;
+  gap: 1.6rem;
   grid-column: 1/1;
   grid-row: 1/-1;
+  width: 50%;
 }
-
+.songItem__rightSide {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3.2rem;
+  width: 50%;
+}
 .songItem__songPhotoContainer {
   width: 8rem;
   height: 8rem;
@@ -106,7 +115,7 @@
   margin-left: 1.6rem;
 }
 .songItem__duration {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: none;

@@ -1,14 +1,15 @@
-import React, { useEffect, useReducer } from "react";
-import styles from "./MiniSongItem.module.css";
-import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
-import { useFirestore } from "../../hooks/useFirestore";
-import { useCloudStorage } from "../../hooks/useCloudStorage";
-import pauseIcon from "../../images/pause-svgrepo-com.svg";
-import playIcon from "../../images/Arrow_drop_right.svg";
+import React, { useEffect, useReducer } from 'react';
+import styles from './MiniSongItem.module.css';
+import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
+import { useFirestore } from '../../hooks/useFirestore';
+import { useCloudStorage } from '../../hooks/useCloudStorage';
+import pauseIcon from '../../images/pause-svgrepo-com.svg';
+import playIcon from '../../images/Arrow_drop_right.svg';
 
-import placeholderImage from "../../images/blank_image_placeholder.svg";
+import placeholderImage from '../../images/blank_image_placeholder.svg';
 
-import Button from "../UI/Button/Button";
+import Button from '../UI/Button/Button';
+import Duration from '../AudioPlayer/AudioSeekControlBar/Duration';
 
 let initialState = {
   playing: false,
@@ -20,23 +21,23 @@ let initialState = {
 
 const songItemReducer = (state, action) => {
   switch (action.type) {
-    case "PLAY_PAUSE_CLICK":
+    case 'PLAY_PAUSE_CLICK':
       return { ...state, playing: !state.playing };
-    case "SEEK_POSITION_CHANGE":
+    case 'SEEK_POSITION_CHANGE':
       return { ...state, played: action.payload };
-    case "SEEK_MOUSE_DOWN":
+    case 'SEEK_MOUSE_DOWN':
       return { ...state, seeking: true };
-    case "SEEK_MOUSE_UP":
+    case 'SEEK_MOUSE_UP':
       return { ...state, seeking: false };
-    case "PROGRESS_CHANGE":
+    case 'PROGRESS_CHANGE':
       return { ...state, played: action.payload };
-    case "PLAY":
+    case 'PLAY':
       return { ...state, playing: true };
-    case "PAUSE":
+    case 'PAUSE':
       return { ...state, playing: false };
-    case "SONG_MOUNTED":
+    case 'SONG_MOUNTED':
       return { ...state, isMounted: true, played: 0 };
-    case "SONG_DISMOUNTED":
+    case 'SONG_DISMOUNTED':
       return { ...state, isMounted: false, played: 0, playing: false };
     default:
       return { ...state };
@@ -58,7 +59,7 @@ const SongItem = ({
   );
 
   // const [edited, setEdited] = useState(false);
-  const { playing, isMounted, seeking } = songItemState;
+  const { playing, isMounted, played, seeking } = songItemState;
   const {
     loadedSongURL,
     isSongPlaying,
@@ -73,7 +74,7 @@ const SongItem = ({
   // We set the inital state for isLiked based on if that document was found
 
   // These 2 hooks are used to delete a song document/files
-  const { deleteDocument: deleteSongDocument } = useFirestore("music");
+  const { deleteDocument: deleteSongDocument } = useFirestore('music');
 
   const { response: cloudStorageResponse } = useCloudStorage();
   //***********************************************************
@@ -91,24 +92,24 @@ const SongItem = ({
       //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
-          type: "PLAYLIST_INDEX_CHANGE",
+          type: 'PLAYLIST_INDEX_CHANGE',
           payload: songIndex,
         });
       } else {
         dispatchAudioPlayerContext({
-          type: "PLAYLIST_CHANGE",
+          type: 'PLAYLIST_CHANGE',
           payload: { playlistSongs, songIndex, songPlaylistLocation },
         });
       }
     } //else it's paused
     else if (playing) {
-      dispatchSongItemState({ type: "PAUSE" });
-      dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
+      dispatchSongItemState({ type: 'PAUSE' });
+      dispatchAudioPlayerContext({ type: 'SONG_PAUSED' });
     } else {
-      dispatchSongItemState({ type: "PLAY" });
-      dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
+      dispatchSongItemState({ type: 'PLAY' });
+      dispatchAudioPlayerContext({ type: 'SONG_PLAYED' });
     }
-    dispatchSongItemState({ type: "PLAY_PAUSE_CLICK" });
+    dispatchSongItemState({ type: 'PLAY_PAUSE_CLICK' });
     // setIsPlaying((prevState) => !prevState);
   };
 
@@ -117,9 +118,9 @@ const SongItem = ({
   // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
   useEffect(() => {
     if (loadedSongURL === song.songURL && !isMounted) {
-      dispatchSongItemState({ type: "SONG_MOUNTED" });
+      dispatchSongItemState({ type: 'SONG_MOUNTED' });
     } else if (loadedSongURL !== song.songURL && isMounted) {
-      dispatchSongItemState({ type: "SONG_DISMOUNTED" });
+      dispatchSongItemState({ type: 'SONG_DISMOUNTED' });
     }
   }, [loadedSongURL, song.songURL, isMounted, song.title]);
 
@@ -127,7 +128,7 @@ const SongItem = ({
   useEffect(() => {
     if (isSongPlaying && isMounted && !seeking) {
       dispatchSongItemState({
-        type: "PROGRESS_CHANGE",
+        type: 'PROGRESS_CHANGE',
         payload: currentSongPlayedTime,
       });
     }
@@ -141,7 +142,7 @@ const SongItem = ({
     if ((!isSongPlaying || !isMounted) && playing) {
       // if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
 
-      dispatchSongItemState({ type: "PAUSE" });
+      dispatchSongItemState({ type: 'PAUSE' });
       // setIsPlaying(false);
     }
     //Otherwise, if globally a song is playing and the URL is this songs
@@ -149,7 +150,7 @@ const SongItem = ({
     else if (isSongPlaying && isMounted && !playing) {
       // else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
 
-      dispatchSongItemState({ type: "PLAY" });
+      dispatchSongItemState({ type: 'PLAY' });
       // setIsPlaying(true);
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
@@ -161,7 +162,7 @@ const SongItem = ({
       JSON.stringify(playlist) !== JSON.stringify(playlistSongs)
     ) {
       dispatchAudioPlayerContext({
-        type: "SONG_EDITED_IN_PLAYLIST",
+        type: 'SONG_EDITED_IN_PLAYLIST',
         payload: playlistSongs,
       });
     }
@@ -178,7 +179,7 @@ const SongItem = ({
     if (cloudStorageResponse.success) {
       deleteSongDocument(song.docID);
       dispatchAudioPlayerContext({
-        type: "SONG_DELETED_FROM_PLAYLIST",
+        type: 'SONG_DELETED_FROM_PLAYLIST',
         payload: song.docID,
       });
     }
@@ -190,40 +191,46 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={styles["songItem"]}>
-      <div className={styles["songItem__body"]}>
-        <div className={styles["songItem__bodyContainer"]}>
-          <div className={styles["songItem__aside"]}>
-            <div className={styles["songItem__songPhotoContainer"]}>
+    <li className={styles['songItem']}>
+      <div className={styles['songItem__body']}>
+        <div className={styles['songItem__bodyContainer']}>
+          <div className={styles['songItem__aside']}>
+            <div className={styles['songItem__songPhotoContainer']}>
               <img
-                className={styles["songPhotoContainer-img"]}
+                className={styles['songPhotoContainer-img']}
                 src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
                 alt="Song Cover Art"
               />
             </div>
-          </div>
-          <div className={styles["titleContainer"]}>
-            <span className={styles["titleContainer__songTitle-title"]}>
-              {song.title}
-            </span>
-            <div className={styles["titleContainer__container"]}>
-              <span className={styles["titleContainer__songTitle-artist"]}>
-                {song.artist}
+            <div className={styles['titleContainer']}>
+              <span className={styles['titleContainer__songTitle-title']}>
+                {song.title}
               </span>
+              <div className={styles['titleContainer__container']}>
+                <span className={styles['titleContainer__songTitle-artist']}>
+                  {song.artist}
+                </span>
 
-              <span className={styles["titleContainer__songTitle-genre"]}>
-                {song.genre}
-              </span>
+                <span className={styles['titleContainer__songTitle-genre']}>
+                  {song.genre}
+                </span>
+              </div>
             </div>
           </div>
-          <Button
-            className={`${styles["titleContainer__playBtn"]} `}
-            onClick={handlePlayPauseClick}
-            iconImage={playing ? pauseIcon : playIcon}
-            altText={
-              playing ? "Song pause button icon" : "Song play button icon"
-            }
-          />
+          <div className={styles['songItem__rightSide']}>
+            <Duration
+              className={styles['songItem__duration']}
+              seconds={song.duration * (1 - played)}
+            />
+            <Button
+              className={`${styles['titleContainer__playBtn']} `}
+              onClick={handlePlayPauseClick}
+              iconImage={playing ? pauseIcon : playIcon}
+              altText={
+                playing ? 'Song pause button icon' : 'Song play button icon'
+              }
+            />
+          </div>
         </div>
       </div>
     </li>
