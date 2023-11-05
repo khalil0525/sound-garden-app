@@ -1,17 +1,35 @@
 :root {
   --heading-font: 'Inter', sans-serif;
   --body-font: 'Inter', sans-serif;
-}
-:root {
-  --font-size-h1: 3.6rem;
-  --font-size-h2: 2.4rem;
-  --font-size-h3: 1.8rem;
+  --font-size-h1: 2.1rem;
+  --font-size-h2: 1.8rem;
+  --font-size-h3: 1.6rem;
   --font-size-body: 1.6rem;
-}
-
-:root {
   --line-height-h1: 2.43;
   --line-height-h2: 2.94;
   --line-height-h3: 1.78;
   --line-height-body: 1.5;
+}
+
+/* Headings needs to be 1.96 times larger than body */
+
+/* Styles for screens between 768px and 1024px (typical for smaller desktops or tablets in landscape mode) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Your CSS styles for smaller desktop screens or tablets in landscape mode go here */
+}
+
+/* Styles for screens between 481px and 767px (typical for tablets in portrait mode) */
+@media (min-width: 481px) and (max-width: 767px) {
+  /* Your CSS styles for tablets in portrait mode go here */
+}
+@media (min-width: 1025px) and (max-width: 1200px) {
+  :root {
+    --font-size-h1: 3.6rem;
+    --font-size-h2: 3rem;
+    --font-size-h3: 2.4rem;
+    --font-size-body: 1.8rem;
+  }
+}
+@media (min-width: 1201px) {
+  /* Your CSS styles for large desktop screens go here */
 }

@@ -2,9 +2,6 @@
   width: 100%;
 }
 
-.tempInfo {
-  font-size: 2.6rem;
-}
 .home__leftSide {
   margin-top: 1.6rem;
   display: flex;
@@ -26,7 +23,8 @@
 }
 
 .home__title {
-  font-size: 2.4rem;
+  font-size: var(--font-size-h1);
+  color: var(--text-color);
   font-weight: bold;
 }
 
@@ -55,21 +53,18 @@
 .home__banner_button {
   border-radius: 32px !important;
   padding: 1.2rem 0.6rem !important;
-  color: #fa3914;
+  color: var(--text-color);
   width: 50%;
 }
 .home__banner_container p {
-  font-size: 1.6rem;
-  color: rgb(255, 255, 255, 50%);
+  font-size: var(--font-size-body);
+  color: var(--text-color);
+  font-weight: 400;
 }
 .home__banner_container h1 {
-  font-size: 3.2rem;
-  color: #fff;
   font-weight: 600;
 }
 .home__banner_img {
-  width: 100%;
-  height: 120%;
   display: none;
 }
 .home__banner_img img {
@@ -82,13 +77,6 @@
 }
 
 @media only screen and (min-width: 1100px) and (min-device-height: 768px) and (orientation: landscape) {
-  .home__content {
-    width: 100%;
-  }
-
-  .tempInfo {
-    font-size: 2.6rem;
-  }
   .home__leftSide {
     display: inherit;
     grid-template-columns: 1fr;
@@ -114,16 +102,6 @@
     grid-row: auto;
   }
 
-  .home__title {
-    font-size: 2.4rem;
-    font-weight: bold;
-  }
-
-  .home__cardList {
-    align-self: flex-start;
-    margin-left: 0.6rem;
-  }
-
   .home__banner {
     position: relative;
     display: flex;
@@ -139,6 +117,7 @@
     /* Add box shadow */
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
   }
+
   .home__banner_container {
     display: flex;
     width: 60%;
@@ -159,15 +138,6 @@
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
   }
 
-  .home__banner_container p {
-    font-size: 1.6rem;
-    color: rgb(255, 255, 255, 50%);
-  }
-  .home__banner_container h1 {
-    font-size: 2.4rem;
-    color: #fff;
-    font-weight: 600;
-  }
   .home__banner_img {
     position: relative;
 

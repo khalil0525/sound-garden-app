@@ -4,10 +4,6 @@ import './styles/index.css';
 import App from './App';
 import { AuthContextProvider } from './context/AuthContext';
 import { AudioPlayerContextProvider } from './context/AudioPlayerContext';
-import './fonts/Inter/Inter-Medium.ttf';
-import './fonts/Inter/Inter-Regular.ttf';
-import './fonts/Inter/Inter-Bold.ttf';
-import './fonts/Inter/Inter-SemiBold.ttf';
 
 const root = createRoot(document.getElementById('root'));
 

@@ -7,8 +7,3 @@
   --highlight-color: #9a4dce;
   --subtle-accent-color: #b0b0b0;
 }
-
-/* Import design system variables
-@import '../design-system/colors.css';
-@import '../design-system/typography.css';
-@import '../design-system/spacing.css'; */
