@@ -27,7 +27,7 @@
   border-radius: 50%;
   display: inline-block;
   position: relative;
-  background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+  background: var(--primary-color);
 
   width: 4rem;
   height: 4rem;
@@ -72,10 +72,10 @@
   grid-row: 3/3;
 }
 .actionContainer-likeBtn--liked {
-  box-shadow: 0 0 0 1px #ff3a16;
+  box-shadow: 0 0 0 1px var(--primary-color);
   /* border: 1px solid #ff3a16; */
 
-  color: #ff3a16;
+  color: var(--primary-color);
 }
 /* .actionContainer-likeBtn {
   display: flex;

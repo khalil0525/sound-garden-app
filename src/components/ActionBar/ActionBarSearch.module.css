@@ -6,7 +6,7 @@
   /* max-width: 27.3rem; */
   flex: 1 0 auto;
   height: 4.2rem;
-  border: 1.3px solid #fa3712;
+  border: 1.3px solid var(--primary-color);
   filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
   border-radius: 0.6rem;
 }
@@ -26,7 +26,7 @@
   background: none;
   flex: 1 0 auto;
 
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 1.2rem;

@@ -16,7 +16,7 @@
   align-items: center;
   width: 4.2rem;
   height: 4.2rem;
-  background-image: url("/src/images/blank_image_placeholder.svg");
+  background-image: url('/src/images/blank_image_placeholder.svg');
   filter: drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12));
   stroke: #fff;
   border-radius: 25px;
@@ -71,7 +71,7 @@
     height: 4.2rem;
 
     color: #fff;
-    background: linear-gradient(180deg, #fd4d2d 0%, #f9330e 100%);
+    background: var(--primary-color);
     box-shadow: 3px 4px 15px rgba(0, 0, 0, 0.12);
     border-radius: 25px;
     padding: 1rem;

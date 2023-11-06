@@ -6,6 +6,7 @@
   column-gap: 0.2rem; */
   display: flex;
   flex-direction: column;
+  padding: 1.2rem 1.2rem 1.2rem 0;
 }
 .page {
   background-color: white;
@@ -45,7 +46,7 @@
   .page {
     background-color: white;
     border-radius: 34px;
-    /* width: 80vw; */
+
     margin: 1rem;
 
     grid-row: 1;

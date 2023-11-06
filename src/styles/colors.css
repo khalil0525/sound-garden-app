@@ -1,9 +1,9 @@
 :root {
-  --primary-color: #5bcea6;
-  --secondary-color: #ff7a5a;
-  --accent-color: #ffd358;
-  --background-color: #f5f5f5;
-  --text-color: #333333;
-  --highlight-color: #9a4dce;
-  --subtle-accent-color: #b0b0b0;
+  --primary-color: #725bcf; /* Vibrant Green (Similar to Spotify) */
+  --secondary-color: #1e3888; /* Deep Indigo Blue */
+  --accent-color: #ff6b00; /* Vibrant Orange (Accent) */
+  --background-color: #000; /* Dark Background (Similar to Spotify) */
+  --text-color: #ffffff; /* White Text on Dark Background */
+  --highlight-color: #805ac1; /* Rich Purple (Highlight) */
+  --subtle-accent-color: #b0b0b0; /* Neutral Gray */
 }

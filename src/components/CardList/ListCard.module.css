@@ -1,38 +1,38 @@
 .card {
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 
-	max-width: 19rem;
-	min-width: 19rem;
-	height: 15.8rem;
+  max-width: 19rem;
+  min-width: 19rem;
+  height: 15.8rem;
 
-	border-radius: 20px;
-	list-style: none;
+  border-radius: 20px;
+  list-style: none;
 
-	background: linear-gradient(360deg, #fd4d2d 0%, #f9330e 100%);
-	background-position: center center;
-	background-size: cover; /* Add this line */
+  background: var(--primary-color);
+  background-position: center center;
+  background-size: cover; /* Add this line */
 }
 .card__title {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-	width: 90%;
-	height: 6rem;
+  width: 90%;
+  height: 6rem;
 
-	background: rgba(20, 3, 3, 0.4);
-	box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.03);
-	backdrop-filter: blur(5px);
+  background: rgba(20, 3, 3, 0.4);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(5px);
 
-	border-radius: 16px;
-	margin-bottom: 1rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
 }
 .card__title p {
-	font-size: 1.6rem;
-	font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .card__content {

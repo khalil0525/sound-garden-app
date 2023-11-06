@@ -103,7 +103,7 @@
     top: -9rem;
     margin: inherit;
 
-    background: linear-gradient(360deg, #fd4d2d 0%, #f9330e 100%);
+    background: linear-gradient(180deg, #725bcf 0%, #a99ae5 100%);
     border-radius: 2.5rem;
   }
 
@@ -157,7 +157,7 @@
     z-index: 2;
 
     border: 6px solid #313132;
-    background: linear-gradient(180deg, #ff3a16 0%, #cc2000 100%);
+    background: linear-gradient(180deg, #725bcf 0%, #a99ae5 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3.6rem;
   }

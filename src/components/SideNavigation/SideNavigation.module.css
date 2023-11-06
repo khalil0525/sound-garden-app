@@ -58,6 +58,34 @@
   /* max-width: inherit; */
   grid-row: 1;
 }
+.sideNavigation__header-greeting {
+  display: block;
+  font-size: var(--font-size-h3);
+}
+.sideNavigation__header-artistNameText {
+  font-size: var(--font-size-h1);
+}
+
+.sideNavigation__navbarTitle {
+  font-size: var(--font-size-h3);
+}
+.sideNavigation__navbar a:link,
+.sideNavigation__navbar a:visited {
+  font-size: var(--font-size-h3);
+  font-weight: 400;
+  color: var(--text-color);
+  line-height: 2.4rem;
+  text-decoration: none;
+
+  padding: 1rem 3.2rem 1rem 5rem;
+}
+.sideNavigation__header {
+  gap: 2rem;
+}
+.sideNavigation__header-imageContainer {
+  max-width: 10rem;
+  height: 10rem;
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -95,7 +123,7 @@
     max-width: 6rem;
     height: 6rem;
     border-radius: 1.2rem;
-    box-shadow: 0 10px 140px rgba(251, 80, 47, 0.9);
+    box-shadow: 0 1px 10px var(--primary-color);
   }
   .sideNavigation__header-imageContainer img {
     display: block;
@@ -109,7 +137,6 @@
   }
   .sideNavigation__header-artistNameText {
     display: block;
-    font-size: 3.2rem;
   }
 
   .sideNavigation__navContainer {
@@ -124,9 +151,8 @@
   }
   .sideNavigation__navbarTitle {
     display: block;
-    font-size: 1.8rem;
     font-weight: 400;
-    /* font-size: 2rem; */
+
     line-height: 2.4rem;
 
     margin-bottom: 0.2rem;
@@ -135,26 +161,26 @@
 
   .sideNavigation__navbar a:link,
   .sideNavigation__navbar a:visited {
-    font-size: 2rem;
     font-weight: 400;
 
     line-height: 2.4rem;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.5);
+
     padding: 1rem 3.2rem 1rem 5rem;
 
     /* Style for active class */
   }
   .sideNavigation__navbar a:hover {
-    background: rgba(252, 100, 70, 0.514);
+    background: var(--primary-color);
+    opacity: 0.6;
   }
   .sideNavigation__navbar a.navbar__activeItem {
     background: linear-gradient(
       90deg,
-      rgba(249, 51, 14, 0.4) 0%,
-      rgba(253, 99, 44, 0) 91.02%
+      var(--primary-color) -55%,
+      rgba(253, 99, 44, 0) 100%
     );
-    box-shadow: inset 4px 0 0 #f9310e;
+    box-shadow: inset 4px 0 0 var(--primary-color);
     color: #fff;
   }
 
@@ -178,19 +204,9 @@
     max-width: 10rem;
     height: 10rem;
   }
-  .sideNavigation__header-greeting {
-    font-size: 3.6rem;
-  }
-  .sideNavigation__header-artistNameText {
-    font-size: 4.8rem;
-  }
-  .sideNavigation__navbarTitle {
-    font-size: 2.6rem;
-  }
+
   .sideNavigation__navbar a:link,
   .sideNavigation__navbar a:visited {
-    font-size: 2.6rem;
-
     padding: 1.8rem 3.2rem 1.8rem 5.8rem;
   }
 }

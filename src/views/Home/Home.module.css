@@ -53,6 +53,7 @@
 .home__banner_button {
   border-radius: 32px !important;
   padding: 1.2rem 0.6rem !important;
+  background-color: var(--primary-color);
   color: var(--text-color);
   width: 50%;
 }
@@ -130,7 +131,7 @@
   .home__banner_button {
     border-radius: 32px !important;
     padding: 1.2rem 0.6rem !important;
-    color: #fa3914;
+    /* color: #fa3914; */
     width: 50%;
     justify-self: flex-end;
 

@@ -5,6 +5,7 @@ import { useFirestore } from '../../hooks/useFirestore';
 import { useCloudStorage } from '../../hooks/useCloudStorage';
 import pauseIcon from '../../images/pause-svgrepo-com.svg';
 import playIcon from '../../images/Arrow_drop_right.svg';
+import { ReactComponent as MenuIcon } from '../../images/menuicon.svg';
 
 import placeholderImage from '../../images/blank_image_placeholder.svg';
 
@@ -230,6 +231,7 @@ const SongItem = ({
                 playing ? 'Song pause button icon' : 'Song play button icon'
               }
             />
+            <MenuIcon />
           </div>
         </div>
       </div>
