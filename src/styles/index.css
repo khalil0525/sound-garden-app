@@ -58,3 +58,42 @@ body {
 .infinite-scroll-component__outerdiv {
   width: 100%;
 }
+
+/* Extra Small (XS) / Mobile */
+@media (max-width: 575px) {
+  /* Your CSS rules for mobile screens go here */
+}
+
+/* Small (SM) / Tablet */
+@media (min-width: 576px) and (max-width: 767px) {
+  /* Your CSS rules for small tablets go here */
+}
+
+/* Medium (MD) / Tablet to Desktop */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Your CSS rules for tablets and smaller desktop screens go here */
+}
+
+/* Large (LG) / Desktop */
+@media (min-width: 992px) and (max-width: 1199px) {
+  /* Your CSS rules for larger desktop screens go here */
+}
+
+/* Extra Large (XL) / Large Desktop */
+@media (min-width: 1200px) {
+  /* Your CSS rules for large desktop screens and beyond go here */
+}
+
+/* Portrait / Landscape (Orientation-specific) */
+@media (orientation: portrait) {
+  /* Your CSS rules for portrait orientation go here */
+}
+
+@media (orientation: landscape) {
+  /* Your CSS rules for landscape orientation go here */
+}
+
+/* Retina/High DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Your CSS rules for high-DPI displays go here */
+}
