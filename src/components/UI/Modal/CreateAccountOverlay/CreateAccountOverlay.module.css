@@ -1,12 +1,13 @@
 .modal {
   position: absolute;
-  bottom: 0vh;
+  top: 10vh;
   left: 0;
   right: 0;
   z-index: 100;
-
+  margin: 0 auto;
   background-color: #fff;
-  max-width: 100vw;
+  max-width: 40rem;
+  border-radius: 18px;
 }
 
 .registerForm {
@@ -15,7 +16,8 @@
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  padding: 2.5rem;
+  padding: 3rem;
+  max-width: 100%;
 }
 
 .registerForm h2 {
@@ -33,14 +35,12 @@
 }
 
 .registerForm_controls input {
-  flex: 1 0 100%;
-
-  line-height: 2.4rem;
-
-  font-size: var(--font-size-body);
-  padding: 0.7rem 0.8rem;
-  border-radius: 6px;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: var(--font-size-body);
 }
 
 .registerForm_actions {
@@ -52,32 +52,25 @@
 }
 
 .registerForm_actions button {
-  font-size: 1.8rem;
-  font-weight: 400;
-
-  color: #fff;
-  background-color: #fb502f;
-
-  border: none;
-  padding: 1rem;
+  display: block;
   width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  margin: 10px 0;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.registerForm_actions button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .modal {
-    top: 10vh;
-    left: 33%;
-    max-width: 50vw;
-    max-height: 40vh;
-    /* z-index: 100; */
-    /* overflow: hidden; */
-    border-radius: 18px;
-  }
-
-  .registerForm {
-    /* display: flex;
-    flex-direction: column;
-     */
-    margin: auto 0;
+    max-width: 40rem;
+    max-height: 40rem;
   }
 
   .registerForm_controls {

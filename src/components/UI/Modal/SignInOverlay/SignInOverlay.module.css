@@ -1,12 +1,13 @@
 .modal {
   position: absolute;
-  bottom: 0vh;
+  top: 10vh;
   left: 0;
   right: 0;
   z-index: 100;
-
+  margin: 0 auto;
   background-color: #fff;
-  max-width: 100vw;
+  max-width: 40rem;
+  border-radius: 18px;
 }
 
 .signInForm {
@@ -16,7 +17,7 @@
   justify-content: center;
   gap: 2rem;
   padding: 3rem;
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .signInForm h2 {
@@ -67,39 +68,14 @@
 }
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
   .modal {
-    top: 10vh;
-    left: 33%;
-    max-width: 50rem;
+    max-width: 40rem;
     max-height: 40rem;
-    /* z-index: 100; */
-    /* overflow: hidden; */
-    border-radius: 18px;
   }
 
-  .signInForm {
-    /* display: flex;
-    flex-direction: column;
-     */
-    margin: auto 0;
-  }
-  .signInForm h2 {
-    align-self: center;
-  }
   .signInForm_controls {
     display: flex;
     flex-direction: column;
     gap: 3rem;
     width: 100%;
   }
-
-  /* .signInForm_controls input {
-  } */
-
-  /* .signInForm_actions {
-    display: flex;
-    flex-direction: column;
-  } */
-
-  /* .signInForm_actions button {
-  } */
 }
