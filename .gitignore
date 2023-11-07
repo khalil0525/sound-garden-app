@@ -93,3 +93,4 @@ node_modules/
 # dotenv environment variables file
 .env
 todo
+func.bak

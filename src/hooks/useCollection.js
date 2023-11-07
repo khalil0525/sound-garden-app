@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef } from "react";
-import { projectFirestore } from "../firebase/config";
-import moment from "moment";
+import { useEffect, useState, useRef } from 'react';
+import { projectFirestore } from '../firebase/config';
+import moment from 'moment';
 //Colletion can be a string or an array.
 // If we want to comb through 2 collections then we will need to provide a collectionFilterVariable value
 export const useCollection = (
   _collection,
   _query,
-  _collectionFilterVariable = ""
+  _collectionFilterVariable = ''
 ) => {
   const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
@@ -28,14 +28,14 @@ export const useCollection = (
   useEffect(() => {
     //This is used when we are pulling information from a Algolia search
     //Instead of a FireStore collection
-    if (collection === "skip") {
+    if (collection === 'skip') {
       return;
     }
 
     //When we do a query on two collection we will store 2 strings in an array
     //Otherwise we just receive a string
     let ref =
-      typeof collection === "object"
+      typeof collection === 'object'
         ? projectFirestore.collection(collection[0])
         : projectFirestore.collection(collection);
 
@@ -50,7 +50,7 @@ export const useCollection = (
         snapshot.docs.forEach((doc) => {
           //Convert the timestamp to a date
           const timestamp = moment(doc.data().createdAt.toDate())
-            .startOf("hour")
+            .startOf('hour')
             .fromNow();
 
           results.push({
@@ -83,14 +83,14 @@ export const useCollection = (
                     snapshot2.docs.map((res) => ({
                       ...res.data(),
                       createdAt: moment(res.data().createdAt.toDate())
-                        .startOf("hour")
+                        .startOf('hour')
                         .fromNow(),
                     }))
                   )
               );
             } catch (error) {
               console.log(error);
-              setError("Unable to get results");
+              setError('Unable to get results');
             }
           }
           Promise.all(secondResults).then((content) =>
@@ -107,7 +107,7 @@ export const useCollection = (
         console.log(error + collection);
         console.log(collection);
 
-        setError("could not fetch the Data");
+        setError('could not fetch the Data');
       }
     );
 
