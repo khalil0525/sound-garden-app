@@ -1,16 +1,16 @@
-import styles from "./Profile.module.css";
-import { useLogout } from "../../hooks/useLogout";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import editIcon from "../../images/pencil_solid.svg";
-import { useState } from "react";
-import Modal from "../../components/UI/Modal/Modal";
-import { useCollection } from "../../hooks/useCollection";
+import styles from './Profile.module.css';
+import { useLogout } from '../../hooks/useLogout';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import editIcon from '../../images/pencil_solid.svg';
+import { useState } from 'react';
+import Modal from '../../components/UI/Modal/Modal';
+import { useCollection } from '../../hooks/useCollection';
 
-import Button from "../../components/UI/Button/Button";
-import { useParams } from "react-router-dom";
-import placeholderImage from "../../images/profile_placeholder.svg";
-import CollectionResults from "../../components/CollectionResults/CollectionResults";
-import OneColumnLayout from "../../components/Layout/OneColumnLayout";
+import Button from '../../components/UI/Button/Button';
+import { useParams } from 'react-router-dom';
+import placeholderImage from '../../images/profile_placeholder.svg';
+import CollectionResults from '../../components/CollectionResults/CollectionResults';
+import OneColumnLayout from '../../components/Layout/OneColumnLayout';
 
 export default function Profile({ scrollRef }) {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -24,14 +24,15 @@ export default function Profile({ scrollRef }) {
   const params = useParams();
   const URL = params.profileURL;
 
-  const { documents: profileDocuments } = useCollection("users", [
-    "profileURL",
-    "==",
-    URL,
-  ]);
-  const query = profileDocuments
-    ? ["music", ["userID", "==", profileDocuments[0].userID]]
-    : null;
+  const { documents: profileDocuments, error: profileError } = useCollection(
+    'users',
+    ['profileURL', '==', URL]
+  );
+
+  const query =
+    profileDocuments && profileDocuments.length
+      ? ['music', ['userID', '==', profileDocuments[0].userID]]
+      : null;
   const handleEditProfile = () => {
     setIsEditingProfile(false);
   };
@@ -42,10 +43,10 @@ export default function Profile({ scrollRef }) {
   return (
     <OneColumnLayout user={user}>
       {profileDocuments && profileDocuments.length ? (
-        <div className={styles["profile__content"]}>
-          <div className={styles["profile__headerContainer"]}>
-            <div className={styles["profile__header"]}>
-              <div className={styles["profile__header-imgContainer"]}>
+        <div className={styles['profile__content']}>
+          <div className={styles['profile__headerContainer']}>
+            <div className={styles['profile__header']}>
+              <div className={styles['profile__header-imgContainer']}>
                 <img
                   src={
                     profileDocuments[0].profilePhotoURL
@@ -55,21 +56,21 @@ export default function Profile({ scrollRef }) {
                   alt="User profile"
                 />
               </div>
-              <div className={styles["profile__header-content"]}>
-                <div className={styles["profile__header-textContainer"]}>
-                  <h2 className={styles["profile__header-displayName"]}>
+              <div className={styles['profile__header-content']}>
+                <div className={styles['profile__header-textContainer']}>
+                  <h2 className={styles['profile__header-displayName']}>
                     {profileDocuments[0].displayName}
                   </h2>
                   {profileDocuments[0].firstName ||
                   profileDocuments[0].lastName ? (
-                    <h3 className={styles["profile__header-firstLastName"]}>
+                    <h3 className={styles['profile__header-firstLastName']}>
                       {profileDocuments[0].firstName +
-                        " " +
+                        ' ' +
                         profileDocuments[0].lastName}
                     </h3>
                   ) : null}
                 </div>
-                <div className={styles["profile__header-editContainer"]}>
+                <div className={styles['profile__header-editContainer']}>
                   <Button
                     onFocus={() => setUpdateButtonToggled(true)}
                     onBlur={() => setUpdateButtonToggled(false)}
@@ -78,15 +79,15 @@ export default function Profile({ scrollRef }) {
                     // iconImage={editIcon}
 
                     altText="Profile edit Icon"
-                    className={`${styles["editContainer-updateBtn"]} ${
+                    className={`${styles['editContainer-updateBtn']} ${
                       updateButtonToggled &&
-                      styles["editContainer-updateBtn--focused"]
+                      styles['editContainer-updateBtn--focused']
                     }`}>
                     Update image
                   </Button>
                   {/* { ( */}
                   {updateButtonToggled && (
-                    <ul className={styles["editContainer-menu"]}>
+                    <ul className={styles['editContainer-menu']}>
                       <Button buttonSize="large">Replace image</Button>
                       <Button buttonSize="large">Delete image</Button>
                     </ul>
@@ -95,7 +96,7 @@ export default function Profile({ scrollRef }) {
               </div>
             </div>
           </div>
-          <div className={styles["profile__profileActions"]}>
+          <div className={styles['profile__profileActions']}>
             {/* Logout button temp */}
             {/* Logout button should only show when the :ProfileURL belongs to */}
             {profileDocuments &&
@@ -136,7 +137,7 @@ export default function Profile({ scrollRef }) {
           )}
         </div>
       ) : (
-        <div className={styles["profile__notFound"]}>
+        <div className={styles['profile__notFound']}>
           <h1>We can’t find that user.</h1>
           <p>Please check the extension and try again!</p>
         </div>
