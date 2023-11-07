@@ -40,7 +40,35 @@
   width: 100%;
   padding-top: 3.2rem;
 }
-@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
+
+@media only screen and (min-width: 992px) and (max-width: 1400px) and (min-device-height: 768px) and (orientation: portrait) {
+  .twoColumnlayout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4fr 4fr;
+    padding: 0 3.2rem;
+    column-gap: 3.6rem;
+    width: 100%;
+  }
+
+  .threeColumnlayout {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 1fr auto;
+    padding: 1.6rem 2.4rem;
+  }
+
+  .actionBarTwoCol {
+    grid-column: 2/-1;
+    grid-row: 1/2;
+    margin-right: 3.2rem;
+  }
+  .actionBarThreeCol {
+    grid-column: 3/-1;
+  }
+}
+
+@media only screen and (min-width: 1401px) and (min-device-height: 768px) and (orientation: landscape) {
   .twoColumnlayout {
     display: grid;
     grid-template-columns: 55% 45%;

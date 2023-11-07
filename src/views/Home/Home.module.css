@@ -27,7 +27,7 @@
   font-size: var(--font-size-h1);
   color: var(--text-color);
   font-weight: 500;
-  width: 70%;
+
   word-wrap: break-word;
 }
 .home__subtitle {
@@ -88,7 +88,96 @@
   grid-row: 1/2;
 }
 
-@media only screen and (min-width: 1100px) and (min-device-height: 768px) and (orientation: landscape) {
+@media only screen and (min-width: 992px) and (max-width: 1400px) and (min-device-height: 768px) {
+  .home__leftSide {
+    display: inherit;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-column: 1/2;
+    grid-row: 1/-1;
+    gap: 1.6rem;
+  }
+  .home__rightSide {
+    display: inherit;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4fr;
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+    gap: 1.6rem;
+  }
+  .home__container {
+    /* Styles for the container div */
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+    grid-row: auto;
+  }
+
+  .home__banner {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    height: 300px;
+    flex: 1 0 46%;
+    grid-row: 1/2;
+    padding: 2.4rem !important;
+    margin-top: 2.4rem;
+
+    /* Add box shadow */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
+  }
+
+  .home__banner_container {
+    display: flex;
+    width: 60%;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.6rem;
+  }
+  .home__banner_button {
+    border-radius: 32px !important;
+    padding: 1.2rem 0.6rem !important;
+    /* color: #fa3914; */
+    width: 50%;
+    justify-self: flex-end;
+
+    /* Add box shadow */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
+  }
+
+  .home__banner_img {
+    position: relative;
+
+    width: 40%;
+    height: 300px;
+    display: block;
+  }
+  .home__banner_img img {
+    position: absolute;
+    width: 100%;
+    height: 110%;
+    bottom: 23px;
+    right: 1.6rem;
+    display: block;
+  }
+  .home__cardList ul {
+    justify-content: flex-start;
+  }
+  .home__cardRight {
+    width: 100%;
+    height: 235px;
+    grid-row: 1/2;
+  }
+  .home__playlist {
+  }
+}
+@media only screen and (min-width: 1401px) and (min-device-height: 768px) {
   .home__leftSide {
     display: inherit;
     grid-template-columns: 1fr;

@@ -24,10 +24,11 @@ export default function Profile({ scrollRef }) {
   const params = useParams();
   const URL = params.profileURL;
 
-  const { documents: profileDocuments, error: profileError } = useCollection(
-    'users',
-    ['profileURL', '==', URL]
-  );
+  const { documents: profileDocuments } = useCollection('users', [
+    'profileURL',
+    '==',
+    URL,
+  ]);
 
   const query =
     profileDocuments && profileDocuments.length
