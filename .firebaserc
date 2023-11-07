@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sound-garden-eeeed"
-  }
+    "default": "sound-garden-eeeed",
+    "staging": "sound-garden-eeeed"
+  },
+  "targets": {},
+  "etags": {}
 }
