@@ -19,13 +19,16 @@
   flex-direction: column;
   gap: 1.2rem;
   margin-bottom: 1.6rem;
+  width: 100%;
   grid-row: auto;
 }
 
 .home__title {
   font-size: var(--font-size-h1);
   color: var(--text-color);
-  font-weight: bold;
+  font-weight: 500;
+  width: 70%;
+  word-wrap: break-word;
 }
 
 .home__cardList {

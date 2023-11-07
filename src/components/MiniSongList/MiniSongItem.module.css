@@ -1,5 +1,5 @@
 .songItem {
-  padding: 2rem;
+  padding: 1.2rem 0.6rem;
   width: 100%;
   display: flex;
 }
@@ -85,14 +85,14 @@
   gap: 1.6rem;
   grid-column: 1/1;
   grid-row: 1/-1;
-  width: 50%;
+  /* width: 50%; */
 }
 .songItem__rightSide {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 3.2rem;
-  width: 50%;
+  /* width: 50%; */
 }
 .songItem__songPhotoContainer {
   width: 8rem;

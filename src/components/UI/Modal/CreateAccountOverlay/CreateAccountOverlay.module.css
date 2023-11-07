@@ -1,3 +1,4 @@
+/* Apply these styles to your HTML form with the class names */
 .modal {
   position: absolute;
   top: 10vh;
@@ -8,53 +9,49 @@
   background-color: #fff;
   max-width: 40rem;
   border-radius: 18px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
 }
 
 .registerForm {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 2rem;
-  padding: 3rem;
   max-width: 100%;
 }
 
 .registerForm h2 {
-  align-self: center;
-  font-size: var(--font-size-h2);
+  font-size: 24px;
 }
+
 .registerForm_controls {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1.5rem;
   width: 100%;
-  /* flex: 1 0 auto; */
-
-  /* width: inherit; */
 }
 
 .registerForm_controls input {
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: var(--font-size-body);
+  font-size: 16px;
 }
 
 .registerForm_actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 100%;
 }
 
 .registerForm_actions button {
   display: block;
   width: 100%;
-  background-color: var(--primary-color);
+  background-color: #2196f3;
   color: white;
   border: none;
   padding: 14px 20px;
@@ -63,20 +60,13 @@
   font-size: 16px;
   border-radius: 4px;
 }
+
 .registerForm_actions button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
-  .modal {
-    max-width: 40rem;
-    max-height: 40rem;
-  }
 
-  .registerForm_controls {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    width: 100%;
-  }
+/* Optional: To style the error message */
+.registerForm p {
+  color: red;
 }
