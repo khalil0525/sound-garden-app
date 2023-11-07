@@ -30,10 +30,18 @@
   width: 70%;
   word-wrap: break-word;
 }
+.home__subtitle {
+  font-size: var(--font-size-h2);
+  color: var(--background-color);
+  font-weight: 600;
+  width: 70%;
+}
 
 .home__cardList {
   align-self: flex-start;
+  justify-self: flex-start;
   margin-left: 0.6rem;
+  width: 100%;
 }
 
 .home__banner {
@@ -156,6 +164,9 @@
     bottom: 23px;
     right: 1.6rem;
     display: block;
+  }
+  .home__cardList ul {
+    justify-content: flex-start;
   }
   .home__cardRight {
     width: 100%;

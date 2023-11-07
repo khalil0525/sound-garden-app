@@ -44,14 +44,14 @@ export default function Home({ scrollRef }) {
           </div>
         </Card>
         <div className={styles['home__container']}>
-          <p className={styles['home__title']}>Playlists</p>
+          <p className={styles['home__subtitle']}>Playlists</p>
           <CardList
             className={styles['home__cardList']}
             list={tempList}
             page=""
           />
           <div className={styles['home__container']}>
-            <p className={styles['home__title']}>Trending</p>
+            <p className={styles['home__subtitle']}>Trending</p>
             {query && (
               <CollectionResults
                 scrollRef={scrollRef}
@@ -67,7 +67,7 @@ export default function Home({ scrollRef }) {
           <h1 className={styles['home__title']}>Subscribe To Premium Now</h1>
         </Card>
         <div className={styles['home__container']}>
-          <p className={styles['home__title']}>Top Artists</p>;
+          <p className={styles['home__subtitle']}>Top Artists</p>;
         </div>
       </div> */}
     </TwoColumnLayout>
