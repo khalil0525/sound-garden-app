@@ -1,31 +1,31 @@
 .btn {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	line-height: 20px;
-	white-space: nowrap;
-	cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
 
-	border-color: rgba(0, 0, 0, 0);
-	border-radius: 3px;
+  border-color: rgba(0, 0, 0, 0);
+  border-radius: 3px;
 }
 .btn-small {
-	padding: 0.2rem 0.9rem 0.2rem 0.8rem;
-	font-size: 1.1rem;
+  padding: 0.2rem 0.9rem 0.2rem 0.8rem;
+  font-size: var(--font-size-body-secondary);
 }
 
 .icon-small {
-	width: 1.8rem;
-	height: 1.4rem;
+  width: 1.8rem;
+  height: 1.4rem;
 }
 
 .btn-large {
-	padding: 0.2rem 1.1rem 0.2rem 1rem;
-	font-size: 1.4rem;
+  padding: 0.2rem 1.1rem 0.2rem 1rem;
+  font-size: var(--font-size-body-secondary);
 }
 
 .icon-large {
-	width: 1.8rem;
-	height: 1.8rem;
+  width: 1.8rem;
+  height: 1.8rem;
 }

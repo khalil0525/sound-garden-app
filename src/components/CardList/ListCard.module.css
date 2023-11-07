@@ -31,8 +31,8 @@
   margin-bottom: 1rem;
 }
 .card__title p {
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: var(--font-size-body);
+  font-weight: 600;
 }
 
 .card__content {

@@ -19,7 +19,7 @@
   margin: 10vh auto;
   text-align: center;
 
-  font-size: 3.6rem;
+  font-size: var(--font-size-h1);
 }
 .profile__headerContainer {
   max-width: 124rem;
@@ -74,7 +74,7 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.8);
   display: inline-block;
-  font-size: 2.4rem;
+  font-size: var(--font-size-h2);
   line-height: 3.7rem;
   padding: 0.4rem 0.7rem;
 }
@@ -82,7 +82,7 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.8);
   display: inline-block;
-  font-size: 1.6rem;
+  font-size: var(--font-size-h3);
   line-height: 1.2;
   padding: 0.4rem 0.7rem;
 }
@@ -142,8 +142,6 @@
 
     margin: 10vh auto;
     text-align: center;
-
-    font-size: 3.6rem;
   }
   .profile__headerContainer {
     max-width: 124rem;
@@ -195,7 +193,7 @@
     color: #fff;
     background-color: rgba(0, 0, 0, 0.8);
     display: inline-block;
-    font-size: 2.4rem;
+
     line-height: 3.7rem;
     padding: 0.4rem 0.7rem;
   }
@@ -203,7 +201,7 @@
     color: #fff;
     background-color: rgba(0, 0, 0, 0.8);
     display: inline-block;
-    font-size: 1.6rem;
+
     line-height: 1.2;
     padding: 0.4rem 0.7rem;
   }

@@ -25,10 +25,12 @@
 /* and (max-width: 1200px) */
 @media (min-width: 1025px) {
   :root {
-    --font-size-h1: 3.6rem;
-    --font-size-h2: 3rem;
-    --font-size-h3: 2.4rem;
-    --font-size-body: 1.8rem;
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2rem;
+    --font-size-body: 1.6rem;
+    --font-size-body-secondary: 1.4rem;
+    --font-size-body-tertiary: 1.2rem;
   }
 }
 @media (min-width: 1201px) {

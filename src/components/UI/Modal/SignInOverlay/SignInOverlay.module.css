@@ -1,103 +1,102 @@
 .modal {
-	position: absolute;
-	bottom: 0vh;
-	left: 0;
-	right: 0;
-	z-index: 100;
+  position: absolute;
+  bottom: 0vh;
+  left: 0;
+  right: 0;
+  z-index: 100;
 
-	background-color: #fff;
-	max-width: 100vw;
+  background-color: #fff;
+  max-width: 100vw;
 }
 
 .signInForm {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 2rem;
-	padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2.5rem;
 }
 
 .signInForm h2 {
-	align-self: center;
-	font-size: 2.4rem;
+  align-self: center;
+  font-size: var(--font-size-h2);
 }
 .signInForm_controls {
-	display: flex;
-	flex-direction: column;
-	gap: 3rem;
-	width: 100%;
-	/* flex: 1 0 auto; */
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 100%;
+  /* flex: 1 0 auto; */
 
-	/* width: inherit; */
+  /* width: inherit; */
 }
 
 .signInForm_controls input {
-	flex: 1 0 100%;
+  flex: 1 0 100%;
 
-	line-height: 2.4rem;
+  line-height: 2.4rem;
 
-	font-size: 1.8rem;
-	padding: 0.7rem 0.8rem;
-	border-radius: 6px;
-	border: 1px solid #ccc;
+  font-size: var(--font-size-body);
+  padding: 0.7rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .signInForm_actions {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-	width: 100%;
+  width: 100%;
 }
 
 .signInForm_actions button {
-	font-size: 1.8rem;
-	font-weight: 400;
+  /* font-size: 1.8rem; */
+  font-weight: 400;
 
-	color: #fff;
-	background-color: #fb502f;
+  color: #fff;
+  background-color: #fb502f;
 
-	border: none;
-	padding: 1rem;
-	width: 100%;
+  border: none;
+  padding: 1rem;
+  width: 100%;
 }
 @media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
-	.modal {
-		top: 10vh;
-		left: 33%;
-		max-width: 50vw;
-		max-height: 40vh;
-		/* z-index: 100; */
-		/* overflow: hidden; */
-		border-radius: 18px;
-	}
+  .modal {
+    top: 10vh;
+    left: 33%;
+    max-width: 50vw;
+    max-height: 40vh;
+    /* z-index: 100; */
+    /* overflow: hidden; */
+    border-radius: 18px;
+  }
 
-	.signInForm {
-		/* display: flex;
+  .signInForm {
+    /* display: flex;
     flex-direction: column;
      */
-		margin: auto 0;
-	}
-	.signInForm h2 {
-		align-self: center;
-		font-size: 2.4rem;
-	}
-	.signInForm_controls {
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
-		width: 100%;
-	}
+    margin: auto 0;
+  }
+  .signInForm h2 {
+    align-self: center;
+  }
+  .signInForm_controls {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+  }
 
-	/* .signInForm_controls input {
+  /* .signInForm_controls input {
   } */
 
-	/* .signInForm_actions {
+  /* .signInForm_actions {
     display: flex;
     flex-direction: column;
   } */
 
-	/* .signInForm_actions button {
+  /* .signInForm_actions button {
   } */
 }

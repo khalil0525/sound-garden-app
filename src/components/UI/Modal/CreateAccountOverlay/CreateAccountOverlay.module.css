@@ -20,7 +20,7 @@
 
 .registerForm h2 {
   align-self: center;
-  font-size: 2.4rem;
+  font-size: var(--font-size-h2);
 }
 .registerForm_controls {
   display: flex;
@@ -37,7 +37,7 @@
 
   line-height: 2.4rem;
 
-  font-size: 1.8rem;
+  font-size: var(--font-size-body);
   padding: 0.7rem 0.8rem;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -79,10 +79,7 @@
      */
     margin: auto 0;
   }
-  .registerForm h2 {
-    align-self: center;
-    font-size: 2.4rem;
-  }
+
   .registerForm_controls {
     display: flex;
     flex-direction: column;

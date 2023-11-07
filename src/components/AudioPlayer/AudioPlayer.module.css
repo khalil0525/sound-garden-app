@@ -52,14 +52,14 @@
 }
 .audioPlayer__trackDetails-songDetails-title {
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: var(--font-size-body-secondary);
   line-height: 1.4rem;
   color: #ffffff;
   overflow: hidden;
 }
 .audioPlayer__trackDetails-songDetails-artist {
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: var(--font-size-body-secondary);
   line-height: 1.4rem;
   color: #ffffff;
   opacity: 0.5;
@@ -124,7 +124,7 @@
   .audioPlayer__controls-seek-duration {
     font-family: 'Inter';
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: var(--font-size-body-tertiary);
     line-height: 1.5rem;
     color: #ffffff;
     width: 10%;
@@ -196,7 +196,7 @@
   }
   .audioPlayer__trackDetails-songDetails-title {
     /* font-weight: 400; */
-    font-size: 1.4rem;
+
     line-height: 1.7rem;
     /* color: #ffffff; */
 
@@ -204,7 +204,7 @@
   }
   .audioPlayer__trackDetails-songDetails-artist {
     /* font-weight: 400; */
-    font-size: 1.4rem;
+
     line-height: 1.7rem;
 
     /* color: #ffffff;

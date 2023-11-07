@@ -58,7 +58,7 @@
   width: 50%;
 }
 .home__banner_container p {
-  font-size: var(--font-size-body);
+  font-size: var(--font-size-body-secondary);
   color: var(--text-color);
   font-weight: 400;
 }
