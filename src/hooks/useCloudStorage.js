@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useState, useRef } from "react";
-import { projectStorage } from "../firebase/config";
+import { useEffect, useReducer, useState, useRef } from 'react';
+import { projectStorage } from '../firebase/config';
 // import { useFirestore } from "./useFirestore";
 // import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
@@ -13,7 +13,7 @@ let initialState = {
 //This reducer combines all of the states that we use in our other custom hooks and new ones.
 const cloudStorageReducer = (state, action) => {
   switch (action.type) {
-    case "IS_PENDING":
+    case 'IS_PENDING':
       return {
         ...state,
         isPending: true,
@@ -22,7 +22,7 @@ const cloudStorageReducer = (state, action) => {
         error: null,
       };
 
-    case "ADDED_FILES":
+    case 'ADDED_FILES':
       return {
         ...state,
         isPending: false,
@@ -30,7 +30,7 @@ const cloudStorageReducer = (state, action) => {
         success: true,
         error: null,
       };
-    case "ADDED_FILE":
+    case 'ADDED_FILE':
       return {
         ...state,
         isPending: false,
@@ -38,14 +38,14 @@ const cloudStorageReducer = (state, action) => {
         success: true,
         error: null,
       };
-    case "DELETED_FILES":
+    case 'DELETED_FILES':
       return {
         ...state,
         isPending: false,
         success: true,
         error: null,
       };
-    case "DELETED_FILE":
+    case 'DELETED_FILE':
       return {
         ...state,
         isPending: false,
@@ -53,7 +53,7 @@ const cloudStorageReducer = (state, action) => {
         success: true,
         error: null,
       };
-    case "REPLACED_FILE":
+    case 'REPLACED_FILE':
       return {
         ...state,
         isPending: false,
@@ -62,7 +62,7 @@ const cloudStorageReducer = (state, action) => {
         error: null,
       };
 
-    case "ERROR":
+    case 'ERROR':
       return {
         isPending: false,
         file: null,
@@ -96,9 +96,9 @@ export const useCloudStorage = () => {
   // add song file to the cloud storage
   const addSongFiles = async (fireStoreDocRef, user, files) => {
     //Create the song file path from the information we received
-    dispatch({ type: "IS_PENDING" });
+    dispatch({ type: 'IS_PENDING' });
     const songPath =
-      "songs/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[0].name;
+      'songs/' + user.uid + '/' + fireStoreDocRef.id + '_' + files[0].name;
 
     // Create a variable to hold the photo upload result, if we have one
 
@@ -106,14 +106,14 @@ export const useCloudStorage = () => {
     // Here we try to add the photo file to the cloud storage first before we add the song.
     if (files[1]) {
       photoPath =
-        "images/" + user.uid + "/" + fireStoreDocRef.id + "_" + files[1].name;
+        'images/' + user.uid + '/' + fireStoreDocRef.id + '_' + files[1].name;
       try {
         const photoPathRef = projectStorage.ref(photoPath);
         let photoUploadRes = await photoPathRef.put(files[1]);
         photoURL = await photoUploadRes.ref.getDownloadURL();
       } catch (error) {
-        console.log("Photo upload error: ", error);
-        dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+        console.log('Photo upload error: ', error);
+        dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
       }
     }
 
@@ -121,7 +121,7 @@ export const useCloudStorage = () => {
     addedSongFileRef.current = songFileRef.put(files[0]);
 
     const unsubscribe = addedSongFileRef.current.on(
-      "state_changed",
+      'state_changed',
       (snapshot) => {
         // dispatch({ type: "IS_PENDING" });
 
@@ -131,7 +131,7 @@ export const useCloudStorage = () => {
       },
       //callback for error on upload
       (error) => {
-        dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+        dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
       },
       //Callback for completed upload
       () => {
@@ -143,12 +143,12 @@ export const useCloudStorage = () => {
             fireStoreDocRef.update({
               songURL: downloadURL,
               songFilePath: songPath,
-              songPhotoURL: files[1] ? photoURL : "",
-              songPhotoFilePath: files[1] ? photoPath : "",
+              songPhotoURL: files[1] ? photoURL : '',
+              songPhotoFilePath: files[1] ? photoPath : '',
             });
           });
         dispatchIfNotCancelled({
-          type: "ADDED_FILES",
+          type: 'ADDED_FILES',
           payload: addedSongFileRef.current,
         });
         unsubscribe();
@@ -158,11 +158,11 @@ export const useCloudStorage = () => {
 
   const deleteSongFiles = async (songInformation) => {
     const { songFilePath, songPhotoFilePath } = songInformation;
-    dispatch({ type: "IS_PENDING" });
+    dispatch({ type: 'IS_PENDING' });
     try {
       const refToDeleteSong = projectStorage.ref(songFilePath);
       await refToDeleteSong.delete();
-      if (songPhotoFilePath !== "") {
+      if (songPhotoFilePath !== '') {
         const refToDeleteSongPhoto = projectStorage.ref(songPhotoFilePath);
         await refToDeleteSongPhoto.delete();
       }
@@ -188,10 +188,10 @@ export const useCloudStorage = () => {
       //     }
       //   });
       // console.log("DELETE COMPLETED");
-      dispatchIfNotCancelled({ type: "DELETED_FILES" });
+      dispatchIfNotCancelled({ type: 'DELETED_FILES' });
     } catch (error) {
-      console.log("Error deleting song file!!:  ", error);
-      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      console.log('Error deleting song file!!:  ', error);
+      dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
   const addFile = async (
@@ -201,16 +201,16 @@ export const useCloudStorage = () => {
     newFile,
     newFilePropertyName
   ) => {
-    dispatch({ type: "IS_PENDING" });
+    dispatch({ type: 'IS_PENDING' });
 
     try {
       const newFilePath =
         collection +
-        "/" +
+        '/' +
         user.uid +
-        "/" +
+        '/' +
         fireStoreDocRef.id +
-        "_" +
+        '_' +
         newFile.name;
       const fileRef = projectStorage.ref(newFilePath);
       const addedFile = await fileRef.put(newFile);
@@ -221,17 +221,17 @@ export const useCloudStorage = () => {
         [newFilePathVariableName]: newFilePath,
         [newFileURLVariableName]: downloadURL,
       });
-      if (newFilePropertyName === "profilePhoto") {
+      if (newFilePropertyName === 'profilePhoto') {
         await user.updateProfile({ photoURL: downloadURL });
       }
 
       dispatchIfNotCancelled({
-        type: "ADDED_FILE",
+        type: 'ADDED_FILE',
         payload: addedFile,
       });
     } catch (error) {
-      console.log("Error adding file!!:  ", error);
-      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      console.log('Error adding file!!:  ', error);
+      dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
 
@@ -242,13 +242,24 @@ export const useCloudStorage = () => {
     newFilePropertyName,
     user
   ) => {
-    dispatch({ type: "IS_PENDING" });
+    dispatch({ type: 'IS_PENDING' });
 
     try {
       const newFilePath =
-        storageFilePathToDelete.split("_")[0] + "_" + newFile.name;
+        storageFilePathToDelete.split('_')[0] + '_' + newFile.name;
       const fileToDeleteRef = projectStorage.ref(storageFilePathToDelete);
-      await fileToDeleteRef.delete();
+
+      try {
+        await fileToDeleteRef.delete();
+      } catch (error) {
+        if (error.code === 'storage/object-not-found') {
+          // Handle the case where the file doesn't exist
+          console.log('File does not exist:', storageFilePathToDelete);
+        } else {
+          // Handle other errors
+          throw error;
+        }
+      }
       const newFileRef = projectStorage.ref(newFilePath);
       const addedFile = await newFileRef.put(newFile);
 
@@ -259,31 +270,31 @@ export const useCloudStorage = () => {
         [newFilePathVariableName]: newFilePath,
         [newFileURLVariableName]: downloadURL,
       });
-      if (newFilePropertyName === "profilePhoto") {
+      if (newFilePropertyName === 'profilePhoto') {
         await user.updateProfile({ photoURL: downloadURL });
       }
 
       dispatchIfNotCancelled({
-        type: "REPLACED_FILE",
+        type: 'REPLACED_FILE',
         payload: addedFile,
       });
     } catch (error) {
-      console.log("Error replacing song file!!:  ", error);
-      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      console.log('Error replacing song file!!:  ', error);
+      dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
   // delete a song or photo...
   // We can obtain the storageFilePath from its database entry
   // We can delete a whole song + it's photo or delete a photo after we change it on a song
   const deleteFile = async (storageFilePath) => {
-    dispatch({ type: "IS_PENDING" });
+    dispatch({ type: 'IS_PENDING' });
     try {
       const deletedFile = await projectStorage.ref(storageFilePath).delete();
 
-      dispatchIfNotCancelled({ type: "DELETED_FILE", payload: deletedFile });
+      dispatchIfNotCancelled({ type: 'DELETED_FILE', payload: deletedFile });
     } catch (error) {
-      console.log("Error deleting song file!!:  ", error);
-      dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
+      console.log('Error deleting song file!!:  ', error);
+      dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
 
