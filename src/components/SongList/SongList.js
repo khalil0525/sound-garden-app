@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './SongList.module.css';
 import SongItem from './SongItem';
-import { useCollection } from '../../hooks/useCollection';
+// import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 //We receive a song prop from whichever parent component calls this

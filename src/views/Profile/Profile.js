@@ -2,7 +2,7 @@ import styles from './Profile.module.css';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import editIcon from '../../images/pencil_solid.svg';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
 // import { useCollection } from '../../hooks/useCollection';
 
@@ -11,14 +11,14 @@ import { useParams } from 'react-router-dom';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import OneColumnLayout from '../../components/Layout/OneColumnLayout';
-import { getSongs, getUserProfile } from '../../api/functions';
+import { getUserProfile } from '../../api/functions';
 export default function Profile({ scrollRef }) {
   const [profile, setProfile] = useState(null);
   // const [profileSongs, setProfileSongs] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   // const [isEditingHeader, setIsEditingHeader] = useState(false);
   const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
-  const [isFetchedSongs, setIsFetchedSongs] = useState(false);
+  // const [isFetchedSongs, setIsFetchedSongs] = useState(false);
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
 
@@ -43,16 +43,6 @@ export default function Profile({ scrollRef }) {
   // const handleEditHeader = () => {
   // 	setIsEditingHeader(false);
   // };
-  const getProfile = async () => {
-    try {
-      const { data } = await getUserProfile({ profileURL: URL });
-
-      console.log(data);
-      setProfile({ ...data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // const getProfileSongs = useCallback(async () => {
   //   try {
@@ -68,8 +58,18 @@ export default function Profile({ scrollRef }) {
   // }, [profile]);
 
   useEffect(() => {
+    const getProfile = async () => {
+      try {
+        const { data } = await getUserProfile({ profileURL: URL });
+
+        console.log(data);
+        setProfile({ ...data });
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getProfile();
-  }, []);
+  }, [URL]);
 
   // useEffect(() => {
   //   if (profile && profile?.userID && !isFetchedSongs) {
