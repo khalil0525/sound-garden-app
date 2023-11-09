@@ -150,7 +150,7 @@ const EditSongOverlay = (props) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles['editSongForm']}>
+      <div className={styles['playListForm']}>
         <div className={styles['photo-picker']}>
           <img
             className={styles['photo-picker-photo']}
@@ -167,9 +167,9 @@ const EditSongOverlay = (props) => {
             accept="image/*"
           />
         </div>
-        <div className={styles['editSongForm_controls']}>
+        <div className={styles['playlistForm_controls']}>
           <label htmlFor="song-name">Song Name:</label>
-          {/*  */}
+
           <input
             type="text"
             id="song-name"
@@ -177,17 +177,17 @@ const EditSongOverlay = (props) => {
             value={songTitle}
             disabled={cloudStorageResponse.isPending}
             onChange={handleSongNameChange}></input>
-          {/* */}
+
           <GenreSelect
             onGenreTypeChange={handleGenreTypeChange}
             disabled={cloudStorageResponse.isPending}
             genreValue={songGenre}
           />
-          {/* */}
+
           {!cloudStorageResponse.isPending && !cloudStorageResponse.success && (
-            <div className={styles['editSongForm_actions']}>
+            <div className={styles['playlistForm_actions']}>
               <div onClick={props.onCancel}>Cancel</div>
-              {/*  */}
+
               <button
                 onClick={handleSongUpdate}
                 disabled={!editSaveReady}>

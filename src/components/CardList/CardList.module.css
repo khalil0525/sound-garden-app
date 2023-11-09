@@ -1,17 +1,18 @@
 .cardlist {
-  max-width: 85rem;
+  max-width: 100%;
 }
 
 .cardlist__list {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+
   gap: 1.6rem;
   flex-wrap: wrap;
 }
 
 /* Set a fixed width for each card */
 .cardlist__list .card {
-  flex: 0 0 calc(33.33% - 1.6rem); /* Adjust the width as needed */
+  /* flex: 0 0 calc(33.33% - 1.6rem); Adjust the width as needed */
 }
 
 .cardlist__list a:link,

@@ -1,10 +1,10 @@
-import SongList from "../SongList/SongList";
-import MiniSongList from "../MiniSongList/MiniSongList";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { useCollection } from "../../hooks/useCollection";
-import styles from "./CollectionResults.module.css";
+import SongList from '../SongList/SongList';
+import MiniSongList from '../MiniSongList/MiniSongList';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useCollection } from '../../hooks/useCollection';
+import styles from './CollectionResults.module.css';
 
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 export default function CollectionResults({
   scrollRef,
@@ -30,17 +30,17 @@ export default function CollectionResults({
   // Because we are getting result from an AlgoliaSearch
   const searchParams =
     from && search
-      ? ["music", [from, "==", search]]
+      ? ['music', [from, '==', search]]
       : query
       ? query
-      : ["skip", "skip", "skip"];
+      : ['skip', 'skip', 'skip'];
 
   const { documents: musicDocuments } = useCollection(...searchParams);
 
   // This is the error message that will be displayed when the query
   // Returns empty results
   let emptyListMessage =
-    location && ["/uploaded", "/liked"].includes(location.pathname)
+    location && ['/uploaded', '/liked'].includes(location.pathname)
       ? `You haven't ${location.pathname.substring(
           1,
           location.pathname.length
@@ -49,57 +49,57 @@ export default function CollectionResults({
 
   return (
     <div className={styles.collectionResults}>
-      <div className={styles["collectionResults__header"]}>
-        {location.pathname === "/search" ? (
-          <h1 className={styles["search__queryText"]}>
+      <div className={styles['collectionResults__header']}>
+        {location.pathname === '/search' ? (
+          <h1 className={styles['search__queryText']}>
             Search results for "{algoliaQuery}"
           </h1>
         ) : null}
       </div>
       {/* We need user? user: "none" so that if we are logged out we can avoid an app error from firebase having no active user.uid to work with */}
-      {(location.pathname !== "/search") & (location.pathname !== "/") ? (
+      {(location.pathname !== '/search') & (location.pathname !== '/') ? (
         musicDocuments && musicDocuments.length > 0 ? (
           <SongList
-            className={styles["collectionResults__songList"]}
+            className={styles['collectionResults__songList']}
             songs={musicDocuments}
-            user={user ? user : "none"}
+            user={user ? user : 'none'}
             scrollRef={scrollRef}
             playlistLocation={location && location.pathname}
           />
         ) : (
-          <h1 className={styles["collectionResults__songList"]}>
+          <h1 className={styles['collectionResults__songList']}>
             {emptyListMessage}
           </h1>
         )
       ) : null}
 
-      {location.pathname === "/" ? (
+      {location.pathname === '/' ? (
         musicDocuments && musicDocuments.length > 0 ? (
           <MiniSongList
-            className={styles["collectionResults__songList"]}
+            className={styles['collectionResults__songList']}
             songs={musicDocuments}
-            user={user ? user : "none"}
+            user={user ? user : 'none'}
             scrollRef={scrollRef}
             playlistLocation={location && location.pathname}
           />
         ) : (
-          <h1 className={styles["collectionResults__songList"]}>
+          <h1 className={styles['collectionResults__songList']}>
             {emptyListMessage}
           </h1>
         )
       ) : null}
 
       {/* FOR SEARCH PAGE */}
-      {location.pathname === "/search" ? (
+      {location.pathname === '/search' ? (
         algoliaResults.length ? (
           <SongList
-            className={styles["collectionResults__songList"]}
+            className={styles['collectionResults__songList']}
             scrollRef={scrollRef}
             songs={algoliaResults}
-            user={user ? user : "none"}
+            user={user ? user : 'none'}
           />
         ) : (
-          <h1 className={styles["collectionResults__songList"]}>
+          <h1 className={styles['collectionResults__songList']}>
             The search yielded no results!
           </h1>
         )

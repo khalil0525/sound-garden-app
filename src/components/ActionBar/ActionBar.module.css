@@ -1,6 +1,7 @@
 .actionBar {
   position: relative;
   z-index: 1000;
+  max-width: 100%;
 }
 .actionBar__nav {
   display: flex;

@@ -11,13 +11,16 @@ import { useParams } from 'react-router-dom';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import OneColumnLayout from '../../components/Layout/OneColumnLayout';
-import { getUserProfile } from '../../api/functions';
+import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
 export default function Profile({ scrollRef }) {
   const [profile, setProfile] = useState(null);
   // const [profileSongs, setProfileSongs] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  // const [isEditingPlaylist, setIsEditingPlaylist] = useState(false);
   // const [isEditingHeader, setIsEditingHeader] = useState(false);
   const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
+  const [isProcessingFollow, setIsProcessingFollow] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(null);
   // const [isFetchedSongs, setIsFetchedSongs] = useState(false);
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
@@ -40,6 +43,9 @@ export default function Profile({ scrollRef }) {
   const handleEditProfile = () => {
     setIsEditingProfile(false);
   };
+  // const handleEditPlaylist = () => {
+  //   setIsEditingPlaylist(false);
+  // };
   // const handleEditHeader = () => {
   // 	setIsEditingHeader(false);
   // };
@@ -56,12 +62,30 @@ export default function Profile({ scrollRef }) {
   //     console.log(error);
   //   }
   // }, [profile]);
+  async function handleFollowClick() {
+    setIsProcessingFollow(true);
+    try {
+      const { data } = profile.followers.includes(user.id)
+        ? await unfollowUser({ userIdToUnfollow: profile.userID })
+        : await followUser({ userIdToFollow: profile.userID });
+
+      if (data.success) {
+        setIsFollowing((prevState) => !prevState);
+      }
+      setIsProcessingFollow(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsProcessingFollow(false);
+    }
+  }
 
   useEffect(() => {
     const getProfile = async () => {
       try {
         const { data } = await getUserProfile({ profileURL: URL });
-
+        if (user) {
+          setIsFollowing(data.followers.includes(user.id));
+        }
         console.log(data);
         setProfile({ ...data });
       } catch (error) {
@@ -69,7 +93,7 @@ export default function Profile({ scrollRef }) {
       }
     };
     getProfile();
-  }, [URL]);
+  }, [URL, user]);
 
   // useEffect(() => {
   //   if (profile && profile?.userID && !isFetchedSongs) {
@@ -134,14 +158,24 @@ export default function Profile({ scrollRef }) {
           <div className={styles['profile__profileActions']}>
             {/* Logout button temp */}
             {/* Logout button should only show when the :ProfileURL belongs to */}
+            {profile && user && user.id !== profile.userID && (
+              <Button
+                className={styles['profile__header_button_follow']}
+                onClick={handleFollowClick}
+                disabled={isProcessingFollow}
+                buttonSize="large">
+                {isFollowing ? 'Following' : 'Follow'}
+              </Button>
+            )}
             {profile && user && user.uid === profile.userID && (
               <Button
+                className={styles['profile__header_button']}
                 onClick={() => setIsEditingProfile(true)}
                 disabled={isEditingProfile}
                 buttonSize="large"
                 iconImage={editIcon}
                 altText="Profile edit Icon">
-                Edit
+                Edit Profile
               </Button>
             )}
             {profile &&
@@ -149,12 +183,14 @@ export default function Profile({ scrollRef }) {
               user.uid === profile.userID &&
               (!isPending ? (
                 <Button
+                  className={styles['profile__header_button']}
                   onClick={logout}
                   buttonSize="large">
                   Logout
                 </Button>
               ) : (
                 <Button
+                  className={styles['profile__header_button']}
                   disabled
                   buttonSize="large">
                   Loading..
@@ -184,6 +220,14 @@ export default function Profile({ scrollRef }) {
           onCancel={() => setIsEditingProfile(false)}
         />
       )}
+      {/* {isEditingPlaylist && (
+        <Modal
+          action="editPlaylistInformation"
+          userInformation={profile}
+          onConfirm={handleEditProfile}
+          onCancel={() => setIsEditingPlaylist(false)}
+        />
+      )} */}
     </OneColumnLayout>
   );
 }

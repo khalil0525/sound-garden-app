@@ -1,6 +1,6 @@
 .oneColumnlayout {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr auto;
   padding: 1.6rem 2.4rem;
   align-content: center;
@@ -9,7 +9,7 @@
 .twoColumnlayout {
   display: flex;
   flex-direction: column;
-  padding: 1.6rem 1.6rem 0 1.6rem;
+  padding: 1.6rem 2.4rem;
 }
 
 .threeColumnlayout {
@@ -18,14 +18,18 @@
   grid-template-rows: 1fr auto;
   padding: 1.6rem 2.4rem;
 }
-
+.actionBarOneCol,
+.actionBarTwoCol,
+.actionBarThreeCol {
+  justify-self: flex-end;
+  width: 100%;
+}
 .actionBarOneCol {
-  grid-column: 2/-1;
+  grid-column: 1/-1;
   grid-row: 1/2;
-  align-self: flex-end;
 }
 .actionBarTwoCol {
-  grid-column: 2/-1;
+  grid-column: 1/-1;
   grid-row: 1/2;
 }
 .actionBarThreeCol {
@@ -41,12 +45,20 @@
   padding-top: 3.2rem;
 }
 
-@media only screen and (min-width: 992px) and (max-width: 1400px) and (min-device-height: 768px) and (orientation: portrait) {
+/* @media only screen and (min-width: 992px) and (max-width: 1400px) and (min-device-height: 768px) {
+  .oneColumnlayout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    padding: 1.6rem 2.4rem;
+    align-content: center;
+  }
+
   .twoColumnlayout {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 4fr 4fr;
-    padding: 0 3.2rem;
+    padding: 0 2.4rem;
     column-gap: 3.6rem;
     width: 100%;
   }
@@ -57,7 +69,10 @@
     grid-template-rows: 1fr auto;
     padding: 1.6rem 2.4rem;
   }
-
+  .actionBarOneCol {
+    grid-column: 1/-1;
+    grid-row: 1/2;
+  }
   .actionBarTwoCol {
     grid-column: 2/-1;
     grid-row: 1/2;
@@ -66,14 +81,22 @@
   .actionBarThreeCol {
     grid-column: 3/-1;
   }
-}
+} */
 
 @media only screen and (min-width: 1401px) and (min-device-height: 768px) and (orientation: landscape) {
+  .oneColumnlayout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr auto;
+    padding: 0 2.4rem;
+    align-content: center;
+  }
+
   .twoColumnlayout {
     display: grid;
     grid-template-columns: 55% 45%;
     grid-template-rows: 1fr 4fr 4fr;
-    padding: 0 3.2rem;
+    padding: 0 2.4rem;
     column-gap: 3.6rem;
     width: 100%;
   }
@@ -85,6 +108,16 @@
     padding: 1.6rem 2.4rem;
   }
 
+  .actionBarOneCol,
+  .actionBarTwoCol,
+  .actionBarThreeCol {
+    justify-self: flex-end;
+    width: 52rem;
+  }
+  .actionBarOneCol {
+    grid-column: 2/-1;
+    grid-row: 1/2;
+  }
   .actionBarTwoCol {
     grid-column: 2/-1;
     grid-row: 1/2;

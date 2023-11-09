@@ -10,8 +10,12 @@ import card3bg from '../../images/cardBg3.png';
 import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
 import TwoColumnLayout from '../../components/Layout/TwoColumnLayout';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
+import { Link } from 'react-router-dom';
 
 const tempList = [
+  { title: 'Top 50 tamil', content: '50 tracks', background: card1bg },
+  { title: 'Weekly Hits', content: '100 tracks', background: card2bg },
+  { title: 'Tolly Hit track', content: '60 Tracks', background: card3bg },
   { title: 'Top 50 tamil', content: '50 tracks', background: card1bg },
   { title: 'Weekly Hits', content: '100 tracks', background: card2bg },
   { title: 'Tolly Hit track', content: '60 Tracks', background: card3bg },
@@ -44,22 +48,36 @@ export default function Home({ scrollRef }) {
               alt="woman listening to music"></img>
           </div>
         </Card>
-        <div className={styles['home__container']}>
+        <div className={styles['home__header_container']}>
           <p className={styles['home__subtitle']}>Playlists</p>
+          <Link
+            className={styles['home__link']}
+            to="/playlist">
+            Explore more...
+          </Link>
+        </div>
+        <div className={styles['home__container']}>
           <CardList
             className={styles['home__cardList']}
             list={tempList}
             page=""
           />
-          <div className={styles['home__container']}>
-            <p className={styles['home__subtitle']}>Trending</p>
-            {query && (
-              <CollectionResults
-                scrollRef={scrollRef}
-                query={query}
-              />
-            )}
-          </div>
+        </div>
+        <div className={styles['home__header_container']}>
+          <p className={styles['home__subtitle']}>Trending</p>
+          <Link
+            className={styles['home__link']}
+            to="/artists">
+            Explore more...
+          </Link>
+        </div>
+        <div className={styles['home__container']}>
+          {query && (
+            <CollectionResults
+              scrollRef={scrollRef}
+              query={query}
+            />
+          )}
         </div>
       </div>
 

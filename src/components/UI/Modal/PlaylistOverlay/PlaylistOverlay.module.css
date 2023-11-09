@@ -1,0 +1,126 @@
+.modal {
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  margin: 0 auto;
+  background-color: #fff;
+  max-width: 40rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+}
+.playlistForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 100%;
+}
+
+.playlistForm-photoInputContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+}
+.photo-picker-photo {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #2196f3; /* You can change the color to fit your design */
+}
+.playlistForm-photoInputContainer input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+.playlistForm_actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+.playlistForm_controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+.playlistForm_controls label {
+  align-self: flex-start;
+  font-size: var(--font-size-body);
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.6rem;
+}
+
+.playlistForm_controls input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: var(--font-size-body);
+}
+.playlistForm_actions button {
+  display: block;
+  width: 100%;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  margin: 10px 0;
+  cursor: pointer;
+  font-size: var(--font-size-body);
+  border-radius: 4px;
+}
+.playlistForm_actions div {
+  color: #2196f3;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-size: var(--font-size-body);
+  transition: color 0.3s ease-in-out;
+}
+
+.playlistForm_actions div:hover {
+  color: #0d5cad;
+}
+
+/* Updated "Cancel" link styling */
+.playlistForm_actions div.cancel-link {
+  color: #e74c3c; /* Red color for cancel */
+}
+
+.playlistForm_actions div.cancel-link:hover {
+  color: #c0392b; /* Darker red color on hover */
+}
+
+.playlistForm_actions div:hover {
+  color: #0d5cad;
+}
+.playlistForm_actions button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape) {
+  .modal {
+    max-width: 40rem;
+    max-height: 80rem;
+  }
+
+  .playlistForm_controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+}

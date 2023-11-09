@@ -22,7 +22,12 @@
   width: 100%;
   grid-row: auto;
 }
-
+.home__header_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.6rem 0;
+}
 .home__title {
   font-size: var(--font-size-h1);
   color: var(--text-color);
@@ -30,6 +35,14 @@
 
   word-wrap: break-word;
 }
+.home__link,
+.home__link a {
+  font-size: var(--font-size-body-secondary);
+  text-decoration: none;
+  color: var(--secondary-color);
+  text-wrap: nowrap;
+}
+
 .home__subtitle {
   font-size: var(--font-size-h2);
   color: var(--background-color);
@@ -60,13 +73,16 @@
   width: 100%;
   flex-direction: column;
   gap: 1.6rem;
+  text-align: left;
 }
 .home__banner_button {
   border-radius: 32px !important;
   padding: 1.2rem 0.6rem !important;
   background-color: var(--primary-color);
   color: var(--text-color);
-  width: 50%;
+  width: 80%;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
+  align-self: center;
 }
 .home__banner_container p {
   font-size: var(--font-size-body-secondary);
@@ -93,8 +109,8 @@
     display: inherit;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto;
-    grid-column: 1/2;
-    grid-row: 1/-1;
+    grid-column: 1/-1;
+    grid-row: 2/-1;
     gap: 1.6rem;
   }
   .home__rightSide {
@@ -125,7 +141,7 @@
     flex: 1 0 46%;
     grid-row: 1/2;
     padding: 2.4rem !important;
-    margin-top: 2.4rem;
+    margin-top: 5.8rem;
 
     /* Add box shadow */
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* You can adjust the shadow values as needed */
