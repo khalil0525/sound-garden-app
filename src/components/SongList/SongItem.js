@@ -1,18 +1,19 @@
-import React, { useEffect, useReducer, useState } from "react";
-import styles from "./SongItem.module.css";
-import { useAudioPlayerContext } from "../../hooks/useAudioPlayerContext";
-import { useFirestore } from "../../hooks/useFirestore";
-import { useCloudStorage } from "../../hooks/useCloudStorage";
-import AudioSeekControlBar from "../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar";
-import pauseIcon from "../../images/pause-svgrepo-com.svg";
-import playIcon from "../../images/Arrow_drop_right.svg";
-import downloadIcon from "../../images/Download.svg";
-import placeholderImage from "../../images/blank_image_placeholder.svg";
-import editIcon from "../../images/pencil_solid.svg";
-import deleteIcon from "../../images/trash_solid.svg";
-import { ReactComponent as HeartIcon } from "../../images/Heart_greyfill.svg";
-import Modal from "../UI/Modal/Modal";
-import Button from "../UI/Button/Button";
+import React, { useEffect, useReducer, useState } from 'react';
+import styles from './SongItem.module.css';
+import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
+import { useFirestore } from '../../hooks/useFirestore';
+import { useCloudStorage } from '../../hooks/useCloudStorage';
+import AudioSeekControlBar from '../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar';
+import pauseIcon from '../../images/pause-svgrepo-com.svg';
+import playIcon from '../../images/Arrow_drop_right.svg';
+import downloadIcon from '../../images/Download.svg';
+import placeholderImage from '../../images/blank_image_placeholder.svg';
+import editIcon from '../../images/pencil_solid.svg';
+import deleteIcon from '../../images/trash_solid.svg';
+import { ReactComponent as HeartIcon } from '../../images/Heart_greyfill.svg';
+import Modal from '../UI/Modal/Modal';
+import Button from '../UI/Button/Button';
+import { addLike, removeLike } from '../../api/functions';
 
 let initialState = {
   playing: false,
@@ -24,23 +25,23 @@ let initialState = {
 
 const songItemReducer = (state, action) => {
   switch (action.type) {
-    case "PLAY_PAUSE_CLICK":
+    case 'PLAY_PAUSE_CLICK':
       return { ...state, playing: !state.playing };
-    case "SEEK_POSITION_CHANGE":
+    case 'SEEK_POSITION_CHANGE':
       return { ...state, played: action.payload };
-    case "SEEK_MOUSE_DOWN":
+    case 'SEEK_MOUSE_DOWN':
       return { ...state, seeking: true };
-    case "SEEK_MOUSE_UP":
+    case 'SEEK_MOUSE_UP':
       return { ...state, seeking: false };
-    case "PROGRESS_CHANGE":
+    case 'PROGRESS_CHANGE':
       return { ...state, played: action.payload };
-    case "PLAY":
+    case 'PLAY':
       return { ...state, playing: true };
-    case "PAUSE":
+    case 'PAUSE':
       return { ...state, playing: false };
-    case "SONG_MOUNTED":
+    case 'SONG_MOUNTED':
       return { ...state, isMounted: true, played: 0 };
-    case "SONG_DISMOUNTED":
+    case 'SONG_DISMOUNTED':
       return { ...state, isMounted: false, played: 0, playing: false };
     default:
       return { ...state };
@@ -54,14 +55,17 @@ const SongItem = ({
   songIndex,
   liked,
   user,
+  songId = null,
   showSongItemFooter = true,
 }) => {
   const [songItemState, dispatchSongItemState] = useReducer(
     songItemReducer,
     initialState
   );
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isProcessingLike, setIsProcessingLike] = useState(false);
   // const [edited, setEdited] = useState(false);
   const { playing, isMounted, played, seeking } = songItemState;
   const {
@@ -75,18 +79,11 @@ const SongItem = ({
 
   // New like system
 
-  const {
-    updateDocument: updateLikedDocument,
-    response: firestoreLikedDocumentResponse,
-  } = useFirestore("likes");
-
   // We set the inital state for isLiked based on if that document was found
-  const [isLiked, setIsLiked] = useState(() =>
-    user.uid ? liked.includes(song.docID) : false
-  );
+  const [isLiked, setIsLiked] = useState(() => liked);
 
   // These 2 hooks are used to delete a song document/files
-  const { deleteDocument: deleteSongDocument } = useFirestore("music");
+  const { deleteDocument: deleteSongDocument } = useFirestore('music');
 
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
   //***********************************************************
@@ -104,41 +101,41 @@ const SongItem = ({
       //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
-          type: "PLAYLIST_INDEX_CHANGE",
+          type: 'PLAYLIST_INDEX_CHANGE',
           payload: songIndex,
         });
       } else {
         dispatchAudioPlayerContext({
-          type: "PLAYLIST_CHANGE",
+          type: 'PLAYLIST_CHANGE',
           payload: { playlistSongs, songIndex, songPlaylistLocation },
         });
       }
     } //else it's paused
     else if (playing) {
-      dispatchSongItemState({ type: "PAUSE" });
-      dispatchAudioPlayerContext({ type: "SONG_PAUSED" });
+      dispatchSongItemState({ type: 'PAUSE' });
+      dispatchAudioPlayerContext({ type: 'SONG_PAUSED' });
     } else {
-      dispatchSongItemState({ type: "PLAY" });
-      dispatchAudioPlayerContext({ type: "SONG_PLAYED" });
+      dispatchSongItemState({ type: 'PLAY' });
+      dispatchAudioPlayerContext({ type: 'SONG_PLAYED' });
     }
-    dispatchSongItemState({ type: "PLAY_PAUSE_CLICK" });
+    dispatchSongItemState({ type: 'PLAY_PAUSE_CLICK' });
     // setIsPlaying((prevState) => !prevState);
   };
 
   const handleSongDownloadClick = () => {
     const xhr = new XMLHttpRequest();
-    xhr.responseType = "blob";
+    xhr.responseType = 'blob';
     xhr.onload = (event) => {
-      let a = document.createElement("a");
+      let a = document.createElement('a');
       a.href = window.URL.createObjectURL(xhr.response);
 
       a.download =
-        song.songFilePath.split("_")[song.songFilePath.split("_").length - 1]; // Name the file anything you'd like.
-      a.style.display = "none";
+        song.songFilePath.split('_')[song.songFilePath.split('_').length - 1]; // Name the file anything you'd like.
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
     };
-    xhr.open("GET", song.songURL);
+    xhr.open('GET', song.songURL);
     xhr.send();
     // Or inserted into an <img> element
     // const img = document.getElementById("myimg");
@@ -153,35 +150,36 @@ const SongItem = ({
     deleteSongFiles(song);
   };
 
-  const handleLikeClick = () => {
-    if (user.uid) {
-      setIsLiked((prevState) => !prevState);
-      let newState;
-      if (!isLiked) {
-        newState = { likes: [...liked, song.docID] };
-        updateLikedDocument(user.uid, newState);
-      } else {
-        newState = { likes: liked.filter((like) => like !== song.docID) };
-        updateLikedDocument(user.uid, newState);
-      }
-    }
-  };
+  // const handleLikeClick = () => {
+
+  //   // if (user.uid) {
+  //   //   setIsLiked((prevState) => !prevState);
+  //   //   let newState;
+  //   //   if (!isLiked) {
+  //   //     newState = { likes: [...liked, song.docID] };
+  //   //     updateLikedDocument(user.uid, newState);
+  //   //   } else {
+  //   //     newState = { likes: liked.filter((like) => like !== song.docID) };
+  //   //     updateLikedDocument(user.uid, newState);
+  //   //   }
+  //   // }
+  // };
 
   const handleSeekMouseDown = () => {
     if (isMounted) {
-      dispatchAudioPlayerContext({ type: "SEEK_MOUSE_DOWN_FROM_SONG_ITEM" });
-      dispatchSongItemState({ type: "SEEK_MOUSE_DOWN" });
+      dispatchAudioPlayerContext({ type: 'SEEK_MOUSE_DOWN_FROM_SONG_ITEM' });
+      dispatchSongItemState({ type: 'SEEK_MOUSE_DOWN' });
     }
   };
 
   const handleSeekChange = (event) => {
     if (isMounted) {
       dispatchAudioPlayerContext({
-        type: "SEEK_CHANGE_FROM_SONG_ITEM",
+        type: 'SEEK_CHANGE_FROM_SONG_ITEM',
         payload: parseFloat(event.target.value),
       });
       dispatchSongItemState({
-        type: "SEEK_POSITION_CHANGE",
+        type: 'SEEK_POSITION_CHANGE',
         payload: parseFloat(event.target.value),
       });
     }
@@ -190,20 +188,38 @@ const SongItem = ({
   const handleSeekMouseUp = (event) => {
     if (isMounted) {
       dispatchAudioPlayerContext({
-        type: "SEEK_MOUSE_UP_FROM_SONG_ITEM",
+        type: 'SEEK_MOUSE_UP_FROM_SONG_ITEM',
         payload: event.target.value,
       });
-      dispatchSongItemState({ type: "SEEK_MOUSE_UP" });
+      dispatchSongItemState({ type: 'SEEK_MOUSE_UP' });
     }
   };
+
+  async function handleLikeClick() {
+    setIsProcessingLike(true);
+    try {
+      const { data } = isLiked
+        ? await removeLike({ songId: songId })
+        : await addLike({ songId: songId });
+
+      if (data.success) {
+        setIsLiked((prevState) => !prevState);
+      }
+      setIsProcessingLike(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsProcessingLike(false);
+    }
+  }
+
   // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT
   // IS AT.
   // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
   useEffect(() => {
     if (loadedSongURL === song.songURL && !isMounted) {
-      dispatchSongItemState({ type: "SONG_MOUNTED" });
+      dispatchSongItemState({ type: 'SONG_MOUNTED' });
     } else if (loadedSongURL !== song.songURL && isMounted) {
-      dispatchSongItemState({ type: "SONG_DISMOUNTED" });
+      dispatchSongItemState({ type: 'SONG_DISMOUNTED' });
     }
   }, [loadedSongURL, song.songURL, isMounted, song.title]);
 
@@ -211,7 +227,7 @@ const SongItem = ({
   useEffect(() => {
     if (isSongPlaying && isMounted && !seeking) {
       dispatchSongItemState({
-        type: "PROGRESS_CHANGE",
+        type: 'PROGRESS_CHANGE',
         payload: currentSongPlayedTime,
       });
     }
@@ -225,7 +241,7 @@ const SongItem = ({
     if ((!isSongPlaying || !isMounted) && playing) {
       // if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
 
-      dispatchSongItemState({ type: "PAUSE" });
+      dispatchSongItemState({ type: 'PAUSE' });
       // setIsPlaying(false);
     }
     //Otherwise, if globally a song is playing and the URL is this songs
@@ -233,7 +249,7 @@ const SongItem = ({
     else if (isSongPlaying && isMounted && !playing) {
       // else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
 
-      dispatchSongItemState({ type: "PLAY" });
+      dispatchSongItemState({ type: 'PLAY' });
       // setIsPlaying(true);
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
@@ -245,7 +261,7 @@ const SongItem = ({
       JSON.stringify(playlist) !== JSON.stringify(playlistSongs)
     ) {
       dispatchAudioPlayerContext({
-        type: "SONG_EDITED_IN_PLAYLIST",
+        type: 'SONG_EDITED_IN_PLAYLIST',
         payload: playlistSongs,
       });
     }
@@ -262,7 +278,7 @@ const SongItem = ({
     if (cloudStorageResponse.success) {
       deleteSongDocument(song.docID);
       dispatchAudioPlayerContext({
-        type: "SONG_DELETED_FROM_PLAYLIST",
+        type: 'SONG_DELETED_FROM_PLAYLIST',
         payload: song.docID,
       });
     }
@@ -274,35 +290,35 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={styles["songItem"]}>
-      <div className={styles["songItem__header"]}>
-        <div className={styles["songItem__titleContainer"]}>
+    <li className={styles['songItem']}>
+      <div className={styles['songItem__header']}>
+        <div className={styles['songItem__titleContainer']}>
           <Button
-            className={`${styles["titleContainer__playBtn"]} `}
+            className={`${styles['titleContainer__playBtn']} `}
             onClick={handlePlayPauseClick}
             iconImage={playing ? pauseIcon : playIcon}
             altText={
-              playing ? "Song pause button icon" : "Song play button icon"
+              playing ? 'Song pause button icon' : 'Song play button icon'
             }
           />
 
-          <div className={styles["titleContainer__songTitle"]}>
-            <span className={styles["titleContainer__songTitle-artist"]}>
+          <div className={styles['titleContainer__songTitle']}>
+            <span className={styles['titleContainer__songTitle-artist']}>
               {song.artist}
             </span>
-            <span className={styles["titleContainer__songTitle-title"]}>
+            <span className={styles['titleContainer__songTitle-title']}>
               {song.title}
             </span>
           </div>
-          <div className={styles["titleContainer__additional"]}>
-            <div className={styles["titleContainer__additional-dateContainer"]}>
-              <span className={styles["titleContainer__additional-uploadDate"]}>
+          <div className={styles['titleContainer__additional']}>
+            <div className={styles['titleContainer__additional-dateContainer']}>
+              <span className={styles['titleContainer__additional-uploadDate']}>
                 {song.createdAt}
               </span>
             </div>
             <div
-              className={styles["titleContainer__additional-genreContainer"]}>
-              <span className={styles["titleContainer__additional-genre"]}>
+              className={styles['titleContainer__additional-genreContainer']}>
+              <span className={styles['titleContainer__additional-genre']}>
                 {song.genre}
               </span>
             </div>
@@ -310,8 +326,8 @@ const SongItem = ({
         </div>
       </div>
       <AudioSeekControlBar
-        className={styles["songItem__seekControl"]}
-        durationClassName={styles["songItem__duration"]}
+        className={styles['songItem__seekControl']}
+        durationClassName={styles['songItem__duration']}
         duration={song.duration}
         played={played}
         onChange={handleSeekChange}
@@ -319,14 +335,14 @@ const SongItem = ({
         onMouseUp={handleSeekMouseUp}
       />
 
-      <div className={styles["songItem__footer"]}>
-        <div className={styles["songItem__actionContainer"]}>
+      <div className={styles['songItem__footer']}>
+        <div className={styles['songItem__actionContainer']}>
           <Button
-            className={`${styles["actionContainer__btn"]} ${
-              isLiked && user.uid && styles["actionContainer-likeBtn--liked"]
+            className={`${styles['actionContainer__btn']} ${
+              isLiked && user.uid && styles['actionContainer-likeBtn--liked']
             } `}
             onClick={handleLikeClick}
-            disabled={firestoreLikedDocumentResponse.isPending}
+            disabled={isProcessingLike}
             buttonSize="small"
             iconImage={(className) => (
               <HeartIcon
@@ -337,10 +353,10 @@ const SongItem = ({
             Like
           </Button>
           <Button
-            className={styles["actionContainer__btn"]}
+            className={styles['actionContainer__btn']}
             onClick={handleSongDownloadClick}
             buttonSize="small"
-            iconClasses={styles["actionContainer_downloadBtn-icon"]}
+            iconClasses={styles['actionContainer_downloadBtn-icon']}
             iconImage={downloadIcon}
             altText="Song Download Icon">
             Download
@@ -349,21 +365,21 @@ const SongItem = ({
           {user.uid === song.userID && (
             <>
               <Button
-                className={`${styles["actionContainer__btn"]}`}
+                className={`${styles['actionContainer__btn']}`}
                 onClick={() => setIsEditing(true)}
                 disabled={isEditing}
                 buttonSize="small"
-                iconClasses={styles["actionContainer_editBtn-icon"]}
+                iconClasses={styles['actionContainer_editBtn-icon']}
                 iconImage={editIcon}
                 altText="Song Edit Icon">
                 Edit
               </Button>
               <Button
-                className={styles["actionContainer__btn"]}
+                className={styles['actionContainer__btn']}
                 onClick={() => setIsDeleting(true)}
                 disabled={isDeleting}
                 buttonSize="small"
-                iconClasses={styles["actionContainer_deleteBtn-icon"]}
+                iconClasses={styles['actionContainer_deleteBtn-icon']}
                 iconImage={deleteIcon}
                 altText="Song Delete Icon">
                 Delete
@@ -387,10 +403,10 @@ const SongItem = ({
           )}
         </div>
       </div>
-      <div className={styles["songItem__aside"]}>
-        <div className={styles["songItem__songPhotoContainer"]}>
+      <div className={styles['songItem__aside']}>
+        <div className={styles['songItem__songPhotoContainer']}>
           <img
-            className={styles["songPhotoContainer-img"]}
+            className={styles['songPhotoContainer-img']}
             src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
             alt="Song Cover Art"
           />

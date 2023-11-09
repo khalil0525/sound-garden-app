@@ -1,18 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import styles from "./SongList.module.css";
-import SongItem from "./SongItem";
-import { useCollection } from "../../hooks/useCollection";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useEffect, useState, useRef } from 'react';
+import styles from './SongList.module.css';
+import SongItem from './SongItem';
+import { useCollection } from '../../hooks/useCollection';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 //We receive a song prop from whichever parent component calls this
 const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
-  //New Like system
-  const { documents: likedSongDocuments } = useCollection("likes", [
-    "__name__",
-    "==",
-    user.uid ? user.uid : "none",
-  ]);
-
   const [count, setCount] = useState({
     prev: 0,
     next: 4,
@@ -44,26 +37,24 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   }, [songs, count.next]);
 
   return (
-    <div className={`${styles["songList"]} ${className} `}>
+    <div className={`${styles['songList']} ${className} `}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={styles["songList__list"]}
+        className={styles['songList__list']}
         scrollableTarget={scrollRef.current}>
         {/* <ul > */}
         {current?.length &&
-          likedSongDocuments &&
           current.map((song, index) => (
             <SongItem
               song={song}
               key={song.docID}
               playlistSongs={songs}
               songIndex={index}
-              liked={
-                user.uid && likedSongDocuments && likedSongDocuments[0].likes
-              }
+              songId={song.docID}
+              liked={song?.likes?.some((like) => like.id === user.id || false)}
               songPlaylistLocation={playlistLocation}
               user={user}
             />

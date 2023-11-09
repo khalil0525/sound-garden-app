@@ -10,6 +10,7 @@ import card3bg from '../../images/cardBg3.png';
 import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
 import TwoColumnLayout from '../../components/Layout/TwoColumnLayout';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
+
 const tempList = [
   { title: 'Top 50 tamil', content: '50 tracks', background: card1bg },
   { title: 'Weekly Hits', content: '100 tracks', background: card2bg },

@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./DeleteSongOverlay.module.css";
+import React from 'react';
+import styles from './DeleteSongOverlay.module.css';
 const DeleteSongOverlay = (props) => {
   return (
     <div className={styles.modal}>
@@ -14,9 +14,8 @@ const DeleteSongOverlay = (props) => {
       </div>
       <footer className={styles.actions}>
         <button
-          style={{ border: "none", background: "none" }}
-          onClick={props.onCancel}
-        >
+          style={{ border: 'none', background: 'red' }}
+          onClick={props.onCancel}>
           Cancel
         </button>
         <button onClick={props.onConfirm}>Delete Forever</button>

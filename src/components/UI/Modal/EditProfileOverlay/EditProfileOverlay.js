@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useReducer } from "react";
-import { useCloudStorage } from "../../../../hooks/useCloudStorage";
-import { useFirestore } from "../../../../hooks/useFirestore";
-import styles from "./EditProfileOverlay.module.css";
+import React, { useEffect, useRef, useReducer } from 'react';
+import { useCloudStorage } from '../../../../hooks/useCloudStorage';
+import { useFirestore } from '../../../../hooks/useFirestore';
+import styles from './EditProfileOverlay.module.css';
 
-import placeholderImage from "../../../../images/blank_image_placeholder.svg";
-import { useAuthContext } from "../../../../hooks/useAuthContext";
+import placeholderImage from '../../../../images/blank_image_placeholder.svg';
+import { useAuthContext } from '../../../../hooks/useAuthContext';
 //    profileURLChanged: false,
 // displayNameChanged: false,
 // firstNameChanged: false,
 // lastNameChanged: false,
 const editProfileOverlayReducer = (state, action) => {
   switch (action.type) {
-    case "PHOTO_FILE_CHANGED":
+    case 'PHOTO_FILE_CHANGED':
       return {
         ...state,
         profilePhotoFile: action.payload,
@@ -23,7 +23,7 @@ const editProfileOverlayReducer = (state, action) => {
           state.displayNameValid &&
           state.profileURLValid,
       };
-    case "FIRST_NAME_CHANGE":
+    case 'FIRST_NAME_CHANGE':
       let trimmedFirstName = action.payload.trimStart().trimEnd();
       return {
         ...state,
@@ -43,7 +43,7 @@ const editProfileOverlayReducer = (state, action) => {
           state.displayNameValid &&
           state.profileURLValid,
       };
-    case "LAST_NAME_CHANGE":
+    case 'LAST_NAME_CHANGE':
       let trimmedLastName = action.payload.trimStart().trimEnd();
       return {
         ...state,
@@ -63,7 +63,7 @@ const editProfileOverlayReducer = (state, action) => {
           state.displayNameValid &&
           state.profileURLValid,
       };
-    case "DISPLAY_NAME_CHANGE":
+    case 'DISPLAY_NAME_CHANGE':
       let trimmedDisplayName = action.payload.trimStart().trimEnd();
       return {
         ...state,
@@ -85,7 +85,7 @@ const editProfileOverlayReducer = (state, action) => {
           state.firstNameValid &&
           state.profileURLValid,
       };
-    case "PROFILE_URL_CHANGE":
+    case 'PROFILE_URL_CHANGE':
       let trimmedProfileURL = action.payload.trimStart().trimEnd();
       return {
         ...state,
@@ -121,7 +121,7 @@ const EditProfileOverlay = (props) => {
     profileURL: props.userInformation.profileURL,
     profilePhotoFileURL: props.userInformation.profilePhotoURL
       ? props.userInformation.profilePhotoURL
-      : "",
+      : '',
     profilePhotoFile: null,
     formIsValid: true,
     editSaveReady: false,
@@ -172,44 +172,41 @@ const EditProfileOverlay = (props) => {
   const {
     updateDocument: updateUserDocument,
     response: firestoreUserResponse,
-  } = useFirestore("users");
-  // const {
-  //   updateMultipleDocuments: updateSongDocuments,
-  //   response: firestoreSongsResponse,
-  // } = useFirestore("music");
+  } = useFirestore('users');
+
   const handleProfilePhotoFileChange = (event) => {
-    if (event.target.files[0].type.split("/")[0] === "image") {
+    if (event.target.files[0].type.split('/')[0] === 'image') {
       dispatchEditProfileState({
-        type: "PHOTO_FILE_CHANGED",
+        type: 'PHOTO_FILE_CHANGED',
         payload: event.target.files[0],
       });
     } else {
-      event.target.value = "";
+      event.target.value = '';
     }
   };
 
   const handleFirstNameChange = (event) => {
     dispatchEditProfileState({
-      type: "FIRST_NAME_CHANGE",
+      type: 'FIRST_NAME_CHANGE',
       payload: event.target.value,
     });
   };
 
   const handleLastNameChange = (event) => {
     dispatchEditProfileState({
-      type: "LAST_NAME_CHANGE",
+      type: 'LAST_NAME_CHANGE',
       payload: event.target.value,
     });
   };
   const handleDisplayNameChange = (event) => {
     dispatchEditProfileState({
-      type: "DISPLAY_NAME_CHANGE",
+      type: 'DISPLAY_NAME_CHANGE',
       payload: event.target.value,
     });
   };
   const handleProfileURLChange = (event) => {
     dispatchEditProfileState({
-      type: "PROFILE_URL_CHANGE",
+      type: 'PROFILE_URL_CHANGE',
       payload: event.target.value,
     });
   };
@@ -238,44 +235,6 @@ const EditProfileOverlay = (props) => {
     }
   }, [firestoreUserResponse.success]);
 
-  // This useEffect handles changing the artist name on all of a users songs when they change their display name
-  // useEffect(() => {
-  //   if (
-  //     displayNameChanged &&
-  //     firestoreUserResponse.success &&
-  //     !firestoreSongsResponse.success &&
-  //     !firestoreSongsResponse.isPending
-  //   ) {
-  //     let newArtistName = { artist: displayName.trimStart().trimEnd() };
-  //     updateSongDocuments("userID", user.uid, newArtistName);
-  //   }
-  // }, [
-  //   displayNameChanged,
-  //   updateSongDocuments,
-  //   displayName,
-  //   user.uid,
-  //   firestoreUserResponse.success,
-  //   firestoreSongsResponse.success,
-  //   firestoreSongsResponse.isPending,
-  // ]);
-  // This handles exiting the change menu when everything has successfully completed
-  // if (
-  //   (displayNameChanged &&
-  //     profilePhotoFile === null &&
-  //     firestoreSongsResponse.success &&
-  //     firestoreUserResponse.success) ||
-  //   (!displayNameChanged &&
-  //     profilePhotoFile === null &&
-  //     firestoreUserResponse.success) ||
-  //   (displayNameChanged &&
-  //     profilePhotoFile !== null &&
-  //     firestoreSongsResponse.success &&
-  //     firestoreUserResponse.success &&
-  //     cloudStorageResponse.success) ||
-  //   (!displayNameChanged &&
-  //     profilePhotoFile !== null &&
-  //     firestoreUserResponse.success &&
-  //     cloudStorageResponse.success)
   useEffect(() => {
     if (
       (profilePhotoFile === null && firestoreUserResponse.success) ||
@@ -290,7 +249,7 @@ const EditProfileOverlay = (props) => {
         firestoreUserResponse.success &&
         cloudStorageResponse.success)
     ) {
-      dispatchToAuthContext({ type: "REFRESH_AUTH_INFORMATION" });
+      dispatchToAuthContext({ type: 'REFRESH_AUTH_INFORMATION' });
       props.onConfirm();
     }
   }, [
@@ -303,22 +262,7 @@ const EditProfileOverlay = (props) => {
     dispatchToAuthContext,
   ]);
 
-  // This handles uploading a users photo to the cloud storage
   useEffect(() => {
-    //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
-    // if (
-    //   (!displayNameChanged &&
-    //     profilePhotoFile !== null &&
-    //     firestoreUserResponse.success &&
-    //     !cloudStorageResponse.isPending &&
-    //     !cloudStorageResponse.success) ||
-    //   (displayNameChanged &&
-    //     profilePhotoFile !== null &&
-    //     firestoreUserResponse.success &&
-    //     firestoreSongsResponse.success &&
-    //     !cloudStorageResponse.isPending &&
-    //     !cloudStorageResponse.success)
-    // ) {
     if (
       (!displayNameChanged &&
         profilePhotoFile !== null &&
@@ -331,13 +275,13 @@ const EditProfileOverlay = (props) => {
         !cloudStorageResponse.success)
     ) {
       //If the song previously didn't have a photo
-      if (props.userInformation.profilePhotoURL === "") {
+      if (props.userInformation.profilePhotoURL === '') {
         addFile(
           firestoreUserResponse.document,
-          "/images",
+          '/images',
           user,
           profilePhotoFile,
-          "profilePhoto"
+          'profilePhoto'
         );
       } else {
         //If the song previously had a photo
@@ -345,7 +289,7 @@ const EditProfileOverlay = (props) => {
           firestoreUserResponse.document,
           props.userInformation.profilePhotoFilePath,
           profilePhotoFile,
-          "profilePhoto",
+          'profilePhoto',
           user
         );
       }
@@ -366,27 +310,26 @@ const EditProfileOverlay = (props) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles["upload-container"]}>
-        <div className={styles["upload-form"]}>
-          <div className={styles["photo-picker"]}>
-            <img
-              className={styles["photo-picker-photo"]}
-              src={profilePhotoFileURL ? profilePhotoFileURL : placeholderImage}
-              alt="Song Cover Art"
-              width="160"
-              height="160"
-            />
-            {/* */}
-            <input
-              type="file"
-              disabled={cloudStorageResponse.isPending}
-              onChange={handleProfilePhotoFileChange}
-              accept="image/*"
-            />
-          </div>
+      <div className={styles['editProfileForm']}>
+        <div className={styles['editProfileForm-photoInputContainer']}>
+          <img
+            className={styles['photo-picker-photo']}
+            src={profilePhotoFileURL ? profilePhotoFileURL : placeholderImage}
+            alt="Song Cover Art"
+            width="160"
+            height="160"
+          />
 
+          <input
+            type="file"
+            disabled={cloudStorageResponse.isPending}
+            onChange={handleProfilePhotoFileChange}
+            accept="image/*"
+          />
+        </div>
+        <div className={styles['editProfileForm_controls']}>
           <label htmlFor="display-name">Display Name:</label>
-          {/*  */}
+
           <input
             type="text"
             id="display-name"
@@ -399,7 +342,7 @@ const EditProfileOverlay = (props) => {
           ) : null}
 
           <label htmlFor="profile-url">Profile URL :</label>
-          {/*  */}
+
           <input
             type="text"
             id="profile-url"
@@ -445,19 +388,18 @@ const EditProfileOverlay = (props) => {
           {lastNameChanged && !lastNameValid ? (
             <p>Your last name must be shorter than 35 characters! </p>
           ) : null}
-          {/* */}
-          {!cloudStorageResponse.isPending && !cloudStorageResponse.success && (
-            <div className={styles["action-container"]}>
-              <div onClick={props.onCancel}>Cancel</div>
-              {/*  */}
-              <button
-                onClick={handleProfileUpdate}
-                disabled={!editSaveReady}>
-                Save Changes
-              </button>
-            </div>
-          )}
         </div>
+        {!cloudStorageResponse.isPending && !cloudStorageResponse.success && (
+          <div className={styles['editProfileForm_actions']}>
+            <div onClick={props.onCancel}>Cancel</div>
+            {/*  */}
+            <button
+              onClick={handleProfileUpdate}
+              disabled={!editSaveReady}>
+              Save Changes
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

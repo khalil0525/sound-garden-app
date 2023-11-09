@@ -1,16 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
-import styles from "./MiniSongList.module.css";
-import SongItem from "./MiniSongItem";
-import { useCollection } from "../../hooks/useCollection";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useEffect, useState, useRef } from 'react';
+import styles from './MiniSongList.module.css';
+import SongItem from './MiniSongItem';
+import { useCollection } from '../../hooks/useCollection';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 //We receive a song prop from whichever parent component calls this
-const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
+const MiniSongList = ({
+  songs,
+  user,
+  className,
+  playlistLocation,
+  scrollRef,
+}) => {
   //New Like system
-  const { documents: likedSongDocuments } = useCollection("likes", [
-    "__name__",
-    "==",
-    user.uid ? user.uid : "none",
+  const { documents: likedSongDocuments } = useCollection('likes', [
+    '__name__',
+    '==',
+    user.uid ? user.uid : 'none',
   ]);
 
   const [count, setCount] = useState({
@@ -41,16 +47,16 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
       setCurrent(songs.slice(0, count.next));
     }
   }, [songs, count.next]);
-
+  console.log(songs);
   return (
-    <div className={`${styles["songList"]} ${className} `}>
+    <div className={`${styles['songList']} ${className} `}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={styles["songList__list"]}
-        style={{ width: "100%" }}
+        className={styles['songList__list']}
+        style={{ width: '100%' }}
         scrollableTarget={scrollRef.current}>
         {current &&
           likedSongDocuments &&
@@ -60,9 +66,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
               key={song.docID}
               playlistSongs={songs}
               songIndex={index}
-              liked={
-                user.uid && likedSongDocuments && likedSongDocuments[0].likes
-              }
+              liked={song?.likes?.some((like) => like.id === user.id || false)}
               songPlaylistLocation={playlistLocation}
               user={user}
             />
@@ -72,4 +76,4 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   );
 };
 
-export default SongList;
+export default MiniSongList;

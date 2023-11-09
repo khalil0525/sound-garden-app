@@ -1,12 +1,16 @@
 .modal {
-  position: fixed;
-  top: 30vh;
-  left: 10%;
-  width: 80%;
+  position: absolute;
+  top: 40vh;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  margin: 0 auto;
+  width: 30%;
   z-index: 100;
   overflow: hidden;
   border-radius: 18px;
   background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header {
@@ -21,7 +25,7 @@
 
 .content {
   padding: 1rem;
-  font-size: var(--font-size-body);
+  font-size: 16px; /* Adjust this size as needed */
 }
 
 .actions {
@@ -32,9 +36,22 @@
   margin-right: 0.8rem;
 }
 
-@media (min-width: 768px) {
-  .modal {
-    left: calc(50% - 20rem);
-    width: 40rem;
-  }
+.actions button {
+  display: block;
+  width: 150px; /* Adjust the width as needed */
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.actions button.cancel-button {
+  background-color: #e74c3c;
+}
+
+.actions button.cancel-button:hover {
+  background-color: #c0392b;
 }

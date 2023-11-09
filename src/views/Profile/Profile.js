@@ -2,56 +2,93 @@ import styles from './Profile.module.css';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import editIcon from '../../images/pencil_solid.svg';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
-import { useCollection } from '../../hooks/useCollection';
+// import { useCollection } from '../../hooks/useCollection';
 
 import Button from '../../components/UI/Button/Button';
 import { useParams } from 'react-router-dom';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import OneColumnLayout from '../../components/Layout/OneColumnLayout';
-
+import { getSongs, getUserProfile } from '../../api/functions';
 export default function Profile({ scrollRef }) {
+  const [profile, setProfile] = useState(null);
+  // const [profileSongs, setProfileSongs] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   // const [isEditingHeader, setIsEditingHeader] = useState(false);
   const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
-
+  const [isFetchedSongs, setIsFetchedSongs] = useState(false);
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
 
   // const location = useLocation();
   const params = useParams();
   const URL = params.profileURL;
-
-  const { documents: profileDocuments } = useCollection('users', [
-    'profileURL',
-    '==',
-    URL,
-  ]);
-
+  console.log(URL);
+  // const { documents: profileDocuments, error: perror } = useCollection('usrs', [
+  //   'profileURL',
+  //   '==',
+  //   URL,
+  // ]);
+  // // console.log(profileDocuments && profileDocuments.length);
   const query =
-    profileDocuments && profileDocuments.length
-      ? ['music', ['userID', '==', profileDocuments[0].userID]]
+    profile && profile.userID
+      ? ['music', ['userID', '==', profile.userID]]
       : null;
+
   const handleEditProfile = () => {
     setIsEditingProfile(false);
   };
   // const handleEditHeader = () => {
   // 	setIsEditingHeader(false);
   // };
+  const getProfile = async () => {
+    try {
+      const { data } = await getUserProfile({ profileURL: URL });
+
+      console.log(data);
+      setProfile({ ...data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const getProfileSongs = useCallback(async () => {
+  //   try {
+  //     const { data } = await getSongs({
+  //       where: { field: 'userID', operator: '==', value: profile.userID },
+  //     });
+
+  //     console.log(data);
+  //     setProfileSongs({ ...data });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [profile]);
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  // useEffect(() => {
+  //   if (profile && profile?.userID && !isFetchedSongs) {
+  //     getProfileSongs();
+  //     setIsFetchedSongs(true);
+  //   }
+  // }, [profile, getProfileSongs, isFetchedSongs]);
 
   return (
     <OneColumnLayout user={user}>
-      {profileDocuments && profileDocuments.length ? (
+      {profile !== null ? (
         <div className={styles['profile__content']}>
           <div className={styles['profile__headerContainer']}>
             <div className={styles['profile__header']}>
               <div className={styles['profile__header-imgContainer']}>
                 <img
                   src={
-                    profileDocuments[0].profilePhotoURL
-                      ? profileDocuments[0].profilePhotoURL
+                    profile.profilePhotoURL
+                      ? profile.profilePhotoURL
                       : placeholderImage
                   }
                   alt="User profile"
@@ -60,14 +97,11 @@ export default function Profile({ scrollRef }) {
               <div className={styles['profile__header-content']}>
                 <div className={styles['profile__header-textContainer']}>
                   <h2 className={styles['profile__header-displayName']}>
-                    {profileDocuments[0].displayName}
+                    {profile.displayName}
                   </h2>
-                  {profileDocuments[0].firstName ||
-                  profileDocuments[0].lastName ? (
+                  {profile.firstName || profile.lastName ? (
                     <h3 className={styles['profile__header-firstLastName']}>
-                      {profileDocuments[0].firstName +
-                        ' ' +
-                        profileDocuments[0].lastName}
+                      {profile.firstName + ' ' + profile.lastName}
                     </h3>
                   ) : null}
                 </div>
@@ -100,21 +134,19 @@ export default function Profile({ scrollRef }) {
           <div className={styles['profile__profileActions']}>
             {/* Logout button temp */}
             {/* Logout button should only show when the :ProfileURL belongs to */}
-            {profileDocuments &&
+            {profile && user && user.uid === profile.userID && (
+              <Button
+                onClick={() => setIsEditingProfile(true)}
+                disabled={isEditingProfile}
+                buttonSize="large"
+                iconImage={editIcon}
+                altText="Profile edit Icon">
+                Edit
+              </Button>
+            )}
+            {profile &&
               user &&
-              user.uid === profileDocuments[0].userID && (
-                <Button
-                  onClick={() => setIsEditingProfile(true)}
-                  disabled={isEditingProfile}
-                  buttonSize="large"
-                  iconImage={editIcon}
-                  altText="Profile edit Icon">
-                  Edit
-                </Button>
-              )}
-            {profileDocuments &&
-              user &&
-              user.uid === profileDocuments[0].userID &&
+              user.uid === profile.userID &&
               (!isPending ? (
                 <Button
                   onClick={logout}
@@ -130,7 +162,7 @@ export default function Profile({ scrollRef }) {
               ))}
             {error && <p>{error}</p>}
           </div>
-          {profileDocuments && query && (
+          {profile && query && (
             <CollectionResults
               scrollRef={scrollRef}
               query={query}
@@ -147,7 +179,7 @@ export default function Profile({ scrollRef }) {
       {isEditingProfile && (
         <Modal
           action="editProfileInformation"
-          userInformation={profileDocuments[0]}
+          userInformation={profile}
           onConfirm={handleEditProfile}
           onCancel={() => setIsEditingProfile(false)}
         />
