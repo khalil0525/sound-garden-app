@@ -8,14 +8,11 @@ import { AudioPlayerContextProvider } from './context/AudioPlayerContext';
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    {/* Custom context provider component */}
-    <AudioPlayerContextProvider>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
-    </AudioPlayerContextProvider>
-  </React.StrictMode>
+  <AudioPlayerContextProvider>
+    <AuthContextProvider>
+      <App />
+    </AuthContextProvider>
+  </AudioPlayerContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
