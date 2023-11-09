@@ -25,7 +25,7 @@
 
 .content {
   padding: 1rem;
-  font-size: 16px; /* Adjust this size as needed */
+  font-size: var(--font-size-body);
 }
 
 .actions {
@@ -44,7 +44,7 @@
   border: none;
   padding: 14px 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: var(--font-size-body);
   border-radius: 4px;
 }
 

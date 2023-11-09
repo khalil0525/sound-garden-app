@@ -23,7 +23,7 @@
 }
 
 .registerForm h2 {
-  font-size: 24px;
+  font-size: var(--font-size-h2);
 }
 
 .registerForm_controls {
@@ -38,7 +38,7 @@
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: var(--font-size-body);
 }
 
 .registerForm_actions {
@@ -57,7 +57,7 @@
   padding: 14px 20px;
   margin: 10px 0;
   cursor: pointer;
-  font-size: 16px;
+  font-size: var(--font-size-body);
   border-radius: 4px;
 }
 
