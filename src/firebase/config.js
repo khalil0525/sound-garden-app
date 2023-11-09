@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,6 +25,7 @@ firebase.initializeApp(firebaseConfig);
 // ********************************************
 //Object to interact with firestore
 const projectFirestore = firebase.firestore();
+
 //Object to interact with firebase auth
 const projectAuth = firebase.auth();
 //Special data property from firestore to give our documents a timestamp
