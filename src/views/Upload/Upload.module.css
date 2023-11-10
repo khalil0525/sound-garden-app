@@ -1,33 +1,35 @@
 .upload {
   display: grid;
-  grid-template-columns: 33% 33% 33%;
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr auto;
+  gap: 1rem; /* Added gap between grid items */
 }
+
 .upload__actionBar {
   display: flex;
   justify-content: flex-end;
-  grid-column: 3/-1;
+  grid-column: 3;
   grid-row: 1;
 }
+
 .upload-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   max-width: 60rem;
   margin: 10% auto;
-
   background-color: white;
-  padding: 6rem;
+  padding: 2rem; /* Reduced padding for a cleaner look */
   border: 1px rgba(128, 128, 128, 0.671) solid;
   border-radius: 6px;
-
-  grid-row: 2/-1;
-  grid-column: 1/-1;
-  margin: 0 auto;
 }
+
 .file-picker {
   display: flex;
   justify-content: center;
+  margin-bottom: 1rem; /* Added margin for separation */
 }
+
 .photo-picker {
   display: flex;
   flex-direction: column;
@@ -36,12 +38,13 @@
 }
 
 .upload-form {
-  width: 50rem;
-
+  max-width: 50rem; /* Changed width to max-width for responsiveness */
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
 .action-container {
   display: flex;
   justify-content: flex-end;

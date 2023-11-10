@@ -12,12 +12,13 @@ import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import OneColumnLayout from '../../components/Layout/OneColumnLayout';
 import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
+import Skeleton from 'react-loading-skeleton';
 export default function Profile({ scrollRef }) {
   const [profile, setProfile] = useState(null);
   // const [profileSongs, setProfileSongs] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   // const [isEditingPlaylist, setIsEditingPlaylist] = useState(false);
-  // const [isEditingHeader, setIsEditingHeader] = useState(false);
+  const [isEditingHeader, setIsEditingHeader] = useState(false);
   const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
   const [isProcessingFollow, setIsProcessingFollow] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null);
@@ -83,9 +84,9 @@ export default function Profile({ scrollRef }) {
     const getProfile = async () => {
       try {
         const { data } = await getUserProfile({ profileURL: URL });
-        if (user) {
-          setIsFollowing(data.followers.includes(user.id));
-        }
+        // if (user) {
+        //   setIsFollowing(data.followers.includes(user.id));
+        // }
         console.log(data);
         setProfile({ ...data });
       } catch (error) {
@@ -206,10 +207,13 @@ export default function Profile({ scrollRef }) {
           )}
         </div>
       ) : (
-        <div className={styles['profile__notFound']}>
-          <h1>We can’t find that user.</h1>
-          <p>Please check the extension and try again!</p>
+        <div style={{ display: 'flex', width: '2.4rem', height: '2.4rem' }}>
+          <Skeleton containerClassName="flex-1" />
         </div>
+        // <div className={styles['profile__notFound']}>
+        //   <h1>We can’t find that user.</h1>
+        //   <p>Please check the extension and try again!</p>
+        // </div>
       )}
 
       {isEditingProfile && (
