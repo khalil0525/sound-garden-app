@@ -5,14 +5,14 @@ import editIcon from '../../images/pencil_solid.svg';
 import { useEffect, useState } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
 // import { useCollection } from '../../hooks/useCollection';
-
+import Skeleton from '@mui/material/Skeleton';
 import Button from '../../components/UI/Button/Button';
 import { useParams } from 'react-router-dom';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import OneColumnLayout from '../../components/Layout/OneColumnLayout';
 import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
-import Skeleton from 'react-loading-skeleton';
+
 export default function Profile({ scrollRef }) {
   const [profile, setProfile] = useState(null);
   // const [profileSongs, setProfileSongs] = useState(null);
@@ -105,11 +105,11 @@ export default function Profile({ scrollRef }) {
 
   return (
     <OneColumnLayout user={user}>
-      {profile !== null ? (
-        <div className={styles['profile__content']}>
-          <div className={styles['profile__headerContainer']}>
-            <div className={styles['profile__header']}>
-              <div className={styles['profile__header-imgContainer']}>
+      <div className={styles['profile__content']}>
+        <div className={styles['profile__headerContainer']}>
+          <div className={styles['profile__header']}>
+            <div className={styles['profile__header-imgContainer']}>
+              {profile && profile.profilePhotoURL ? (
                 <img
                   src={
                     profile.profilePhotoURL
@@ -118,103 +118,121 @@ export default function Profile({ scrollRef }) {
                   }
                   alt="User profile"
                 />
-              </div>
-              <div className={styles['profile__header-content']}>
-                <div className={styles['profile__header-textContainer']}>
-                  <h2 className={styles['profile__header-displayName']}>
-                    {profile.displayName}
-                  </h2>
-                  {profile.firstName || profile.lastName ? (
-                    <h3 className={styles['profile__header-firstLastName']}>
-                      {profile.firstName + ' ' + profile.lastName}
-                    </h3>
-                  ) : null}
-                </div>
-                <div className={styles['profile__header-editContainer']}>
-                  <Button
-                    onFocus={() => setUpdateButtonToggled(true)}
-                    onBlur={() => setUpdateButtonToggled(false)}
-                    // disabled={isEditingHeader}
-                    buttonSize="large"
-                    // iconImage={editIcon}
-
-                    altText="Profile edit Icon"
-                    className={`${styles['editContainer-updateBtn']} ${
-                      updateButtonToggled &&
-                      styles['editContainer-updateBtn--focused']
-                    }`}>
-                    Update image
-                  </Button>
-                  {/* { ( */}
-                  {updateButtonToggled && (
-                    <ul className={styles['editContainer-menu']}>
-                      <Button buttonSize="large">Replace image</Button>
-                      <Button buttonSize="large">Delete image</Button>
-                    </ul>
+              ) : (
+                <>
+                  <Skeleton
+                    variant="circular"
+                    width={40}
+                    height={40}
+                  />
+                </>
+              )}
+            </div>
+            <div className={styles['profile__header-content']}>
+              <div className={styles['profile__header-textContainer']}>
+                <h2 className={styles['profile__header-displayName']}>
+                  {profile?.displayName || (
+                    <Skeleton
+                      variant="rectangular"
+                      width={60}
+                      height={20}
+                    />
                   )}
-                </div>
+                </h2>
+                {profile?.firstName || profile?.lastName ? (
+                  <h3 className={styles['profile__header-firstLastName']}>
+                    {profile?.firstName + ' ' + profile?.lastName}
+                  </h3>
+                ) : (
+                  <Skeleton
+                    variant="rectangular"
+                    width={60}
+                    height={20}
+                  />
+                )}
+              </div>
+              <div className={styles['profile__header-editContainer']}>
+                <Button
+                  onFocus={() => setUpdateButtonToggled(true)}
+                  onBlur={() => setUpdateButtonToggled(false)}
+                  // disabled={isEditingHeader}
+                  buttonSize="large"
+                  // iconImage={editIcon}
+
+                  altText="Profile edit Icon"
+                  className={`${styles['editContainer-updateBtn']} ${
+                    updateButtonToggled &&
+                    styles['editContainer-updateBtn--focused']
+                  }`}>
+                  Update image
+                </Button>
+                {/* { ( */}
+                {updateButtonToggled && (
+                  <ul className={styles['editContainer-menu']}>
+                    <Button buttonSize="large">Replace image</Button>
+                    <Button buttonSize="large">Delete image</Button>
+                  </ul>
+                )}
               </div>
             </div>
           </div>
-          <div className={styles['profile__profileActions']}>
-            {/* Logout button temp */}
-            {/* Logout button should only show when the :ProfileURL belongs to */}
-            {profile && user && user.id !== profile.userID && (
-              <Button
-                className={styles['profile__header_button_follow']}
-                onClick={handleFollowClick}
-                disabled={isProcessingFollow}
-                buttonSize="large">
-                {isFollowing ? 'Following' : 'Follow'}
-              </Button>
-            )}
-            {profile && user && user.uid === profile.userID && (
-              <Button
-                className={styles['profile__header_button']}
-                onClick={() => setIsEditingProfile(true)}
-                disabled={isEditingProfile}
-                buttonSize="large"
-                iconImage={editIcon}
-                altText="Profile edit Icon">
-                Edit Profile
-              </Button>
-            )}
-            {profile &&
-              user &&
-              user.uid === profile.userID &&
-              (!isPending ? (
-                <Button
-                  className={styles['profile__header_button']}
-                  onClick={logout}
-                  buttonSize="large">
-                  Logout
-                </Button>
-              ) : (
-                <Button
-                  className={styles['profile__header_button']}
-                  disabled
-                  buttonSize="large">
-                  Loading..
-                </Button>
-              ))}
-            {error && <p>{error}</p>}
-          </div>
-          {profile && query && (
-            <CollectionResults
-              scrollRef={scrollRef}
-              query={query}
+        </div>
+        <div className={styles['profile__profileActions']}>
+          {/* Logout button temp */}
+          {/* Logout button should only show when the :ProfileURL belongs to */}
+          {profile && user && user.id !== profile.userID && (
+            <Button
+              className={styles['profile__header_button_follow']}
+              onClick={handleFollowClick}
+              disabled={isProcessingFollow}
+              buttonSize="large">
+              {isFollowing ? 'Following' : 'Follow'}
+            </Button>
+          )}
+          {profile && user && user.uid === profile.userID ? (
+            <Button
+              className={styles['profile__header_button']}
+              onClick={() => setIsEditingProfile(true)}
+              disabled={isEditingProfile}
+              buttonSize="large"
+              iconImage={editIcon}
+              altText="Profile edit Icon">
+              Edit Profile
+            </Button>
+          ) : (
+            <Skeleton
+              variant="rounded"
+              width={210}
+              height={60}
             />
           )}
+          {profile &&
+            user &&
+            user.uid === profile.userID &&
+            (!isPending ? (
+              <Button
+                className={styles['profile__header_button']}
+                onClick={logout}
+                buttonSize="large">
+                Logout
+              </Button>
+            ) : (
+              <Button
+                className={styles['profile__header_button']}
+                disabled
+                buttonSize="large">
+                Loading..
+              </Button>
+            ))}
+          {error && <p>{error}</p>}
         </div>
-      ) : (
-        <div style={{ display: 'flex', width: '2.4rem', height: '2.4rem' }}>
-          <Skeleton containerClassName="flex-1" />
-        </div>
-        // <div className={styles['profile__notFound']}>
-        //   <h1>We can’t find that user.</h1>
-        //   <p>Please check the extension and try again!</p>
-        // </div>
-      )}
+        {profile && query && (
+          <CollectionResults
+            scrollRef={scrollRef}
+            query={query}
+          />
+        )}
+      </div>
 
       {isEditingProfile && (
         <Modal
@@ -234,4 +252,10 @@ export default function Profile({ scrollRef }) {
       )} */}
     </OneColumnLayout>
   );
+}
+{
+  /* <div className={styles['profile__notFound']}>
+<h1>We can’t find that user.</h1>
+<p>Please check the extension and try again!</p>
+</div> */
 }

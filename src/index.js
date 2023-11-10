@@ -4,17 +4,19 @@ import './styles/index.css';
 import App from './App';
 import { AuthContextProvider } from './context/AuthContext';
 import { AudioPlayerContextProvider } from './context/AudioPlayerContext';
+import { ThemeProvider } from '@mui/material';
+import theme from './theme';
 
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <AudioPlayerContextProvider>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </AudioPlayerContextProvider>
+  <ThemeProvider theme={theme}>
+    {' '}
+    {/* Wrap your application with ThemeProvider */}
+    <AudioPlayerContextProvider>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </AudioPlayerContextProvider>
+  </ThemeProvider> /* Close ThemeProvider */
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
