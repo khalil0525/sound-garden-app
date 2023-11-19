@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles/App.module.css';
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Home from './views/Home/Home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Genres from './views/Genres/Genres';
@@ -12,84 +12,117 @@ import Upload from './views/Upload/Upload';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import CollectionResults from './components/CollectionResults/CollectionResults';
+import { Container, Box } from '@mui/material';
+import { useTheme } from '@mui/styles';
 
 function AppRouter({ user }) {
   // Getting the context of the user to see if they're logged in
-
+  const theme = useTheme();
   const scrollableNodeRef = React.createRef();
 
   return (
     <BrowserRouter>
-      <SideNavigation className={styles.sideNavigation} />
+      <Box
+        sx={{
+          flexGrow: 1,
+          backgroundColor: '#000',
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+        }}>
+        <Grid
+          container
+          sx={{ maxWidth: '100vw', maxHeight: '100vh' }}>
+          <Grid
+            xs={3}
+            md={'30%'}
+            bgcolor="secondary">
+            <SideNavigation />
+          </Grid>
 
-      <div className={styles.page}>
-        <SimpleBar
-          autoHide={false}
-          scrollableNodeProps={{ ref: scrollableNodeRef }}
-          style={{
-            overflowX: 'hidden',
-            height: '95vh',
-            paddingTop: '20px',
-          }}>
-          <Routes>
-            <Route
-              path="/"
-              element={<Home scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/genres"
-              element={<Genres />}
-            />
-            <Route
-              path="/genres/:type"
-              element={<CollectionResults scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/artists"
-              element={<Artists />}></Route>
-            <Route
-              path="/artists/:letter"
-              element={<CollectionResults scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/liked"
-              element={
-                user ? (
-                  <Liked scrollRef={scrollableNodeRef} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/uploaded"
-              element={
-                user ? (
-                  <Uploaded scrollRef={scrollableNodeRef} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="*"
-              element={<Home scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/profile/:profileURL"
-              element={<Profile scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/search"
-              element={<CollectionResults scrollRef={scrollableNodeRef} />}
-            />
-            <Route
-              path="/upload"
-              element={user ? <Upload /> : <Navigate to="/" />}
-            />
-          </Routes>
-        </SimpleBar>
-      </div>
+          <Grid
+            xs={9}
+            md={'70%'}
+            p="1.6rem">
+            <Box
+              bgcolor={'white'}
+              maxHeight="100%"
+              borderRadius="1.6rem">
+              <SimpleBar
+                autoHide={false}
+                scrollableNodeProps={{ ref: scrollableNodeRef }}
+                style={{
+                  overflowX: 'hidden',
+                  height: '95vh',
+                  paddingTop: '20px',
+                }}>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={<Home scrollRef={scrollableNodeRef} />}
+                  />
+                  <Route
+                    path="/genres"
+                    element={<Genres />}
+                  />
+                  <Route
+                    path="/genres/:type"
+                    element={
+                      <CollectionResults scrollRef={scrollableNodeRef} />
+                    }
+                  />
+                  <Route
+                    path="/artists"
+                    element={<Artists />}></Route>
+                  <Route
+                    path="/artists/:letter"
+                    element={
+                      <CollectionResults scrollRef={scrollableNodeRef} />
+                    }
+                  />
+                  <Route
+                    path="/liked"
+                    element={
+                      user ? (
+                        <Liked scrollRef={scrollableNodeRef} />
+                      ) : (
+                        <Navigate to="/" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/uploaded"
+                    element={
+                      user ? (
+                        <Uploaded scrollRef={scrollableNodeRef} />
+                      ) : (
+                        <Navigate to="/" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={<Home scrollRef={scrollableNodeRef} />}
+                  />
+                  <Route
+                    path="/profile/:profileURL"
+                    element={<Profile scrollRef={scrollableNodeRef} />}
+                  />
+                  <Route
+                    path="/search"
+                    element={
+                      <CollectionResults scrollRef={scrollableNodeRef} />
+                    }
+                  />
+                  <Route
+                    path="/upload"
+                    element={user ? <Upload /> : <Navigate to="/" />}
+                  />
+                </Routes>
+              </SimpleBar>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </BrowserRouter>
   );
 }

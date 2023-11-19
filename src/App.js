@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styles from './styles/App.module.css';
+
 import { useAuthContext } from './hooks/useAuthContext';
 import AppRouter from './AppRouter';
 
@@ -8,9 +8,7 @@ function App() {
   const { user, authIsReady } = useAuthContext();
 
   useEffect(() => {});
-  return (
-    <div className={styles.app}>{authIsReady && <AppRouter user={user} />}</div>
-  );
+  return <div>{authIsReady && <AppRouter user={user} />}</div>;
 }
 
 export default App;

@@ -133,7 +133,6 @@ export default function Profile({ scrollRef }) {
                 <h2 className={styles['profile__header-displayName']}>
                   {profile?.displayName || (
                     <Skeleton
-                      variant="rectangular"
                       width={60}
                       height={20}
                     />
@@ -145,7 +144,7 @@ export default function Profile({ scrollRef }) {
                   </h3>
                 ) : (
                   <Skeleton
-                    variant="rectangular"
+                    variant="rounded"
                     width={60}
                     height={20}
                   />
