@@ -10,40 +10,42 @@ import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
 import card1bg from '../../images/cardBg1.png';
 import card2bg from '../../images/cardBg2.png';
 import card3bg from '../../images/cardBg3.png';
-import TwoColumnLayout from '../../components/Layout/TwoColumnLayout';
+
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
-
+import { Box } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 const useStyles = makeStyles((theme) => ({
   homeLeftSide: {
-    marginTop: '1.6rem',
+    marginTop: '16px',
     display: 'flex',
     flexDirection: 'column',
-
-    gap: '1.6rem',
+    maxWidth: '60%',
+    gap: '16px',
   },
   homeRightSide: {
     display: 'flex',
     flexDirection: 'inherit',
-    gap: '1.6rem',
+    gap: '16px',
   },
   homeContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '1.2rem',
-    marginBottom: '1.6rem',
+    gap: '12px',
+    marginBottom: '16px',
     width: '100%',
   },
   homeHeaderContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    margin: '1.6rem 0',
+    margin: '16px 0',
   },
   homeTitle: {
     fontSize: theme.typography.h3.fontSize,
+
     color: theme.palette.text.primary,
     fontWeight: 500,
     wordWrap: 'break-word',
@@ -56,37 +58,39 @@ const useStyles = makeStyles((theme) => ({
   },
   homeSubtitle: {
     fontSize: theme.typography.h4.fontSize,
-    color: theme.palette.background,
+    color: theme.palette.text.primary,
     fontWeight: 600,
     width: '70%',
   },
   homeCardList: {
     alignSelf: 'flex-start',
     justifySelf: 'flex-start',
-    marginLeft: '0.6rem',
+    marginLeft: '6px',
     width: '100%',
   },
   homeBanner: {
-    position: 'relative',
+    display: 'flex',
     width: '100%',
-    flexDirection: 'row !important',
-    justifyContent: 'flex-start !important',
-    alignItems: 'flex-start !important',
+    flexDirection: 'row',
+    borderRadius: '12px',
+    justifyContent: 'flex-start ',
+    alignItems: 'flex-start',
     maxHeight: '300px',
     flex: '1 0 46%',
     gridRow: '1/2',
-    padding: '1.6rem !important',
+    padding: '16px',
+    background: theme.palette.primary.main,
   },
   homeBannerContainer: {
     display: 'flex',
-    width: '100%',
+    width: '60%',
     flexDirection: 'column',
-    gap: '1.6rem',
+    gap: '0.4px',
     textAlign: 'left',
   },
   homeBannerButton: {
     borderRadius: '32px !important',
-    padding: '1.2rem 0.6rem !important',
+    padding: '12px 6px !important',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
     width: '80%',
@@ -95,8 +99,15 @@ const useStyles = makeStyles((theme) => ({
   },
   homeBannerImg: {
     display: 'block',
-    img: {
-      display: 'block',
+    position: 'relative',
+    width: '40%',
+    height: '100%',
+    '& img': {
+      position: 'absolute',
+      bottom: -17,
+      left: 0,
+      width: '100%',
+      height: '120%',
     },
   },
 }));
@@ -115,79 +126,77 @@ export default function Home({ scrollRef }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.homeLeftSide}>
-        <Card
-          background={null}
-          className={classes.homeBanner}>
-          <div className={classes.homeBannerContainer}>
-            <p>SoundGarden</p>
+      <Grid2
+        container
+        spacing={3}>
+        <Box className={classes.homeLeftSide}>
+          <Box className={classes.homeBanner}>
+            <Box className={classes.homeBannerContainer}>
+              <p>SoundGarden</p>
+              <Typography
+                variant="h1"
+                className={classes.homeTitle}>
+                Listen to latest trending Music all the time
+              </Typography>
+
+              <p>
+                With SoundGarden, you can get premium quality music for free
+              </p>
+              <Button
+                className={classes.homeBannerButton}
+                size="large"
+                variant="contained"
+                color="primary">
+                Listen Now
+              </Button>
+            </Box>
+            <Box className={classes.homeBannerImg}>
+              <img
+                src={womanListeningToMusicBg}
+                alt="woman listening to music"></img>
+            </Box>
+          </Box>
+          <Box className={classes.homeHeaderContainer}>
             <Typography
-              variant="h1"
-              className={classes.homeTitle}>
-              Listen to latest trending Music all the time
+              variant="h4"
+              className={classes.homeSubtitle}>
+              Playlists
             </Typography>
-            <p>
-              <Skeleton
-                containerClassName="flex-1"
-                height={20}
-                width={30}
-              />
-            </p>
-            <p>With SoundGarden, you can get premium quality music for free</p>
-            <Button
-              className={classes.homeBannerButton}
-              size="large"
-              variant="contained"
-              color="primary">
-              Listen Now
-            </Button>
-          </div>
-          <div className={classes.homeBannerImg}>
-            <img
-              src={womanListeningToMusicBg}
-              alt="woman listening to music"></img>
-          </div>
-        </Card>
-        <div className={classes.homeHeaderContainer}>
-          <Typography
-            variant="h4"
-            className={classes.homeSubtitle}>
-            Playlists
-          </Typography>
-          <Link
-            className={classes.homeLink}
-            to="/playlist">
-            Explore more...
-          </Link>
-        </div>
-        <div className={classes.homeContainer}>
-          <CardList
-            className={classes.homeCardList}
-            list={tempList}
-            page=""
-          />
-        </div>
-        <div className={classes.homeHeaderContainer}>
-          <Typography
-            variant="h4"
-            className={classes.homeSubtitle}>
-            Trending
-          </Typography>
-          <Link
-            className={classes.homeLink}
-            to="/artists">
-            Explore more...
-          </Link>
-        </div>
-        <div className={classes.homeContainer}>
-          {query && (
-            <CollectionResults
-              scrollRef={scrollRef}
-              query={query}
+            <Link
+              className={classes.homeLink}
+              to="/playlist">
+              Explore more...
+            </Link>
+          </Box>
+          <Box className={classes.homeContainer}>
+            <CardList
+              className={classes.homeCardList}
+              list={tempList}
+              page=""
             />
-          )}
-        </div>
-      </div>
+          </Box>
+          <Box className={classes.homeHeaderContainer}>
+            <Typography
+              variant="h4"
+              className={classes.homeSubtitle}>
+              Trending
+            </Typography>
+            <Link
+              className={classes.homeLink}
+              to="/artists">
+              Explore more...
+            </Link>
+          </Box>
+          <Box className={classes.homeContainer}>
+            {query && (
+              <CollectionResults
+                scrollRef={scrollRef}
+                query={query}
+              />
+            )}
+          </Box>
+        </Box>
+      </Grid2>
     </ThemeProvider>
   );
 }

@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     width: '100%',
     padding: '1.6rem',
-
     [theme.breakpoints.down('sm')]: {
       display: 'block',
       textAlign: 'center',
@@ -42,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
   },
   sideNavigationImageContainer: {
     display: 'flex',
-    maxWidth: '14rem',
-    maxHeight: '14rem',
+    maxWidth: '120px',
+    maxHeight: '120px',
 
-    borderRadius: '1.2rem',
+    borderRadius: '12px',
 
     [theme.breakpoints.down('lg')]: {
-      maxWidth: '6rem',
-      height: '6rem',
+      maxWidth: '60px',
+      height: '60px',
     },
   },
   sideNavigationImage: {
@@ -68,13 +67,14 @@ const useStyles = makeStyles((theme) => ({
   sideNavigationNavContainer: {
     display: 'flex',
     flexDirection: 'column',
+
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'row',
     },
   },
   sideNavigationNavbar: {
-    flex: '1 0 auto',
     display: 'flex',
+    gap: '6px',
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '400',
     lineHeight: '24px',
     textDecoration: 'none',
-    padding: '10px 32px 10px 32px',
+    padding: '4px 32px 4px 16px',
     '&:hover': {
       background: 'red',
       opacity: 0.6,

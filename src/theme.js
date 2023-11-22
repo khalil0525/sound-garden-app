@@ -21,6 +21,8 @@ const theme = createTheme({
     body3: {
       fontSize: '1.2rem',
     },
+    fontSize: 10,
+    htmlFontSize: 10,
   },
   spacing: 8,
   palette: {
@@ -75,7 +77,6 @@ const theme = createTheme({
         html: {
           margin: 0,
           padding: 0,
-          fontSize: '62.5%',
         },
         body: {
           margin: 0,

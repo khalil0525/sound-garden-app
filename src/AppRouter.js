@@ -33,16 +33,17 @@ function AppRouter({ user }) {
           container
           sx={{ maxWidth: '100vw', maxHeight: '100vh' }}>
           <Grid
-            xs={3}
-            md={'30%'}
+            xs={2}
+            md={'25%'}
+            p="16px"
             bgcolor="secondary">
             <SideNavigation />
           </Grid>
 
           <Grid
-            xs={9}
-            md={'70%'}
-            p="1.6rem">
+            xs={10}
+            md={'75%'}
+            p="16px">
             <Box
               bgcolor={'white'}
               maxHeight="100%"
@@ -53,7 +54,7 @@ function AppRouter({ user }) {
                 style={{
                   overflowX: 'hidden',
                   height: '95vh',
-                  paddingTop: '20px',
+                  padding: '1.6rem',
                 }}>
                 <Routes>
                   <Route
