@@ -14,6 +14,7 @@ import 'simplebar/dist/simplebar.min.css';
 import CollectionResults from './components/CollectionResults/CollectionResults';
 import { Container, Box } from '@mui/material';
 import { useTheme } from '@mui/styles';
+import Layout from './components/Layout/Layout';
 
 function AppRouter({ user }) {
   // Getting the context of the user to see if they're logged in
@@ -59,7 +60,11 @@ function AppRouter({ user }) {
                 <Routes>
                   <Route
                     path="/"
-                    element={<Home scrollRef={scrollableNodeRef} />}
+                    element={
+                      <Layout>
+                        <Home scrollRef={scrollableNodeRef} />
+                      </Layout>
+                    }
                   />
                   <Route
                     path="/genres"

@@ -125,78 +125,74 @@ export default function Home({ scrollRef }) {
   const { user } = useAuthContext();
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid2
-        container
-        spacing={3}>
-        <Box className={classes.homeLeftSide}>
-          <Box className={classes.homeBanner}>
-            <Box className={classes.homeBannerContainer}>
-              <p>SoundGarden</p>
-              <Typography
-                variant="h1"
-                className={classes.homeTitle}>
-                Listen to latest trending Music all the time
-              </Typography>
+    <Grid2
+      container
+      spacing={3}>
+      <Box className={classes.homeLeftSide}>
+        <Box className={classes.homeBanner}>
+          <Box className={classes.homeBannerContainer}>
+            <p>SoundGarden</p>
+            <Typography
+              variant="h1"
+              className={classes.homeTitle}>
+              Listen to latest trending Music all the time
+            </Typography>
 
-              <p>
-                With SoundGarden, you can get premium quality music for free
-              </p>
-              <Button
-                className={classes.homeBannerButton}
-                size="large"
-                variant="contained"
-                color="primary">
-                Listen Now
-              </Button>
-            </Box>
-            <Box className={classes.homeBannerImg}>
-              <img
-                src={womanListeningToMusicBg}
-                alt="woman listening to music"></img>
-            </Box>
+            <p>With SoundGarden, you can get premium quality music for free</p>
+            <Button
+              className={classes.homeBannerButton}
+              size="large"
+              variant="contained"
+              color="primary">
+              Listen Now
+            </Button>
           </Box>
-          <Box className={classes.homeHeaderContainer}>
-            <Typography
-              variant="h4"
-              className={classes.homeSubtitle}>
-              Playlists
-            </Typography>
-            <Link
-              className={classes.homeLink}
-              to="/playlist">
-              Explore more...
-            </Link>
-          </Box>
-          <Box className={classes.homeContainer}>
-            <CardList
-              className={classes.homeCardList}
-              list={tempList}
-              page=""
-            />
-          </Box>
-          <Box className={classes.homeHeaderContainer}>
-            <Typography
-              variant="h4"
-              className={classes.homeSubtitle}>
-              Trending
-            </Typography>
-            <Link
-              className={classes.homeLink}
-              to="/artists">
-              Explore more...
-            </Link>
-          </Box>
-          <Box className={classes.homeContainer}>
-            {query && (
-              <CollectionResults
-                scrollRef={scrollRef}
-                query={query}
-              />
-            )}
+          <Box className={classes.homeBannerImg}>
+            <img
+              src={womanListeningToMusicBg}
+              alt="woman listening to music"></img>
           </Box>
         </Box>
-      </Grid2>
-    </ThemeProvider>
+        <Box className={classes.homeHeaderContainer}>
+          <Typography
+            variant="h4"
+            className={classes.homeSubtitle}>
+            Playlists
+          </Typography>
+          <Link
+            className={classes.homeLink}
+            to="/playlist">
+            Explore more...
+          </Link>
+        </Box>
+        <Box className={classes.homeContainer}>
+          <CardList
+            className={classes.homeCardList}
+            list={tempList}
+            page=""
+          />
+        </Box>
+        <Box className={classes.homeHeaderContainer}>
+          <Typography
+            variant="h4"
+            className={classes.homeSubtitle}>
+            Trending
+          </Typography>
+          <Link
+            className={classes.homeLink}
+            to="/artists">
+            Explore more...
+          </Link>
+        </Box>
+        <Box className={classes.homeContainer}>
+          {query && (
+            <CollectionResults
+              scrollRef={scrollRef}
+              query={query}
+            />
+          )}
+        </Box>
+      </Box>
+    </Grid2>
   );
 }

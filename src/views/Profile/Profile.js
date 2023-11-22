@@ -10,8 +10,9 @@ import Button from '../../components/UI/Button/Button';
 import { useParams } from 'react-router-dom';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
-import OneColumnLayout from '../../components/Layout/OneColumnLayout';
+
 import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
+import Layout from '../../components/Layout/Layout';
 
 export default function Profile({ scrollRef }) {
   const [profile, setProfile] = useState(null);
@@ -104,7 +105,7 @@ export default function Profile({ scrollRef }) {
   // }, [profile, getProfileSongs, isFetchedSongs]);
 
   return (
-    <OneColumnLayout user={user}>
+    <Layout user={user}>
       <div className={styles['profile__content']}>
         <div className={styles['profile__headerContainer']}>
           <div className={styles['profile__header']}>
@@ -249,7 +250,7 @@ export default function Profile({ scrollRef }) {
           onCancel={() => setIsEditingPlaylist(false)}
         />
       )} */}
-    </OneColumnLayout>
+    </Layout>
   );
 }
 {

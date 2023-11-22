@@ -4,7 +4,8 @@ import styles from './Search.module.css';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import SongList from '../../components/SongList/SongList';
-import OneColumnLayout from '../../components/Layout/OneColumnLayout';
+
+import Layout from '../../components/Layout/Layout';
 
 const Search = ({ scrollRef }) => {
   const { user } = useAuthContext();
@@ -12,7 +13,7 @@ const Search = ({ scrollRef }) => {
   const { results, query } = location.state;
 
   return (
-    <OneColumnLayout user={user}>
+    <Layout user={user}>
       <div className={styles.search}>
         <div className={styles['search__header']}>
           <h1 className={styles['search__queryText']}>
@@ -32,7 +33,7 @@ const Search = ({ scrollRef }) => {
           </h1>
         )}
       </div>
-    </OneColumnLayout>
+    </Layout>
   );
 };
 export default Search;
