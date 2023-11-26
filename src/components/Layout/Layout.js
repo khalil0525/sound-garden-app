@@ -20,7 +20,6 @@ const Layout = ({ children }) => {
           xs={12}
           sm={12}
           width="100%">
-          {/* Content for the first column */}
           {children}
         </Grid>
         <Grid

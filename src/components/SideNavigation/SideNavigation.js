@@ -4,25 +4,21 @@ import Grid from '@mui/material/Unstable_Grid2';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import soundGardenLogo from '../../images/sg-logo.png';
 import { useTheme } from '@mui/material/styles';
-import { ReactComponent as LikedIcon } from '../../images/Favorite_duotone.svg';
 import { ReactComponent as HomeIcon } from '../../images/Home_fill.svg';
 import { ReactComponent as ArtistIcon } from '../../images/User_duotone_line.svg';
 import { ReactComponent as GenreIcon } from '../../images/Mic_alt_duotone.svg';
-import { ReactComponent as UploadedIcon } from '../../images/Upload_duotone_line.svg';
 import { NavLink } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/useAuthContext';
+
 import { Box, Stack, Typography } from '@mui/material';
+import theme from '../../theme';
 
 const useStyles = makeStyles((theme) => ({
   sideNavigation: {
     display: 'flex',
-
     color: '#ffffff',
-
     zIndex: 1,
     height: '100%',
     width: '100%',
-    padding: '1.6rem',
     [theme.breakpoints.down('sm')]: {
       display: 'block',
       textAlign: 'center',
@@ -31,21 +27,15 @@ const useStyles = makeStyles((theme) => ({
   sideNavigationHeader: {
     display: 'flex',
     flexDirection: 'column',
-    gap: theme.spacing(1),
+    gap: '0.8rem', // Adjust as needed
     width: '100%',
-    padding: theme.spacing(2, 0, 0, 4),
-    [theme.breakpoints.up('lg')]: {
-      gap: theme.spacing(2),
-      padding: theme.spacing(0, 4, 4, 1),
-    },
+    padding: '1.6rem 0 0 3.2rem !important', // Adjust padding as needed
   },
   sideNavigationImageContainer: {
     display: 'flex',
-    maxWidth: '120px',
-    maxHeight: '120px',
-
+    maxWidth: '180px',
+    maxHeight: '180px',
     borderRadius: '12px',
-
     [theme.breakpoints.down('lg')]: {
       maxWidth: '60px',
       height: '60px',
@@ -66,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
   },
   sideNavigationNavContainer: {
     display: 'flex',
+    width: '100%',
     flexDirection: 'column',
-
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'row',
     },
@@ -78,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    // background: '#161618',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
@@ -88,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navbarItemContent: {
     display: 'flex',
-    gap: theme.spacing(1),
+    gap: '0.8rem', // Adjust as needed
   },
   navbarItemContentIcon: {
     [theme.breakpoints.down('lg')]: {
@@ -98,22 +87,32 @@ const useStyles = makeStyles((theme) => ({
   navbarItemContentText: {},
   navbarActiveItem: {
     color: '#fff',
+
+    background: `linear-gradient(
+      90deg,
+      ${theme.palette.primary.main} -55%,
+      rgba(253, 99, 44, 0) 100%
+    )`,
+    boxShadow: `inset 4px 0 0 ${theme.palette.primary.main}`,
   },
   navLink: {
     color: '#fff',
     fontWeight: '400',
     lineHeight: '24px',
     textDecoration: 'none',
-    padding: '4px 32px 4px 16px',
+    padding: '0.8rem 0 0.8rem 4.8rem', // Adjust padding as needed
     '&:hover': {
-      background: 'red',
+      background: theme.palette.primary.main,
       opacity: 0.6,
     },
+  },
+  sideNavigationAudioplayerContainer: {
+    paddingLeft: '3.2rem',
   },
 }));
 
 const SideNavigation = ({ className }) => {
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   return (
     <Grid
@@ -141,10 +140,14 @@ const SideNavigation = ({ className }) => {
           </Typography>
           <NavLink
             to="/"
-            className={`
-              ${classes.navLink}
-              ${null ? classes.navbarActiveItem : ''}
-            `}>
+            className={({ isActive }) =>
+              isActive
+                ? `
+          ${classes.navLink}
+          ${classes.navbarActiveItem}
+        `
+                : ` ${classes.navLink}`
+            }>
             <Box className={classes.navbarItemContent}>
               <HomeIcon
                 className={classes.navbarItemContentIcon}
@@ -155,10 +158,14 @@ const SideNavigation = ({ className }) => {
           </NavLink>
           <NavLink
             to="/genres"
-            className={`
+            className={({ isActive }) =>
+              isActive
+                ? `
             ${classes.navLink}
-            ${null ? classes.navbarActiveItem : ''}
-          `}>
+            ${classes.navbarActiveItem}
+          `
+                : ` ${classes.navLink}`
+            }>
             <Box className={classes.navbarItemContent}>
               <GenreIcon
                 className={classes.navbarItemContentIcon}
@@ -170,10 +177,14 @@ const SideNavigation = ({ className }) => {
           <NavLink
             onClick={(e) => e.preventDefault()}
             to="/artists"
-            className={`
-            ${classes.navLink}
-            ${null ? classes.navbarActiveItem : ''}
-          `}>
+            className={({ isActive }) =>
+              isActive
+                ? `
+          ${classes.navLink}
+          ${classes.navbarActiveItem}
+        `
+                : ` ${classes.navLink}`
+            }>
             <Box className={classes.navbarItemContent}>
               <ArtistIcon
                 className={classes.navbarItemContentIcon}
@@ -195,4 +206,5 @@ const SideNavigation = ({ className }) => {
     </Grid>
   );
 };
+
 export default SideNavigation;

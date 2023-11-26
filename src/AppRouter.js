@@ -18,7 +18,7 @@ import Layout from './components/Layout/Layout';
 
 function AppRouter({ user }) {
   // Getting the context of the user to see if they're logged in
-  const theme = useTheme();
+
   const scrollableNodeRef = React.createRef();
 
   return (
@@ -35,16 +35,16 @@ function AppRouter({ user }) {
           sx={{ maxWidth: '100vw', maxHeight: '100vh' }}>
           <Grid
             xs={2}
-            md={'25%'}
-            p="16px"
-            bgcolor="secondary">
+            md={'20%'}
+            bgcolor="secondary"
+            p="3.2rem 1.6rem 1.6rem 0">
             <SideNavigation />
           </Grid>
 
           <Grid
             xs={10}
-            md={'75%'}
-            p="16px">
+            md={'80%'}
+            p="1.6rem 1.6rem 1.6rem 0">
             <Box
               bgcolor={'white'}
               maxHeight="100%"
