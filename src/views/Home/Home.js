@@ -10,25 +10,46 @@ import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
 import card1bg from '../../images/cardBg1.png';
 import card2bg from '../../images/cardBg2.png';
 import card3bg from '../../images/cardBg3.png';
+import MiniBanner from '../../components/UI/MiniBanner';
 
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Headphones } from '@mui/icons-material';
 const useStyles = makeStyles((theme) => ({
+  home: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(6),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
+    padding: '0',
+  },
+
   homeLeftSide: {
-    marginTop: '16px',
+    marginTop: '0.8rem',
+    gridColumn: '1',
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '60%',
     gap: '16px',
+    width: '56%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
+
   homeRightSide: {
+    marginTop: '1.6rem',
     display: 'flex',
-    flexDirection: 'inherit',
+
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: '16px',
+    width: '40%',
   },
   homeContainer: {
     display: 'flex',
@@ -76,9 +97,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start ',
     alignItems: 'flex-start',
     maxHeight: '300px',
-    maxWidth: '650px',
+    maxWidth: '800px',
     flex: '1 0 46%',
-    gridRow: '1/2',
+
     padding: '16px',
     background: theme.palette.primary.main,
   },
@@ -96,10 +117,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '32px !important',
     padding: '12px 6px !important',
     backgroundColor: theme.palette.primary.main,
-    color: theme.palette.text.primary,
-    width: '80%',
+    color: theme.palette.text.secondary,
+    width: '60%',
     boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)',
     alignSelf: 'start',
+    display: 'flex',
+    alignItems: 'center', // Align the icon and text horizontally
   },
   homeBannerImg: {
     display: 'block',
@@ -131,7 +154,7 @@ export default function Home({ scrollRef }) {
   return (
     <Grid2
       container
-      spacing={3}>
+      className={classes.home}>
       <Box className={classes.homeLeftSide}>
         <Box className={classes.homeBanner}>
           <Box className={classes.homeBannerContainer}>
@@ -151,13 +174,13 @@ export default function Home({ scrollRef }) {
               sx={{ opacity: '0.7' }}>
               With SoundGarden, you can get premium quality music for free
             </Typography>
-            <Button
+            <IconButton
               className={classes.homeBannerButton}
               size="medium"
               variant="contained"
-              color="primary">
-              Listen Now
-            </Button>
+              sx={{ color: '#fff !important', display: 'flex', gap: '0.8rem' }}>
+              <Headphones /> Listen Now
+            </IconButton>
           </Box>
           <Box className={classes.homeBannerImg}>
             <img
@@ -203,6 +226,13 @@ export default function Home({ scrollRef }) {
               query={query}
             />
           )}
+        </Box>
+      </Box>
+
+      <Box className={classes.homeRightSide}>
+        {' '}
+        <Box className={classes.homeRightSide}>
+          <MiniBanner />
         </Box>
       </Box>
     </Grid2>

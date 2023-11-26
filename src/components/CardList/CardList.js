@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import ListCard from './ListCard';
-
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 const useStyles = makeStyles((theme) => ({
   cardlist: {
     maxWidth: '100%',
@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
   cardlistList: {
     display: 'flex',
     justifyContent: 'center',
-    gap: theme.spacing(2),
-    flexWrap: 'wrap',
+    gap: theme.spacing(1),
+    flexWrap: 'nowrap !important',
   },
   cardLink: {
     textDecoration: 'none',

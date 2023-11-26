@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Home from './views/Home/Home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -10,16 +10,25 @@ import Profile from './views/Profile/Profile';
 import SideNavigation from './components/SideNavigation/SideNavigation';
 import Upload from './views/Upload/Upload';
 import SimpleBar from 'simplebar-react';
+import CloseIcon from '@mui/icons-material/Close';
+
 import 'simplebar/dist/simplebar.min.css';
 import CollectionResults from './components/CollectionResults/CollectionResults';
-import { Container, Box } from '@mui/material';
+import { Box, useMediaQuery, IconButton, Drawer } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import Layout from './components/Layout/Layout';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function AppRouter({ user }) {
-  // Getting the context of the user to see if they're logged in
-
+  const theme = useTheme();
   const scrollableNodeRef = React.createRef();
+  const isMobile = useMediaQuery('(max-width: 950px)');
+  const isSingleColumn = useMediaQuery('(max-width: 1200px)');
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
     <BrowserRouter>
@@ -27,35 +36,70 @@ function AppRouter({ user }) {
         sx={{
           flexGrow: 1,
           backgroundColor: '#000',
-          maxWidth: '100vw',
+          width: '100vw',
           maxHeight: '100vh',
         }}>
         <Grid
           container
-          sx={{ maxWidth: '100vw', maxHeight: '100vh' }}>
-          <Grid
-            xs={2}
-            md={'20%'}
-            bgcolor="secondary"
-            p="3.2rem 1.6rem 1.6rem 0">
-            <SideNavigation />
-          </Grid>
+          sx={{ width: '100vw', maxHeight: '100vh' }}>
+          {isMobile && (
+            <>
+              <IconButton
+                color="inherit"
+                onClick={toggleDrawer}
+                sx={{ display: { xs: 'block', md: 'none' }, zIndex: 1200 }}>
+                {drawerOpen ? <CloseIcon /> : <MenuIcon fontSize="large" />}
+              </IconButton>
+              <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={toggleDrawer}
+                PaperProps={{
+                  sx: {
+                    backgroundColor: '#000',
+                    width: '80%', // Adjust the width as needed
+                  },
+                }}>
+                <SideNavigation />
+              </Drawer>
+            </>
+          )}
+          {!isMobile && (
+            <Grid
+              xs={isMobile ? 12 : 2}
+              md={'20%'}
+              bgcolor="secondary"
+              p="3.2rem 1.6rem 1.6rem 0">
+              <SideNavigation />
+            </Grid>
+          )}
 
           <Grid
-            xs={10}
+            xs={isMobile ? 12 : 10}
             md={'80%'}
-            p="1.6rem 1.6rem 1.6rem 0">
+            p={{ xs: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
             <Box
               bgcolor={'white'}
               maxHeight="100%"
-              borderRadius="1.6rem">
-              <SimpleBar
-                autoHide={false}
-                scrollableNodeProps={{ ref: scrollableNodeRef }}
-                style={{
+              borderRadius={{ xs: '0', md: '1.6rem' }}
+              overflowY="scroll">
+              <Box
+                ref={scrollableNodeRef}
+                sx={{
                   overflowX: 'hidden',
                   height: '95vh',
                   padding: '1.6rem',
+
+                  '::-webkit-scrollbar': {
+                    width: '8px',
+                  },
+                  '::-webkit-scrollbar-thumb': {
+                    backgroundColor: '#888',
+                    borderRadius: '4px',
+                  },
+                  '::-webkit-scrollbar-track': {
+                    backgroundColor: 'transparent',
+                  },
                 }}>
                 <Routes>
                   <Route
@@ -124,7 +168,7 @@ function AppRouter({ user }) {
                     element={user ? <Upload /> : <Navigate to="/" />}
                   />
                 </Routes>
-              </SimpleBar>
+              </Box>
             </Box>
           </Grid>
         </Grid>

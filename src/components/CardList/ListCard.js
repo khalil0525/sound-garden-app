@@ -7,10 +7,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    flex: '1 0 25%',
-    maxWidth: '12rem',
+
+    maxWidth: '19rem',
     minWidth: '12rem',
-    maxHeight: '12rem',
+    maxHeight: '15.8rem',
     minHeight: '12rem',
     borderRadius: '10px',
     listStyle: 'none',

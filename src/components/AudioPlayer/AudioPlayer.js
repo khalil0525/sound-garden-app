@@ -5,12 +5,15 @@ import { makeStyles } from '@mui/styles';
 import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
 import AudioSeekControlBar from './AudioSeekControlBar/AudioSeekControlBar';
 import AudioPlayerMarquee from './AudioPlayerMarquee';
-import previous_NextIcon from '../../images/Expand_right_stop.svg';
-import pauseIcon from '../../images/pause-svgrepo-com.svg';
-import playIcon from '../../images/Arrow_drop_right.svg';
+import { IconButton } from '@mui/material';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 import placeholderImage from '../../images/blank_image_placeholder.svg';
-import Button from '../UI/Button/Button';
 import theme from '../../theme';
+import { Slider, Stack } from '@mui/material';
+import { VolumeDown, VolumeUp } from '@mui/icons-material';
 const useStyles = makeStyles((theme) => ({
   audioPlayerLower: {
     display: 'flex',
@@ -60,8 +63,9 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     justifyContent: 'center',
     gap: '0.2rem',
-    width: '17rem',
-    marginLeft: '1.2rem',
+    maxWidth: '17rem',
+    minWidth: '16rem',
+    marginLeft: '0.8rem',
   },
   audioPlayerTrackDetailsSongDetailsTitle: {
     fontWeight: 400,
@@ -85,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '20.6rem',
         position: 'relative',
         margin: '0 auto',
+        padding: '',
       },
       audioPlayerUpper: {
         maxWwidth: '23rem',
@@ -98,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
       audioPlayerLower: {
         display: 'block',
         maxWidth: '26rem',
-        height: '14rem',
+        height: '14.6rem',
         padding: '0',
         gap: '0',
         position: 'relative',
@@ -114,9 +119,9 @@ const useStyles = makeStyles((theme) => ({
       },
       audioPlayerControlsSeek: {
         display: 'flex',
-        gap: '0.5rem',
+        gap: '0.6rem',
         justifyContent: 'center',
-        margin: '2rem auto',
+        margin: '2.4rem auto',
         width: '100%',
         opacity: 'none',
       },
@@ -130,9 +135,8 @@ const useStyles = makeStyles((theme) => ({
       },
       audioPlayerControlsMain: {
         display: 'flex',
-        gap: '6rem',
+        gap: '0.8rem',
         justifyContent: 'center',
-        marginBottom: '1.2rem',
       },
       audioPlayerControlsMainPrevious: {
         display: 'block',
@@ -150,18 +154,29 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         margin: '0',
-        top: '-2rem',
+        top: '-1.6rem',
         position: 'absolute',
         zIndex: 2,
-        border: '6px solid #313132',
-        background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
-        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+        border: '6px solid #313132 !important',
+        background:
+          'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%) !important',
+        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25) !important',
         borderRadius: '3.6rem',
+        '&:hover': {
+          cursor: 'pointer',
+        },
+        '& svg': {
+          fontSize: '2rem', // Adjust the icon size
+          color: '#fff', // Adjust the icon color
+        },
       },
+
       audioPlayerControlsVolume: {
         display: 'flex',
-        gap: '0.5rem',
+        gap: '0.2rem',
         justifyContent: 'center',
+        maxWidth: '100%',
+        padding: '0 3.2rem',
       },
       audioPlayerControlsVolumeInput: {
         cursor: 'pointer',
@@ -171,11 +186,11 @@ const useStyles = makeStyles((theme) => ({
         margin: '0.6rem 0 0 1.4rem',
       },
       audioPlayerTrackDetailsSongArt: {
-        width: '6rem',
-        height: '6rem',
+        width: '5rem',
+        height: '5rem',
       },
       audioPlayerTrackDetailsSongArtImage: {
-        borderRadius: '14px',
+        borderRadius: '12px',
       },
       audioPlayerTrackDetailsSongDetails: {
         gap: '0.4rem',
@@ -462,41 +477,47 @@ const AudioPlayer = () => {
 
       <div className={classes.audioPlayerLower}>
         <div className={classes.audioPlayerControlsMain}>
-          <Button
+          <IconButton
             disabled={!loadedSongURL}
             className={classes.audioPlayerControlsMainPrevious}
             onClick={handlePreviousClick}
-            iconImage={previous_NextIcon}
-            altText="Audio player previous button icon"
-          />
-          <Button
+            aria-label="previous">
+            <SkipPreviousIcon htmlColor="#ffffff" />
+          </IconButton>
+          <IconButton
             disabled={!loadedSongURL}
             onClick={handlePlayPause}
             className={classes.audioPlayerControlsMainPlay}
-            iconImage={playing ? pauseIcon : playIcon}
-            altText={
-              playing ? 'Audio player pause button' : 'Audio player play button'
-            }
-          />
-          <Button
+            aria-label={playing ? 'pause' : 'play'}>
+            {playing ? <PauseIcon /> : <PlayArrowIcon />}
+          </IconButton>
+          <IconButton
             disabled={!loadedSongURL}
             className={classes.audioPlayerControlsMainNext}
             onClick={handleNextClick}
-            iconImage={previous_NextIcon}
-            altText="Audio player next button icon"
-          />
+            aria-label="next">
+            <SkipNextIcon htmlColor="#ffffff" />
+          </IconButton>
         </div>
 
-        <div className={classes.audioPlayerControlsVolume}>
-          <input
-            type="range"
+        <Stack
+          className={classes.audioPlayerControlsVolume}
+          spacing={1}
+          direction="row"
+          sx={{}}
+          alignItems="center">
+          <VolumeDown />
+          <Slider
+            aria-label="Volume"
             min={0}
-            max={1}
+            st
             step="any"
+            max={1}
             value={volume}
             onChange={handleVolumeChange}
           />
-        </div>
+          <VolumeUp />
+        </Stack>
 
         <div className={classes.audioPlayerTrackDetails}>
           <div className={classes.audioPlayerTrackDetailsSongArt}>

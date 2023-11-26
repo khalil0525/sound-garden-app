@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   actionBar: {
     position: 'relative',
     zIndex: 1000,
-    maxWidth: '100%',
+    width: '100%',
   },
   actionBarNav: {
     display: 'flex',
