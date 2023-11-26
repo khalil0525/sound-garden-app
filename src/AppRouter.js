@@ -4,12 +4,12 @@ import Home from './views/Home/Home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Genres from './views/Genres/Genres';
 import Artists from './views/Artists/Artists';
-import Liked from './views/Liked/Liked';
+
 import Uploaded from './views/Uploaded/Uploaded';
 import Profile from './views/Profile/Profile';
 import SideNavigation from './components/SideNavigation/SideNavigation';
 import Upload from './views/Upload/Upload';
-import SimpleBar from 'simplebar-react';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 import 'simplebar/dist/simplebar.min.css';
@@ -129,16 +129,7 @@ function AppRouter({ user }) {
                       <CollectionResults scrollRef={scrollableNodeRef} />
                     }
                   />
-                  <Route
-                    path="/liked"
-                    element={
-                      user ? (
-                        <Liked scrollRef={scrollableNodeRef} />
-                      ) : (
-                        <Navigate to="/" />
-                      )
-                    }
-                  />
+
                   <Route
                     path="/uploaded"
                     element={

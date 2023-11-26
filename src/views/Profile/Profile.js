@@ -6,7 +6,12 @@ import Skeleton from '@mui/material/Skeleton';
 import Modal from '../../components/UI/Modal/Modal';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
+import {
+  followUser,
+  getSongs,
+  getUserProfile,
+  unfollowUser,
+} from '../../api/functions';
 import Layout from '../../components/Layout/Layout';
 
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
@@ -14,9 +19,11 @@ import { makeStyles } from '@mui/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
-
-const tabs = ['All', 'Tracks', 'Playlists', 'Liked', 'Reposted'];
-
+import Popover from '@mui/material/Popover';
+import SongList from '../../components/SongList/SongList';
+// const tabs = ['Tracks', 'Playlists', 'Reposted', 'Likes'];
+const tabs = ['Tracks', 'Likes'];
+//2480 x 520 (1240 x 260 res)
 const useStyles = makeStyles((theme) => ({
   profile__content: {
     padding: theme.spacing(2),
@@ -28,15 +35,27 @@ const useStyles = makeStyles((theme) => ({
   profile__header: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: '1.6rem',
-    padding: '3rem',
-    background: '#ccc',
+    padding: '3.6rem',
     borderRadius: '1.6rem !important',
+    position: 'relative',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 1,
+  },
+  bannerSkeleton: {
+    position: 'absolute',
+    zIndex: 10,
+    top: 0,
+    left: 0,
+    width: '100% !important',
+    height: '100% !important',
   },
   profileHeaderImageContainer: {
     width: '20rem',
     height: '20rem',
-    marginRight: '3rem',
     backgroundColor: '#fff',
     borderRadius: '50%',
     overflow: 'hidden',
@@ -80,21 +99,22 @@ const useStyles = makeStyles((theme) => ({
     height: '150px',
     position: 'relative',
     '&:hover $editContainer_updateBtn': {
-      display: 'inline-block',
+      display: 'inline-block !important',
       opacity: 0.8,
     },
   },
   editContainer_updateBtn: {
-    display: 'none',
+    display: 'none !important',
     position: 'absolute',
-    top: '50%',
+    top: 0,
     left: '50%',
     transform: 'translate(-50%, -50%)',
     borderRadius: '1rem',
     padding: '0.2rem 0.6rem',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: '#fff !important',
     color: theme.palette.text.primary,
     maxWidth: '12rem',
+    opacity: 0.8,
   },
   editContainer_updateBtn_focused: {
     display: 'inline-block',
@@ -109,7 +129,6 @@ const useStyles = makeStyles((theme) => ({
   },
   profile__profileActions: {
     display: 'flex',
-
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: '0.4rem 0',
@@ -121,28 +140,51 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile({ scrollRef }) {
   const classes = useStyles();
+  const [resetQueryTrigger, setResetQueryTrigger] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   const { logout, error, isPending } = useLogout();
   const { user } = useAuthContext();
   const [profile, setProfile] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
+  const [loadedSongs, setLoadedSongs] = useState([]);
   const [isProcessingFollow, setIsProcessingFollow] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null);
+  const [query, setQuery] = useState('resp');
   const [currentTab, setCurrentTab] = useState(0);
   const params = useParams();
   const URL = params.profileURL;
-  const query =
-    profile && profile.userID
-      ? ['music', ['userID', '==', profile.userID]]
-      : null;
+  const randomBannerPlaceholder = 'https://source.unsplash.com/random/2480x520';
+  const queries = {
+    profile:
+      profile && profile.userID
+        ? ['music', ['userID', '==', profile.userID]]
+        : null,
+    likes: [
+      ['likes', 'music'],
+      [
+        ['__name__', '==', user.uid],
+        ['docID', 'in'],
+      ],
+      'likes',
+    ],
+  };
+
   const handleEditProfile = () => {
     setIsEditingProfile(false);
   };
 
+  const handleNewQuery = (index) => {
+    setCurrentTab(index);
+    setResetQueryTrigger((prev) => !prev);
+  };
   const handleFollowClick = async () => {
     setIsProcessingFollow(true);
     try {
-      const { data } = profile.followers.includes(user.id)
+      const { data } = profile.followers.includes(user.uid)
         ? await unfollowUser({ userIdToUnfollow: profile.userID })
         : await followUser({ userIdToFollow: profile.userID });
 
@@ -155,6 +197,7 @@ export default function Profile({ scrollRef }) {
       setIsProcessingFollow(false);
     }
   };
+
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
@@ -169,27 +212,46 @@ export default function Profile({ scrollRef }) {
     };
     getProfile();
   }, [URL, user]);
-  const renderTabContent = () => {
-    switch (currentTab) {
-      case 0:
-        return (
-          <CollectionResults
-            scrollRef={scrollRef}
-            query={query}
-          />
-        );
-      case 1:
-        return (
-          <CollectionResults
-            scrollRef={scrollRef}
-            query={query}
-          />
-        );
-      // Add cases for other tabs
-      default:
-        return null;
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      setIsProcessingFollow(true);
+      try {
+        console.log(profile.userID);
+        const { data } =
+          currentTab === 0
+            ? await getSongs({
+                where: {
+                  field: 'userID',
+                  operator: '==',
+                  value: profile.userID,
+                },
+              })
+            : currentTab === 1
+            ? await getSongs({ likeUserId: profile.userID })
+            : await getSongs({ repostUserId: profile.userID });
+        console.log(data[0]);
+        if (data) {
+          setLoadedSongs([...data]);
+        }
+        setIsProcessingFollow(false);
+      } catch (error) {
+        console.error('Error:', error);
+        setIsProcessingFollow(false);
+      }
+    };
+    if (profile && profile.userID.length) {
+      fetchSongs();
     }
+  }, [profile, currentTab]);
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Layout user={user}>
       <Grid
@@ -207,13 +269,24 @@ export default function Profile({ scrollRef }) {
               md={12}>
               <Grid
                 container
-                className={classes.profile__header}>
+                className={classes.profile__header}
+                style={{
+                  backgroundImage: `url(${
+                    profile?.bannerURL || randomBannerPlaceholder
+                  })`,
+                }}>
+                {/* {!profile?.bannerURL && (
+                  <Skeleton
+                    variant="rect"
+                    className={classes.bannerSkeleton}
+                  />
+                )} */}
                 <Grid
                   item
                   xs={12}
-                  md={3}>
+                  md={2.5}>
                   <div className={classes.profileHeaderImageContainer}>
-                    {profile && profile.profilePhotoURL ? (
+                    {profile && profile?.profilePhotoURL ? (
                       <img
                         src={profile.profilePhotoURL}
                         alt="User profile"
@@ -222,8 +295,10 @@ export default function Profile({ scrollRef }) {
                     ) : (
                       <Skeleton
                         variant="circular"
-                        width={40}
-                        height={40}
+                        sx={{
+                          width: '40px !important',
+                          height: '40px !important',
+                        }}
                       />
                     )}
                   </div>
@@ -231,7 +306,7 @@ export default function Profile({ scrollRef }) {
                 <Grid
                   item
                   xs={12}
-                  md={8}>
+                  md={9.5}>
                   <div className={classes.profileHeaderContent}>
                     <div className={classes.profileHeaderTextContainer}>
                       <h2 className={classes.profileHeaderDisplayName}>
@@ -248,7 +323,6 @@ export default function Profile({ scrollRef }) {
                         </h3>
                       ) : (
                         <Skeleton
-                          variant="rounded"
                           width={60}
                           height={20}
                         />
@@ -256,20 +330,28 @@ export default function Profile({ scrollRef }) {
                     </div>
                     <div className={classes.profileHeaderEditContainer}>
                       <Button
-                        onFocus={() => setUpdateButtonToggled(true)}
-                        onBlur={() => setUpdateButtonToggled(false)}
-                        className={`${classes.editContainer_updateBtn} ${
-                          updateButtonToggled &&
-                          classes.editContainer_updateBtn_focused
-                        }`}>
+                        className={classes.editContainer_updateBtn}
+                        onClick={handlePopoverOpen}>
                         Update image
                       </Button>
-                      {updateButtonToggled && (
+                      <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handlePopoverClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}>
                         <ul className={classes.editContainer_menu}>
                           <Button>Replace image</Button>
                           <Button>Delete image</Button>
                         </ul>
-                      )}
+                      </Popover>
                     </div>
                   </div>
                 </Grid>
@@ -290,11 +372,12 @@ export default function Profile({ scrollRef }) {
                     <Tab
                       key={index}
                       label={tab}
+                      onClick={() => handleNewQuery(index)}
                     />
                   ))}
                 </Tabs>
                 <Grid>
-                  {profile && user && user.id !== profile.userID && (
+                  {profile && user && user.uid !== profile.userID && (
                     <Button
                       className={classes.profile__header_button_follow}
                       onClick={handleFollowClick}
@@ -338,16 +421,17 @@ export default function Profile({ scrollRef }) {
             </Grid>
           </Grid>
         </Grid>
-        {profile && (
+        {profile && loadedSongs && loadedSongs.length ? (
           <Grid
             item
             xs={12}>
-            <CollectionResults
+            <SongList
+              songs={loadedSongs}
               scrollRef={scrollRef}
-              query={query}
+              user={user ? user : 'none'}
             />
           </Grid>
-        )}
+        ) : null}
       </Grid>
 
       {isEditingProfile && (

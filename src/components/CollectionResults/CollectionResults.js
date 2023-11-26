@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 
 export default function CollectionResults({
   scrollRef,
+  resetQueryTrigger,
   query,
   hideActionBar = false,
 }) {
@@ -35,7 +36,10 @@ export default function CollectionResults({
       ? query
       : ['skip', 'skip', 'skip'];
 
-  const { documents: musicDocuments } = useCollection(...searchParams);
+  const { documents: musicDocuments } = useCollection(
+    ...searchParams,
+    resetQueryTrigger
+  );
 
   // This is the error message that will be displayed when the query
   // Returns empty results

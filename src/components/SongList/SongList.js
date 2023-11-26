@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '2rem',
     alignItems: 'center',
-    maxWidth: '85rem',
+    maxWidth: '98rem',
     justifyContent: 'center',
     margin: '0 auto',
   },
@@ -50,7 +50,8 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
       setCurrent(songs.slice(0, count.next));
     }
   }, [songs, count.next]);
-
+  console.log(songs);
+  console.log(current);
   return (
     <div className={`${classes.songList} ${className}`}>
       <InfiniteScroll

@@ -324,6 +324,16 @@ exports.getSongs = functions.https.onCall(async (data, context) => {
       query = query.where(field, operator, value);
     }
 
+    // Check if a user ID is provided for filtering liked songs
+    if (data.likeUserId) {
+      query = query.where('likes', 'array-contains', data.likeUserId);
+    }
+
+    // Check if a user ID is provided for filtering reposted songs
+    if (data.repostUserId) {
+      query = query.where('reposts', 'array-contains', data.repostUserId);
+    }
+
     const songsSnapshot = await query.get();
     const songsData = [];
 
@@ -384,3 +394,90 @@ exports.getSongs = functions.https.onCall(async (data, context) => {
 
 //   return { authorized: true };
 // });
+// Function to repost a song
+exports.repostSong = functions.https.onCall(async (data, context) => {
+  const { songId } = data;
+  const userId = context.auth.uid;
+
+  // Get references to the user and song documents
+  const userRef = admin.firestore().collection('users').doc(userId);
+  const songRef = admin.firestore().collection('music').doc(songId);
+
+  try {
+    // Check if the user has already reposted the song
+    const userSnapshot = await userRef.get();
+    const userData = userSnapshot.data();
+    if (!userData) {
+      return { success: false, message: 'User does not exist.' };
+    }
+    const repostedSongs = userData.reposts || [];
+
+    if (repostedSongs.includes(songId)) {
+      return {
+        success: false,
+        message: 'You have already reposted this song.',
+      };
+    }
+
+    // Update the user's "reposts" array
+    await userRef.update({
+      reposts: admin.firestore.FieldValue.arrayUnion(songId),
+    });
+
+    // Update the song's "reposts" array
+    await songRef.update({
+      reposts: admin.firestore.FieldValue.arrayUnion(userId),
+    });
+
+    return { success: true, message: 'You have reposted the song.' };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'An error occurred while reposting the song.',
+    };
+  }
+});
+
+// Function to remove a repost from a song
+exports.removeRepost = functions.https.onCall(async (data, context) => {
+  const { songId } = data;
+  const userId = context.auth.uid;
+
+  // Get references to the user and song documents
+  const userRef = admin.firestore().collection('users').doc(userId);
+  const songRef = admin.firestore().collection('music').doc(songId);
+
+  try {
+    // Check if the user has reposted the song
+    const userSnapshot = await userRef.get();
+    const userData = userSnapshot.data();
+    if (!userData) {
+      return { success: false, message: 'User does not exist.' };
+    }
+    const repostedSongs = userData.reposts || [];
+
+    if (!repostedSongs.includes(songId)) {
+      return { success: false, message: 'You have not reposted this song.' };
+    }
+
+    // Update the user's "reposts" array
+    await userRef.update({
+      reposts: admin.firestore.FieldValue.arrayRemove(songId),
+    });
+
+    // Update the song's "reposts" array
+    await songRef.update({
+      reposts: admin.firestore.FieldValue.arrayRemove(userId),
+    });
+
+    return {
+      success: true,
+      message: 'You have removed your repost from the song.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'An error occurred while removing the repost.',
+    };
+  }
+});

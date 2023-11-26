@@ -19,6 +19,7 @@ import { IconButton } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   songItem: {
@@ -477,6 +478,13 @@ const SongItem = ({
     song.docID,
     dispatchAudioPlayerContext,
   ]);
+  const { _seconds, _nanoseconds } = song.createdAt || {};
+
+  // Convert Firestore timestamp to JavaScript Date
+  const createdAt = _seconds
+    ? new Date(_seconds * 1000 + (_nanoseconds || 0) / 1e6)
+    : null;
+  const relativeTime = createdAt ? moment(createdAt).fromNow() : null;
 
   return (
     <li className={classes.songItem}>
@@ -503,7 +511,7 @@ const SongItem = ({
           <div className={classes.titleContainerAdditional}>
             <div className={classes.titleContainerAdditionalDateContainer}>
               <span className={classes.titleContainerAdditionalUploadDate}>
-                {song.createdAt}
+                {relativeTime}
               </span>
             </div>
             <div className={classes.titleContainerAdditionalGenreContainer}>
@@ -537,12 +545,11 @@ const SongItem = ({
             ) : (
               <FavoriteBorderRoundedIcon />
             )}
-            Like
           </IconButton>
           <IconButton
             className={classes.actionContainerBtn}
             onClick={handleSongDownloadClick}>
-            <FileDownloadOutlinedIcon /> Download
+            <FileDownloadOutlinedIcon />
           </IconButton>
 
           {user.uid === song.userID && (
@@ -552,13 +559,12 @@ const SongItem = ({
                 onClick={() => setIsEditing(true)}
                 disabled={isEditing}>
                 <EditOutlinedIcon />
-                Edit
               </IconButton>
               <IconButton
                 className={classes.actionContainerBtn}
                 onClick={() => setIsDeleting(true)}
                 disabled={isDeleting}>
-                <DeleteForeverOutlinedIcon /> Delete
+                <DeleteForeverOutlinedIcon />
               </IconButton>
             </>
           )}
