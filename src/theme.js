@@ -40,6 +40,7 @@ const theme = createTheme({
     },
     text: {
       primary: '#ffffff',
+      secondary: '#000',
     },
     highlight: {
       main: '#805ac1',
@@ -49,10 +50,14 @@ const theme = createTheme({
     },
   },
   components: {
-    MuiButton: {
+    MuiGrid: {
       styleOverrides: {
         root: {
           borderRadius: '4px', // Customize button border radius
+        },
+        item: {
+          paddingLeft: '0 !important',
+          paddingTop: '0 !important',
         },
       },
     },
@@ -66,7 +71,7 @@ const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Customize paper shadow
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
         },
       },
     },

@@ -28,7 +28,6 @@ const ActionBar = (props) => {
     }
   }, [props.user, getUserDocument, getUserDocumentResponse]);
 
-  // This will grab the profileURL of the logged in user to make a route to their page.
   useEffect(() => {
     if (!profileLink && getUserDocumentResponse.success) {
       setProfileLink(getUserDocumentResponse.document.profileURL);
@@ -74,7 +73,7 @@ const ActionBar = (props) => {
           <Link
             to={`/profile/${profileLink && profileLink}`}
             className={styles['actionBar__profileLink']}>
-            <img
+            <Avatar
               src={props.user.photoURL ? props.user.photoURL : placeholderImage}
               alt="Search button icon"
               className={styles['actionBar__profileLink-img']}

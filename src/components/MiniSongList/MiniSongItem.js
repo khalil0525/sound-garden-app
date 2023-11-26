@@ -1,17 +1,98 @@
 import React, { useEffect, useReducer } from 'react';
-import styles from './MiniSongItem.module.css';
+
+import { makeStyles } from '@mui/styles';
+
 import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useCloudStorage } from '../../hooks/useCloudStorage';
-import pauseIcon from '../../images/pause-svgrepo-com.svg';
-import playIcon from '../../images/Arrow_drop_right.svg';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import { ReactComponent as MenuIcon } from '../../images/menuicon.svg';
 
 import placeholderImage from '../../images/blank_image_placeholder.svg';
 
-import Button from '../UI/Button/Button';
 import Duration from '../AudioPlayer/AudioSeekControlBar/Duration';
-
+import { IconButton } from '@mui/material';
+import theme from '../../theme';
+const useStyles = makeStyles((theme) => ({
+  songItem: {
+    padding: '1.2rem 0.6rem',
+    width: '100%',
+    display: 'flex',
+  },
+  songItemBody: {
+    width: '100%',
+  },
+  songItemBodyContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  titleContainerContainer: {
+    display: 'flex',
+    gap: '0.8rem',
+  },
+  titleContainerPlayBtn: {
+    alignSelf: 'center',
+    borderRadius: '50%',
+    display: 'inline-block',
+    position: 'relative',
+    backgroundColor: `${theme.palette.primary.main} !important`,
+    width: '4rem',
+    height: '4rem',
+    border: 'none',
+    boxShadow: '0 1px rgba(15, 15, 15, 0.5)',
+    margin: '0 0.2rem 0 1rem',
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '0.4rem',
+    justifyContent: 'center',
+  },
+  titleContainerSongTitleArtist: {
+    fontSize: theme.typography.body2.fontSize,
+    fontWeight: 400,
+    lineHeight: '1.6rem',
+    color: theme.palette.subtleAccent.main,
+  },
+  titleContainerSongTitleGenre: {
+    fontSize: theme.typography.body3.fontSize,
+    fontWeight: 400,
+    color: theme.palette.subtleAccent.main,
+  },
+  titleContainerSongTitlee: {
+    fontSize: theme.typography.body3.fontSize,
+    fontWeight: 400,
+    color: theme.palette.text.secondary,
+  },
+  songItemRightSide: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: '3.2rem',
+  },
+  songItemSongPhotoContainer: {
+    width: '8rem',
+    height: '8rem',
+  },
+  songPhotoContainerImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: '14px',
+    boxShadow: `inset 0 0 0 1px ${theme.palette.background.default}`,
+  },
+  songItemDuration: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: theme.typography.body1.fontSize,
+    lineHeight: '1.9rem',
+    color: theme.palette.text.secondary,
+  },
+}));
 let initialState = {
   playing: false,
   isMounted: false,
@@ -54,6 +135,8 @@ const SongItem = ({
   user,
   showSongItemFooter = true,
 }) => {
+  const classes = useStyles(theme);
+
   const [songItemState, dispatchSongItemState] = useReducer(
     songItemReducer,
     initialState
@@ -70,27 +153,12 @@ const SongItem = ({
     playlistLocation,
   } = useAudioPlayerContext();
 
-  // New like system
-
-  // We set the inital state for isLiked based on if that document was found
-
-  // These 2 hooks are used to delete a song document/files
   const { deleteDocument: deleteSongDocument } = useFirestore('music');
 
   const { response: cloudStorageResponse } = useCloudStorage();
-  //***********************************************************
-  // We only change playlists when we click play on a song
-  // that is not apart of the current playlist.
-  // If we are on any other page and the current loadedSongURL
-  // is attached to a component on that page, the playlist will
-  // Still reference the playlist in the component we started
-  // the song at. However, we will be able to Play/pause the track
-  // from that other page
-  //***********************************************************
 
   const handlePlayPauseClick = () => {
     if (loadedSongURL !== song.songURL) {
-      //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
           type: 'PLAYLIST_INDEX_CHANGE',
@@ -102,8 +170,7 @@ const SongItem = ({
           payload: { playlistSongs, songIndex, songPlaylistLocation },
         });
       }
-    } //else it's paused
-    else if (playing) {
+    } else if (playing) {
       dispatchSongItemState({ type: 'PAUSE' });
       dispatchAudioPlayerContext({ type: 'SONG_PAUSED' });
     } else {
@@ -111,12 +178,8 @@ const SongItem = ({
       dispatchAudioPlayerContext({ type: 'SONG_PLAYED' });
     }
     dispatchSongItemState({ type: 'PLAY_PAUSE_CLICK' });
-    // setIsPlaying((prevState) => !prevState);
   };
 
-  // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT
-  // IS AT.
-  // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
   useEffect(() => {
     if (loadedSongURL === song.songURL && !isMounted) {
       dispatchSongItemState({ type: 'SONG_MOUNTED' });
@@ -125,7 +188,6 @@ const SongItem = ({
     }
   }, [loadedSongURL, song.songURL, isMounted, song.title]);
 
-  // Change the current time based on the global played state
   useEffect(() => {
     if (isSongPlaying && isMounted && !seeking) {
       dispatchSongItemState({
@@ -135,28 +197,14 @@ const SongItem = ({
     }
   }, [isSongPlaying, isMounted, currentSongPlayedTime, seeking]);
 
-  // When we press pause from the AudioPlayer this will be triggered to activate
-  // The play state inside of the songItem
   useEffect(() => {
-    // If globally no song is playing OR song was changed and this songItem isPlaying
-    // Set isPlaying to false.
     if ((!isSongPlaying || !isMounted) && playing) {
-      // if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
-
       dispatchSongItemState({ type: 'PAUSE' });
-      // setIsPlaying(false);
-    }
-    //Otherwise, if globally a song is playing and the URL is this songs
-    //
-    else if (isSongPlaying && isMounted && !playing) {
-      // else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
-
+    } else if (isSongPlaying && isMounted && !playing) {
       dispatchSongItemState({ type: 'PLAY' });
-      // setIsPlaying(true);
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
 
-  // When we edit a song this will ensure that we get a new version of our playlist
   useEffect(() => {
     if (
       playlistLocation === songPlaylistLocation &&
@@ -174,8 +222,7 @@ const SongItem = ({
     playlistSongs,
     dispatchAudioPlayerContext,
   ]);
-  // This useEffect fires if we delete the song and get a success message back
-  // It will then delete the likes on this song and then the song document itself.
+
   useEffect(() => {
     if (cloudStorageResponse.success) {
       deleteSongDocument(song.docID);
@@ -192,45 +239,42 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={styles['songItem']}>
-      <div className={styles['songItem__body']}>
-        <div className={styles['songItem__bodyContainer']}>
-          <div className={styles['songItem__aside']}>
-            <div className={styles['songItem__songPhotoContainer']}>
+    <li className={classes.songItem}>
+      <div className={classes.songItemBody}>
+        <div className={classes.songItemBodyContainer}>
+          <div className={classes.titleContainerContainer}>
+            <div className={classes.songItemSongPhotoContainer}>
               <img
-                className={styles['songPhotoContainer-img']}
+                className={classes.songPhotoContainerImg}
                 src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
                 alt="Song Cover Art"
               />
             </div>
-            <div className={styles['titleContainer']}>
-              <span className={styles['titleContainer__songTitle-title']}>
+            <div className={classes.titleContainer}>
+              <span className={classes.titleContainerSongTitleGenre}>
+                {song.genre}
+              </span>
+              <span className={classes.titleContainerSongTitleArtist}>
+                {song.artist}
+              </span>
+              <span
+                className={classes.titleContainerSongTitle}
+                style={{ color: theme.palette.text.secondary }}>
                 {song.title}
               </span>
-              <div className={styles['titleContainer__container']}>
-                <span className={styles['titleContainer__songTitle-artist']}>
-                  {song.artist}
-                </span>
-
-                <span className={styles['titleContainer__songTitle-genre']}>
-                  {song.genre}
-                </span>
-              </div>
             </div>
           </div>
-          <div className={styles['songItem__rightSide']}>
+          <div className={classes.songItemRightSide}>
             <Duration
-              className={styles['songItem__duration']}
-              seconds={song.duration * (1 - played)}
+              className={classes.songItemDuration}
+              seconds={song.duration * (1 - songItemState.played)}
             />
-            <Button
-              className={`${styles['titleContainer__playBtn']} `}
+            <IconButton
+              className={classes.titleContainerPlayBtn}
               onClick={handlePlayPauseClick}
-              iconImage={playing ? pauseIcon : playIcon}
-              altText={
-                playing ? 'Song pause button icon' : 'Song play button icon'
-              }
-            />
+              style={{ color: 'white' }}>
+              {playing ? <PauseIcon /> : <PlayArrowIcon />}
+            </IconButton>
             <MenuIcon />
           </div>
         </div>

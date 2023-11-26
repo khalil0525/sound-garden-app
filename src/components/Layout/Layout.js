@@ -4,15 +4,21 @@ import ActionBar from '../ActionBar/ActionBar'; // Adjust the path as needed
 
 const Layout = ({ children }) => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        padding: '3.2rem',
+        justifyContent: 'center',
+      }}>
       <Grid
         container
         spacing={3}
         width="100%">
         <Grid
           item
-          marginLeft="auto"
-          xs={5}>
+          container
+          xs={12}
+          justifyContent="flex-end">
           <ActionBar />
         </Grid>
         <Grid
