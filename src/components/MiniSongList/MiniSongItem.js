@@ -8,11 +8,11 @@ import { useCloudStorage } from '../../hooks/useCloudStorage';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { ReactComponent as MenuIcon } from '../../images/menuicon.svg';
-
+import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 import placeholderImage from '../../images/blank_image_placeholder.svg';
 
 import Duration from '../AudioPlayer/AudioSeekControlBar/Duration';
-import { IconButton } from '@mui/material';
+import { IconButton, Box, Avatar } from '@mui/material';
 import theme from '../../theme';
 const useStyles = makeStyles((theme) => ({
   songItem: {
@@ -51,21 +51,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
     gap: '0.4rem',
     justifyContent: 'center',
+    marginLeft: '1.6rem',
   },
   titleContainerSongTitleArtist: {
-    fontSize: theme.typography.body2.fontSize,
+    fontSize: theme.typography.body1.fontSize,
     fontWeight: 400,
     lineHeight: '1.6rem',
     color: theme.palette.subtleAccent.main,
   },
   titleContainerSongTitleGenre: {
-    fontSize: theme.typography.body3.fontSize,
+    fontSize: theme.typography.body1.fontSize,
     fontWeight: 400,
     color: theme.palette.subtleAccent.main,
+    textTransform: 'capitalize',
   },
-  titleContainerSongTitlee: {
-    fontSize: theme.typography.body3.fontSize,
-    fontWeight: 400,
+  titleContainerSongTitle: {
+    fontSize: theme.typography.h3.fontSize,
+    fontWeight: 500,
     color: theme.palette.text.secondary,
   },
   songItemRightSide: {
@@ -240,31 +242,40 @@ const SongItem = ({
 
   return (
     <li className={classes.songItem}>
-      <div className={classes.songItemBody}>
-        <div className={classes.songItemBodyContainer}>
-          <div className={classes.titleContainerContainer}>
-            <div className={classes.songItemSongPhotoContainer}>
+      <Box className={classes.songItemBody}>
+        <Box className={classes.songItemBodyContainer}>
+          <Box className={classes.titleContainerContainer}>
+            <Box className={classes.songItemSongPhotoContainer}>
               <img
                 className={classes.songPhotoContainerImg}
                 src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
                 alt="Song Cover Art"
               />
-            </div>
-            <div className={classes.titleContainer}>
-              <span className={classes.titleContainerSongTitleGenre}>
-                {song.genre}
-              </span>
-              <span className={classes.titleContainerSongTitleArtist}>
-                {song.artist}
-              </span>
+            </Box>
+
+            <Box className={classes.titleContainer}>
               <span
                 className={classes.titleContainerSongTitle}
                 style={{ color: theme.palette.text.secondary }}>
                 {song.title}
               </span>
-            </div>
-          </div>
-          <div className={classes.songItemRightSide}>
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <Avatar sx={{ width: 24, height: 24 }}></Avatar>
+                <span className={classes.titleContainerSongTitleArtist}>
+                  {song.artist}
+                </span>
+                <FiberManualRecordRoundedIcon
+                  sx={{ width: '0.4rem' }}
+                  htmlColor="#C4C4C4"
+                />
+                <span className={classes.titleContainerSongTitleGenre}>
+                  {song.genre}
+                </span>
+              </Box>
+            </Box>
+          </Box>
+          <Box className={classes.songItemRightSide}>
             <Duration
               className={classes.songItemDuration}
               seconds={song.duration * (1 - songItemState.played)}
@@ -276,9 +287,9 @@ const SongItem = ({
               {playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
             <MenuIcon />
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
     </li>
   );
 };
