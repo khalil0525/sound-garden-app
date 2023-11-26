@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navbarItemContent: {
     display: 'flex',
-    gap: '0.8rem', // Adjust as needed
+    gap: '1.6rem', // Adjust as needed
   },
   navbarItemContentIcon: {
     [theme.breakpoints.down('lg')]: {
@@ -100,7 +100,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '400',
     lineHeight: '24px',
     textDecoration: 'none',
-    padding: '0.8rem 0 0.8rem 4.8rem', // Adjust padding as needed
+    fontSize: theme.typography.h3.fontSize,
+    padding: '1.6rem 0 1.6rem 4.8rem', // Adjust padding as needed
     '&:hover': {
       background: theme.palette.primary.main,
       opacity: 0.6,
@@ -198,7 +199,8 @@ const SideNavigation = ({ className }) => {
 
       <Grid
         item
-        alignSelf="end">
+        alignSelf="end"
+        width="100%">
         <Box className={classes.sideNavigationAudioplayerContainer}>
           <AudioPlayer />
         </Box>

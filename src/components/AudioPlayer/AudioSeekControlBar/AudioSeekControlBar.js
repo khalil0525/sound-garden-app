@@ -10,8 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
   seekInput: {
     cursor: 'pointer',
-    minWidth: '60%',
-    margin: `0 ${theme.spacing(2)}px`, // Adjust margin as needed
+    minWidth: '50px',
   },
 }));
 

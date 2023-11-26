@@ -22,12 +22,14 @@ import { Headphones } from '@mui/icons-material';
 const useStyles = makeStyles((theme) => ({
   home: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '55% 45%',
     gap: theme.spacing(6),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
+      alignContent: 'center',
     },
     padding: '0',
+    width: '100%',
   },
 
   homeLeftSide: {
@@ -36,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    width: '56%',
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
+    width: '100%',
   },
 
   homeRightSide: {
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '16px',
-    width: '40%',
+    width: '100%',
   },
   homeContainer: {
     display: 'flex',
@@ -152,9 +151,7 @@ export default function Home({ scrollRef }) {
   const { user } = useAuthContext();
 
   return (
-    <Grid2
-      container
-      className={classes.home}>
+    <Grid2 className={classes.home}>
       <Box className={classes.homeLeftSide}>
         <Box className={classes.homeBanner}>
           <Box className={classes.homeBannerContainer}>
@@ -230,10 +227,7 @@ export default function Home({ scrollRef }) {
       </Box>
 
       <Box className={classes.homeRightSide}>
-        {' '}
-        <Box className={classes.homeRightSide}>
-          <MiniBanner />
-        </Box>
+        <MiniBanner />
       </Box>
     </Grid2>
   );

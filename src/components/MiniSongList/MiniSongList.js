@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styles from './MiniSongList.module.css';
 import SongItem from './MiniSongItem';
 import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Box } from '@mui/material';
 
 //We receive a song prop from whichever parent component calls this
 const MiniSongList = ({
@@ -47,16 +47,20 @@ const MiniSongList = ({
       setCurrent(songs.slice(0, count.next));
     }
   }, [songs, count.next]);
-  console.log(songs);
+
   return (
-    <div className={`${styles['songList']} ${className} `}>
+    <Box className={`${className} `}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={styles['songList__list']}
-        style={{ width: '100%' }}
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.2rem',
+        }}
         scrollableTarget={scrollRef.current}>
         {current &&
           likedSongDocuments &&
@@ -72,7 +76,7 @@ const MiniSongList = ({
             />
           ))}
       </InfiniteScroll>
-    </div>
+    </Box>
   );
 };
 

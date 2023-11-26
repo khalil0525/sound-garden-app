@@ -15,6 +15,16 @@ import theme from '../../theme';
 import { Slider, Stack } from '@mui/material';
 import { VolumeDown, VolumeUp } from '@mui/icons-material';
 const useStyles = makeStyles((theme) => ({
+  audioPlayer: {
+    // padding: "2rem 0 0 1rem",
+    display: 'flex',
+    width: '100%',
+
+    position: 'relative',
+    margin: ' 0 auto',
+    padding: '1.6rem',
+    flexDirection: 'column',
+  },
   audioPlayerLower: {
     display: 'flex',
     gap: '1rem',
@@ -48,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
     order: 1,
   },
   audioPlayerTrackDetailsSongArt: {
-    width: '3.6rem',
-    height: 'auto',
+    width: '5rem',
+    height: '5rem',
   },
   audioPlayerTrackDetailsSongArtImage: {
     width: '100%',
@@ -63,8 +73,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     justifyContent: 'center',
     gap: '0.2rem',
-    maxWidth: '17rem',
-    minWidth: '16rem',
+
     marginLeft: '0.8rem',
   },
   audioPlayerTrackDetailsSongDetailsTitle: {
@@ -83,32 +92,29 @@ const useStyles = makeStyles((theme) => ({
   },
   '@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape)':
     {
-      audioPlayer: {
-        // padding: "2rem 0 0 1rem",
-        // max-width: "100%",
-        maxHeight: '20.6rem',
-        position: 'relative',
-        margin: '0 auto',
-        padding: '',
-      },
       audioPlayerUpper: {
-        maxWwidth: '23rem',
+        maxWidth: '23rem',
         height: '15rem',
-        position: 'relative',
+        position: 'absolute',
         zIndex: 0,
         background: '#313132',
         borderRadius: '2.5rem',
         margin: 'inherit',
+        bottom: '64px',
+        left: 0,
+        right: 0,
       },
       audioPlayerLower: {
         display: 'block',
         maxWidth: '26rem',
-        height: '14.6rem',
+        height: '16rem',
         padding: '0',
         gap: '0',
-        position: 'relative',
+        position: 'absolute',
         zIndex: 1,
-        top: '-9rem',
+        bottom: 0,
+        left: 0,
+        right: 0,
         margin: 'inherit',
         background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
         borderRadius: '2.5rem',
@@ -131,7 +137,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.typography.body3.fontSize,
         lineHeight: '1.5rem',
         color: '#ffffff',
-        width: '10%',
       },
       audioPlayerControlsMain: {
         display: 'flex',
@@ -184,6 +189,7 @@ const useStyles = makeStyles((theme) => ({
       audioPlayerTrackDetails: {
         justifyContent: 'flex-start',
         margin: '0.6rem 0 0 1.4rem',
+        padding: '0 0.8rem',
       },
       audioPlayerTrackDetailsSongArt: {
         width: '5rem',
@@ -529,8 +535,6 @@ const AudioPlayer = () => {
                   : placeholderImage
               }
               alt="Song Cover Art"
-              width="64"
-              height="64"
             />
           </div>
           <div className={classes.audioPlayerTrackDetailsSongDetails}>

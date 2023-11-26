@@ -3,7 +3,7 @@ import { Box, Grid } from '@mui/material';
 import ActionBar from '../ActionBar/ActionBar'; // Adjust the path as needed
 import { useTheme } from '@mui/system';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user }) => {
   const theme = useTheme();
 
   return (
@@ -23,12 +23,13 @@ const Layout = ({ children }) => {
           md={5}
           m={{ xs: '0', md: '0 0 0 auto' }}
           justifyContent={{ xs: 'center', md: 'flex-end' }}>
-          <ActionBar />
+          <ActionBar user={user} />
         </Grid>
         <Grid
           item
           xs={12}
           sm={12}
+          md={12}
           width="100%"
           sx={{ marginTop: '1.6rem' }}>
           {children}

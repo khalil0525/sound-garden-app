@@ -1,5 +1,5 @@
-import styles from './Genres.module.css';
-
+import React from 'react';
+import { makeStyles } from '@mui/styles';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import CardList from '../../components/CardList/CardList';
 import Layout from '../../components/Layout/Layout';
@@ -36,13 +36,40 @@ const genres = [
   { title: 'world' },
 ];
 
+const useStyles = makeStyles((theme) => ({
+  genres: {
+    display: 'grid',
+    gridTemplateColumns: '33% 33% 33%',
+    gridTemplateRows: '1fr auto',
+    width: '100%',
+    gridRow: '2/-1',
+    gridColumn: '1/-1',
+    justifyContent: 'center',
+  },
+  genresCardList: {
+    gridRow: '2/-1',
+    gridColumn: '1/-1',
+    margin: '3.6rem auto',
+  },
+  genresActionBar: {
+    [theme.breakpoints.up('lg')]: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      gridColumn: '3/-1',
+      gridRow: '1',
+    },
+  },
+}));
+
 export default function Genres() {
+  const classes = useStyles();
   const { user } = useAuthContext();
+
   return (
     <Layout user={user}>
-      <div className={styles.genres}>
+      <div className={classes.genres}>
         <CardList
-          className={styles['genres__cardList']}
+          className={classes.genresCardList}
           list={genres}
           page={'genres'}
         />

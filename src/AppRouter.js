@@ -22,7 +22,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 function AppRouter({ user }) {
   const theme = useTheme();
   const scrollableNodeRef = React.createRef();
-  const isMobile = useMediaQuery('(max-width: 950px)');
+  const isMobile = useMediaQuery('(max-width: 1026px)');
   const isSingleColumn = useMediaQuery('(max-width: 1200px)');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -66,7 +66,7 @@ function AppRouter({ user }) {
           )}
           {!isMobile && (
             <Grid
-              xs={isMobile ? 12 : 2}
+              xs={isMobile ? 12 : 2.5}
               md={'20%'}
               bgcolor="secondary"
               p="3.2rem 1.6rem 1.6rem 0">
@@ -75,13 +75,13 @@ function AppRouter({ user }) {
           )}
 
           <Grid
-            xs={isMobile ? 12 : 10}
+            xs={isMobile ? 12 : 9.5}
             md={'80%'}
             p={{ xs: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
             <Box
               bgcolor={'white'}
               maxHeight="100%"
-              borderRadius={{ xs: '0', md: '1.6rem' }}
+              borderRadius={{ xs: '0', md: '3.4rem' }}
               overflowY="scroll">
               <Box
                 ref={scrollableNodeRef}
@@ -95,7 +95,7 @@ function AppRouter({ user }) {
                   },
                   '::-webkit-scrollbar-thumb': {
                     backgroundColor: '#888',
-                    borderRadius: '4px',
+                    borderRadius: '5px',
                   },
                   '::-webkit-scrollbar-track': {
                     backgroundColor: 'transparent',
@@ -105,7 +105,7 @@ function AppRouter({ user }) {
                   <Route
                     path="/"
                     element={
-                      <Layout>
+                      <Layout user={user}>
                         <Home scrollRef={scrollableNodeRef} />
                       </Layout>
                     }

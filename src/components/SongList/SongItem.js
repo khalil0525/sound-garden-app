@@ -14,7 +14,262 @@ import { ReactComponent as HeartIcon } from '../../images/Heart_greyfill.svg';
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
 import { addLike, removeLike } from '../../api/functions';
-
+import { makeStyles } from '@mui/styles';
+const useStyles = makeStyles((theme) => ({
+  songItem: {
+    padding: '2rem',
+    display: 'grid',
+    gridTemplateColumns: '1fr 4fr',
+    gridTemplateRows: '1fr 1fr 1fr',
+    width: '100%',
+    alignItems: 'center',
+    gap: '0.4rem',
+    listStyle: 'none',
+    [theme.breakpoints.up('lg')]: {
+      justifyContent: 'flex-start',
+    },
+  },
+  songItemHeader: {
+    gridColumn: '2/-1',
+    gridRow: '1',
+    [theme.breakpoints.up('lg')]: {
+      gridColumn: '2/3',
+    },
+  },
+  titleContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '0.5rem',
+  },
+  playBtn: {
+    alignSelf: 'center',
+    borderRadius: '50%',
+    display: 'inline-block',
+    position: 'relative',
+    background: theme.palette.primary.main,
+    width: '4rem',
+    height: '4rem',
+    border: 'none',
+    boxShadow: '0 1px rgba(15, 15, 15, 0.5)',
+    margin: '0 0.2rem 0 1rem',
+    [theme.breakpoints.up('lg')]: {
+      gridColumn: '1/2',
+      margin: '0',
+    },
+  },
+  songTitleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  songTitle: {
+    display: 'flex',
+    flex: '1',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '0.4rem',
+    justifyContent: 'center',
+  },
+  songTitleArtist: {
+    fontSize: theme.spacing(1.6),
+    fontWeight: 400,
+    lineHeight: theme.spacing(1.6),
+    color: '#999',
+  },
+  songTitleTitle: {
+    fontSize: theme.typography.h3.fontSize,
+    lineHeight: 1.2,
+    fontWeight: 500,
+    color: '#333',
+  },
+  titleContainerAdditional: {
+    display: 'none',
+    [theme.breakpoints.up('lg')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      alignSelf: 'flex-start',
+      textAlign: 'right',
+      gap: '0.4rem',
+      marginLeft: '0.5rem',
+    },
+  },
+  titleContainerAdditionalUploadDate: {
+    display: 'block',
+    color: '#ccc',
+    fontSize: theme.spacing(1.6),
+    fontWeight: 300,
+    lineHeight: theme.spacing(1.6),
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: '20rem',
+    },
+  },
+  titleContainerAdditionalGenreContainer: {
+    display: 'block',
+    marginTop: '0.2rem',
+    lineHeight: theme.spacing(1.2),
+  },
+  titleContainerAdditionalGenre: {
+    padding: '0 0.6rem',
+    fontSize: theme.spacing(1.6),
+    fontWeight: 400,
+    color: '#fff',
+    textTransform: 'uppercase',
+    backgroundColor: '#999',
+    border: '1px solid #999',
+    borderRadius: '2rem',
+    height: '1.8rem',
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: '20rem',
+    },
+  },
+  songItemFooter: {
+    display: 'none',
+    gridColumn: '2/2',
+    gridRow: '3/3',
+    [theme.breakpoints.up('lg')]: {
+      display: 'block',
+    },
+  },
+  actionContainerLikeBtnLiked: {
+    boxShadow: '0 0 0 1px ' + theme.palette.primary.main,
+    color: theme.palette.primary.main,
+  },
+  songItemAside: {
+    gridColumn: '1/1',
+    gridRow: '1/-1',
+  },
+  songItemSongPhotoContainer: {
+    width: '8rem',
+    height: '8rem',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '16rem',
+      maxHeight: '16rem',
+    },
+  },
+  songPhotoContainerImg: {
+    width: '100%',
+    height: '100%',
+    opacity: '1',
+    borderRadius: '14px',
+    boxShadow: 'inset 0 0 0 1px ' + theme.palette.grey[300],
+  },
+  songItemSeekControl: {
+    gridRow: '2',
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '0.6rem',
+    padding: '1.2rem',
+  },
+  songItemDuration: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: theme.spacing(1.6),
+    lineHeight: theme.spacing(1.9),
+    maxWidth: '5%',
+    color: '#161618',
+  },
+  // Media queries
+  '@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape)':
+    {
+      songItem: {
+        gridTemplateColumns: '1fr 4fr',
+        justifyContent: 'flex-start',
+      },
+      songItemHeader: {
+        gridColumn: '2/3',
+        gridRow: '1',
+      },
+      titleContainerSongTitle: {
+        display: 'flex',
+        flex: '1',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '0.4rem',
+        justifyContent: 'center',
+      },
+      titleContainerAdditional: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        alignSelf: 'flex-start',
+        textAlign: 'right',
+        gap: '0.4rem',
+        marginLeft: '0.5rem',
+      },
+      titleContainerAdditionalUploadDate: {
+        marginLeft: '20rem',
+        display: 'block',
+        color: '#ccc',
+        fontSize: theme.spacing(1.6),
+        fontWeight: 300,
+        lineHeight: theme.spacing(1.6),
+      },
+      titleContainerAdditionalGenreContainer: {
+        display: 'block',
+        marginTop: '0.2rem',
+        lineHeight: theme.spacing(1.2),
+      },
+      titleContainerAdditionalGenre: {
+        marginLeft: '20rem',
+        padding: '0 0.6rem',
+        fontSize: theme.spacing(1.6),
+        fontWeight: 400,
+        color: '#fff',
+        textTransform: 'uppercase',
+        backgroundColor: '#999',
+        border: '1px solid #999',
+        borderRadius: '2rem',
+        height: '1.8rem',
+      },
+      songItemFooter: {
+        display: 'block',
+      },
+      songItemActionContainer: {
+        display: 'flex',
+        gap: '0.5rem',
+      },
+      songItemActionContainerFirstChild: {
+        marginLeft: '1rem',
+      },
+      actionContainerBtn: {
+        background: '#fff',
+        border: 'none',
+        borderRadius: '0.3rem',
+      },
+      actionContainerBtnHover: {
+        borderColor: '#ccc',
+      },
+      songItemSongPhotoContainer: {
+        maxWidth: '16rem',
+        maxHeight: '16rem',
+      },
+      songItemSeekControl: {
+        gridColumn: '2/-1',
+      },
+      songItemSeekControlInput: {
+        width: '100%',
+      },
+    },
+  '@media (min-width: 768px) and (max-width: 991px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
+  },
+  '@media (min-width: 992px) and (max-width: 1199px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
+  },
+  '@media (min-width: 1200px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
+  },
+}));
 let initialState = {
   playing: false,
   isMounted: false,
@@ -58,6 +313,8 @@ const SongItem = ({
   songId = null,
   showSongItemFooter = true,
 }) => {
+  const classes = useStyles();
+
   const [songItemState, dispatchSongItemState] = useReducer(
     songItemReducer,
     initialState
@@ -290,123 +547,108 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={styles['songItem']}>
-      <div className={styles['songItem__header']}>
-        <div className={styles['songItem__titleContainer']}>
+    <li className={classes.songItem}>
+      <div className={classes.songItemHeader}>
+        <div className={classes.titleContainer}>
           <Button
-            className={`${styles['titleContainer__playBtn']} `}
+            className={`${classes.btn} ${classes.playBtn}`}
             onClick={handlePlayPauseClick}
             iconImage={playing ? pauseIcon : playIcon}
-            altText={
-              playing ? 'Song pause button icon' : 'Song play button icon'
-            }
+            altText={playing ? 'Pause' : 'Play'}
           />
-
-          <div className={styles['titleContainer__songTitle']}>
-            <span className={styles['titleContainer__songTitle-artist']}>
-              {song.artist}
-            </span>
-            <span className={styles['titleContainer__songTitle-title']}>
-              {song.title}
-            </span>
-          </div>
-          <div className={styles['titleContainer__additional']}>
-            <div className={styles['titleContainer__additional-dateContainer']}>
-              <span className={styles['titleContainer__additional-uploadDate']}>
-                {song.createdAt}
-              </span>
+          <div className={classes.songTitleContainer}>
+            <div className={classes.songTitle}>
+              <span>{song.artist}</span>
+              <span>{song.title}</span>
             </div>
-            <div
-              className={styles['titleContainer__additional-genreContainer']}>
-              <span className={styles['titleContainer__additional-genre']}>
-                {song.genre}
-              </span>
+            <div className={classes.additional}>
+              <div className={classes.additionalDateContainer}>
+                <span className={classes.additionalUploadDate}>
+                  {song.createdAt}
+                </span>
+              </div>
+              <div className={classes.additionalGenreContainer}>
+                <span className={classes.additionalGenre}>{song.genre}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <AudioSeekControlBar
-        className={styles['songItem__seekControl']}
-        durationClassName={styles['songItem__duration']}
+        className={classes.songItemSeekControl}
+        durationClassName={classes.songItemDuration}
         duration={song.duration}
         played={played}
         onChange={handleSeekChange}
         onMouseDown={handleSeekMouseDown}
         onMouseUp={handleSeekMouseUp}
       />
-
-      <div className={styles['songItem__footer']}>
-        <div className={styles['songItem__actionContainer']}>
-          <Button
-            className={`${styles['actionContainer__btn']} ${
-              isLiked && user.uid && styles['actionContainer-likeBtn--liked']
-            } `}
-            onClick={handleLikeClick}
-            disabled={isProcessingLike}
-            buttonSize="small"
-            iconImage={(className) => (
-              <HeartIcon
-                className={className}
-                alt="Song Like Icon"
+      {showSongItemFooter && (
+        <div className={classes.songItemFooter}>
+          <div className={classes.actionContainer}>
+            <Button
+              className={`${classes.btn} ${
+                isLiked && user.uid && classes.btnLiked
+              } `}
+              onClick={handleLikeClick}
+              disabled={isProcessingLike}
+              iconImage={(className) => (
+                <HeartIcon
+                  className={className}
+                  alt="Like"
+                />
+              )}>
+              Like
+            </Button>
+            <Button
+              className={`${classes.btn} ${classes.btnDownload}`}
+              onClick={handleSongDownloadClick}
+              iconImage={downloadIcon}
+              altText="Download">
+              Download
+            </Button>
+            {user.uid === song.userID && (
+              <>
+                <Button
+                  className={`${classes.btn} ${classes.btnEdit}`}
+                  onClick={() => setIsEditing(true)}
+                  disabled={isEditing}
+                  iconImage={editIcon}
+                  altText="Edit">
+                  Edit
+                </Button>
+                <Button
+                  className={`${classes.btn} ${classes.btnDelete}`}
+                  onClick={() => setIsDeleting(true)}
+                  disabled={isDeleting}
+                  iconImage={deleteIcon}
+                  altText="Delete">
+                  Delete
+                </Button>
+              </>
+            )}
+            {isEditing && (
+              <Modal
+                action="editSongInformation"
+                song={song}
+                onConfirm={handleEditSong}
+                onCancel={() => setIsEditing(false)}
               />
-            )}>
-            Like
-          </Button>
-          <Button
-            className={styles['actionContainer__btn']}
-            onClick={handleSongDownloadClick}
-            buttonSize="small"
-            iconClasses={styles['actionContainer_downloadBtn-icon']}
-            iconImage={downloadIcon}
-            altText="Song Download Icon">
-            Download
-          </Button>
-
-          {user.uid === song.userID && (
-            <>
-              <Button
-                className={`${styles['actionContainer__btn']}`}
-                onClick={() => setIsEditing(true)}
-                disabled={isEditing}
-                buttonSize="small"
-                iconClasses={styles['actionContainer_editBtn-icon']}
-                iconImage={editIcon}
-                altText="Song Edit Icon">
-                Edit
-              </Button>
-              <Button
-                className={styles['actionContainer__btn']}
-                onClick={() => setIsDeleting(true)}
-                disabled={isDeleting}
-                buttonSize="small"
-                iconClasses={styles['actionContainer_deleteBtn-icon']}
-                iconImage={deleteIcon}
-                altText="Song Delete Icon">
-                Delete
-              </Button>
-            </>
-          )}
-          {isEditing && (
-            <Modal
-              action="editSongInformation"
-              song={song}
-              onConfirm={handleEditSong}
-              onCancel={() => setIsEditing(false)}
-            />
-          )}
-          {isDeleting && (
-            <Modal
-              action="deleteSong"
-              onConfirm={handleDeleteSong}
-              onCancel={() => setIsDeleting(false)}
-            />
-          )}
+            )}
+            {isDeleting && (
+              <Modal
+                action="deleteSong"
+                onConfirm={handleDeleteSong}
+                onCancel={() => setIsDeleting(false)}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div className={styles['songItem__aside']}>
-        <div className={styles['songItem__songPhotoContainer']}>
+      )}
+      <div className={classes.songItemAside}>
+        <div className={classes.songPhotoContainer}>
           <img
-            className={styles['songPhotoContainer-img']}
+            className={classes.songPhotoContainerImg}
             src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
             alt="Song Cover Art"
           />

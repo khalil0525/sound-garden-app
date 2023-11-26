@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
     stroke: '#fff',
     borderRadius: '25px',
-    order: 3,
   },
   actionBarProfileLinkImg: {
     display: 'flex',
@@ -42,9 +41,11 @@ const useStyles = makeStyles((theme) => ({
   actionBarUploadLink: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'block',
-      width: theme.spacing(4.2),
-      height: theme.spacing(4.2),
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '4rem',
+      height: '4rem',
       color: '#fff',
       background: theme.palette.primary.main,
       boxShadow: '3px 4px 15px rgba(0, 0, 0, 0.12)',
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ActionBar = (props) => {
+const ActionBar = ({ user, className, query }) => {
   const classes = useStyles();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
@@ -67,14 +68,14 @@ const ActionBar = (props) => {
 
   useEffect(() => {
     if (
-      props.user &&
-      props.user.uid &&
+      user &&
+      user.uid &&
       !getUserDocumentResponse.success &&
       !getUserDocumentResponse.isPending
     ) {
-      getUserDocument(props.user.uid);
+      getUserDocument(user.uid);
     }
-  }, [props.user, getUserDocument, getUserDocumentResponse]);
+  }, [user, getUserDocument, getUserDocumentResponse]);
 
   useEffect(() => {
     if (!profileLink && getUserDocumentResponse.success) {
@@ -83,9 +84,9 @@ const ActionBar = (props) => {
   }, [getUserDocumentResponse, profileLink]);
 
   return (
-    <div className={`${classes.actionBar} ${props.className}`}>
+    <div className={`${classes.actionBar} ${className}`}>
       <nav className={classes.actionBarNav}>
-        {!props.user ? (
+        {!user ? (
           <>
             <Button
               onClick={() => setIsSigningIn(true)}
@@ -122,7 +123,7 @@ const ActionBar = (props) => {
             to={`/profile/${profileLink && profileLink}`}
             className={classes.actionBarProfileLink}>
             <Avatar
-              src={props.user.photoURL ? props.user.photoURL : placeholderImage}
+              src={user.photoURL ? user.photoURL : placeholderImage}
               alt="Search button icon"
               className={classes.actionBarProfileLinkImg}
             />
@@ -134,7 +135,7 @@ const ActionBar = (props) => {
           className={classes.actionBarUploadLink}>
           <CloudUploadIcon />
         </Link>
-        <ActionBarSearch queryString={props.query} />
+        <ActionBarSearch queryString={query} />
       </nav>
     </div>
   );
