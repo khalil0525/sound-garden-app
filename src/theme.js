@@ -61,10 +61,10 @@ const theme = createTheme({
         },
       },
     },
-    MuiTextField: {
+    MuiInputBase: {
       styleOverrides: {
         root: {
-          background: '#fff', // Customize text field background color
+          color: '#000 ', // Customize text field background color
         },
       },
     },
@@ -72,6 +72,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          padding: '0.4rem 0.8rem',
         },
       },
     },
