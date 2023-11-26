@@ -1,22 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './ActionBar.module.css';
+import { makeStyles } from '@mui/styles';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Modal from '../UI/Modal/Modal';
 import { ReactComponent as UploadIcon } from '../../images/Upload_duotone_line.svg';
 import placeholderImage from '../../images/profile_placeholder.svg';
-import Modal from '../UI/Modal/Modal';
 import ActionBarSearch from './ActionBarSearch';
-import Button from '../UI/Button/Button';
 import { useFirestore } from '../../hooks/useFirestore';
 
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+const useStyles = makeStyles((theme) => ({
+  actionBar: {
+    position: 'relative',
+    zIndex: 1000,
+    maxWidth: '100%',
+  },
+  actionBarNav: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing(1),
+  },
+  actionBarProfileLink: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: theme.spacing(4.2),
+    height: theme.spacing(4.2),
+    backgroundImage: `url('/src/images/blank_image_placeholder.svg')`,
+    filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
+    stroke: '#fff',
+    borderRadius: '25px',
+    order: 3,
+  },
+  actionBarProfileLinkImg: {
+    display: 'flex',
+    alignSelf: 'center',
+    width: '100%',
+    height: '100%',
+    borderRadius: '10.18rem',
+  },
+  actionBarUploadLink: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+      width: theme.spacing(4.2),
+      height: theme.spacing(4.2),
+      color: '#fff',
+      background: theme.palette.primary.main,
+      boxShadow: '3px 4px 15px rgba(0, 0, 0, 0.12)',
+      borderRadius: '25px',
+      padding: theme.spacing(1),
+    },
+  },
+  actionBarButton: {
+    backgroundColor: 'transparent',
+  },
+}));
+
 const ActionBar = (props) => {
+  const classes = useStyles();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const [profileLink, setProfileLink] = useState(null);
   const { getDocument: getUserDocument, response: getUserDocumentResponse } =
     useFirestore('users');
-  // This will run only if user is currently logged in
+
   useEffect(() => {
     if (
       props.user &&
@@ -35,22 +84,22 @@ const ActionBar = (props) => {
   }, [getUserDocumentResponse, profileLink]);
 
   return (
-    <div className={`${styles.actionBar} ${props.className}`}>
-      <nav className={styles['actionBar__nav']}>
+    <div className={`${classes.actionBar} ${props.className}`}>
+      <nav className={classes.actionBarNav}>
         {!props.user ? (
           <>
             <Button
               onClick={() => setIsSigningIn(true)}
               disabled={isSigningIn}
-              buttonSize="large"
-              className={styles['actionBar__button']}>
+              size="large"
+              className={classes.actionBarButton}>
               Sign in
             </Button>
             <Button
               onClick={() => setIsCreatingAccount(true)}
               disabled={isCreatingAccount}
-              buttonSize="large"
-              className={styles['actionBar__button']}>
+              size="large"
+              className={classes.actionBarButton}>
               Create Account
             </Button>
 
@@ -72,18 +121,18 @@ const ActionBar = (props) => {
         ) : (
           <Link
             to={`/profile/${profileLink && profileLink}`}
-            className={styles['actionBar__profileLink']}>
+            className={classes.actionBarProfileLink}>
             <Avatar
               src={props.user.photoURL ? props.user.photoURL : placeholderImage}
               alt="Search button icon"
-              className={styles['actionBar__profileLink-img']}
+              className={classes.actionBarProfileLinkImg}
             />
           </Link>
         )}
 
         <Link
           to="/upload"
-          className={styles['actionBar__uploadLink']}>
+          className={classes.actionBarUploadLink}>
           <UploadIcon alt="Upload button icon" />
         </Link>
         <ActionBarSearch queryString={props.query} />
