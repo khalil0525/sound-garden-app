@@ -50,6 +50,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'grey.400 !important', // Set the background color to grey.400
+        },
+      },
+    },
     MuiGrid: {
       styleOverrides: {
         root: {

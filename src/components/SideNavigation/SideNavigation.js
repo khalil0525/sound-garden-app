@@ -2,11 +2,12 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
-import soundGardenLogo from '../../images/sg-logo.png';
+
 import { useTheme } from '@mui/material/styles';
 import { ReactComponent as HomeIcon } from '../../images/Home_fill.svg';
 import { ReactComponent as ArtistIcon } from '../../images/User_duotone_line.svg';
 import { ReactComponent as GenreIcon } from '../../images/Mic_alt_duotone.svg';
+import { ReactComponent as LogoIcon } from '../../images/logo.svg';
 import { NavLink } from 'react-router-dom';
 
 import { Box, Stack, Typography } from '@mui/material';
@@ -24,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
     },
   },
+  logoIcon: {
+    width: '100%', // Ensure the logo takes up the entire width of its container
+    height: '100%', // Ensure the logo takes up the entire height of its container
+    borderRadius: '12px', // Add border radius for a rounded look
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow for depth
+  },
   sideNavigationHeader: {
     display: 'flex',
     flexDirection: 'column',
@@ -33,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
   sideNavigationImageContainer: {
     display: 'flex',
-    maxWidth: '180px',
-    maxHeight: '180px',
+    maxWidth: '220px',
+    maxHeight: '220px',
     borderRadius: '12px',
     [theme.breakpoints.down('lg')]: {
       maxWidth: '60px',
@@ -121,11 +128,7 @@ const SideNavigation = ({ className }) => {
       className={`${classes.sideNavigation} ${className}`}>
       <Grid className={classes.sideNavigationHeader}>
         <Box className={classes.sideNavigationImageContainer}>
-          <img
-            src={soundGardenLogo}
-            alt="Soundgarden logo"
-            className={classes.sideNavigationImage}
-          />
+          <LogoIcon className={classes.sideNavigationImage} />
         </Box>
       </Grid>
       <Grid className={classes.sideNavigationNavContainer}>

@@ -21,6 +21,7 @@ import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import SongList from '../../components/SongList/SongList';
+import SongItemSkeleton from '../../components/UI/Skeletons/SongItemSkeleton';
 // const tabs = ['Tracks', 'Playlists', 'Reposted', 'Likes'];
 const tabs = ['Tracks', 'Likes'];
 //2480 x 520 (1240 x 260 res)
@@ -421,17 +422,21 @@ export default function Profile({ scrollRef }) {
             </Grid>
           </Grid>
         </Grid>
-        {profile && loadedSongs && loadedSongs.length ? (
-          <Grid
-            item
-            xs={12}>
+
+        <Grid
+          item
+          xs={12}>
+          {/* <SongItemSkeleton count={5} /> */}
+          {profile && loadedSongs && loadedSongs.length && currentTab ? (
             <SongList
               songs={loadedSongs}
               scrollRef={scrollRef}
               user={user ? user : 'none'}
             />
-          </Grid>
-        ) : null}
+          ) : (
+            <SongItemSkeleton count={5} />
+          )}
+        </Grid>
       </Grid>
 
       {isEditingProfile && (

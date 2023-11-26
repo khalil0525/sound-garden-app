@@ -66,7 +66,7 @@ function AppRouter({ user }) {
           )}
           {!isMobile && (
             <Grid
-              xs={isMobile ? 12 : 2.5}
+              xs={isMobile ? 12 : 2}
               md={'20%'}
               bgcolor="secondary"
               p="3.2rem 1.6rem 1.6rem 0">
@@ -75,7 +75,7 @@ function AppRouter({ user }) {
           )}
 
           <Grid
-            xs={isMobile ? 12 : 9.5}
+            xs={isMobile ? 12 : 10}
             md={'80%'}
             p={{ xs: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
             <Box
