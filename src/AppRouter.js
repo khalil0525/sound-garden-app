@@ -82,7 +82,7 @@ function AppRouter({ user }) {
               bgcolor={'white'}
               maxHeight="100%"
               borderRadius={{ xs: '0', md: '3.4rem' }}
-              overflowY="scroll">
+              sx={{ overflowY: 'scroll' }}>
               <Box
                 ref={scrollableNodeRef}
                 sx={{

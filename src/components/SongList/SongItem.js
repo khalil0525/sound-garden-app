@@ -1,12 +1,12 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import styles from './SongItem.module.css';
+
 import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useCloudStorage } from '../../hooks/useCloudStorage';
 import AudioSeekControlBar from '../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar';
 
 import placeholderImage from '../../images/blank_image_placeholder.svg';
-
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
@@ -14,107 +14,244 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-import { ReactComponent as HeartIcon } from '../../images/Heart_greyfill.svg';
 import Modal from '../UI/Modal/Modal';
 import { IconButton } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
+import theme from '../../theme';
 
 const useStyles = makeStyles((theme) => ({
   songItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    listStyleType: 'none',
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(2),
-    '&:last-child': {
-      borderBottom: 'none',
+    padding: '2rem',
+    display: 'grid',
+    gridTemplateColumns: '1fr 4fr',
+    gridTemplateRows: '1fr 1fr 1fr',
+    width: '100%',
+    alignItems: 'center',
+    gap: '0.4rem',
+    listStyle: 'none',
+
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 4fr',
+      justifyContent: 'flex-start',
     },
   },
   songItemHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(2),
+    gridColumn: '2/-1',
+    gridRow: '1',
+    [theme.breakpoints.up('md')]: {
+      gridColumn: '2/3',
+      gridRow: '1',
+    },
   },
-  titleContainer: {
+  songItemTitleContainer: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    gap: '0.5rem',
   },
-  playBtn: {
-    marginRight: theme.spacing(2),
+  titleContainerPlayBtn: {
+    alignSelf: 'center',
+    borderRadius: '50%',
+    display: 'inline-block',
+    position: 'relative',
+    background: `${theme.palette.primary.main} !important`,
+    width: '4rem',
+    height: '4rem',
+    border: 'none',
+    boxShadow: '0 1px rgba(15, 15, 15, 0.5)',
+    margin: '0 0.2rem 0 1rem',
   },
-  songTitleContainer: {
+  titleContainerSongTitle: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '0.4rem',
+    justifyContent: 'center',
   },
-  songTitle: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: theme.spacing(2),
+  titleContainerSongTitleArtist: {
+    fontSize: theme.typography.body2.fontSize,
+    fontWeight: 400,
+    lineHeight: '1.6rem',
+    color: '#999',
   },
-  additional: {
-    display: 'flex',
-    flexDirection: 'column',
+  titleContainerSongTitleTitle: {
+    fontSize: theme.typography.h3.fontSize,
+    lineHeight: 1.2,
+    fontWeight: 500,
+    color: '#333',
   },
-  additionalDateContainer: {
-    marginBottom: theme.spacing(1),
-  },
-  additionalUploadDate: {
-    color: theme.palette.text.secondary,
-  },
-  additionalGenreContainer: {},
-  additionalGenre: {
-    color: theme.palette.text.secondary,
-  },
-  songItemSeekControl: {
-    marginTop: theme.spacing(2),
-  },
-  songItemDuration: {
-    marginTop: theme.spacing(1),
-    color: theme.palette.text.secondary,
+  titleContainerAdditional: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      alignSelf: 'flex-start',
+      textAlign: 'right',
+      gap: '0.4rem',
+      marginLeft: '0.5rem',
+    },
   },
   songItemFooter: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: theme.spacing(2),
+    display: 'none',
+    gridColumn: '2/2',
+    gridRow: '3/3',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
   },
-  actionContainer: {
-    display: 'flex',
-    gap: theme.spacing(2),
-  },
-  btn: {
-    fontSize: '0.8rem',
-  },
-  btnLiked: {
+  actionContainerLikeBtnLiked: {
+    boxShadow: '0 0 0 1px ' + theme.palette.primary.main,
     color: theme.palette.primary.main,
   },
-  btnDownload: {
-    color: theme.palette.success.main,
-  },
-  btnEdit: {
-    color: theme.palette.warning.main,
-  },
-  btnDelete: {
-    color: theme.palette.error.main,
-  },
   songItemAside: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    gridColumn: '1/1',
+    gridRow: '1/-1',
   },
-  songPhotoContainer: {
-    width: '50px',
-    height: '50px',
-    borderRadius: '50%',
-    overflow: 'hidden',
+  songItemSongPhotoContainer: {
+    width: '8rem',
+    height: '8rem',
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '12rem',
+      height: '12rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '16rem',
+      maxHeight: '16rem',
+    },
   },
   songPhotoContainerImg: {
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
+    opacity: 1,
+    borderRadius: '14px',
+    boxShadow: 'inset 0 0 0 1px ' + theme.palette.grey[300],
+  },
+  songItemSeekControl: {
+    gridRow: '2',
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '0.6rem',
+    padding: '1.2rem',
+  },
+  songItemDuration: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: theme.typography.body2.fontSize,
+    lineHeight: '1.9rem',
+    maxWidth: '5%',
+    color: '#161618',
+  },
+  '@media only screen and (min-width: 992px)': {
+    songItem: {
+      gridTemplateColumns: '1fr 4fr',
+      justifyContent: 'flex-start',
+    },
+    songItemHeader: {
+      gridColumn: '2/3',
+      gridRow: '1',
+    },
+    titleContainerSongTitle: {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: '0.4rem',
+      justifyContent: 'center',
+    },
+    titleContainerAdditional: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      alignSelf: 'flex-start',
+      textAlign: 'right',
+      gap: '0.4rem',
+      marginLeft: '0.5rem',
+    },
+    titleContainerAdditionalUploadDate: {
+      display: 'block',
+      color: '#ccc',
+      fontSize: theme.typography.body2.fontSize,
+      fontWeight: 300,
+      lineHeight: '1.6rem',
+    },
+    titleContainerAdditionalGenreContainer: {
+      display: 'block',
+      marginTop: '0.2rem',
+      lineHeight: '1.2rem',
+    },
+    titleContainerAdditionalGenre: {
+      padding: '0 0.6rem',
+      fontSize: theme.typography.body2.fontSize,
+      fontWeight: 400,
+      color: '#fff',
+      textTransform: 'uppercase',
+      backgroundColor: '#999',
+      border: '1px solid #999',
+      borderRadius: '2rem',
+      height: '1.8rem',
+    },
+    songItemFooter: {
+      display: 'block',
+    },
+    songItemActionContainer: {
+      display: 'flex',
+      gap: '0.5rem',
+    },
+    songItemActionContainerFirst: {
+      marginLeft: '1rem',
+    },
+    actionContainerBtn: {
+      display: 'inline-block',
+      gap: '0.8rem',
+      alignItems: 'center',
+      background: '#fff !important',
+      border: '1px solid #ccc !important',
+      borderRadius: '0.4rem !important',
+      padding: '0.4rem 0.8rem !important',
+      minWidth: '6.4rem',
+      color: '#000 !important',
+    },
+    actionContainerBtnHover: {
+      borderColor: '#ccc',
+    },
+    songItemSongPhotoContainer: {
+      maxWidth: '16rem',
+      maxHeight: '16rem',
+    },
+    songItemSeekControl: {
+      gridColumn: '2/-1',
+      width: '100%',
+      '& input': {
+        width: '100%',
+      },
+    },
+    songItemSeekControlInput: {
+      width: '100%',
+    },
+  },
+  '@media (min-width: 768px) and (max-width: 991px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
+  },
+  '@media (min-width: 992px) and (max-width: 1199px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
+  },
+  '@media (min-width: 1200px)': {
+    songItemSongPhotoContainer: {
+      width: '12rem',
+      height: '12rem',
+    },
   },
 }));
+
 let initialState = {
   playing: false,
   isMounted: false,
@@ -158,7 +295,7 @@ const SongItem = ({
   songId = null,
   showSongItemFooter = true,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   const [songItemState, dispatchSongItemState] = useReducer(
     songItemReducer,
@@ -179,28 +316,14 @@ const SongItem = ({
     playlistLocation,
   } = useAudioPlayerContext();
 
-  // New like system
-
-  // We set the inital state for isLiked based on if that document was found
   const [isLiked, setIsLiked] = useState(() => liked);
 
-  // These 2 hooks are used to delete a song document/files
   const { deleteDocument: deleteSongDocument } = useFirestore('music');
 
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
-  //***********************************************************
-  // We only change playlists when we click play on a song
-  // that is not apart of the current playlist.
-  // If we are on any other page and the current loadedSongURL
-  // is attached to a component on that page, the playlist will
-  // Still reference the playlist in the component we started
-  // the song at. However, we will be able to Play/pause the track
-  // from that other page
-  //***********************************************************
 
   const handlePlayPauseClick = () => {
     if (loadedSongURL !== song.songURL) {
-      //If we are on the same playlist but not playing the current song
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
           type: 'PLAYLIST_INDEX_CHANGE',
@@ -239,9 +362,6 @@ const SongItem = ({
     };
     xhr.open('GET', song.songURL);
     xhr.send();
-    // Or inserted into an <img> element
-    // const img = document.getElementById("myimg");
-    // img.setAttribute("src", url);
   };
 
   const handleEditSong = () => {
@@ -251,21 +371,6 @@ const SongItem = ({
   const handleDeleteSong = async () => {
     deleteSongFiles(song);
   };
-
-  // const handleLikeClick = () => {
-
-  //   // if (user.uid) {
-  //   //   setIsLiked((prevState) => !prevState);
-  //   //   let newState;
-  //   //   if (!isLiked) {
-  //   //     newState = { likes: [...liked, song.docID] };
-  //   //     updateLikedDocument(user.uid, newState);
-  //   //   } else {
-  //   //     newState = { likes: liked.filter((like) => like !== song.docID) };
-  //   //     updateLikedDocument(user.uid, newState);
-  //   //   }
-  //   // }
-  // };
 
   const handleSeekMouseDown = () => {
     if (isMounted) {
@@ -314,9 +419,6 @@ const SongItem = ({
     }
   }
 
-  // MOUNT THE SONG WHEN WE PLAY IT OR SWITCH BACK TO A PLACE THIS COMPONENT
-  // IS AT.
-  // OR DISMOUNT IF THIS WAS THE PREVIOUS SONG AND WE CHANGED
   useEffect(() => {
     if (loadedSongURL === song.songURL && !isMounted) {
       dispatchSongItemState({ type: 'SONG_MOUNTED' });
@@ -335,28 +437,14 @@ const SongItem = ({
     }
   }, [isSongPlaying, isMounted, currentSongPlayedTime, seeking]);
 
-  // When we press pause from the AudioPlayer this will be triggered to activate
-  // The play state inside of the songItem
   useEffect(() => {
-    // If globally no song is playing OR song was changed and this songItem isPlaying
-    // Set isPlaying to false.
     if ((!isSongPlaying || !isMounted) && playing) {
-      // if ((!isSongPlaying || loadedSongURL !== song.songURL) && isPlaying) {
-
       dispatchSongItemState({ type: 'PAUSE' });
-      // setIsPlaying(false);
-    }
-    //Otherwise, if globally a song is playing and the URL is this songs
-    //
-    else if (isSongPlaying && isMounted && !playing) {
-      // else if (isSongPlaying && loadedSongURL === song.songURL && !isPlaying) {
-
+    } else if (isSongPlaying && isMounted && !playing) {
       dispatchSongItemState({ type: 'PLAY' });
-      // setIsPlaying(true);
     }
   }, [loadedSongURL, isSongPlaying, playing, isMounted, song.title]);
 
-  // When we edit a song this will ensure that we get a new version of our playlist
   useEffect(() => {
     if (
       playlistLocation === songPlaylistLocation &&
@@ -374,8 +462,7 @@ const SongItem = ({
     playlistSongs,
     dispatchAudioPlayerContext,
   ]);
-  // This useEffect fires if we delete the song and get a success message back
-  // It will then delete the likes on this song and then the song document itself.
+
   useEffect(() => {
     if (cloudStorageResponse.success) {
       deleteSongDocument(song.docID);
@@ -392,35 +479,35 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={styles['songItem']}>
-      <div className={styles['songItem__header']}>
-        <div className={styles['songItem__titleContainer']}>
+    <li className={classes.songItem}>
+      <div className={classes.songItemHeader}>
+        <div className={classes.songItemTitleContainer}>
           <IconButton
-            className={`${styles['titleContainer__playBtn']} `}
-            onClick={handlePlayPauseClick}
-            altText={
-              playing ? 'Song pause button icon' : 'Song play button icon'
-            }>
-            {playing ? <PlayArrowIcon /> : <PauseIcon />}
+            className={classes.titleContainerPlayBtn}
+            onClick={handlePlayPauseClick}>
+            {playing ? (
+              <PauseIcon htmlColor="#fff" />
+            ) : (
+              <PlayArrowIcon htmlColor="#fff" />
+            )}
           </IconButton>
 
-          <div className={styles['titleContainer__songTitle']}>
-            <span className={styles['titleContainer__songTitle-artist']}>
+          <div className={classes.titleContainerSongTitle}>
+            <span className={classes.titleContainerSongTitleArtist}>
               {song.artist}
             </span>
-            <span className={styles['titleContainer__songTitle-title']}>
+            <span className={classes.titleContainerSongTitleTitle}>
               {song.title}
             </span>
           </div>
-          <div className={styles['titleContainer__additional']}>
-            <div className={styles['titleContainer__additional-dateContainer']}>
-              <span className={styles['titleContainer__additional-uploadDate']}>
+          <div className={classes.titleContainerAdditional}>
+            <div className={classes.titleContainerAdditionalDateContainer}>
+              <span className={classes.titleContainerAdditionalUploadDate}>
                 {song.createdAt}
               </span>
             </div>
-            <div
-              className={styles['titleContainer__additional-genreContainer']}>
-              <span className={styles['titleContainer__additional-genre']}>
+            <div className={classes.titleContainerAdditionalGenreContainer}>
+              <span className={classes.titleContainerAdditionalGenre}>
                 {song.genre}
               </span>
             </div>
@@ -428,8 +515,8 @@ const SongItem = ({
         </div>
       </div>
       <AudioSeekControlBar
-        className={styles['songItem__seekControl']}
-        durationClassName={styles['songItem__duration']}
+        className={classes.songItemSeekControl}
+        durationClassName={classes.songItemDuration}
         duration={song.duration}
         played={played}
         onChange={handleSeekChange}
@@ -437,47 +524,40 @@ const SongItem = ({
         onMouseUp={handleSeekMouseUp}
       />
 
-      <div className={styles['songItem__footer']}>
-        <div className={styles['songItem__actionContainer']}>
+      <div className={classes.songItemFooter}>
+        <div className={classes.songItemActionContainer}>
           <IconButton
-            className={`${styles['actionContainer__btn']} ${
-              isLiked && user.uid && styles['actionContainer-likeBtn--liked']
+            className={`${classes.actionContainerBtn} ${
+              isLiked && user.uid && classes.actionContainerLikeBtnLiked
             } `}
             onClick={handleLikeClick}
-            disabled={isProcessingLike}
-            buttonSize="small"
-            iconImage={(className) => <HeartIcon alt="Song Like Icon" />}>
-            <FavoriteBorderRoundedIcon />
+            disabled={isProcessingLike}>
+            {isLiked ? (
+              <FavoriteIcon htmlColor={theme.palette.primary.main} />
+            ) : (
+              <FavoriteBorderRoundedIcon />
+            )}
             Like
           </IconButton>
           <IconButton
-            className={styles['actionContainer__btn']}
-            onClick={handleSongDownloadClick}
-            buttonSize="small"
-            iconClasses={styles['actionContainer_downloadBtn-icon']}
-            altText="Song Download Icon">
+            className={classes.actionContainerBtn}
+            onClick={handleSongDownloadClick}>
             <FileDownloadOutlinedIcon /> Download
           </IconButton>
 
           {user.uid === song.userID && (
             <>
               <IconButton
-                className={`${styles['actionContainer__btn']}`}
+                className={classes.actionContainerBtn}
                 onClick={() => setIsEditing(true)}
-                disabled={isEditing}
-                buttonSize="small"
-                iconClasses={styles['actionContainer_editBtn-icon']}
-                altText="Song Edit Icon">
+                disabled={isEditing}>
                 <EditOutlinedIcon />
                 Edit
               </IconButton>
               <IconButton
-                className={styles['actionContainer__btn']}
+                className={classes.actionContainerBtn}
                 onClick={() => setIsDeleting(true)}
-                disabled={isDeleting}
-                buttonSize="small"
-                iconClasses={styles['actionContainer_deleteBtn-icon']}
-                altText="Song Delete Icon">
+                disabled={isDeleting}>
                 <DeleteForeverOutlinedIcon /> Delete
               </IconButton>
             </>
@@ -499,10 +579,10 @@ const SongItem = ({
           )}
         </div>
       </div>
-      <div className={styles['songItem__aside']}>
-        <div className={styles['songItem__songPhotoContainer']}>
+      <div className={classes.songItemAside}>
+        <div className={classes.songItemSongPhotoContainer}>
           <img
-            className={styles['songPhotoContainer-img']}
+            className={classes.songPhotoContainerImg}
             src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
             alt="Song Cover Art"
           />

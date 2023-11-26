@@ -25,12 +25,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '1.6rem',
     flexDirection: 'column',
   },
-  audioPlayerLower: {
-    display: 'flex',
-    gap: '1rem',
-    background: '#313132',
-    padding: '0.2rem',
-  },
+
   audioPlayerControlsSeek: {
     display: 'none',
   },
@@ -57,14 +52,7 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 0 auto',
     order: 1,
   },
-  audioPlayerTrackDetailsSongArt: {
-    width: '5rem',
-    height: '5rem',
-  },
-  audioPlayerTrackDetailsSongArtImage: {
-    width: '100%',
-    height: '100%',
-  },
+
   audioPlayerTrackDetailsSongDetails: {
     display: 'flex',
     flexDirection: 'column',
@@ -90,35 +78,50 @@ const useStyles = makeStyles((theme) => ({
     color: '#ffffff',
     opacity: 0.5,
   },
+  audioPlayerTrackDetailsSongArt: {
+    position: 'absolute',
+    zIndex: 3,
+    bottom: '12rem',
+    left: 0,
+    right: 0,
+    maxWidth: '26rem',
+    height: '30rem',
+    margin: 'inherit',
+  },
+  audioPlayerTrackDetailsSongArtImage: {
+    width: '100%',
+    height: '100%',
+  },
+  audioPlayerUpper: {
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1) !important',
+    maxWidth: '23rem',
+    height: '15rem',
+    position: 'absolute',
+    zIndex: 5,
+    background: '#313132',
+    borderRadius: '2.5rem',
+    margin: 'inherit',
+    bottom: '64px',
+    left: 0,
+    right: 0,
+  },
+  audioPlayerLower: {
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1) !important',
+    maxWidth: '26rem',
+    height: '16rem',
+    padding: '0',
+    gap: '0',
+    position: 'absolute',
+    zIndex: 6,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'inherit',
+    background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
+    borderRadius: '2.5rem',
+  },
   '@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape)':
     {
-      audioPlayerUpper: {
-        maxWidth: '23rem',
-        height: '15rem',
-        position: 'absolute',
-        zIndex: 0,
-        background: '#313132',
-        borderRadius: '2.5rem',
-        margin: 'inherit',
-        bottom: '64px',
-        left: 0,
-        right: 0,
-      },
-      audioPlayerLower: {
-        display: 'block',
-        maxWidth: '26rem',
-        height: '16rem',
-        padding: '0',
-        gap: '0',
-        position: 'absolute',
-        zIndex: 1,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        margin: 'inherit',
-        background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
-        borderRadius: '2.5rem',
-      },
       audioPlayerControls: {
         display: 'flex',
         flexDirection: 'column',
@@ -191,10 +194,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '0.6rem 0 0 1.4rem',
         padding: '0 0.8rem',
       },
-      audioPlayerTrackDetailsSongArt: {
-        width: '5rem',
-        height: '5rem',
-      },
+
       audioPlayerTrackDetailsSongArtImage: {
         borderRadius: '12px',
       },
@@ -466,7 +466,17 @@ const AudioPlayer = () => {
         onProgress={handleProgress}
         onDuration={handleDuration}
       />
-
+      <div className={classes.audioPlayerTrackDetailsSongArt}>
+        <img
+          className={classes.audioPlayerTrackDetailsSongArtImage}
+          src={
+            loadedSongURL && playlist[playlistIndex].songPhotoURL
+              ? playlist[playlistIndex].songPhotoURL
+              : 'https://source.unsplash.com/300x300/?abstract'
+          }
+          alt="Song Cover Art"
+        />
+      </div>
       <div className={classes.audioPlayerUpper}>
         <div className={classes.audioPlayerControls}>
           <AudioSeekControlBar
@@ -480,7 +490,6 @@ const AudioPlayer = () => {
           />
         </div>
       </div>
-
       <div className={classes.audioPlayerLower}>
         <div className={classes.audioPlayerControlsMain}>
           <IconButton
@@ -510,14 +519,12 @@ const AudioPlayer = () => {
           className={classes.audioPlayerControlsVolume}
           spacing={1}
           direction="row"
-          sx={{}}
           alignItems="center">
           <VolumeDown />
           <Slider
             aria-label="Volume"
             min={0}
-            st
-            step="any"
+            step={0.1}
             max={1}
             value={volume}
             onChange={handleVolumeChange}
@@ -526,17 +533,6 @@ const AudioPlayer = () => {
         </Stack>
 
         <div className={classes.audioPlayerTrackDetails}>
-          <div className={classes.audioPlayerTrackDetailsSongArt}>
-            <img
-              className={classes.audioPlayerTrackDetailsSongArtImage}
-              src={
-                loadedSongURL && playlist[playlistIndex].songPhotoURL
-                  ? playlist[playlistIndex].songPhotoURL
-                  : placeholderImage
-              }
-              alt="Song Cover Art"
-            />
-          </div>
           <div className={classes.audioPlayerTrackDetailsSongDetails}>
             <AudioPlayerMarquee
               className={classes.audioPlayerTrackDetailsSongDetailsTitle}>

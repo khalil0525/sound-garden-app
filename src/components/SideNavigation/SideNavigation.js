@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sideNavigationAudioplayerContainer: {
-    paddingLeft: '3.2rem',
+    paddingLeft: '1.6rem',
   },
 }));
 
@@ -119,9 +119,7 @@ const SideNavigation = ({ className }) => {
     <Grid
       container
       className={`${classes.sideNavigation} ${className}`}>
-      <Grid
-        item
-        className={classes.sideNavigationHeader}>
+      <Grid className={classes.sideNavigationHeader}>
         <Box className={classes.sideNavigationImageContainer}>
           <img
             src={soundGardenLogo}
@@ -130,12 +128,10 @@ const SideNavigation = ({ className }) => {
           />
         </Box>
       </Grid>
-      <Grid
-        item
-        className={classes.sideNavigationNavContainer}>
+      <Grid className={classes.sideNavigationNavContainer}>
         <Stack className={classes.sideNavigationNavbar}>
           <Typography
-            variant="h4"
+            variant="h3"
             className={classes.sideNavigationNavbarTitle}>
             Menu
           </Typography>
@@ -150,10 +146,7 @@ const SideNavigation = ({ className }) => {
                 : ` ${classes.navLink}`
             }>
             <Box className={classes.navbarItemContent}>
-              <HomeIcon
-                className={classes.navbarItemContentIcon}
-                alt="Home button icon"
-              />
+              <HomeIcon className={classes.navbarItemContentIcon} />
               <Box className={classes.navbarItemContentText}>Home</Box>
             </Box>
           </NavLink>
@@ -168,10 +161,7 @@ const SideNavigation = ({ className }) => {
                 : ` ${classes.navLink}`
             }>
             <Box className={classes.navbarItemContent}>
-              <GenreIcon
-                className={classes.navbarItemContentIcon}
-                alt="Genre button icon"
-              />
+              <GenreIcon className={classes.navbarItemContentIcon} />
               <Box className={classes.navbarItemContentText}>Genres</Box>
             </Box>
           </NavLink>
@@ -187,10 +177,7 @@ const SideNavigation = ({ className }) => {
                 : ` ${classes.navLink}`
             }>
             <Box className={classes.navbarItemContent}>
-              <ArtistIcon
-                className={classes.navbarItemContentIcon}
-                alt="Artist button icon"
-              />
+              <ArtistIcon className={classes.navbarItemContentIcon} />
               <Box className={classes.navbarItemContentText}>Artists</Box>
             </Box>
           </NavLink>
@@ -198,9 +185,9 @@ const SideNavigation = ({ className }) => {
       </Grid>
 
       <Grid
-        item
         alignSelf="end"
         width="100%">
+        <div style={{ height: '400px' }} />
         <Box className={classes.sideNavigationAudioplayerContainer}>
           <AudioPlayer />
         </Box>

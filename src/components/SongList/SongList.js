@@ -1,11 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styles from './SongList.module.css';
+import { makeStyles } from '@mui/styles';
 import SongItem from './SongItem';
-// import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-//We receive a song prop from whichever parent component calls this
+const useStyles = makeStyles((theme) => ({
+  songList: {
+    // Add your styles for songList container
+  },
+  songListList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2rem',
+    alignItems: 'center',
+    maxWidth: '85rem',
+    justifyContent: 'center',
+    margin: '0 auto',
+  },
+}));
+
 const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
+  const classes = useStyles();
+
   const [count, setCount] = useState({
     prev: 0,
     next: 4,
@@ -28,7 +43,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
       next: prevState.next + 4,
     }));
   };
-  // This is used to reload the songList whenever a songs properties are updated
+
   useEffect(() => {
     if (JSON.stringify(songsRef.current) !== JSON.stringify(songs)) {
       songsRef.current = songs;
@@ -37,15 +52,14 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
   }, [songs, count.next]);
 
   return (
-    <div className={`${styles['songList']} ${className} `}>
+    <div className={`${classes.songList} ${className}`}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={styles['songList__list']}
+        className={classes.songListList}
         scrollableTarget={scrollRef.current}>
-        {/* <ul > */}
         {current?.length &&
           current.map((song, index) => (
             <SongItem
@@ -59,7 +73,6 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
               user={user}
             />
           ))}
-        {/* </ul> */}
       </InfiniteScroll>
     </div>
   );

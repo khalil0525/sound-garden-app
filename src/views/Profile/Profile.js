@@ -8,7 +8,7 @@ import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { followUser, getUserProfile, unfollowUser } from '../../api/functions';
 import Layout from '../../components/Layout/Layout';
-import placeholderImage from '../../images/profile_placeholder.svg';
+
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import { makeStyles } from '@mui/styles';
 import Tabs from '@mui/material/Tabs';
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     width: '12rem',
     height: '150px',
     position: 'relative',
-    '&:hover $editContainer-updateBtn': {
+    '&:hover $editContainer_updateBtn': {
       display: 'inline-block',
       opacity: 0.8,
     },
@@ -266,8 +266,8 @@ export default function Profile({ scrollRef }) {
                       </Button>
                       {updateButtonToggled && (
                         <ul className={classes.editContainer_menu}>
-                          <Button buttonSize="large">Replace image</Button>
-                          <Button buttonSize="large">Delete image</Button>
+                          <Button>Replace image</Button>
+                          <Button>Delete image</Button>
                         </ul>
                       )}
                     </div>
@@ -298,8 +298,7 @@ export default function Profile({ scrollRef }) {
                     <Button
                       className={classes.profile__header_button_follow}
                       onClick={handleFollowClick}
-                      disabled={isProcessingFollow}
-                      buttonSize="large">
+                      disabled={isProcessingFollow}>
                       {isFollowing ? 'Following' : 'Follow'}
                     </Button>
                   )}
@@ -307,8 +306,7 @@ export default function Profile({ scrollRef }) {
                     <Button
                       className={classes.profile__header_button}
                       onClick={() => setIsEditingProfile(true)}
-                      disabled={isEditingProfile}
-                      buttonSize="large">
+                      disabled={isEditingProfile}>
                       Edit Profile
                     </Button>
                   ) : (
@@ -324,15 +322,13 @@ export default function Profile({ scrollRef }) {
                     (!isPending ? (
                       <Button
                         className={classes.profile__header_button}
-                        onClick={logout}
-                        buttonSize="large">
+                        onClick={logout}>
                         Logout
                       </Button>
                     ) : (
                       <Button
                         className={classes.profile__header_button}
-                        disabled
-                        buttonSize="large">
+                        disabled>
                         Loading..
                       </Button>
                     ))}
