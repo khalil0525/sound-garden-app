@@ -1,6 +1,19 @@
-import React from "react";
-import Duration from "./Duration";
-import styles from "./AudioSeekControlBar.module.css";
+import React from 'react';
+import Duration from './Duration';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  audioSeekControlBar: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  seekInput: {
+    cursor: 'pointer',
+    minWidth: '60%',
+    margin: `0 ${theme.spacing(2)}px`, // Adjust margin as needed
+  },
+}));
 
 const AudioSeekControlBar = ({
   className,
@@ -11,9 +24,14 @@ const AudioSeekControlBar = ({
   onMouseDown,
   onMouseUp,
 }) => {
+  const classes = useStyles();
+
   return (
-    <div className={`${styles.audioseekcontrolbar} ${className}`}>
-      <Duration className={durationClassName} seconds={duration * played} />
+    <div className={`${classes.audioSeekControlBar} ${className}`}>
+      <Duration
+        className={durationClassName}
+        seconds={duration * played}
+      />
 
       <input
         type="range"
@@ -24,6 +42,7 @@ const AudioSeekControlBar = ({
         onChange={onChange}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
+        className={classes.seekInput}
       />
       <Duration
         className={durationClassName}
@@ -32,4 +51,5 @@ const AudioSeekControlBar = ({
     </div>
   );
 };
+
 export default AudioSeekControlBar;

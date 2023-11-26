@@ -44,22 +44,22 @@ const useStyles = makeStyles((theme) => ({
     margin: '16px 0',
   },
   homeTitle: {
-    fontSize: theme.typography.h3.fontSize,
+    fontSize: theme.typography.h1.fontSize,
 
-    color: theme.palette.text.primary,
-    fontWeight: 500,
+    color: `${theme.palette.text.primary}`,
+    fontWeight: '600 !important',
     wordWrap: 'break-word',
   },
   homeLink: {
     fontSize: theme.typography.body2.fontSize,
-    textDecoration: 'none',
+    textDecoration: 'none !important',
     color: theme.palette.secondary.main,
     whiteSpace: 'nowrap',
   },
   homeSubtitle: {
     fontSize: theme.typography.h4.fontSize,
-    color: theme.palette.text.primary,
-    fontWeight: 600,
+    color: theme.palette.text.secondary,
+    fontWeight: '600 !important',
     width: '70%',
   },
   homeCardList: {
@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start ',
     alignItems: 'flex-start',
     maxHeight: '300px',
+    maxWidth: '650px',
     flex: '1 0 46%',
     gridRow: '1/2',
     padding: '16px',
@@ -85,8 +86,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     width: '60%',
     flexDirection: 'column',
-    gap: '0.4px',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     textAlign: 'left',
+    height: '100%',
+    padding: '1.6rem 0.8rem 0.8rem 1.6rem',
   },
   homeBannerButton: {
     borderRadius: '32px !important',
@@ -95,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     width: '80%',
     boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)',
-    alignSelf: 'center',
+    alignSelf: 'start',
   },
   homeBannerImg: {
     display: 'block',
@@ -120,7 +124,7 @@ const tempList = [
 ];
 
 export default function Home({ scrollRef }) {
-  const classes = useStyles();
+  const classes = useStyles(theme);
   const query = ['music', ['userID', '==', 'xCvggxf5HPhL9xBbHOz49BWcsly2']];
   const { user } = useAuthContext();
 
@@ -131,17 +135,25 @@ export default function Home({ scrollRef }) {
       <Box className={classes.homeLeftSide}>
         <Box className={classes.homeBanner}>
           <Box className={classes.homeBannerContainer}>
-            <p>SoundGarden</p>
+            <Typography
+              variant="body2"
+              sx={{ opacity: '0.7' }}>
+              SoundGarden
+            </Typography>
             <Typography
               variant="h1"
               className={classes.homeTitle}>
               Listen to latest trending Music all the time
             </Typography>
 
-            <p>With SoundGarden, you can get premium quality music for free</p>
+            <Typography
+              variant="body2"
+              sx={{ opacity: '0.7' }}>
+              With SoundGarden, you can get premium quality music for free
+            </Typography>
             <Button
               className={classes.homeBannerButton}
-              size="large"
+              size="medium"
               variant="contained"
               color="primary">
               Listen Now
@@ -155,14 +167,14 @@ export default function Home({ scrollRef }) {
         </Box>
         <Box className={classes.homeHeaderContainer}>
           <Typography
-            variant="h4"
+            variant="h2"
             className={classes.homeSubtitle}>
             Playlists
           </Typography>
           <Link
             className={classes.homeLink}
             to="/playlist">
-            Explore more...
+            Explore more
           </Link>
         </Box>
         <Box className={classes.homeContainer}>
@@ -174,14 +186,14 @@ export default function Home({ scrollRef }) {
         </Box>
         <Box className={classes.homeHeaderContainer}>
           <Typography
-            variant="h4"
+            variant="h2"
             className={classes.homeSubtitle}>
             Trending
           </Typography>
           <Link
             className={classes.homeLink}
             to="/artists">
-            Explore more...
+            Explore more
           </Link>
         </Box>
         <Box className={classes.homeContainer}>

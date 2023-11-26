@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   input: {
+    padding: '0 0.8rem',
     marginLeft: '0.6rem',
     margin: '0 0.6rem',
     border: 'none',
@@ -81,9 +82,6 @@ const ActionBarSearch = ({ queryString }) => {
         value={searchText}
         onChange={handleSearchTextChange}
         onKeyPress={handleEnterPressed}
-        inputProps={{
-          color: '#000',
-        }}
         className={classes.input}
         endAdornment={
           <InputAdornment position="start">

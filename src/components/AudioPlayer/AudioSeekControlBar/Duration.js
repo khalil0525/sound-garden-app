@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./Duration.module.css";
+import React from 'react';
+
 const Duration = ({ className, seconds }) => {
   const format = (seconds) => {
     const date = new Date(seconds * 1000);
@@ -15,13 +15,12 @@ const Duration = ({ className, seconds }) => {
   // The last numbers in the string.
   // e.g: 0 + "1" -> "01"... 0 + "12" -> 12
   const pad = (string) => {
-    return ("0" + string).slice(-2);
+    return ('0' + string).slice(-2);
   };
   return (
     <time
       dateTime={`P${Math.round(seconds)}S`}
-      className={`${styles.duration} ${className}`}
-    >
+      className={`${className}`}>
       {format(seconds)}
     </time>
   );

@@ -4,11 +4,10 @@ import { makeStyles } from '@mui/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Modal from '../UI/Modal/Modal';
-import { ReactComponent as UploadIcon } from '../../images/Upload_duotone_line.svg';
 import placeholderImage from '../../images/profile_placeholder.svg';
 import ActionBarSearch from './ActionBarSearch';
 import { useFirestore } from '../../hooks/useFirestore';
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 const useStyles = makeStyles((theme) => ({
   actionBar: {
     position: 'relative',
@@ -133,7 +132,7 @@ const ActionBar = (props) => {
         <Link
           to="/upload"
           className={classes.actionBarUploadLink}>
-          <UploadIcon alt="Upload button icon" />
+          <CloudUploadIcon />
         </Link>
         <ActionBarSearch queryString={props.query} />
       </nav>
