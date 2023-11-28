@@ -4,6 +4,10 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Modal from '../../components/UI/Modal/Modal';
+import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import { Typography } from '@mui/material';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import {
@@ -136,6 +140,21 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.4rem 2rem 0.8rem',
     borderBottom: '1px solid #ccc',
     width: '100%',
+  },
+  profile__statsContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    padding: '1rem',
+    marginTop: '1rem',
+    backgroundColor: '#fff', // Add your desired background color
+    borderRadius: '8px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+  },
+
+  profile__statItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 }));
 
@@ -357,6 +376,35 @@ export default function Profile({ scrollRef }) {
                   </div>
                 </Grid>
               </Grid>
+            </Grid>{' '}
+            <Grid
+              item
+              xs={12}>
+              <Box className={classes.profile__statsContainer}>
+                <Box className={classes.profile__statItem}>
+                  <PersonIcon fontSize="large" />
+                  <Typography variant="subtitle1">
+                    {profile?.followers?.length || <Skeleton width={30} />}
+                    &nbsp;Followers
+                  </Typography>
+                </Box>
+                <Box className={classes.profile__statItem}>
+                  <PeopleIcon fontSize="large" />
+                  <Typography variant="subtitle1">
+                    {profile?.following?.length || <Skeleton width={30} />}
+                    &nbsp;Following
+                  </Typography>
+                </Box>
+                <Box className={classes.profile__statItem}>
+                  <MusicNoteIcon fontSize="large" />
+                  <Typography
+                    variant="h3"
+                    color="#000">
+                    {loadedSongs?.length || <Skeleton width={30} />}
+                    &nbsp;Tracks
+                  </Typography>
+                </Box>
+              </Box>
             </Grid>
             <Grid
               item
@@ -426,8 +474,7 @@ export default function Profile({ scrollRef }) {
         <Grid
           item
           xs={12}>
-          {/* <SongItemSkeleton count={5} /> */}
-          {profile && loadedSongs && loadedSongs.length && currentTab ? (
+          {profile && loadedSongs && loadedSongs.length ? (
             <SongList
               songs={loadedSongs}
               scrollRef={scrollRef}
