@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import SongItem from './MiniSongItem';
+import MiniSongItem from './MiniSongItem';
 import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -85,11 +85,12 @@ const MiniSongList = ({
         {current &&
           likedSongDocuments &&
           current.map((song, index) => (
-            <SongItem
+            <MiniSongItem
               song={song}
               key={song.docID}
               playlistSongs={songs}
               songIndex={index}
+              profileURL={song.profileURL}
               liked={song?.likes?.some((like) => like.id === user.id || false)}
               songPlaylistLocation={playlistLocation}
               user={user}

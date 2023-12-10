@@ -14,6 +14,7 @@ import placeholderImage from '../../images/blank_image_placeholder.svg';
 import Duration from '../AudioPlayer/AudioSeekControlBar/Duration';
 import { IconButton, Box, Avatar } from '@mui/material';
 import theme from '../../theme';
+import { NavLink } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   songItem: {
     padding: '1.2rem 0.6rem',
@@ -151,14 +152,12 @@ const songItemReducer = (state, action) => {
   }
 };
 
-const SongItem = ({
+const MiniSongItem = ({
   song,
   playlistSongs,
   songPlaylistLocation,
   songIndex,
-  liked,
-  user,
-  showSongItemFooter = true,
+  profileURL,
 }) => {
   const classes = useStyles(theme);
 
@@ -288,7 +287,12 @@ const SongItem = ({
                   alignItems: 'center',
                   gap: '0.8rem',
                 }}>
-                <Avatar sx={{ width: 24, height: 24 }}></Avatar>
+                <NavLink
+                  to={`/profile/${profileURL}`}
+                  style={{ textDecoration: 'none' }}>
+                  <Avatar sx={{ width: 24, height: 24 }}></Avatar>
+                </NavLink>
+
                 <span className={classes.titleContainerSongTitleArtist}>
                   {song.artist}
                 </span>
@@ -321,4 +325,4 @@ const SongItem = ({
   );
 };
 
-export default SongItem;
+export default MiniSongItem;
