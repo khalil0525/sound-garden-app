@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     zIndex: 1000,
     width: '100%',
+    paddingTop: theme.spacing(2),
   },
   actionBarNav: {
     display: 'flex',
@@ -55,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
   },
   actionBarButton: {
     backgroundColor: 'transparent',
+  },
+  searchInput: {
+    fontSize: '0.9rem', // Adjust the font size for the search input
   },
 }));
 

@@ -1,15 +1,67 @@
-import { useReducer, useEffect } from "react";
-import { useCloudStorage } from "../../hooks/useCloudStorage";
-import { useFirestore } from "../../hooks/useFirestore";
-import { Link } from "react-router-dom";
-import LoadingBar from "../../components/LoadingBar/LoadingBar";
-import styles from "./Upload.module.css";
-import GenreSelect from "../../components/UploadForm/GenreSelect/GenreSelect";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import placeholderImage from "../../images/blank_image_placeholder.svg";
-import ActionBar from "../../components/ActionBar/ActionBar";
-import { FileUploader } from "react-drag-drop-files";
+import React, { useReducer, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { useCloudStorage } from '../../hooks/useCloudStorage';
+import { useFirestore } from '../../hooks/useFirestore';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import placeholderImage from '../../images/blank_image_placeholder.svg';
+import LoadingBar from '../../components/LoadingBar/LoadingBar';
+import GenreSelect from '../../components/UploadForm/GenreSelect/GenreSelect';
+import { FileUploader } from 'react-drag-drop-files';
+import Layout from '../../components/Layout/Layout';
 
+const useStyles = makeStyles((theme) => ({
+  uploadContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    maxWidth: '60rem',
+    margin: '10% auto',
+    backgroundColor: 'white',
+    padding: '2rem',
+    border: '1px rgba(128, 128, 128, 0.671) solid',
+    borderRadius: '6px',
+  },
+  filePicker: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '1rem',
+  },
+  photoPicker: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '0 auto',
+  },
+  uploadForm: {
+    maxWidth: '50rem',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+  },
+  actionContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: '0.5rem',
+  },
+  photoPickerPhoto: {
+    width: '160px',
+    height: '160px',
+    '& img': {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      borderRadius: '4px',
+    },
+  },
+}));
 let initialState = {
   songFile: null,
   songPhotoFile: null,
@@ -17,44 +69,44 @@ let initialState = {
   songDuration: null,
   songDurationIsValid: false,
   uploadIsReady: false,
-  songName: "",
-  genreType: "none",
+  songName: '',
+  genreType: 'none',
   formIsValid: false,
 };
 const uploadReducer = (state, action) => {
   switch (action.type) {
-    case "SONG_FILE_CHANGED":
+    case 'SONG_FILE_CHANGED':
       return {
         ...state,
         songFile: action.payload,
       };
-    case "SONG_DURATION_CHANGED":
+    case 'SONG_DURATION_CHANGED':
       return {
         ...state,
         songDuration: action.payload,
         songDurationIsValid: true,
         uploadIsReady: state.songName.length > 0,
       };
-    case "PHOTO_FILE_CHANGED":
+    case 'PHOTO_FILE_CHANGED':
       return {
         ...state,
         songPhotoFile: action.payload,
         songPhotoURL: URL.createObjectURL(action.payload),
       };
 
-    case "SONG_NAME_CHANGE":
+    case 'SONG_NAME_CHANGE':
       return {
         ...state,
         songName: action.payload,
         formIsValid: action.payload.length > 0,
         uploadIsReady: action.payload.length > 0 && state.songDurationIsValid,
       };
-    case "GENRE_TYPE_CHANGE":
+    case 'GENRE_TYPE_CHANGE':
       return {
         ...state,
         genreType: action.payload,
       };
-    case "CANCEL_UPLOAD":
+    case 'CANCEL_UPLOAD':
       return {
         ...initialState,
       };
@@ -65,12 +117,13 @@ const uploadReducer = (state, action) => {
 };
 
 const Upload = () => {
+  const classes = useStyles();
+
   const [songUploadState, dispatchSongUploadState] = useReducer(
     uploadReducer,
     initialState
   );
 
-  //Destruct values from the reducer state
   const {
     songFile,
     songPhotoFile,
@@ -79,29 +132,20 @@ const Upload = () => {
     genreType,
     formIsValid,
     songDuration,
-
     uploadIsReady,
   } = songUploadState;
 
-  //Cloud storage hook
   const {
     addSongFiles,
-    // addFile,
     response: cloudStorageResponse,
     uploadProgress,
   } = useCloudStorage();
 
-  //Fire store hook
-  const { addDocument, response: firestoreResponse } = useFirestore("music");
+  const { addDocument, response: firestoreResponse } = useFirestore('music');
   const { user } = useAuthContext();
 
-  // path === "songs/" ? "music" : "images"
-  //HANDLER FUNCTIONS
-
-  const handleSongUpload = (event) => {
+  const handleSongUpload = () => {
     if (songFile && formIsValid && uploadIsReady) {
-      //Try to add a document to the FireStore database, we will then use this to store the file
-      // URL and generate a unique filename
       addDocument({
         artist: user.displayName,
         genre: genreType,
@@ -113,14 +157,11 @@ const Upload = () => {
   };
 
   useEffect(() => {
-    //If the fireStore document is succesfully uploaded we need to upload the file to cloud storage
     if (
       firestoreResponse.success &&
       !cloudStorageResponse.isPending &&
       !cloudStorageResponse.success
     ) {
-      // Call to useCloudStorage to add song file
-
       addSongFiles(firestoreResponse.document, user, [songFile, songPhotoFile]);
     }
   }, [
@@ -134,162 +175,171 @@ const Upload = () => {
 
   const handleCancelClick = () => {
     dispatchSongUploadState({
-      type: "CANCEL_UPLOAD",
+      type: 'CANCEL_UPLOAD',
     });
   };
+
   const handleSongFileChange = (file) => {
-    //Check if the file the user is passing is an audio file
-    // Otherwise don't accept it.
-    if (file["type"].split("/")[0] === "audio") {
+    if (file['type'].split('/')[0] === 'audio') {
       dispatchSongUploadState({
-        type: "SONG_FILE_CHANGED",
+        type: 'SONG_FILE_CHANGED',
         payload: file,
       });
     }
   };
+
   const handleSongPhotoFileChange = (event) => {
-    if (event.target.files[0].type.split("/")[0] === "image") {
+    if (event.target.files[0].type.split('/')[0] === 'image') {
       dispatchSongUploadState({
-        type: "PHOTO_FILE_CHANGED",
+        type: 'PHOTO_FILE_CHANGED',
         payload: event.target.files[0],
+        songPhotoURL: URL.createObjectURL(event.target.files[0]),
       });
     } else {
-      event.target.value = "";
+      event.target.value = '';
     }
   };
+
   const handleSongNameChange = (event) => {
     dispatchSongUploadState({
-      type: "SONG_NAME_CHANGE",
+      type: 'SONG_NAME_CHANGE',
       payload: event.target.value,
     });
   };
+
   const handleGenreTypeChange = (event) => {
     dispatchSongUploadState({
-      type: "GENRE_TYPE_CHANGE",
+      type: 'GENRE_TYPE_CHANGE',
       payload: event.target.value,
     });
-    // setGenreType(event.target.value);
   };
+
   useEffect(() => {
     const getAudioDuration = () => {
-      // Obtain the uploaded file, you can change the logic if you are working with multiupload
-      // Create instance of FileReader
       let reader = new FileReader();
-      // When the file has been succesfully read
       reader.onload = (event) => {
-        // Create an instance of AudioContext
         let audioContext = new (window.AudioContext ||
           window.webkitAudioContext)();
         audioContext.decodeAudioData(event.target.result, (buffer) => {
           let duration = buffer.duration;
-
           if (duration) {
             dispatchSongUploadState({
-              type: "SONG_DURATION_CHANGED",
+              type: 'SONG_DURATION_CHANGED',
               payload: duration,
             });
           }
         });
       };
-      // In case that the file couldn't be read
       reader.onerror = (event) => {
-        console.error("An error ocurred reading the file: ", event);
+        console.error('An error occurred reading the file: ', event);
       };
-      // Read file as an ArrayBuffer, important !
       reader.readAsArrayBuffer(songFile);
     };
     if (songFile != null) {
       getAudioDuration();
     }
-    // return () => getAudioDuration();
   }, [songFile]);
 
   return (
-    <div className={styles["upload"]}>
-      <ActionBar
-        className={styles["upload__actionBar"]}
-        user={user}
-      />
-      <div className={styles["upload-container"]}>
+    <Layout user={user}>
+      <Paper className={classes.uploadContainer}>
         {!songFile && (
           <FileUploader
-            // classes={`${styles["file-picker"]}`}
             handleChange={handleSongFileChange}
             name="file"
             multiple={false}
             hoverTitle="Drop audio file here"
-            types={["mp3", "ogg", "wav"]}
+            types={['mp3', 'ogg', 'wav']}
             maxSize={200}
           />
         )}
         {songFile && (
-          <div className={styles["upload-form"]}>
+          <div className={classes.uploadForm}>
             <LoadingBar
               progress={uploadProgress}
               song={songFile.name}
             />
             {!cloudStorageResponse.success && (
               <>
-                <div className={styles["photo-picker"]}>
-                  <img
-                    className={styles["photo-picker-photo"]}
-                    src={songPhotoFile ? songPhotoURL : placeholderImage}
-                    alt="Song Cover Art"
-                    width="160"
-                    height="160"
-                  />
-
+                <div className={classes.photoPicker}>
+                  <div className={classes.photoPickerPhoto}>
+                    <img
+                      src={songPhotoFile ? songPhotoURL : placeholderImage}
+                      alt="Song Cover Art"
+                    />
+                  </div>
                   <input
                     type="file"
                     onChange={handleSongPhotoFileChange}
                     disabled={cloudStorageResponse.isPending}
                     accept="image/*"
+                    style={{ display: 'none' }}
+                    id="photo-file-input"
                   />
+                  <label htmlFor="photo-file-input">
+                    <Button
+                      component="span"
+                      variant="contained"
+                      color="primary"
+                      disabled={cloudStorageResponse.isPending}>
+                      Choose Photo
+                    </Button>
+                  </label>
                 </div>
-
-                <label htmlFor="song-name">Song Name:</label>
-                <input
-                  type="text"
+                <TextField
+                  label="Song Name"
                   id="song-name"
-                  name="song-name"
                   value={songName}
                   onChange={handleSongNameChange}
-                  disabled={cloudStorageResponse.isPending}></input>
-
+                  disabled={cloudStorageResponse.isPending}
+                  fullWidth
+                  margin="normal"
+                />
                 <GenreSelect
                   onGenreTypeChange={handleGenreTypeChange}
                   genreValue={genreType}
                   disabled={cloudStorageResponse.isPending}
                 />
-
                 {!cloudStorageResponse.isPending && (
-                  <div className={styles["action-container"]}>
-                    <div onClick={handleCancelClick}>Cancel</div>
-                    <button
+                  <div className={classes.actionContainer}>
+                    <Button
+                      onClick={handleCancelClick}
+                      variant="outlined"
+                      color="secondary">
+                      Cancel
+                    </Button>
+                    <Button
                       onClick={handleSongUpload}
+                      variant="contained"
+                      color="primary"
                       disabled={!uploadIsReady}>
                       Upload
-                    </button>
+                    </Button>
                   </div>
                 )}
               </>
             )}
             {cloudStorageResponse.success && (
               <>
-                {/* <div onClick={handleCancelClick}>Upload Another track?</div> */}
-                <h2>Uploaded Sucessfully!</h2>
+                <Typography variant="h5">Uploaded Successfully!</Typography>
                 <div>
                   <Link to="/uploaded">Go to your uploaded tracks</Link>
                 </div>
               </>
             )}
             {cloudStorageResponse.isPending && (
-              <button disabled>Uploading... Please wait</button>
+              <Button
+                disabled
+                variant="contained"
+                color="primary">
+                Uploading... Please wait
+              </Button>
             )}
           </div>
         )}
-      </div>
-    </div>
+      </Paper>
+    </Layout>
   );
 };
+
 export default Upload;

@@ -3,6 +3,25 @@ import SongItem from './MiniSongItem';
 import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  songList: {
+    // Add your styles for songList container
+  },
+  songListList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2rem',
+    alignItems: 'center',
+    maxWidth: '85%',
+    justifyContent: 'center',
+    margin: '0 auto',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100%',
+    },
+  },
+}));
 
 //We receive a song prop from whichever parent component calls this
 const MiniSongList = ({
@@ -18,6 +37,7 @@ const MiniSongList = ({
     '==',
     user.uid ? user.uid : 'none',
   ]);
+  const classes = useStyles();
 
   const [count, setCount] = useState({
     prev: 0,
@@ -49,7 +69,7 @@ const MiniSongList = ({
   }, [songs, count.next]);
 
   return (
-    <Box className={`${className} `}>
+    <div className={`${classes.songList} ${className}`}>
       <InfiniteScroll
         dataLength={current.length}
         next={getMoreData}
@@ -76,7 +96,7 @@ const MiniSongList = ({
             />
           ))}
       </InfiniteScroll>
-    </Box>
+    </div>
   );
 };
 

@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     border: `1.3px solid ${theme.palette.primary.main}`,
     filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
     borderRadius: '0.6rem',
+    [theme.breakpoints.down('sm')]: {
+      flexGrow: 0,
+    },
   },
   searchIcon: {
     marginLeft: '1rem',
@@ -23,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     height: '2.4rem',
     '&:hover': {
       cursor: 'pointer',
+    },
+    [theme.breakpoints.down('sm')]: {
+      transform: 'scale(1)', // Disable grow effect on mobile
     },
   },
   input: {

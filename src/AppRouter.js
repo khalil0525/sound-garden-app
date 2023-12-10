@@ -34,9 +34,9 @@ function AppRouter({ user }) {
     <BrowserRouter>
       <Box
         sx={{
-          flexGrow: 1,
+          flexGrow: 0,
           backgroundColor: '#000',
-          width: '100vw',
+          maxWidth: '100vw',
           maxHeight: '100vh',
         }}>
         <Grid
@@ -77,7 +77,7 @@ function AppRouter({ user }) {
           <Grid
             xs={isMobile ? 12 : 10}
             md={'80%'}
-            p={{ xs: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
+            p={{ xs: '0', sm: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
             <Box
               bgcolor={'white'}
               maxHeight="100%"
@@ -87,8 +87,7 @@ function AppRouter({ user }) {
                 ref={scrollableNodeRef}
                 sx={{
                   overflowX: 'hidden',
-                  height: '95vh',
-                  padding: '1.6rem',
+                  margin: '0 1.6rem',
 
                   '::-webkit-scrollbar': {
                     width: '8px',

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start ',
     alignItems: 'flex-start',
     maxHeight: '30rem',
-    minWidth: '40rem',
+
     maxWidth: '46rem',
     // Adjust the width as needed
     padding: '3.2rem',

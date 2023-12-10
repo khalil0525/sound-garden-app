@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
   },
   seekInput: {
     cursor: 'pointer',
-    minWidth: '50px',
   },
 }));
 

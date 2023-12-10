@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   songItemBody: {
     width: '100%',
+    display: 'flex',
   },
   songItemBodyContainer: {
     display: 'flex',
@@ -32,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
   titleContainerContainer: {
     display: 'flex',
     gap: '0.8rem',
+    maxWidth: '30%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   titleContainerPlayBtn: {
     alignSelf: 'center',
@@ -52,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
     gap: '0.4rem',
     justifyContent: 'center',
     marginLeft: '1.6rem',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '0.4rem',
+    },
   },
   titleContainerSongTitleArtist: {
     fontSize: theme.typography.body1.fontSize,
@@ -75,10 +83,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: '3.2rem',
+    [theme.breakpoints.down('sm')]: {
+      gap: '1.6rem',
+    },
   },
   songItemSongPhotoContainer: {
     width: '8rem',
     height: '8rem',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+      width: '4rem',
+      height: '4rem',
+    },
   },
   songPhotoContainerImg: {
     width: '100%',
@@ -260,7 +276,11 @@ const SongItem = ({
                 {song.title}
               </span>
               <Box
-                sx={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.8rem',
+                }}>
                 <Avatar sx={{ width: 24, height: 24 }}></Avatar>
                 <span className={classes.titleContainerSongTitleArtist}>
                   {song.artist}

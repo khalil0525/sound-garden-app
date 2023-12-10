@@ -10,7 +10,7 @@ const Layout = ({ children, user }) => {
     <Box
       sx={{
         display: 'flex',
-        padding: '1.6rem',
+        padding: { xs: 0, sm: 0, md: theme.spacing(2) }, // Set padding to 0 for xs (mobile)
         justifyContent: 'center',
       }}>
       <Grid
@@ -31,7 +31,10 @@ const Layout = ({ children, user }) => {
           sm={12}
           md={12}
           width="100%"
-          sx={{ marginTop: '1.6rem' }}>
+          sx={{
+            marginTop: '1.6rem',
+            padding: { xs: 0, sm: 0, md: theme.spacing(2) }, // Set padding to 0 for xs (mobile)
+          }}>
           {children}
         </Grid>
         {/* <Grid item xs={12} sm={6}></Grid> */}

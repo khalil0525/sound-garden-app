@@ -10,6 +10,7 @@ const SongItemSkeleton = ({ count }) => {
 
   const skeletonItems = Array.from({ length: count }, (_, index) => (
     <li
+      key={index}
       className={classes.songItem}
       style={{ alignItems: 'normal', maxHeight: '180px' }}>
       <div className={classes.songItemHeader}>

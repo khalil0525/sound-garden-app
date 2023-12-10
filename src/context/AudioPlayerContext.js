@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from 'react';
 
 //context object
 export const AudioPlayerContext = createContext();
@@ -19,16 +19,16 @@ let initialState = {
 //Reducer init function - This will be given to our reducer but it'll only be used if we previously loaded a playlist
 const init = (initialReducerState) => {
   // Check if we have saved a playlistIndex in localstorage and if so we will update the inital state of playlist, playlistIndex and loadedSongUrl
-  let indexFromLocalStorage = localStorage.getItem("playlistIndex");
+  let indexFromLocalStorage = localStorage.getItem('playlistIndex');
 
   if (indexFromLocalStorage !== null) {
     const playlistFromLocalStorage = JSON.parse(
-      localStorage.getItem("playlist")
+      localStorage.getItem('playlist')
     );
 
     let parsedPlaylistIndex = parseInt(indexFromLocalStorage);
     let playlistLocationFromLocalStorage =
-      localStorage.getItem("playlistLocation");
+      localStorage.getItem('playlistLocation');
     return {
       ...initialReducerState,
       playlistIndex: parsedPlaylistIndex,
@@ -52,9 +52,9 @@ const init = (initialReducerState) => {
 //Reducer function
 export const audioPlayerReducer = (state, action) => {
   switch (action.type) {
-    case "URL_CHANGE":
+    case 'URL_CHANGE':
       return { ...state, songURL: action.payload };
-    case "PLAYLIST_CHANGE":
+    case 'PLAYLIST_CHANGE':
       return {
         ...state,
         playlist: action.payload.playlistSongs,
@@ -65,12 +65,12 @@ export const audioPlayerReducer = (state, action) => {
         isSongPlaying: true,
         currentSongPlayedTime: 0,
       };
-    case "SONG_EDITED_IN_PLAYLIST":
+    case 'SONG_EDITED_IN_PLAYLIST':
       return {
         ...state,
         playlist: action.payload,
       };
-    case "SONG_DELETED_FROM_PLAYLIST":
+    case 'SONG_DELETED_FROM_PLAYLIST':
       const newPlaylist = state.playlist
         ? state.playlist.filter((song) => {
             return song.docID !== action.payload;
@@ -85,7 +85,8 @@ export const audioPlayerReducer = (state, action) => {
         newPlaylist && newPlaylist.length !== 0
           ? newPlaylist[newPlaylistIndex].songURL
           : null;
-      const newIsPlaying = newLoadedSong !== null ? true : false;
+      const newIsPlaying =
+        newLoadedSong !== null && state.isSongPlaying ? true : false;
 
       return {
         ...state,
@@ -97,7 +98,7 @@ export const audioPlayerReducer = (state, action) => {
       };
     // This action occures when we click to play different songs to play in a
     // playlist
-    case "PLAYLIST_INDEX_CHANGE":
+    case 'PLAYLIST_INDEX_CHANGE':
       return {
         ...state,
         playlistIndex: action.payload,
@@ -105,7 +106,7 @@ export const audioPlayerReducer = (state, action) => {
         isSongPlaying: true,
         currentSongPlayedTime: 0,
       };
-    case "PLAYLIST_ENDED":
+    case 'PLAYLIST_ENDED':
       return {
         ...state,
         playlistIndex: 0,
@@ -114,7 +115,7 @@ export const audioPlayerReducer = (state, action) => {
         playlistEnded: true,
         currentSongPlayedTime: 0,
       };
-    case "LOAD_PREVIOUS_SONG":
+    case 'LOAD_PREVIOUS_SONG':
       return {
         ...state,
         playlistIndex: state.playlistIndex - 1,
@@ -122,7 +123,7 @@ export const audioPlayerReducer = (state, action) => {
         currentSongPlayedTime: 0,
         isSongPlaying: true,
       };
-    case "LOAD_NEXT_SONG":
+    case 'LOAD_NEXT_SONG':
       return {
         ...state,
         playlistIndex: state.playlistIndex + 1,
@@ -131,48 +132,48 @@ export const audioPlayerReducer = (state, action) => {
         isSongPlaying: true,
       };
 
-    case "SONG_PLAYED":
+    case 'SONG_PLAYED':
       return {
         ...state,
         isSongPlaying: true,
         playlistEnded: false,
       };
-    case "SONG_PAUSED":
+    case 'SONG_PAUSED':
       return {
         ...state,
         isSongPlaying: false,
       };
-    case "PLAYED_TIME_CHANGE":
+    case 'PLAYED_TIME_CHANGE':
       return {
         ...state,
         currentSongPlayedTime: action.payload,
       };
     //FOR SEEKING FROM THE SONG ITEM*****************
-    case "SEEK_MOUSE_DOWN_FROM_SONG_ITEM":
+    case 'SEEK_MOUSE_DOWN_FROM_SONG_ITEM':
       return {
         ...state,
         seekingFromSongItem: true,
       };
-    case "SEEK_CHANGE_FROM_SONG_ITEM":
+    case 'SEEK_CHANGE_FROM_SONG_ITEM':
       return {
         ...state,
         currentSongPlayedTime: action.payload,
       };
-    case "SEEK_MOUSE_UP_FROM_SONG_ITEM":
+    case 'SEEK_MOUSE_UP_FROM_SONG_ITEM':
       return {
         ...state,
         currentSongPlayedTime: action.payload,
         seekingFromSongItem: false,
         seekingFromSongItemComplete: true,
       };
-    case "SEEK_FROM_SONG_ITEM_COMPLETE":
+    case 'SEEK_FROM_SONG_ITEM_COMPLETE':
       return {
         ...state,
         seekingFromSongItemComplete: false,
       };
 
     //FOR SEEKING FROM THE AUDIOPLAYER*************************
-    case "SEEK_MOUSE_DOWN_FROM_AUDIO_PLAYER":
+    case 'SEEK_MOUSE_DOWN_FROM_AUDIO_PLAYER':
       return {
         ...state,
         seekingFromAudioPlayer: true,
@@ -183,7 +184,7 @@ export const audioPlayerReducer = (state, action) => {
     //     ...state,
     //     currentSongPlayedTime: action.payload,
     //   };
-    case "SEEK_MOUSE_UP_FROM_AUDIO_PLAYER":
+    case 'SEEK_MOUSE_UP_FROM_AUDIO_PLAYER':
       return {
         ...state,
         seekingFromAudioPlayer: false,
@@ -204,28 +205,33 @@ export const AudioPlayerContextProvider = ({ children }) => {
   );
   //Extract playlist and playlistIndex from our reducer state
   const { playlist, playlistIndex, playlistLocation } = state;
-  // This will check if a user is logged in after page refresh or when they first load the site
-  // useEffect(() => {
-  //   console.log(state.loadedSongURL);
-  // }, [state]);
 
-  //These 2 useEffects are used to store the current playlist and index we're at in localStorage
-  useEffect(() => {
-    localStorage.setItem("playlistIndex", playlistIndex);
+  const updatePlaylistIndex = useCallback(() => {
+    localStorage.setItem('playlistIndex', playlistIndex);
   }, [playlistIndex]);
 
-  useEffect(() => {
+  const updatePlaylist = useCallback(() => {
     if (playlist) {
-      localStorage.setItem("playlist", JSON.stringify(playlist));
+      localStorage.setItem('playlist', JSON.stringify(playlist));
     }
   }, [playlist]);
 
-  useEffect(() => {
-    localStorage.setItem("playlistLocation", playlistLocation);
+  const updatePlaylistLocation = useCallback(() => {
+    localStorage.setItem('playlistLocation', playlistLocation);
   }, [playlistLocation]);
 
-  // Output the AuthContext state everytime we get a change
-  // console.log("AudioPlayerContext state: ", state);
+  useEffect(() => {
+    updatePlaylistIndex();
+  }, [updatePlaylistIndex]);
+
+  useEffect(() => {
+    updatePlaylist();
+  }, [updatePlaylist]);
+
+  useEffect(() => {
+    updatePlaylistLocation();
+  }, [updatePlaylistLocation]);
+
   return (
     <AudioPlayerContext.Provider
       value={{ ...state, dispatchAudioPlayerContext }}>

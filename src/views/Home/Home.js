@@ -24,9 +24,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '55% 45%',
     gap: theme.spacing(6),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-      alignContent: 'center',
+    alignContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      display: 'flex',
+      flexDirection: 'column',
     },
     padding: '0',
     width: '100%',
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: '16px 0',
+    padding: '0.8rem',
   },
   homeTitle: {
     fontSize: theme.typography.h1.fontSize,
@@ -103,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
   },
   homeBannerContainer: {
+    [theme.breakpoints.down('sm')]: { width: '100%' },
     display: 'flex',
     width: '60%',
     flexDirection: 'column',
@@ -124,6 +127,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center', // Align the icon and text horizontally
   },
   homeBannerImg: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
     display: 'block',
     position: 'relative',
     width: '40%',

@@ -10,7 +10,6 @@ export default function CollectionResults({
   scrollRef,
   resetQueryTrigger,
   query,
-  hideActionBar = false,
 }) {
   const { user } = useAuthContext();
   const location = useLocation();
@@ -35,11 +34,9 @@ export default function CollectionResults({
       : query
       ? query
       : ['skip', 'skip', 'skip'];
-
-  const { documents: musicDocuments } = useCollection(
-    ...searchParams,
-    resetQueryTrigger
-  );
+  console.log(searchParams);
+  const { documents: musicDocuments } = useCollection(...searchParams);
+  console.log(musicDocuments);
 
   // This is the error message that will be displayed when the query
   // Returns empty results

@@ -38,7 +38,7 @@ const CardList = ({ list, page, className }) => {
             <Grid
               item
               key={item.title}
-              xs={12}
+              xs={4}
               sm={3}
               md={2}
               lg={2}>

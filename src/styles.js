@@ -1,24 +1,27 @@
 export const songItem = (theme) => ({
   songItem: {
-    padding: '2rem',
     display: 'grid',
-    gridTemplateColumns: '1fr 4fr',
-    gridTemplateRows: '1fr 1fr 1fr',
+    gridTemplateColumns: '1fr 3fr',
+    gridTemplateRows: '1fr 1fr',
     width: '100%',
+
     alignItems: 'center',
     gap: '0.4rem',
     listStyle: 'none',
 
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 4fr',
+      gridTemplateColumns: '1fr 5fr',
+      gridTemplateRows: '1fr 1fr 1fr',
       justifyContent: 'flex-start',
+      padding: '2rem',
     },
   },
   songItemHeader: {
+    paddingLeft: '0.8rem',
     gridColumn: '2/-1',
     gridRow: '1',
     [theme.breakpoints.up('md')]: {
-      gridColumn: '2/3',
+      gridColumn: '2/-1',
       gridRow: '1',
     },
   },
@@ -38,14 +41,23 @@ export const songItem = (theme) => ({
     border: 'none',
     boxShadow: '0 1px rgba(15, 15, 15, 0.5)',
     margin: '0 0.2rem 0 1rem',
+    order: 2,
+    [theme.breakpoints.up('md')]: {
+      order: 0,
+    },
   },
   titleContainerSongTitle: {
     display: 'flex',
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '0.4rem',
     justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexGrow: 0,
+      alignItems: 'space-between',
+      width: '100%',
+    },
   },
   titleContainerSongTitleArtist: {
     fontSize: theme.typography.body2.fontSize,
@@ -84,12 +96,12 @@ export const songItem = (theme) => ({
     color: theme.palette.primary.main,
   },
   songItemAside: {
-    gridColumn: '1/1',
+    gridColumn: '1',
     gridRow: '1/-1',
   },
   songItemSongPhotoContainer: {
-    width: '8rem',
-    height: '8rem',
+    width: '6rem',
+    height: '6rem',
     [theme.breakpoints.between('sm', 'md')]: {
       width: '12rem',
       height: '12rem',
@@ -112,6 +124,13 @@ export const songItem = (theme) => ({
     justifyContent: 'center',
     gap: '0.6rem',
     padding: '1.2rem',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-evenly',
+      width: '100%',
+      maxHeight: '16rem',
+      gridRow: '2',
+      gap: '0',
+    },
   },
   songItemDuration: {
     fontFamily: 'Inter',
@@ -122,23 +141,33 @@ export const songItem = (theme) => ({
     maxWidth: '5%',
     color: '#161618',
   },
+  songItemActionContainer: {
+    display: 'flex',
+    gap: '0.5rem',
+  },
+  songItemActionContainerFirst: {
+    marginLeft: '1rem',
+  },
+  actionContainerBtn: {
+    display: 'inline-block',
+    gap: '0.8rem',
+    alignItems: 'center',
+    background: '#fff !important',
+    border: '1px solid #ccc !important',
+    borderRadius: '0.4rem !important',
+    padding: '0.4rem 0.8rem !important',
+    minWidth: '6.4rem',
+    color: '#000 !important',
+  },
+  actionContainerBtnHover: {
+    borderColor: '#ccc',
+  },
   '@media only screen and (min-width: 992px)': {
-    songItem: {
-      gridTemplateColumns: '1fr 4fr',
-      justifyContent: 'flex-start',
-    },
     songItemHeader: {
       gridColumn: '2/3',
       gridRow: '1',
     },
-    titleContainerSongTitle: {
-      display: 'flex',
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      gap: '0.4rem',
-      justifyContent: 'center',
-    },
+
     titleContainerAdditional: {
       display: 'flex',
       flexDirection: 'column',
@@ -174,27 +203,7 @@ export const songItem = (theme) => ({
     songItemFooter: {
       display: 'block',
     },
-    songItemActionContainer: {
-      display: 'flex',
-      gap: '0.5rem',
-    },
-    songItemActionContainerFirst: {
-      marginLeft: '1rem',
-    },
-    actionContainerBtn: {
-      display: 'inline-block',
-      gap: '0.8rem',
-      alignItems: 'center',
-      background: '#fff !important',
-      border: '1px solid #ccc !important',
-      borderRadius: '0.4rem !important',
-      padding: '0.4rem 0.8rem !important',
-      minWidth: '6.4rem',
-      color: '#000 !important',
-    },
-    actionContainerBtnHover: {
-      borderColor: '#ccc',
-    },
+
     songItemSongPhotoContainer: {
       maxWidth: '16rem',
       maxHeight: '16rem',
@@ -227,5 +236,8 @@ export const songItem = (theme) => ({
       width: '12rem',
       height: '12rem',
     },
+  },
+  spinner: {
+    color: theme.palette.primary.main,
   },
 });

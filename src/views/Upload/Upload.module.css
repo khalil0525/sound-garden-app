@@ -1,17 +1,3 @@
-.upload {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr auto;
-  gap: 1rem; /* Added gap between grid items */
-}
-
-.upload__actionBar {
-  display: flex;
-  justify-content: flex-end;
-  grid-column: 3;
-  grid-row: 1;
-}
-
 .upload-container {
   display: flex;
   flex-direction: column;

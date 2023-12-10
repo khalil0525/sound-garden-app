@@ -15,7 +15,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import Modal from '../UI/Modal/Modal';
-import { IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
@@ -65,7 +65,6 @@ const SongItem = ({
   liked,
   user,
   songId = null,
-  showSongItemFooter = true,
 }) => {
   const classes = useStyles(theme);
 
@@ -77,6 +76,7 @@ const SongItem = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isProcessingLike, setIsProcessingLike] = useState(false);
+
   // const [edited, setEdited] = useState(false);
   const { playing, isMounted, played, seeking } = songItemState;
   const {
@@ -242,6 +242,8 @@ const SongItem = ({
         type: 'SONG_DELETED_FROM_PLAYLIST',
         payload: song.docID,
       });
+
+      setIsDeleting(false);
     }
   }, [
     cloudStorageResponse.success,
@@ -311,7 +313,12 @@ const SongItem = ({
             } `}
             onClick={handleLikeClick}
             disabled={isProcessingLike}>
-            {isLiked ? (
+            {isProcessingLike ? (
+              <CircularProgress
+                size={18}
+                className={classes.spinner}
+              />
+            ) : isLiked ? (
               <FavoriteIcon htmlColor={theme.palette.primary.main} />
             ) : (
               <FavoriteBorderRoundedIcon />

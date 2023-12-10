@@ -7,7 +7,6 @@ function App() {
   // Getting the context of the user to see if they're logged in
   const { user, authIsReady } = useAuthContext();
 
-  useEffect(() => {});
   return <div>{authIsReady && <AppRouter user={user} />}</div>;
 }
 

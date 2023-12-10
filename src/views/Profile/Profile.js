@@ -7,7 +7,16 @@ import Modal from '../../components/UI/Modal/Modal';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import { Typography } from '@mui/material';
+
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import {
+  Edit as EditIcon,
+  ExitToApp as ExitToAppIcon,
+  PersonAdd as PersonAddIcon,
+} from '@mui/icons-material';
+
+import { Hidden, Typography } from '@mui/material';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import {
@@ -24,7 +33,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
 import Popover from '@mui/material/Popover';
-import SongList from '../../components/SongList/SongList';
+
 import SongItemSkeleton from '../../components/UI/Skeletons/SongItemSkeleton';
 // const tabs = ['Tracks', 'Playlists', 'Reposted', 'Likes'];
 const tabs = ['Tracks', 'Likes'];
@@ -32,6 +41,12 @@ const tabs = ['Tracks', 'Likes'];
 const useStyles = makeStyles((theme) => ({
   profile__content: {
     padding: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(1),
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(0),
+    },
   },
   profile__headerContainer: {
     maxWidth: '124rem',
@@ -49,6 +64,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     zIndex: 1,
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '2rem',
+    },
   },
   bannerSkeleton: {
     position: 'absolute',
@@ -64,6 +84,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fff',
     borderRadius: '50%',
     overflow: 'hidden',
+    margin: '0 auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '8rem',
+      height: '8rem',
+    },
   },
   profileHeaderImageContainer_img: {
     width: '100%',
@@ -75,12 +100,20 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
   profileHeaderTextContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '0.4rem',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+      marginTop: '1.6rem',
+    },
   },
   profileHeaderDisplayName: {
     color: '#fff',
@@ -155,6 +188,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    gap: '1.6rem',
+    justifyContent: 'space-between',
+    color: '#000',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+      textAlign: 'center',
+      gap: '0.4rem',
+    },
   },
 }));
 
@@ -169,37 +210,23 @@ export default function Profile({ scrollRef }) {
   const { user } = useAuthContext();
   const [profile, setProfile] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [updateButtonToggled, setUpdateButtonToggled] = useState(false);
+
   const [loadedSongs, setLoadedSongs] = useState([]);
   const [isProcessingFollow, setIsProcessingFollow] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null);
-  const [query, setQuery] = useState('resp');
+
+  const [query, setQuery] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
   const params = useParams();
   const URL = params.profileURL;
   const randomBannerPlaceholder = 'https://source.unsplash.com/random/2480x520';
-  const queries = {
-    profile:
-      profile && profile.userID
-        ? ['music', ['userID', '==', profile.userID]]
-        : null,
-    likes: [
-      ['likes', 'music'],
-      [
-        ['__name__', '==', user.uid],
-        ['docID', 'in'],
-      ],
-      'likes',
-    ],
-  };
 
-  const handleEditProfile = () => {
+  const handleEditProfile = (songId) => {
     setIsEditingProfile(false);
   };
 
   const handleNewQuery = (index) => {
     setCurrentTab(index);
-    setResetQueryTrigger((prev) => !prev);
   };
   const handleFollowClick = async () => {
     setIsProcessingFollow(true);
@@ -226,18 +253,20 @@ export default function Profile({ scrollRef }) {
       try {
         const { data } = await getUserProfile({ profileURL: URL });
         setProfile({ ...data });
+
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
+
     getProfile();
-  }, [URL, user]);
+  }, [URL, user, isEditingProfile]);
 
   useEffect(() => {
     const fetchSongs = async () => {
       setIsProcessingFollow(true);
       try {
-        console.log(profile.userID);
         const { data } =
           currentTab === 0
             ? await getSongs({
@@ -250,7 +279,7 @@ export default function Profile({ scrollRef }) {
             : currentTab === 1
             ? await getSongs({ likeUserId: profile.userID })
             : await getSongs({ repostUserId: profile.userID });
-        console.log(data[0]);
+
         if (data) {
           setLoadedSongs([...data]);
         }
@@ -272,6 +301,18 @@ export default function Profile({ scrollRef }) {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (profile !== null) {
+      console.log(profile);
+      setQuery(
+        currentTab === 0 && profile && profile.userID
+          ? ['music', ['userID', '==', profile.userID]]
+          : ['music', ['likes', 'array-contains', profile.userID]]
+      );
+      setResetQueryTrigger((prev) => !prev);
+    }
+  }, [currentTab, profile]);
+  console.log(query);
   return (
     <Layout user={user}>
       <Grid
@@ -383,25 +424,43 @@ export default function Profile({ scrollRef }) {
               <Box className={classes.profile__statsContainer}>
                 <Box className={classes.profile__statItem}>
                   <PersonIcon fontSize="large" />
-                  <Typography variant="subtitle1">
-                    {profile?.followers?.length || <Skeleton width={30} />}
-                    &nbsp;Followers
+                  <Typography variant="h3">
+                    {profile !== null && profile?.followers?.length ? (
+                      profile.followers.length
+                    ) : profile !== null ? (
+                      0
+                    ) : (
+                      <Skeleton width={30} />
+                    )}
+                    <Hidden smDown>&nbsp;Followers</Hidden>
                   </Typography>
                 </Box>
                 <Box className={classes.profile__statItem}>
                   <PeopleIcon fontSize="large" />
-                  <Typography variant="subtitle1">
-                    {profile?.following?.length || <Skeleton width={30} />}
-                    &nbsp;Following
+                  <Typography variant="h3">
+                    {profile !== null &&
+                    profile?.following?.length !== undefined ? (
+                      profile.following.length
+                    ) : profile !== null ? (
+                      0
+                    ) : (
+                      <Skeleton width={30} />
+                    )}
+                    <Hidden smDown>&nbsp;Following</Hidden>
                   </Typography>
                 </Box>
                 <Box className={classes.profile__statItem}>
                   <MusicNoteIcon fontSize="large" />
-                  <Typography
-                    variant="h3"
-                    color="#000">
-                    {loadedSongs?.length || <Skeleton width={30} />}
-                    &nbsp;Tracks
+                  <Typography variant="h3">
+                    {loadedSongs !== null &&
+                    loadedSongs?.length !== undefined ? (
+                      loadedSongs.length
+                    ) : loadedSongs !== null ? (
+                      0
+                    ) : (
+                      <Skeleton width={30} />
+                    )}
+                    <Hidden smDown>&nbsp;Tracks</Hidden>
                   </Typography>
                 </Box>
               </Box>
@@ -425,22 +484,31 @@ export default function Profile({ scrollRef }) {
                     />
                   ))}
                 </Tabs>
-                <Grid>
+                <Grid
+                  container
+                  spacing={2}
+                  justifyContent="flex-end">
                   {profile && user && user.uid !== profile.userID && (
-                    <Button
-                      className={classes.profile__header_button_follow}
-                      onClick={handleFollowClick}
-                      disabled={isProcessingFollow}>
-                      {isFollowing ? 'Following' : 'Follow'}
-                    </Button>
+                    <Tooltip title={isFollowing ? 'Following' : 'Follow'}>
+                      <IconButton
+                        className={classes.profile__header_button_follow}
+                        onClick={handleFollowClick}
+                        disabled={isProcessingFollow}
+                        color="black">
+                        <PersonAddIcon />
+                      </IconButton>
+                    </Tooltip>
                   )}
+
                   {profile && user && user.uid === profile.userID ? (
-                    <Button
-                      className={classes.profile__header_button}
-                      onClick={() => setIsEditingProfile(true)}
-                      disabled={isEditingProfile}>
-                      Edit Profile
-                    </Button>
+                    <Tooltip title="Edit Profile">
+                      <IconButton
+                        className={classes.profile__header_button}
+                        onClick={() => setIsEditingProfile(true)}
+                        disabled={isEditingProfile}>
+                        <EditIcon htmlColor="black" />
+                      </IconButton>
+                    </Tooltip>
                   ) : (
                     <Skeleton
                       variant="rounded"
@@ -448,22 +516,26 @@ export default function Profile({ scrollRef }) {
                       height={60}
                     />
                   )}
+
                   {profile &&
-                    user &&
-                    user.uid === profile.userID &&
-                    (!isPending ? (
-                      <Button
+                  user &&
+                  user.uid === profile.userID &&
+                  !isPending ? (
+                    <Tooltip title="Logout">
+                      <IconButton
                         className={classes.profile__header_button}
                         onClick={logout}>
-                        Logout
-                      </Button>
-                    ) : (
-                      <Button
-                        className={classes.profile__header_button}
-                        disabled>
-                        Loading..
-                      </Button>
-                    ))}
+                        <ExitToAppIcon htmlColor="red" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Button
+                      className={classes.profile__header_button}
+                      disabled>
+                      {isPending ? 'Loading..' : null}
+                    </Button>
+                  )}
+
                   {error && <p>{error}</p>}
                 </Grid>
               </Box>
@@ -474,11 +546,11 @@ export default function Profile({ scrollRef }) {
         <Grid
           item
           xs={12}>
-          {profile && loadedSongs && loadedSongs.length ? (
-            <SongList
-              songs={loadedSongs}
+          {profile && query ? (
+            <CollectionResults
               scrollRef={scrollRef}
-              user={user ? user : 'none'}
+              query={query}
+              resetQueryTrigger={resetQueryTrigger}
             />
           ) : (
             <SongItemSkeleton count={5} />
