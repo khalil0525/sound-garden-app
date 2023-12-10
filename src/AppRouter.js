@@ -32,137 +32,135 @@ function AppRouter({ user }) {
 
   return (
     <BrowserRouter>
-      <Box
+      <Grid
+        container
         sx={{
           flexGrow: 0,
           backgroundColor: '#000',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
+          height: '100vh !important', // Set a fixed height for the container
+          padding: {
+            xs: '0', // No padding on mobile
+            md: '1.6rem 1.6rem 1.6rem 1.6rem', // Padding for larger screens
+          },
         }}>
-        <Grid
-          container
-          sx={{ width: '100vw', maxHeight: '100vh' }}>
-          {isMobile && (
-            <>
-              <IconButton
-                color="inherit"
-                onClick={toggleDrawer}
-                sx={{ display: { xs: 'block', md: 'none' }, zIndex: 1200 }}>
-                {drawerOpen ? <CloseIcon /> : <MenuIcon fontSize="large" />}
-              </IconButton>
-              <Drawer
-                anchor="left"
-                open={drawerOpen}
-                onClose={toggleDrawer}
-                PaperProps={{
-                  sx: {
-                    backgroundColor: '#000',
-                    width: '80%', // Adjust the width as needed
-                  },
-                }}>
-                <SideNavigation />
-              </Drawer>
-            </>
-          )}
-          {!isMobile && (
-            <Grid
-              xs={isMobile ? 12 : 2}
-              md={'20%'}
-              bgcolor="secondary"
-              p="3.2rem 1.6rem 1.6rem 0">
+        {isMobile && (
+          <>
+            <IconButton
+              color="inherit"
+              onClick={toggleDrawer}
+              sx={{ display: { xs: 'block', md: 'none' }, zIndex: 1200 }}>
+              {drawerOpen ? <CloseIcon /> : <MenuIcon fontSize="large" />}
+            </IconButton>
+            <Drawer
+              anchor="left"
+              open={drawerOpen}
+              onClose={toggleDrawer}
+              PaperProps={{
+                sx: {
+                  backgroundColor: '#000',
+                  width: '80%', // Adjust the width as needed
+                },
+              }}>
               <SideNavigation />
-            </Grid>
-          )}
+            </Drawer>
+          </>
+        )}
+        {!isMobile && (
+          <Grid
+            xs={isMobile ? 12 : 2}
+            md={'20%'}
+            bgcolor="secondary"
+            p="3.2rem 1.6rem 1.6rem 0">
+            <SideNavigation />
+          </Grid>
+        )}
 
+        <>
           <Grid
             xs={isMobile ? 12 : 10}
             md={'80%'}
-            p={{ xs: '0', sm: '0', md: '1.6rem 1.6rem 1.6rem 0' }}>
-            <Box
-              bgcolor={'white'}
-              maxHeight="100%"
-              borderRadius={{ xs: '0', md: '3.4rem' }}
-              sx={{ overflowY: 'scroll' }}>
-              <Box
-                ref={scrollableNodeRef}
-                sx={{
-                  overflowX: 'hidden',
-                  margin: '0 1.6rem',
+            p={{ xs: '0', sm: '0', md: '1.6rem 1.6rem 1.6rem 0' }}
+            ref={scrollableNodeRef}
+            bgcolor={'white'}
+            borderRadius={{
+              xs: '0',
+              md: '3.4rem',
+            }}
+            sx={{
+              overflowX: 'hidden',
 
-                  '::-webkit-scrollbar': {
-                    width: '8px',
-                  },
-                  '::-webkit-scrollbar-thumb': {
-                    backgroundColor: '#888',
-                    borderRadius: '5px',
-                  },
-                  '::-webkit-scrollbar-track': {
-                    backgroundColor: 'transparent',
-                  },
-                }}>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <Layout user={user}>
-                        <Home scrollRef={scrollableNodeRef} />
-                      </Layout>
-                    }
-                  />
-                  <Route
-                    path="/genres"
-                    element={<Genres />}
-                  />
-                  <Route
-                    path="/genres/:type"
-                    element={
-                      <CollectionResults scrollRef={scrollableNodeRef} />
-                    }
-                  />
-                  <Route
-                    path="/artists"
-                    element={<Artists />}></Route>
-                  <Route
-                    path="/artists/:letter"
-                    element={
-                      <CollectionResults scrollRef={scrollableNodeRef} />
-                    }
-                  />
+              maxHeight: '100% !important', // Set a maximum height for the inner Box
+              overflowY: 'auto', // Enable scrollbar when content overflows
 
-                  <Route
-                    path="/uploaded"
-                    element={
-                      user ? (
-                        <Uploaded scrollRef={scrollableNodeRef} />
-                      ) : (
-                        <Navigate to="/" />
-                      )
-                    }
-                  />
-                  <Route
-                    path="*"
-                    element={<Home scrollRef={scrollableNodeRef} />}
-                  />
-                  <Route
-                    path="/profile/:profileURL"
-                    element={<Profile scrollRef={scrollableNodeRef} />}
-                  />
-                  <Route
-                    path="/search"
-                    element={
-                      <CollectionResults scrollRef={scrollableNodeRef} />
-                    }
-                  />
-                  <Route
-                    path="/upload"
-                    element={user ? <Upload /> : <Navigate to="/" />}
-                  />
-                </Routes>
-              </Box>
-            </Box>
+              '::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '::-webkit-scrollbar-thumb': {
+                backgroundColor: '#888',
+                borderRadius: '5px',
+                backgroundClip: 'padding-box',
+              },
+              '::-webkit-scrollbar-track': {
+                backgroundColor: 'transparent',
+                marginTop: '1.6rem !important',
+                marginBottom: '1.6rem !important',
+              },
+            }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Layout user={user}>
+                    <Home scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/genres"
+                element={<Genres />}
+              />
+              <Route
+                path="/genres/:type"
+                element={<CollectionResults scrollRef={scrollableNodeRef} />}
+              />
+              <Route
+                path="/artists"
+                element={<Artists />}></Route>
+              <Route
+                path="/artists/:letter"
+                element={<CollectionResults scrollRef={scrollableNodeRef} />}
+              />
+
+              <Route
+                path="/uploaded"
+                element={
+                  user ? (
+                    <Uploaded scrollRef={scrollableNodeRef} />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="*"
+                element={<Home scrollRef={scrollableNodeRef} />}
+              />
+              <Route
+                path="/profile/:profileURL"
+                element={<Profile scrollRef={scrollableNodeRef} />}
+              />
+              <Route
+                path="/search"
+                element={<CollectionResults scrollRef={scrollableNodeRef} />}
+              />
+              <Route
+                path="/upload"
+                element={user ? <Upload /> : <Navigate to="/" />}
+              />
+            </Routes>
           </Grid>
-        </Grid>
-      </Box>
+        </>
+      </Grid>
     </BrowserRouter>
   );
 }
