@@ -6,7 +6,7 @@ name: Firebase CI
 on:
   push:
     branches:
-      - master
+      - mui-restyle
   pull_request:
     branches:
       - master
