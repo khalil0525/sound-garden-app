@@ -140,6 +140,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'inline-block !important',
       opacity: 0.8,
     },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   editContainer_updateBtn: {
     display: 'none !important',
@@ -173,6 +176,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.4rem 2rem 0.8rem',
     borderBottom: '1px solid #ccc',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column-reverse',
+      gap: '0.8rem',
+    },
   },
   profile__statsContainer: {
     display: 'flex',
@@ -465,9 +472,10 @@ export default function Profile({ scrollRef }) {
                 </Box>
               </Box>
             </Grid>
-            <Grid
+            <Box
               item
               xs={12}
+              sx={{ display: 'flex' }}
               width="100%">
               <Box className={classes.profile__profileActions}>
                 <Tabs
@@ -485,7 +493,6 @@ export default function Profile({ scrollRef }) {
                   ))}
                 </Tabs>
                 <Grid
-                  container
                   spacing={2}
                   justifyContent="flex-end">
                   {profile && user && user.uid !== profile.userID && (
@@ -539,7 +546,7 @@ export default function Profile({ scrollRef }) {
                   {error && <p>{error}</p>}
                 </Grid>
               </Box>
-            </Grid>
+            </Box>
           </Grid>
         </Grid>
 

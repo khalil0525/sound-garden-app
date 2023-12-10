@@ -33,10 +33,13 @@ const useStyles = makeStyles((theme) => ({
   titleContainerContainer: {
     display: 'flex',
     gap: '0.8rem',
-    maxWidth: '30%',
+    maxWidth: '100%',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '30%',
+    },
   },
   titleContainerPlayBtn: {
     alignSelf: 'center',
