@@ -12,7 +12,7 @@ import card3bg from '../../images/cardBg3.png';
 import MiniBanner from '../../components/UI/MiniBanner';
 
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
-import { useAuthContext } from '../../hooks/useAuthContext';
+
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
 import { Box, IconButton } from '@mui/material';

@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import CardList from '../../components/CardList/CardList';
-import Layout from '../../components/Layout/Layout';
 
 const genres = [
   { title: 'none' },
@@ -65,17 +64,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Genres() {
   const classes = useStyles();
-  const { user } = useAuthContext();
 
   return (
-    <Layout user={user}>
-      <div className={classes.genres}>
-        <CardList
-          className={classes.genresCardList}
-          list={genres}
-          page={'genres'}
-        />
-      </div>
-    </Layout>
+    <div className={classes.genres}>
+      <CardList
+        className={classes.genresCardList}
+        list={genres}
+        page={'genres'}
+      />
+    </div>
   );
 }

@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Genres from './views/Genres/Genres';
 import Artists from './views/Artists/Artists';
 
-import Uploaded from './views/Uploaded/Uploaded';
 import Profile from './views/Profile/Profile';
 import SideNavigation from './components/SideNavigation/SideNavigation';
 import Upload from './views/Upload/Upload';
@@ -140,45 +139,72 @@ function AppRouter({ user }) {
 
               <Route
                 path="/genres"
-                element={<Genres />}
+                element={
+                  <Layout user={user}>
+                    <Genres />
+                  </Layout>
+                }
               />
               <Route
                 path="/genres/:type"
-                element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                element={
+                  <Layout user={user}>
+                    <CollectionResults scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
               />
               <Route
                 path="/artists"
-                element={<Artists />}></Route>
+                element={
+                  <Layout user={user}>
+                    <Artists />
+                  </Layout>
+                }
+              />
               <Route
                 path="/artists/:letter"
-                element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                element={
+                  <Layout user={user}>
+                    <CollectionResults scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
               />
 
               <Route
-                path="/uploaded"
+                path="*"
+                element={
+                  <Layout user={user}>
+                    <Home scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/profile/:profileURL"
+                element={
+                  <Layout user={user}>
+                    <Profile scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Layout user={user}>
+                    <CollectionResults scrollRef={scrollableNodeRef} />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/upload"
                 element={
                   user ? (
-                    <Uploaded scrollRef={scrollableNodeRef} />
+                    <Layout user={user}>
+                      <Upload />
+                    </Layout>
                   ) : (
                     <Navigate to="/" />
                   )
                 }
-              />
-              <Route
-                path="*"
-                element={<Home scrollRef={scrollableNodeRef} />}
-              />
-              <Route
-                path="/profile/:profileURL"
-                element={<Profile scrollRef={scrollableNodeRef} />}
-              />
-              <Route
-                path="/search"
-                element={<CollectionResults scrollRef={scrollableNodeRef} />}
-              />
-              <Route
-                path="/upload"
-                element={user ? <Upload /> : <Navigate to="/" />}
               />
             </Routes>
           </Grid>

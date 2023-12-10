@@ -25,7 +25,6 @@ import {
   getUserProfile,
   unfollowUser,
 } from '../../api/functions';
-import Layout from '../../components/Layout/Layout';
 
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import { makeStyles } from '@mui/styles';
@@ -321,7 +320,7 @@ export default function Profile({ scrollRef }) {
   }, [currentTab, profile]);
   console.log(query);
   return (
-    <Layout user={user}>
+    <>
       <Grid
         container
         className={classes.profile__content}>
@@ -573,6 +572,6 @@ export default function Profile({ scrollRef }) {
           onCancel={() => setIsEditingProfile(false)}
         />
       )}
-    </Layout>
+    </>
   );
 }

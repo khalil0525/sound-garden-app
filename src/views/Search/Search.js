@@ -47,27 +47,25 @@ const Search = ({ scrollRef }) => {
   const { results, query } = location.state;
 
   return (
-    <Layout user={user}>
-      <div className={classes.search}>
-        <div className={classes.searchHeader}>
-          <h1 className={classes.searchQueryText}>
-            Search results for "{query}"
-          </h1>
-        </div>
-        {results.length ? (
-          <SongList
-            className={classes.searchSongList}
-            scrollRef={scrollRef}
-            songs={results}
-            user={user ? user : 'none'}
-          />
-        ) : (
-          <h1 className={classes.searchSongList}>
-            The search yielded no results!
-          </h1>
-        )}
+    <div className={classes.search}>
+      <div className={classes.searchHeader}>
+        <h1 className={classes.searchQueryText}>
+          Search results for "{query}"
+        </h1>
       </div>
-    </Layout>
+      {results.length ? (
+        <SongList
+          className={classes.searchSongList}
+          scrollRef={scrollRef}
+          songs={results}
+          user={user ? user : 'none'}
+        />
+      ) : (
+        <h1 className={classes.searchSongList}>
+          The search yielded no results!
+        </h1>
+      )}
+    </div>
   );
 };
 

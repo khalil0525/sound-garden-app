@@ -12,7 +12,6 @@ import placeholderImage from '../../images/blank_image_placeholder.svg';
 import LoadingBar from '../../components/LoadingBar/LoadingBar';
 import GenreSelect from '../../components/UploadForm/GenreSelect/GenreSelect';
 import { FileUploader } from 'react-drag-drop-files';
-import Layout from '../../components/Layout/Layout';
 
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
@@ -241,7 +240,7 @@ const Upload = () => {
   }, [songFile]);
 
   return (
-    <Layout user={user}>
+    <>
       <Paper className={classes.uploadContainer}>
         {!songFile && (
           <FileUploader
@@ -338,7 +337,7 @@ const Upload = () => {
           </div>
         )}
       </Paper>
-    </Layout>
+    </>
   );
 };
 
