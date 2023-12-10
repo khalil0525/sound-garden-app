@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { useAuthContext } from '../../hooks/useAuthContext';
+
 import CardList from '../../components/CardList/CardList';
 
 const genres = [
