@@ -14,7 +14,7 @@ const Layout = ({ children, user }) => {
         padding: {
           xs: theme.spacing(1),
           sm: theme.spacing(2),
-          md: theme.spacing(4),
+          md: '0.8rem 3.2rem 1.6rem 3.2rem',
         }, // Set padding to 0 for xs (mobile)
         justifyContent: 'center',
       }}>
@@ -25,9 +25,10 @@ const Layout = ({ children, user }) => {
           item
           container
           xs={12}
-          md={5}
-          m={{ xs: '0', md: '0 0 0 auto' }}
-          justifyContent={{ xs: 'center', md: 'flex-end' }}>
+          md={12}
+          lg={5}
+          m={{ xs: '0', md: '0 0 3.2rem auto' }}
+          justifyContent={{ xs: 'center', md: 'center' }}>
           <ActionBar user={user} />
         </Grid>
         <Grid

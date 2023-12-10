@@ -16,43 +16,22 @@ import { Slider, Stack } from '@mui/material';
 import { VolumeDown, VolumeUp } from '@mui/icons-material';
 const useStyles = makeStyles((theme) => ({
   audioPlayer: {
-    // padding: "2rem 0 0 1rem",
     display: 'flex',
     width: '100%',
-
     position: 'relative',
-    margin: ' 0 auto',
+    margin: '0 auto',
     padding: '1.6rem',
     flexDirection: 'column',
   },
 
-  audioPlayerControlsSeek: {
-    display: 'none',
-  },
-  audioPlayerControlsMainPrevious: {
-    display: 'none',
-  },
-  audioPlayerControlsMainNext: {
-    display: 'none',
-  },
-  audioPlayerControlsVolume: {
-    display: 'none',
-  },
-  audioPlayerControlsMain: {
-    order: 2,
-  },
-  audioPlayerControlsMainPlay: {
-    marginLeft: '0.6rem',
-    background: 'none',
-    border: 'none',
-  },
   audioPlayerTrackDetails: {
     display: 'flex',
     justifyContent: 'flex-start',
     flex: '1 0 auto',
     order: 1,
+    margin: '0.6rem 0 0 1.4rem',
+    padding: '0 0.8rem',
   },
-
   audioPlayerTrackDetailsSongDetails: {
     display: 'flex',
     flexDirection: 'column',
@@ -61,22 +40,23 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     justifyContent: 'center',
     gap: '0.2rem',
-
     marginLeft: '0.8rem',
   },
   audioPlayerTrackDetailsSongDetailsTitle: {
     fontWeight: 400,
     fontSize: theme.typography.body2.fontSize,
-    lineHeight: '1.4rem',
+
     color: '#ffffff',
     overflow: 'hidden',
+    lineHeight: '1.7rem',
   },
   audioPlayerTrackDetailsSongDetailsArtist: {
     fontWeight: 400,
     fontSize: theme.typography.body2.fontSize,
-    lineHeight: '1.4rem',
+
     color: '#ffffff',
     opacity: 0.5,
+    lineHeight: '1.7rem',
   },
   audioPlayerTrackDetailsSongArt: {
     position: 'absolute',
@@ -87,15 +67,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '26rem',
     height: '30rem',
     margin: 'inherit',
+    borderRadius: '12px',
   },
-  audioPlayerTrackDetailsSongArtImage: {
-    width: '100%',
-    height: '100%',
-  },
+  audioPlayerTrackDetailsSongArtImage: { width: '100%', height: '100%' },
   audioPlayerUpper: {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1) !important',
-    maxWidth: '23rem',
-    height: '15rem',
+    maxWidth: '24rem',
+    height: '17rem',
     position: 'absolute',
     zIndex: 5,
     background: '#313132',
@@ -120,98 +98,65 @@ const useStyles = makeStyles((theme) => ({
     background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
     borderRadius: '2.5rem',
   },
-  '@media only screen and (min-width: 992px) and (min-device-height: 768px) and (orientation: landscape)':
-    {
-      audioPlayerControls: {
-        display: 'flex',
-        flexDirection: 'column',
-      },
-      audioPlayerControlsSeek: {
-        display: 'flex',
-        gap: '0.6rem',
-        justifyContent: 'center',
-        margin: '2.4rem auto',
-        width: '100%',
-        opacity: 'none',
-      },
-      audioPlayerControlsSeekDuration: {
-        fontFamily: 'Inter',
-        fontWeight: 400,
-        fontSize: theme.typography.body3.fontSize,
-        lineHeight: '1.5rem',
-        color: '#ffffff',
-      },
-      audioPlayerControlsMain: {
-        display: 'flex',
-        gap: '0.8rem',
-        justifyContent: 'center',
-      },
-      audioPlayerControlsMainPrevious: {
-        display: 'block',
-        border: 'none',
-        backgroundColor: 'transparent',
-        outline: 'none',
-      },
-      audioPlayerControlsMainNext: {
-        display: 'block',
-        border: 'none',
-        backgroundColor: 'transparent',
-        outline: 'none',
-      },
-      audioPlayerControlsMainPlay: {
-        display: 'flex',
-        alignItems: 'center',
-        margin: '0',
-        top: '-1.6rem',
-        position: 'absolute',
-        zIndex: 2,
-        border: '6px solid #313132 !important',
-        background:
-          'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%) !important',
-        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25) !important',
-        borderRadius: '3.6rem',
-        '&:hover': {
-          cursor: 'pointer',
-        },
-        '& svg': {
-          fontSize: '2rem', // Adjust the icon size
-          color: '#fff', // Adjust the icon color
-        },
-      },
-
-      audioPlayerControlsVolume: {
-        display: 'flex',
-        gap: '0.2rem',
-        justifyContent: 'center',
-        maxWidth: '100%',
-        padding: '0 3.2rem',
-      },
-      audioPlayerControlsVolumeInput: {
-        cursor: 'pointer',
-      },
-      audioPlayerTrackDetails: {
-        justifyContent: 'flex-start',
-        margin: '0.6rem 0 0 1.4rem',
-        padding: '0 0.8rem',
-      },
-
-      audioPlayerTrackDetailsSongArtImage: {
-        borderRadius: '12px',
-      },
-      audioPlayerTrackDetailsSongDetails: {
-        gap: '0.4rem',
-      },
-      audioPlayerTrackDetailsSongDetailsTitle: {
-        lineHeight: '1.7rem',
-      },
-      audioPlayerTrackDetailsSongDetailsArtist: {
-        lineHeight: '1.7rem',
-      },
-    },
-  '@media only screen and (min-width: 1600px)': {
-    // Extra large devices (large laptops and desktops, 1200px and up)
+  audioPlayerControls: { display: 'flex', flexDirection: 'column' },
+  audioPlayerControlsSeek: {
+    display: 'flex',
+    gap: '0.6rem',
+    justifyContent: 'center',
+    margin: '2.4rem auto',
+    width: '100%',
+    opacity: 'none',
   },
+  audioPlayerControlsSeekDuration: {
+    fontFamily: 'Inter',
+    fontWeight: 400,
+    fontSize: theme.typography.body3.fontSize,
+    lineHeight: '1.5rem',
+    color: '#ffffff',
+  },
+  audioPlayerControlsMain: {
+    display: 'flex',
+    gap: '0.8rem',
+    justifyContent: 'center',
+    order: 2,
+  },
+  audioPlayerControlsMainPrevious: {
+    display: 'block',
+    border: 'none',
+    backgroundColor: 'transparent',
+    outline: 'none',
+  },
+  audioPlayerControlsMainNext: {
+    display: 'block',
+    border: 'none',
+    backgroundColor: 'transparent',
+    outline: 'none',
+  },
+  audioPlayerControlsMainPlay: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0',
+    top: '-1.6rem',
+    position: 'absolute',
+    zIndex: 2,
+    border: '6px solid #313132 !important',
+    background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%) !important',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25) !important',
+    borderRadius: '3.6rem',
+    '&:hover': { cursor: 'pointer' },
+    '& svg': { fontSize: '2rem', color: '#fff' },
+    marginLeft: '0.6rem',
+  },
+  audioPlayerControlsVolume: {
+    display: 'flex',
+    gap: '0.2rem',
+    justifyContent: 'center',
+    maxWidth: '100%',
+    padding: '0 3.2rem',
+  },
+  audioPlayerControlsVolumeInput: { cursor: 'pointer' },
 }));
+
 let initialState = {
   url: null,
   playing: false,

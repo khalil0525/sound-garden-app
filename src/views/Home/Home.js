@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   homeCardList: {
     alignSelf: 'flex-start',
     justifySelf: 'flex-start',
-    marginLeft: '6px',
+
     width: '100%',
   },
   homeBanner: {
@@ -103,12 +103,18 @@ const useStyles = makeStyles((theme) => ({
 
     padding: '16px',
     background: theme.palette.primary.main,
+    [theme.breakpoints.down('md')]: {
+      marginTop: '1.6rem',
+      maxHeight: '600px',
+    },
   },
   homeBannerContainer: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
       textAlign: 'center',
       alignItems: 'center',
+      marginTop: '1.6rem',
+      gap: '0.8rem',
     },
     display: 'flex',
     width: '60%',
@@ -128,13 +134,15 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)',
     alignSelf: 'start',
     display: 'flex',
-    alignItems: 'center', // Align the icon and text horizontally
-    [theme.breakpoints.down('sm')]: {
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '3.2rem !important',
       alignSelf: 'center',
+      width: '100%',
     },
   },
   homeBannerImg: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
     display: 'block',
@@ -155,7 +163,6 @@ const tempList = [
   { title: 'Top 50 tamil', content: '50 tracks', background: card1bg },
   { title: 'Weekly Hits', content: '100 tracks', background: card2bg },
   { title: 'Tolly Hit track', content: '60 Tracks', background: card3bg },
-  { title: 'Top 50 tamilll', content: '50 tracks', background: card1bg },
 ];
 
 export default function Home({ scrollRef }) {

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: theme.spacing(4),
+    gap: theme.spacing(6),
     flexWrap: 'wrap !important',
   },
   cardLink: {
@@ -38,9 +38,9 @@ const CardList = ({ list, page, className }) => {
             <Grid
               item
               key={item.title}
-              xs={4}
+              xs={6}
               sm={3}
-              md={2}
+              md={3}
               lg={2}>
               <Link
                 to={`/${page}/${item.title}`}

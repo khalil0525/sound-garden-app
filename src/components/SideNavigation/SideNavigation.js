@@ -20,30 +20,34 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'block',
       textAlign: 'center',
     },
+    position: 'relative',
   },
   logoIcon: {
-    width: '100%', // Ensure the logo takes up the entire width of its container
-    height: '100%', // Ensure the logo takes up the entire height of its container
-    borderRadius: '12px', // Add border radius for a rounded look
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow for depth
+    width: '100%',
+    height: '100%',
+    borderRadius: '12px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   },
   sideNavigationHeader: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.8rem', // Adjust as needed
+    gap: '0.8rem',
     width: '100%',
-    padding: '1.6rem 0 0 3.2rem !important', // Adjust padding as needed
+    padding: '1.6rem 0 0 3.2rem !important',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0.8rem 0 0 0.8rem !important',
+    },
   },
   sideNavigationImageContainer: {
     display: 'flex',
     maxWidth: '220px',
     maxHeight: '220px',
     borderRadius: '12px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       maxWidth: '60px',
       height: '60px',
     },
@@ -65,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     width: '100%',
     flexDirection: 'column',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
     },
   },
@@ -75,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
   },
@@ -84,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navbarItemContent: {
     display: 'flex',
-    gap: '1.6rem', // Adjust as needed
+    gap: '1.6rem',
   },
   navbarItemContentIcon: {
     [theme.breakpoints.down('lg')]: {
@@ -108,22 +112,40 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '24px',
     textDecoration: 'none',
     fontSize: theme.typography.h3.fontSize,
-    padding: '1.6rem 0 1.6rem 4.8rem', // Adjust padding as needed
+    padding: '1.6rem 0 1.6rem 4.8rem',
     '&:hover': {
       background: theme.palette.primary.main,
       opacity: 0.6,
     },
+    [theme.breakpoints.down('lg')]: {
+      padding: '0.4rem 1.6rem',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+    },
   },
   sideNavigationAudioplayerContainer: {
     paddingLeft: '1.6rem',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '6.4rem',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      paddingLeft: '0',
+    },
   },
 }));
 
-const SideNavigation = ({ className }) => {
+const SideNavigation = ({ className, drawerOpen = null }) => {
   const classes = useStyles(theme);
 
   return (
     <Grid
+      sx={{
+        display: drawerOpen === true || drawerOpen === null ? 'flex' : 'none',
+        position: 'relative',
+        zIndex: '9999',
+      }}
       container
       className={`${classes.sideNavigation} ${className}`}>
       <Grid className={classes.sideNavigationHeader}>

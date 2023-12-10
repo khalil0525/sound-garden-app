@@ -22,7 +22,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 function AppRouter({ user }) {
   const theme = useTheme();
   const scrollableNodeRef = React.createRef();
-  const isMobile = useMediaQuery('(max-width: 1026px)');
+  const isMobile = useMediaQuery('(max-width: 1200px)');
   const isSingleColumn = useMediaQuery('(max-width: 1200px)');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -37,38 +37,60 @@ function AppRouter({ user }) {
         sx={{
           flexGrow: 0,
           backgroundColor: '#000',
-          height: '100vh !important', // Set a fixed height for the container
+          height: '100vh !important',
           padding: {
-            xs: '0', // No padding on mobile
-            md: '1.6rem 1.6rem 1.6rem 1.6rem', // Padding for larger screens
+            xs: '0',
+            lg: '1.6rem 1.6rem 1.6rem 0',
           },
         }}>
-        {isMobile && (
-          <>
-            <IconButton
-              color="inherit"
-              onClick={toggleDrawer}
-              sx={{ display: { xs: 'block', md: 'none' }, zIndex: 1200 }}>
-              {drawerOpen ? <CloseIcon /> : <MenuIcon fontSize="large" />}
-            </IconButton>
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={toggleDrawer}
-              PaperProps={{
-                sx: {
-                  backgroundColor: '#000',
-                  width: '80%', // Adjust the width as needed
-                },
-              }}>
-              <SideNavigation />
-            </Drawer>
-          </>
-        )}
+        <>
+          {' '}
+          {isMobile && (
+            <>
+              <IconButton
+                color="inherit"
+                onClick={toggleDrawer}
+                sx={{
+                  display: { xs: 'block', md: 'block', lg: 'none' },
+                  zIndex: 1200,
+                }}>
+                {drawerOpen ? <CloseIcon /> : <MenuIcon fontSize="large" />}
+              </IconButton>
+              <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={toggleDrawer}
+                PaperProps={{
+                  sx: {
+                    backgroundColor: '#000',
+                    width: '100%',
+                  },
+                }}>
+                <IconButton
+                  color="inherit"
+                  onClick={toggleDrawer}
+                  sx={{
+                    position: 'absolute',
+                    top: '1.6rem',
+                    right: '1.6rem',
+                    zIndex: 1201,
+                  }}>
+                  <CloseIcon fontSize="large" />
+                </IconButton>
+
+                {/* Content of the drawer */}
+              </Drawer>
+            </>
+          )}
+          <SideNavigation drawerOpen={drawerOpen} />
+        </>
+
         {!isMobile && (
           <Grid
             xs={isMobile ? 12 : 2}
-            md={'20%'}
+            md={2}
+            lg={2.5}
+            xl={2}
             bgcolor="secondary"
             p="3.2rem 1.6rem 1.6rem 0">
             <SideNavigation />
@@ -77,20 +99,21 @@ function AppRouter({ user }) {
 
         <>
           <Grid
-            xs={isMobile ? 12 : 10}
-            md={'80%'}
             p={{ xs: '0', sm: '0', md: '1.6rem 1.6rem 1.6rem 0' }}
             ref={scrollableNodeRef}
             bgcolor={'white'}
+            md={12}
+            lg={9.5}
+            xl={10}
             borderRadius={{
               xs: '0',
-              md: '3.4rem',
+              lg: '3.4rem',
             }}
             sx={{
               overflowX: 'hidden',
 
-              maxHeight: '100% !important', // Set a maximum height for the inner Box
-              overflowY: 'auto', // Enable scrollbar when content overflows
+              maxHeight: '100% !important',
+              overflowY: 'auto',
 
               '::-webkit-scrollbar': {
                 width: '8px',
@@ -115,6 +138,7 @@ function AppRouter({ user }) {
                   </Layout>
                 }
               />
+
               <Route
                 path="/genres"
                 element={<Genres />}

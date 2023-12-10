@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     zIndex: 1,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'center',
       padding: '2rem',
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: '1rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'center',
     },
@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '0.4rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       alignItems: 'center',
       marginTop: '1.6rem',
     },
@@ -140,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'inline-block !important',
       opacity: 0.8,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -176,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.4rem 2rem 0.8rem',
     borderBottom: '1px solid #ccc',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column-reverse',
       gap: '0.8rem',
     },
@@ -186,7 +186,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     padding: '1rem',
     marginTop: '1rem',
-    backgroundColor: '#fff', // Add your desired background color
+    backgroundColor: '#fff',
     borderRadius: '8px',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   },
@@ -198,7 +198,7 @@ const useStyles = makeStyles((theme) => ({
     gap: '1.6rem',
     justifyContent: 'space-between',
     color: '#000',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       alignItems: 'center',
       textAlign: 'center',
       gap: '0.4rem',
@@ -439,7 +439,7 @@ export default function Profile({ scrollRef }) {
                     ) : (
                       <Skeleton width={30} />
                     )}
-                    <Hidden smDown>&nbsp;Followers</Hidden>
+                    <Hidden mdDown>&nbsp;Followers</Hidden>
                   </Typography>
                 </Box>
                 <Box className={classes.profile__statItem}>
@@ -453,7 +453,7 @@ export default function Profile({ scrollRef }) {
                     ) : (
                       <Skeleton width={30} />
                     )}
-                    <Hidden smDown>&nbsp;Following</Hidden>
+                    <Hidden mdDown>&nbsp;Following</Hidden>
                   </Typography>
                 </Box>
                 <Box className={classes.profile__statItem}>
@@ -467,7 +467,7 @@ export default function Profile({ scrollRef }) {
                     ) : (
                       <Skeleton width={30} />
                     )}
-                    <Hidden smDown>&nbsp;Tracks</Hidden>
+                    <Hidden mdDown>&nbsp;Tracks</Hidden>
                   </Typography>
                 </Box>
               </Box>

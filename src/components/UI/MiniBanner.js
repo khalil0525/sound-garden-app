@@ -11,10 +11,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
     maxHeight: '30rem',
 
-    maxWidth: '46rem',
-    // Adjust the width as needed
+    maxWidth: '100%',
+
     padding: '3.2rem',
     background: theme.palette.primary.main,
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '100%',
+    },
   },
   miniBannerContent: {
     display: 'flex',
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: '80%',
     boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.1)',
     alignSelf: 'start',
-    marginTop: '16px', // Adjust the margin as needed
+    marginTop: '16px',
   },
   miniBannerImg: {
     display: 'block',

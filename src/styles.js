@@ -102,13 +102,13 @@ export const songItem = (theme) => ({
   songItemSongPhotoContainer: {
     width: '6rem',
     height: '6rem',
-    [theme.breakpoints.between('sm', 'md')]: {
-      width: '12rem',
-      height: '12rem',
+    [theme.breakpoints.up('sm')]: {
+      width: '8rem',
+      height: '8rem',
     },
-    [theme.breakpoints.up('md')]: {
-      maxWidth: '16rem',
-      maxHeight: '16rem',
+    [theme.breakpoints.up('lg')]: {
+      width: '16rem',
+      weight: '16rem',
     },
   },
   songPhotoContainerImg: {
@@ -124,7 +124,7 @@ export const songItem = (theme) => ({
     justifyContent: 'center',
     gap: '0.6rem',
     padding: '1.2rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'space-evenly',
       width: '100%',
       maxHeight: '16rem',

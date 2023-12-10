@@ -7,9 +7,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-
     maxWidth: '16rem',
-    minWidth: '12rem',
+
     maxHeight: '15.8rem',
     minHeight: '12rem',
     borderRadius: '10px',
@@ -37,7 +36,21 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   cardContent: {},
-  '@media only screen and (min-width: 1600px)': {},
+  '@media only screen and (min-width: 600px)': {
+    // Adjust styles for screens wider than 600px (typical mobile width)
+    card: {
+      maxWidth: '20rem',
+      minWidth: '16rem',
+      maxHeight: '19.8rem',
+      minHeight: '16rem',
+    },
+    cardTitle: {
+      height: '6.8rem',
+    },
+    cardTitleText: {
+      fontSize: theme.typography.h6.fontSize,
+    },
+  },
 }));
 
 const ListCard = ({ background, title, content }) => {

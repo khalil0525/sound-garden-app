@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     [theme.breakpoints.down('sm')]: {
-      maxWidth: '30%',
+      maxWidth: '60%',
     },
   },
   titleContainerPlayBtn: {
@@ -112,6 +112,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body1.fontSize,
     lineHeight: '1.9rem',
     color: theme.palette.text.secondary,
+
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
 }));
 let initialState = {
