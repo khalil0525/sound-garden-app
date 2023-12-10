@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import SongItem from './MiniSongItem';
 import { useCollection } from '../../hooks/useCollection';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Box } from '@mui/material';
+
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({

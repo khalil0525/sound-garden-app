@@ -1,10 +1,9 @@
 import React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
+
 import CardList from '../../components/CardList/CardList';
-import Button from '@mui/material/Button';
-import Skeleton from '@mui/material/Skeleton';
+
 import Link from '@mui/material/Link';
 import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
 import card1bg from '../../images/cardBg1.png';
@@ -168,7 +167,6 @@ const tempList = [
 export default function Home({ scrollRef }) {
   const classes = useStyles(theme);
   const query = ['music', ['userID', '==', 'xCvggxf5HPhL9xBbHOz49BWcsly2']];
-  const { user } = useAuthContext();
 
   return (
     <Grid2 className={classes.home}>

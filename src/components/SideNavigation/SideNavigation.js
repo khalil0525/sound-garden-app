@@ -3,7 +3,6 @@ import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 
-import { useTheme } from '@mui/material/styles';
 import { ReactComponent as HomeIcon } from '../../images/Home_fill.svg';
 import { ReactComponent as ArtistIcon } from '../../images/User_duotone_line.svg';
 import { ReactComponent as GenreIcon } from '../../images/Mic_alt_duotone.svg';

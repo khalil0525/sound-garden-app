@@ -168,7 +168,7 @@ const SongItem = ({
   );
 
   // const [edited, setEdited] = useState(false);
-  const { playing, isMounted, played, seeking } = songItemState;
+  const { playing, isMounted, seeking } = songItemState;
   const {
     loadedSongURL,
     isSongPlaying,

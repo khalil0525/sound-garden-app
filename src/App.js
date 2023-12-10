@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useAuthContext } from './hooks/useAuthContext';
 import AppRouter from './AppRouter';

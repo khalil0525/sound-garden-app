@@ -10,7 +10,7 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-import placeholderImage from '../../images/blank_image_placeholder.svg';
+
 import theme from '../../theme';
 import { Slider, Stack } from '@mui/material';
 import { VolumeDown, VolumeUp } from '@mui/icons-material';

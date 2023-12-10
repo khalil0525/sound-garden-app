@@ -14,16 +14,15 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import 'simplebar/dist/simplebar.min.css';
 import CollectionResults from './components/CollectionResults/CollectionResults';
-import { Box, useMediaQuery, IconButton, Drawer } from '@mui/material';
-import { useTheme } from '@mui/styles';
+import { useMediaQuery, IconButton, Drawer } from '@mui/material';
+
 import Layout from './components/Layout/Layout';
 import MenuIcon from '@mui/icons-material/Menu';
 
 function AppRouter({ user }) {
-  const theme = useTheme();
   const scrollableNodeRef = React.createRef();
   const isMobile = useMediaQuery('(max-width: 1200px)');
-  const isSingleColumn = useMediaQuery('(max-width: 1200px)');
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
