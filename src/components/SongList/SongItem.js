@@ -15,12 +15,13 @@ import PauseIcon from '@mui/icons-material/Pause';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import Modal from '../UI/Modal/Modal';
-import { CircularProgress, IconButton } from '@mui/material';
+import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
 import moment from 'moment';
 import { songItem } from '../../styles';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(songItem);
 
@@ -65,6 +66,7 @@ const SongItem = ({
   liked,
   user,
   songId = null,
+  profileURL,
 }) => {
   const classes = useStyles(theme);
 
@@ -274,9 +276,13 @@ const SongItem = ({
           </IconButton>
 
           <div className={classes.titleContainerSongTitle}>
-            <span className={classes.titleContainerSongTitleArtist}>
-              {song.artist}
-            </span>
+            <NavLink
+              to={`/profile/${profileURL}`}
+              style={{ textDecoration: 'none' }}>
+              <span className={classes.titleContainerSongTitleArtist}>
+                {song.artist}
+              </span>
+            </NavLink>
             <span className={classes.titleContainerSongTitleTitle}>
               {song.title}
             </span>
@@ -304,46 +310,54 @@ const SongItem = ({
         onMouseDown={handleSeekMouseDown}
         onMouseUp={handleSeekMouseUp}
       />
-
       <div className={classes.songItemFooter}>
         <div className={classes.songItemActionContainer}>
-          <IconButton
-            className={`${classes.actionContainerBtn} ${
-              isLiked && user.uid && classes.actionContainerLikeBtnLiked
-            } `}
-            onClick={handleLikeClick}
-            disabled={isProcessingLike}>
-            {isProcessingLike ? (
-              <CircularProgress
-                size={18}
-                className={classes.spinner}
-              />
-            ) : isLiked ? (
-              <FavoriteIcon htmlColor={theme.palette.primary.main} />
-            ) : (
-              <FavoriteBorderRoundedIcon />
-            )}
-          </IconButton>
-          <IconButton
-            className={classes.actionContainerBtn}
-            onClick={handleSongDownloadClick}>
-            <FileDownloadOutlinedIcon />
-          </IconButton>
+          <Tooltip title={isLiked ? 'Unlike' : 'Like'}>
+            <IconButton
+              className={`${classes.actionContainerBtn} ${
+                isLiked && user.uid && classes.actionContainerLikeBtnLiked
+              } `}
+              onClick={handleLikeClick}
+              disabled={isProcessingLike}>
+              {isProcessingLike ? (
+                <CircularProgress
+                  size={18}
+                  className={classes.spinner}
+                />
+              ) : isLiked ? (
+                <FavoriteIcon htmlColor={theme.palette.primary.main} />
+              ) : (
+                <FavoriteBorderRoundedIcon />
+              )}
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Download">
+            <IconButton
+              className={classes.actionContainerBtn}
+              onClick={handleSongDownloadClick}>
+              <FileDownloadOutlinedIcon />
+            </IconButton>
+          </Tooltip>
 
           {user.uid === song.userID && (
             <>
-              <IconButton
-                className={classes.actionContainerBtn}
-                onClick={() => setIsEditing(true)}
-                disabled={isEditing}>
-                <EditOutlinedIcon />
-              </IconButton>
-              <IconButton
-                className={classes.actionContainerBtn}
-                onClick={() => setIsDeleting(true)}
-                disabled={isDeleting}>
-                <DeleteForeverOutlinedIcon />
-              </IconButton>
+              <Tooltip title="Edit">
+                <IconButton
+                  className={classes.actionContainerBtn}
+                  onClick={() => setIsEditing(true)}
+                  disabled={isEditing}>
+                  <EditOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  className={classes.actionContainerBtn}
+                  onClick={() => setIsDeleting(true)}
+                  disabled={isDeleting}>
+                  <DeleteForeverOutlinedIcon />
+                </IconButton>
+              </Tooltip>
             </>
           )}
           {isEditing && (

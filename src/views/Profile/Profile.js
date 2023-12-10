@@ -7,16 +7,16 @@ import Modal from '../../components/UI/Modal/Modal';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import {
   Edit as EditIcon,
   ExitToApp as ExitToAppIcon,
-  PersonAdd as PersonAddIcon,
 } from '@mui/icons-material';
 
-import { Hidden, Typography } from '@mui/material';
+import { CircularProgress, Hidden, Typography } from '@mui/material';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import {
@@ -35,7 +35,7 @@ import Popover from '@mui/material/Popover';
 
 import SongItemSkeleton from '../../components/UI/Skeletons/SongItemSkeleton';
 // const tabs = ['Tracks', 'Playlists', 'Reposted', 'Likes'];
-const tabs = ['Tracks', 'Likes'];
+const tabs = ['Tracks', 'Likes', 'Playlists'];
 //2480 x 520 (1240 x 260 res)
 const useStyles = makeStyles((theme) => ({
   profile__content: {
@@ -236,12 +236,25 @@ export default function Profile({ scrollRef }) {
   };
   const handleFollowClick = async () => {
     setIsProcessingFollow(true);
+    console.log('hee');
     try {
+      console.log(profile.followers);
       const { data } = profile.followers.includes(user.uid)
         ? await unfollowUser({ userIdToUnfollow: profile.userID })
         : await followUser({ userIdToFollow: profile.userID });
 
       if (data.success) {
+        setProfile((prev) => {
+          return isFollowing
+            ? {
+                ...prev,
+                followers: prev.followers.filter((id) => user.userID !== id),
+              }
+            : {
+                ...prev,
+                followers: [...prev.followers, user.userID],
+              };
+        });
         setIsFollowing((prevState) => !prevState);
       }
       setIsProcessingFollow(false);
@@ -488,20 +501,34 @@ export default function Profile({ scrollRef }) {
                       key={index}
                       label={tab}
                       onClick={() => handleNewQuery(index)}
+                      sx={{ fontSize: '1.6rem', fontWeight: '500' }}
                     />
                   ))}
                 </Tabs>
-                <Grid
-                  spacing={2}
-                  justifyContent="flex-end">
+                <Grid justifyContent="flex-end">
                   {profile && user && user.uid !== profile.userID && (
                     <Tooltip title={isFollowing ? 'Following' : 'Follow'}>
                       <IconButton
                         className={classes.profile__header_button_follow}
                         onClick={handleFollowClick}
-                        disabled={isProcessingFollow}
-                        color="black">
-                        <PersonAddIcon />
+                        disabled={isProcessingFollow}>
+                        {isProcessingFollow ? (
+                          <CircularProgress
+                            size={24}
+                            thickness={5}
+                            color="secondary"
+                          />
+                        ) : isFollowing ? (
+                          <HowToRegIcon
+                            htmlColor="black"
+                            fontSize="large"
+                          />
+                        ) : (
+                          <PersonAddAltIcon
+                            color="green"
+                            fontSize="large"
+                          />
+                        )}
                       </IconButton>
                     </Tooltip>
                   )}
@@ -512,7 +539,10 @@ export default function Profile({ scrollRef }) {
                         className={classes.profile__header_button}
                         onClick={() => setIsEditingProfile(true)}
                         disabled={isEditingProfile}>
-                        <EditIcon htmlColor="black" />
+                        <EditIcon
+                          htmlColor="black"
+                          fontSize="large"
+                        />
                       </IconButton>
                     </Tooltip>
                   ) : (
@@ -531,7 +561,10 @@ export default function Profile({ scrollRef }) {
                       <IconButton
                         className={classes.profile__header_button}
                         onClick={logout}>
-                        <ExitToAppIcon htmlColor="red" />
+                        <ExitToAppIcon
+                          htmlColor="red"
+                          fontSize="large"
+                        />
                       </IconButton>
                     </Tooltip>
                   ) : (

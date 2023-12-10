@@ -415,7 +415,7 @@ const AudioPlayer = () => {
         <img
           className={classes.audioPlayerTrackDetailsSongArtImage}
           src={
-            loadedSongURL && playlist[playlistIndex].songPhotoURL
+            loadedSongURL && playlist[playlistIndex]?.songPhotoURL
               ? playlist[playlistIndex].songPhotoURL
               : 'https://source.unsplash.com/300x300/?abstract'
           }
@@ -481,10 +481,10 @@ const AudioPlayer = () => {
           <div className={classes.audioPlayerTrackDetailsSongDetails}>
             <AudioPlayerMarquee
               className={classes.audioPlayerTrackDetailsSongDetailsTitle}>
-              {loadedSongURL && playlist[playlistIndex].title}
+              {loadedSongURL && playlist[playlistIndex]?.title}
             </AudioPlayerMarquee>
             <p className={classes.audioPlayerTrackDetailsSongDetailsArtist}>
-              {loadedSongURL && playlist[playlistIndex].artist}
+              {loadedSongURL && playlist[playlistIndex]?.artist}
             </p>
           </div>
         </div>

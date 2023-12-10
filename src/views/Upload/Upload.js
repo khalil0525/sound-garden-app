@@ -151,10 +151,11 @@ const Upload = () => {
         title: songName,
         duration: songDuration,
         userID: user.uid,
+        profileURL: user.profileURL,
       });
     }
   };
-
+  console.log(user);
   useEffect(() => {
     if (
       firestoreResponse.success &&
