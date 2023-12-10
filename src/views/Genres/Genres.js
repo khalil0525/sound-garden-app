@@ -39,8 +39,10 @@ const genres = [
 const useStyles = makeStyles((theme) => ({
   genres: {
     display: 'grid',
-    gridTemplateColumns: '33% 33% 33%',
+    gridTemplateColumns: '24% 24% 24% 24%',
     gridTemplateRows: '1fr auto',
+    alignContent: 'center',
+
     width: '100%',
     gridRow: '2/-1',
     gridColumn: '1/-1',

@@ -11,8 +11,9 @@ const useStyles = makeStyles((theme) => ({
   cardlistList: {
     display: 'flex',
     justifyContent: 'center',
-    gap: theme.spacing(1),
-    flexWrap: 'nowrap !important',
+    alignItems: 'center',
+    gap: theme.spacing(4),
+    flexWrap: 'wrap !important',
   },
   cardLink: {
     textDecoration: 'none',
@@ -31,7 +32,6 @@ const CardList = ({ list, page, className }) => {
     <div className={`${classes.cardlist} ${className}`}>
       <Grid
         container
-        spacing={2}
         className={classes.cardlistList}>
         {list &&
           list.map((item, index) => (
@@ -39,9 +39,9 @@ const CardList = ({ list, page, className }) => {
               item
               key={item.title}
               xs={12}
-              sm={6}
-              md={4}
-              lg={3}>
+              sm={3}
+              md={2}
+              lg={2}>
               <Link
                 to={`/${page}/${item.title}`}
                 state={{
