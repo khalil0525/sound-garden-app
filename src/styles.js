@@ -74,7 +74,7 @@ export const songItem = (theme) => ({
   titleContainerAdditional: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex',
+      display: 'flex !important',
       flexDirection: 'column',
       alignItems: 'flex-end',
       alignSelf: 'flex-start',
@@ -169,7 +169,7 @@ export const songItem = (theme) => ({
     },
 
     titleContainerAdditional: {
-      display: 'flex',
+      display: 'flex !important',
       flexDirection: 'column',
       alignItems: 'flex-end',
       alignSelf: 'flex-start',
@@ -178,14 +178,17 @@ export const songItem = (theme) => ({
       marginLeft: '0.5rem',
     },
     titleContainerAdditionalUploadDate: {
-      display: 'block',
+      display: 'flex',
       color: '#ccc',
       fontSize: theme.typography.body2.fontSize,
       fontWeight: 300,
       lineHeight: '1.6rem',
     },
     titleContainerAdditionalGenreContainer: {
-      display: 'block',
+      marginTop: '0.2rem',
+      lineHeight: '1.2rem',
+    },
+    titleContainerAdditionalDateContainer: {
       marginTop: '0.2rem',
       lineHeight: '1.2rem',
     },

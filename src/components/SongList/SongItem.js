@@ -19,7 +19,7 @@ import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 import theme from '../../theme';
-import moment from 'moment';
+
 import { songItem } from '../../styles';
 import { NavLink } from 'react-router-dom';
 
@@ -253,13 +253,6 @@ const SongItem = ({
     song.docID,
     dispatchAudioPlayerContext,
   ]);
-  const { _seconds, _nanoseconds } = song.createdAt || {};
-
-  // Convert Firestore timestamp to JavaScript Date
-  const createdAt = _seconds
-    ? new Date(_seconds * 1000 + (_nanoseconds || 0) / 1e6)
-    : null;
-  const relativeTime = createdAt ? moment(createdAt).fromNow() : null;
 
   return (
     <li className={classes.songItem}>
@@ -289,8 +282,10 @@ const SongItem = ({
           </div>
           <div className={classes.titleContainerAdditional}>
             <div className={classes.titleContainerAdditionalDateContainer}>
-              <span className={classes.titleContainerAdditionalUploadDate}>
-                {relativeTime}
+              <span
+                className={classes.titleContainerAdditionalUploadDate}
+                style={{ width: '20px !important' }}>
+                {song.createdAt}
               </span>
             </div>
             <div className={classes.titleContainerAdditionalGenreContainer}>
