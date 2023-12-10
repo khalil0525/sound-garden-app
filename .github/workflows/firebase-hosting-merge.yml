@@ -33,7 +33,7 @@ jobs:
 
       - name: Install dependencies, build, and test
         run: |
-          npm install
+          npm install --force
           npm run build
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
