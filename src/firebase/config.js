@@ -3,6 +3,11 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  getAdditionalUserInfo,
+} from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -33,4 +38,17 @@ const timestamp = firebase.firestore.Timestamp;
 //Object to interact with firebase storage
 const projectStorage = firebase.storage();
 
-export { projectFirestore, projectAuth, projectStorage, timestamp };
+// const signInWithGoogle = async () => {
+//   try {
+//     await signInWithPopup(projectAuth, googleLoginProvider);
+//   } catch (error) {}
+// };
+export {
+  projectFirestore,
+  projectAuth,
+  projectStorage,
+  GoogleAuthProvider,
+  signInWithPopup,
+  timestamp,
+  getAdditionalUserInfo,
+};

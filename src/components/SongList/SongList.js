@@ -71,7 +71,6 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
               playlistSongs={songs}
               songIndex={index}
               songId={song.docID}
-              profileURL={song.profileURL}
               liked={song?.likes?.some((like) => like.id === user.id || false)}
               songPlaylistLocation={playlistLocation}
               user={user}

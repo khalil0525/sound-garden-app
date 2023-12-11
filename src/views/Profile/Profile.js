@@ -236,9 +236,8 @@ export default function Profile({ scrollRef }) {
   };
   const handleFollowClick = async () => {
     setIsProcessingFollow(true);
-    console.log('hee');
+
     try {
-      console.log(profile.followers);
       const { data } = profile.followers.includes(user.uid)
         ? await unfollowUser({ userIdToUnfollow: profile.userID })
         : await followUser({ userIdToFollow: profile.userID });
@@ -272,8 +271,6 @@ export default function Profile({ scrollRef }) {
       try {
         const { data } = await getUserProfile({ profileURL: URL });
         setProfile({ ...data });
-
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -322,7 +319,6 @@ export default function Profile({ scrollRef }) {
 
   useEffect(() => {
     if (profile !== null) {
-      console.log(profile);
       setQuery(
         currentTab === 0 && profile && profile.userID
           ? ['music', ['userID', '==', profile.userID]]
@@ -331,7 +327,7 @@ export default function Profile({ scrollRef }) {
       setResetQueryTrigger((prev) => !prev);
     }
   }, [currentTab, profile]);
-  console.log(query);
+
   return (
     <>
       <Grid
@@ -485,7 +481,6 @@ export default function Profile({ scrollRef }) {
               </Box>
             </Grid>
             <Box
-              item
               xs={12}
               sx={{ display: 'flex' }}
               width="100%">

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import Paper from '@mui/material/Paper';
@@ -12,7 +12,7 @@ import placeholderImage from '../../images/blank_image_placeholder.svg';
 import LoadingBar from '../../components/LoadingBar/LoadingBar';
 import GenreSelect from '../../components/UploadForm/GenreSelect/GenreSelect';
 import { FileUploader } from 'react-drag-drop-files';
-
+import { projectFirestore } from '../../firebase/config';
 const useStyles = makeStyles((theme) => ({
   uploadContainer: {
     display: 'flex',
@@ -139,23 +139,38 @@ const Upload = () => {
     response: cloudStorageResponse,
     uploadProgress,
   } = useCloudStorage();
-
+  const [profileURL, setProfileURL] = useState(null);
   const { addDocument, response: firestoreResponse } = useFirestore('music');
+
   const { user } = useAuthContext();
 
-  const handleSongUpload = () => {
+  const handleSongUpload = async () => {
     if (songFile && formIsValid && uploadIsReady) {
-      addDocument({
-        artist: user.displayName,
-        genre: genreType,
-        title: songName,
-        duration: songDuration,
-        userID: user.uid,
-        profileURL: user.profileURL,
-      });
+      const userDocRef = projectFirestore.collection('users').doc(user.uid);
+
+      userDocRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            // Access the user document data
+            const userData = doc.data();
+            setProfileURL(userData.profileURL);
+            addDocument({
+              artist: userData.displayName,
+              genre: genreType,
+              title: songName,
+              duration: songDuration,
+              userID: userData.userID,
+              profileURL: userData.profileURL,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user document:', error);
+        });
     }
   };
-  console.log(user);
+
   useEffect(() => {
     if (
       firestoreResponse.success &&
@@ -323,7 +338,9 @@ const Upload = () => {
               <>
                 <Typography variant="h5">Uploaded Successfully!</Typography>
                 <div>
-                  <Link to="/uploaded">Go to your uploaded tracks</Link>
+                  <Link to={`/profile/${profileURL}`}>
+                    Go to your uploaded tracks
+                  </Link>
                 </div>
               </>
             )}

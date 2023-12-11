@@ -83,7 +83,7 @@ const ActionBar = ({ user, className, query }) => {
 
   useEffect(() => {
     if (!profileLink && getUserDocumentResponse.success) {
-      setProfileLink(getUserDocumentResponse.document.profileURL);
+      setProfileLink(getUserDocumentResponse?.document?.profileURL);
     }
   }, [getUserDocumentResponse, profileLink]);
 

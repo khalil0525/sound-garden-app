@@ -1,9 +1,27 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-
+const { v4: uuidv4 } = require('uuid');
 admin.initializeApp(functions.config().firebase);
 
-exports.onUserUpdate = functions.firestore
+exports.updateUserProfile = functions.firestore
+  .document('users/{userID}')
+  .onUpdate((change, context) => {
+    const { after } = change;
+    const { userID } = context.params;
+
+    const db = admin.firestore();
+
+    // Update the profileURL field in the user document
+    return db
+      .collection('users')
+      .doc(userID)
+      .update({
+        profileURL: after.get('profileURL'),
+      });
+  });
+
+// Manage profileURLS collection
+exports.updateProfileURLS = functions.firestore
   .document('users/{userID}')
   .onUpdate((change, context) => {
     const { before, after } = change;
@@ -11,12 +29,11 @@ exports.onUserUpdate = functions.firestore
 
     const db = admin.firestore();
 
-    if (before.get('profileURL') !== after.get('profileURL')) {
-      const batch = db.batch();
+    const batch = db.batch();
 
-      // delete the old profileURL document from the `profileURLS` collection
+    // delete the old profileURL document from the `profileURLS` collection
+    if (before.get('profileURL') !== after.get('profileURL')) {
       if (before.get('profileURL')) {
-        // new users may not have a profileURL value
         batch.delete(
           db.collection('profileURLS').doc(before.get('profileURL'))
         );
@@ -24,14 +41,12 @@ exports.onUserUpdate = functions.firestore
 
       // add a new profileURL document
       batch.set(db.collection('profileURLS').doc(after.get('profileURL')), {
-        user: db.collection('users').doc(userID),
+        userID,
       });
-
-      return batch.commit();
     }
-    return true;
-  });
 
+    return batch.commit();
+  });
 exports.onSongDelete = functions.firestore
   .document('music/{songID}')
   .onDelete((snap, context) => {
@@ -99,6 +114,21 @@ exports.createUserDirectories = functions.auth.user().onCreate(async (user) => {
   const db = admin.firestore();
   const userId = user.uid;
 
+  // Check the provider data to determine if Google authentication was used
+  const isGoogleAuth = user.providerData.some(
+    (provider) => provider.providerId === 'google.com'
+  );
+
+  if (isGoogleAuth) {
+    // The user signed up with Google
+    console.log(`New user ${userId} signed up with Google.`);
+  } else {
+    // The user signed up with a different provider
+    console.log(
+      `New user ${userId} signed up with a provider other than Google.`
+    );
+  }
+
   // Create a new user document
   const userRef = db.collection('users').doc(userId);
 
@@ -106,14 +136,22 @@ exports.createUserDirectories = functions.auth.user().onCreate(async (user) => {
   const followers = [];
   const following = [];
   const likes = [];
-  const playlist = [];
+  const playlists = [];
   const songs = [];
-  // Update the user document with the empty arrays
+  const displayName = `User${Math.floor(Math.random() * 100000)}`;
+
   await userRef.set({
+    displayName: user.displayName ? user.displayName : displayName, // Use user.displayName if available
+    createdAt: admin.firestore.FieldValue.serverTimestamp(), // Use server timestamp
+    userID: userId,
+    firstName: '',
+    lastName: '',
+    profilePhotoURL: user.photoURL || '', // Use user.photoURL if available
+    profilePhotoFilePath: '',
     followers: followers,
     following: following,
     likes: likes,
-    playlist: playlist,
+    playlists: playlists,
     songs: songs,
   });
 

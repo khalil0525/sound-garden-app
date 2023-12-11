@@ -6,11 +6,7 @@ import styles from './CollectionResults.module.css';
 
 import { useLocation } from 'react-router-dom';
 
-export default function CollectionResults({
-  scrollRef,
-  resetQueryTrigger,
-  query,
-}) {
+export default function CollectionResults({ scrollRef, query }) {
   const { user } = useAuthContext();
   const location = useLocation();
   //This variable will be used if we are using routes Genres/:type or Artists:id
@@ -34,9 +30,8 @@ export default function CollectionResults({
       : query
       ? query
       : ['skip', 'skip', 'skip'];
-  console.log(searchParams);
+
   const { documents: musicDocuments } = useCollection(...searchParams);
-  console.log(musicDocuments);
 
   // This is the error message that will be displayed when the query
   // Returns empty results

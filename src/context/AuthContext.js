@@ -1,25 +1,26 @@
-import { createContext, useEffect, useReducer } from "react";
-import { projectAuth } from "../firebase/config";
+import { createContext, useEffect, useReducer } from 'react';
+import { projectAuth } from '../firebase/config';
+
 //context object
 export const AuthContext = createContext();
 
 //Reducer function
 export const authReducer = (state, action) => {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN':
       return { ...state, user: action.payload };
 
-    case "LOGOUT":
+    case 'LOGOUT':
       return { ...state, user: null };
 
-    case "AUTH_IS_READY":
+    case 'AUTH_IS_READY':
       return {
         ...state,
         user: action.payload,
         authIsReady: true,
         refreshUserTriggered: false,
       };
-    case "REFRESH_AUTH_INFORMATION":
+    case 'REFRESH_AUTH_INFORMATION':
       return { ...state, refreshUserTriggered: true };
     //if action type doesn't match any other state in our switch statement
     default:
@@ -36,12 +37,13 @@ export const AuthContextProvider = ({ children }) => {
   });
   const { user, refreshUserTriggered } = state;
   // This will check if a user is logged in after page refresh or when they first load the site
+
   useEffect(() => {
     const reloadUser = async () => {
       try {
         await projectAuth.currentUser.reload();
 
-        dispatch({ type: "AUTH_IS_READY", payload: projectAuth.currentUser });
+        dispatch({ type: 'AUTH_IS_READY', payload: projectAuth.currentUser });
       } catch (err) {
         console.log(err);
       }
@@ -58,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
     //Load the application and on refresh.
     //We give it empty dependency array so it only runs once.
     const unsub = projectAuth.onAuthStateChanged((user) => {
-      dispatch({ type: "AUTH_IS_READY", payload: user });
+      dispatch({ type: 'AUTH_IS_READY', payload: user });
       //Cleanup function
       unsub();
     });
