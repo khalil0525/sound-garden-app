@@ -25,7 +25,7 @@ import {
   getUserProfile,
   unfollowUser,
 } from '../../api/functions';
-
+import { useSnackbar } from '../../context/SnackbarContext';
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
 import { makeStyles } from '@mui/styles';
 import Tabs from '@mui/material/Tabs';
@@ -206,6 +206,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile({ scrollRef }) {
+  const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar();
+
   const classes = useStyles();
   const [resetQueryTrigger, setResetQueryTrigger] = useState(false);
 
@@ -255,10 +257,11 @@ export default function Profile({ scrollRef }) {
               };
         });
         setIsFollowing((prevState) => !prevState);
+        showSuccessSnackbar(`Successfully followed ${profile.displayName}`);
       }
       setIsProcessingFollow(false);
     } catch (error) {
-      console.error('Error:', error);
+      showErrorSnackbar(error.message);
       setIsProcessingFollow(false);
     }
   };
@@ -277,7 +280,7 @@ export default function Profile({ scrollRef }) {
     };
 
     getProfile();
-  }, [URL, user, isEditingProfile]);
+  }, [URL, user, isEditingProfile, showSuccessSnackbar]);
 
   useEffect(() => {
     const fetchSongs = async () => {

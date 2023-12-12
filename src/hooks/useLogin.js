@@ -9,8 +9,10 @@ import {
   getAdditionalUserInfo,
 } from '../firebase/config';
 import { v4 as uuidv4 } from 'uuid';
+import { useSnackbar } from '../context/SnackbarContext';
 
 export const useLogin = () => {
+  const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar();
   const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -24,6 +26,7 @@ export const useLogin = () => {
       const res = await projectAuth.signInWithEmailAndPassword(email, password);
       dispatch({ type: 'LOGIN', payload: res.user });
       if (!isCancelled) {
+        showSuccessSnackbar('Login successful');
         setIsPending(false);
         setError(null);
       }
@@ -31,6 +34,8 @@ export const useLogin = () => {
       if (!isCancelled) {
         console.log(err.message);
         setError(err.message);
+        showErrorSnackbar(err.message); // Show error message
+
         setIsPending(false);
       }
     }
@@ -78,16 +83,26 @@ export const useLogin = () => {
           });
 
         dispatch({ type: 'LOGIN', payload: projectAuth.currentUser });
+        showSuccessSnackbar('Account creation and login successful');
         if (!isCancelled) {
           setIsPending(false);
           setError(null);
         }
+      } else {
+        dispatch({ type: 'LOGIN', payload: projectAuth.currentUser });
+        if (!isCancelled) {
+          showSuccessSnackbar('Login successful');
+
+          setIsPending(false);
+          setError(null);
+        }
       }
-      return dispatch({ type: 'LOGIN', payload: projectAuth.currentUser });
     } catch (err) {
       if (!isCancelled) {
         console.log(err.message);
         setError(err.message);
+        showErrorSnackbar(err.message);
+
         setIsPending(false);
       }
     }

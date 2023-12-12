@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState, useRef } from 'react';
 import { projectStorage } from '../firebase/config';
+import { useSnackbar } from '../context/SnackbarContext';
 // import { useFirestore } from "./useFirestore";
 // import { useAuthContext } from "./useAuthContext";
 //Initial state object for our reducer. Since we aren't holding on to the old values/updating them we do this
@@ -76,6 +77,8 @@ const cloudStorageReducer = (state, action) => {
 };
 
 export const useCloudStorage = () => {
+  const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar();
+
   //We are using "initialState" because we don't need to make a new copy of the state every time the hook is used.
   const [response, dispatch] = useReducer(cloudStorageReducer, initialState);
   //This state is used to cancel updating local state when the component that uses this hook is unmounted.
@@ -132,6 +135,7 @@ export const useCloudStorage = () => {
       //callback for error on upload
       (error) => {
         dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
+        showSuccessSnackbar(error.message);
       },
       //Callback for completed upload
       () => {
@@ -151,6 +155,7 @@ export const useCloudStorage = () => {
           type: 'ADDED_FILES',
           payload: addedSongFileRef.current,
         });
+        showSuccessSnackbar('Sucessfully upload song!');
         unsubscribe();
       }
     );
@@ -189,8 +194,10 @@ export const useCloudStorage = () => {
       //   });
       // console.log("DELETE COMPLETED");
       dispatchIfNotCancelled({ type: 'DELETED_FILES' });
+      showSuccessSnackbar('Sucessfully deleted song!');
     } catch (error) {
       console.log('Error deleting song file!!:  ', error);
+      showErrorSnackbar(error.message);
       dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
@@ -224,13 +231,14 @@ export const useCloudStorage = () => {
       if (newFilePropertyName === 'profilePhoto') {
         await user.updateProfile({ photoURL: downloadURL });
       }
-
+      showSuccessSnackbar('Upload successful!');
       dispatchIfNotCancelled({
         type: 'ADDED_FILE',
         payload: addedFile,
       });
     } catch (error) {
       console.log('Error adding file!!:  ', error);
+      showErrorSnackbar(error.message);
       dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
@@ -273,13 +281,14 @@ export const useCloudStorage = () => {
       if (newFilePropertyName === 'profilePhoto') {
         await user.updateProfile({ photoURL: downloadURL });
       }
-
+      showSuccessSnackbar('File succesfully replaced!');
       dispatchIfNotCancelled({
         type: 'REPLACED_FILE',
         payload: addedFile,
       });
     } catch (error) {
       console.log('Error replacing song file!!:  ', error);
+      showErrorSnackbar(error.message);
       dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };

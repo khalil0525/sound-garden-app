@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { projectAuth } from '../firebase/config';
 import { useAuthContext } from './useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../context/SnackbarContext';
 
 export const useLogout = () => {
+  const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar();
+
   const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -23,6 +26,7 @@ export const useLogout = () => {
 
       //update state
       if (!isCancelled) {
+        showSuccessSnackbar('Successfully logged out!');
         setIsPending(false);
         setError(null);
       }
@@ -30,6 +34,7 @@ export const useLogout = () => {
       if (!isCancelled) {
         console.log(err.message);
         setError(err.message);
+        showErrorSnackbar(err.message);
         setIsPending(false);
       }
     }

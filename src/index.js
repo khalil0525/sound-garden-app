@@ -6,16 +6,22 @@ import { AuthContextProvider } from './context/AuthContext';
 import { AudioPlayerContextProvider } from './context/AudioPlayerContext';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
+import { SnackbarProvider } from './context/SnackbarContext'; // Import SnackbarProvider
 
 const root = createRoot(document.getElementById('root'));
 
 root.render(
   <ThemeProvider theme={theme}>
-    <CssBaseline /> {/* Wrap your application with ThemeProvider */}
-    <AudioPlayerContextProvider>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
-    </AudioPlayerContextProvider>
-  </ThemeProvider> /* Close ThemeProvider */
+    <CssBaseline /> {/* MUI Global Reset */}
+    <SnackbarProvider>
+      {' '}
+      {/* Wrap your application with SnackbarProvider */}
+      <AudioPlayerContextProvider>
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
+      </AudioPlayerContextProvider>
+    </SnackbarProvider>{' '}
+    {/* Close SnackbarProvider */}
+  </ThemeProvider>
 );

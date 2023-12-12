@@ -18,6 +18,7 @@ import theme from '../../theme';
 import { Box, IconButton } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Headphones } from '@mui/icons-material';
+
 const useStyles = makeStyles((theme) => ({
   home: {
     display: 'grid',
