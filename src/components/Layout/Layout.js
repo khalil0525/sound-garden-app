@@ -12,8 +12,8 @@ const Layout = ({ children, user }) => {
         display: 'flex',
 
         padding: {
-          xs: theme.spacing(1),
-          sm: theme.spacing(2),
+          xs: theme.spacing(1.5),
+          sm: theme.spacing(4),
           md: '0.8rem 3.2rem 1.6rem 3.2rem',
         }, // Set padding to 0 for xs (mobile)
         justifyContent: 'center',

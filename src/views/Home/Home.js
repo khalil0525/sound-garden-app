@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       textAlign: 'center',
       alignItems: 'center',
-      marginTop: '1.6rem',
+      marginTop: '0.6rem',
       gap: '0.8rem',
     },
     display: 'flex',
@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
-      marginTop: '3.2rem !important',
+      marginTop: '1.6rem !important',
       alignSelf: 'center',
       width: '100%',
     },

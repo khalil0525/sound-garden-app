@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    maxWidth: '16rem',
+    maxWidth: '100%',
 
     maxHeight: '15.8rem',
     minHeight: '12rem',

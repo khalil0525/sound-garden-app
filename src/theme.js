@@ -1,29 +1,51 @@
 import { createTheme } from '@mui/material/styles';
+const defaultTheme = createTheme();
+const breakpoints = defaultTheme.breakpoints;
 
 const theme = createTheme({
   typography: {
     fontFamily: 'Inter, sans-serif',
     h1: {
       fontSize: '3.2rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '2.4rem', // Smaller font size for small screens
+      },
     },
     h2: {
       fontSize: '2.4rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '2rem',
+      },
     },
     h3: {
       fontSize: '2rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '1.8rem',
+      },
     },
     body1: {
       fontSize: '1.6rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '1.4rem',
+      },
     },
     body2: {
       fontSize: '1.4rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+      },
     },
+    // Assuming body3 is a custom variant
     body3: {
       fontSize: '1.2rem',
+      [breakpoints.down('sm')]: {
+        fontSize: '1rem',
+      },
     },
     fontSize: 10,
     htmlFontSize: 10,
   },
+
   spacing: 8,
   palette: {
     primary: {

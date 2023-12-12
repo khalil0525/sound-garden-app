@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '0.6rem',
     [theme.breakpoints.down('sm')]: {
       transform: 'scale(1)', // Disable grow effect on mobile
+      flex: 'unset',
     },
   },
   searchIcon: {

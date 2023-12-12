@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap !important',
   },
   cardLink: {
+    width: '100%',
     textDecoration: 'none',
     color: theme.palette.common.white,
     '&:hover, &:active': {
@@ -38,7 +39,7 @@ const CardList = ({ list, page, className }) => {
             <Grid
               item
               key={item.title}
-              xs={6}
+              xs={10}
               sm={3}
               md={3}
               lg={2}>

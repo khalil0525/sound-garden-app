@@ -8,6 +8,7 @@ import placeholderImage from '../../images/profile_placeholder.svg';
 import ActionBarSearch from './ActionBarSearch';
 import { useFirestore } from '../../hooks/useFirestore';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import theme from '../../theme';
 const useStyles = makeStyles((theme) => ({
   actionBar: {
     position: 'relative',
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: theme.spacing(4.2),
-    height: theme.spacing(4.2),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
     backgroundImage: `url('/src/images/blank_image_placeholder.svg')`,
     filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
     stroke: '#fff',
@@ -56,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
   },
   actionBarButton: {
     backgroundColor: 'transparent',
+    padding: theme.spacing(1), // Adjust padding for smaller screens
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.75rem', // Smaller font size for mobile
+      padding: theme.spacing(0.5), // Less padding on mobile
+      minWidth: 'auto', // Adjust the minimum width
+    },
   },
   searchInput: {
     fontSize: '0.9rem', // Adjust the font size for the search input
@@ -63,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ActionBar = ({ user, className, query }) => {
-  const classes = useStyles();
+  const classes = useStyles(theme);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const [profileLink, setProfileLink] = useState(null);
@@ -97,14 +104,14 @@ const ActionBar = ({ user, className, query }) => {
               disabled={isSigningIn}
               size="large"
               className={classes.actionBarButton}>
-              Sign in
+              Login
             </Button>
             <Button
               onClick={() => setIsCreatingAccount(true)}
               disabled={isCreatingAccount}
               size="large"
               className={classes.actionBarButton}>
-              Create Account
+              Register
             </Button>
 
             {isSigningIn && (
