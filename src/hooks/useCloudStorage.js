@@ -306,7 +306,41 @@ export const useCloudStorage = () => {
       dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
     }
   };
+  const addPlaylistFiles = async (fireStoreDocRef, user, file) => {
+    //Create the song file path from the information we received
+    dispatch({ type: 'IS_PENDING' });
 
+    // Create a variable to hold the photo upload result, if we have one
+
+    let photoPath, photoURL;
+    // Here we try to add the photo file to the cloud storage first before we add the song.
+    if (file) {
+      photoPath =
+        'images/playlists/' +
+        user.uid +
+        '/' +
+        fireStoreDocRef.id +
+        '_' +
+        file.name;
+      try {
+        const photoPathRef = projectStorage.ref(photoPath);
+        let photoUploadRes = await photoPathRef.put(file);
+        photoURL = await photoUploadRes.ref.getDownloadURL();
+      } catch (error) {
+        console.log('Photo upload error: ', error);
+        dispatchIfNotCancelled({ type: 'ERROR', payload: error.message });
+      }
+    }
+
+    fireStoreDocRef.update({
+      playlistPhotoURL: file ? photoURL : '',
+      playlistPhotoFilePath: file ? photoPath : '',
+    });
+    dispatchIfNotCancelled({
+      type: 'ADDED_FILES',
+      payload: addedSongFileRef.current,
+    });
+  };
   //This will fire when the component that is using this hook unmounts,it'll make sure we aren't changing local state
   // on a componenent that already had unmounted because this will cause an error.
   //If we are performing some action in this hook and we navigate away from the page then we don't want to update state
@@ -328,6 +362,7 @@ export const useCloudStorage = () => {
     deleteFile,
     deleteSongFiles,
     replaceFile,
+    addPlaylistFiles,
     response,
     uploadProgress,
   };

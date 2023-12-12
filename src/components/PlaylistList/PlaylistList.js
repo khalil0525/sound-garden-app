@@ -6,7 +6,7 @@ const PlaylistList = ({ playlists, onDelete, onEdit }) => {
     <div>
       {playlists.map((playlist) => (
         <PlaylistItem
-          key={playlist.id}
+          key={playlist.docID}
           playlist={playlist}
           onDelete={onDelete}
           onEdit={onEdit}

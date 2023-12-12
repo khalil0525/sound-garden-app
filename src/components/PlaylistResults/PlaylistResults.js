@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import Button from '@mui/material/Button';
+import PlaylistList from '../../components/PlaylistList/PlaylistList';
 
-import Modal from '../../components/UI/Modal/Modal';
-
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { useCollection } from '../../hooks/useCollection';
 
 import { makeStyles } from '@mui/styles';
-import PlaylistResults from '../../components/PlaylistResults/PlaylistResults';
+import { Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   playlistsContainer: {
@@ -47,18 +45,19 @@ const samplePlaylists = [
   { id: 3, name: 'Playlist 3' },
 ];
 
-const Playlists = () => {
+const PlaylistResults = ({ query }) => {
   const classes = useStyles();
-  const { user } = useAuthContext();
+
   const [playlists, setPlaylists] = useState(samplePlaylists);
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false); // State for controlling the modal
-  const query = ['playlists', ['userID', '==', user.uid]];
+  const { documents: playlistDocuments } = useCollection(...query);
+  console.log(playlistDocuments);
   useEffect(() => {
     // Fetch playlists when the component mounts
     // Implement your data fetching logic here and set playlists with the result
   }, []);
-
+  console.log(query);
   const handleCreatePlaylist = () => {
     setIsCreatingPlaylist(false);
     if (newPlaylistName.trim() !== '') {
@@ -87,25 +86,18 @@ const Playlists = () => {
 
   return (
     <div className={classes.playlistsContainer}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setIsCreatingPlaylist(true)}
-        className={classes.createButton}>
-        Create Playlist
-      </Button>
-      {user && user.uid && <PlaylistResults query={query} />}
-      {/* Playlist Creation Modal */}
-      {isCreatingPlaylist && (
-        <Modal
-          isOpen={isCreatingPlaylist}
-          action="createPlaylist"
-          onConfirm={handleCreatePlaylist}
-          onCancel={() => setIsCreatingPlaylist(false)}
+      {' '}
+      {playlistDocuments?.length ? (
+        <PlaylistList
+          playlists={playlistDocuments}
+          onDelete={handleDeletePlaylist}
+          onEdit={handleEditPlaylist}
         />
+      ) : (
+        <Typography>No playlists found!</Typography>
       )}
     </div>
   );
 };
 
-export default Playlists;
+export default PlaylistResults;

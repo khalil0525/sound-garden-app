@@ -597,6 +597,7 @@ export default function Profile({ scrollRef }) {
 
       {isEditingProfile && (
         <Modal
+          isOpen={isEditingProfile}
           action="editProfileInformation"
           userInformation={profile}
           onConfirm={handleEditProfile}

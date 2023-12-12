@@ -373,6 +373,7 @@ const SongItem = ({
           )}
           {isEditing && (
             <Modal
+              isOpen={isEditing}
               action="editSongInformation"
               song={song}
               onConfirm={handleEditSong}
@@ -381,6 +382,7 @@ const SongItem = ({
           )}
           {isDeleting && (
             <Modal
+              isOpen={isDeleting}
               action="deleteSong"
               onConfirm={handleDeleteSong}
               onCancel={() => setIsDeleting(false)}

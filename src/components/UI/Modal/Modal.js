@@ -6,13 +6,13 @@ import EditSongOverlay from './EditSongOverlay/EditSongOverlay';
 import EditProfileOverlay from './EditProfileOverlay/EditProfileOverlay';
 import LoginOverlay from './LoginOverlay/LoginOverlay';
 import RegisterOverlay from './RegisterOverlay/RegisterOverlay';
+import CreatePlaylistOverlay from './CreatePlaylistOverlay/CreatePlaylistOverlay'; // Import the CreatePlaylistOverlay component
 
 const Modal = ({
   isOpen,
   onConfirm,
   onCancel,
   title,
-
   action,
   song,
   userInformation,
@@ -62,11 +62,19 @@ const Modal = ({
         />
       );
       break;
+    case 'createPlaylist': // Add a case for creating a playlist
+      modalContent = (
+        <CreatePlaylistOverlay
+          onConfirm={onConfirm}
+          onCancel={onCancel}
+        />
+      );
+      break;
     default:
       modalContent = null;
       break;
   }
-
+  console.log(action);
   return (
     <>
       {isOpen && (
