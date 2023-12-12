@@ -12,3 +12,4 @@ export const getSongs = httpsCallable(functions, 'getSongs');
 export const followUser = httpsCallable(functions, 'followUser');
 
 export const addLike = httpsCallable(functions, 'addLike');
+export const getSong = httpsCallable(functions, 'getSong');

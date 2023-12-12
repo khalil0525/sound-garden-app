@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
     // Adjust styles for screens wider than 600px (typical mobile width)
     card: {
       maxWidth: '20rem',
-      minWidth: '16rem',
+      minWidth: '12rem',
       maxHeight: '19.8rem',
-      minHeight: '16rem',
+      minHeight: '12rem',
     },
     cardTitle: {
       height: '6.8rem',

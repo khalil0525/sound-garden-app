@@ -17,7 +17,7 @@ import { useMediaQuery, IconButton, Drawer } from '@mui/material';
 
 import Layout from './components/Layout/Layout';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import Song from './views/Song/Song';
 function AppRouter({ user }) {
   const scrollableNodeRef = React.createRef();
   const isMobile = useMediaQuery('(max-width: 1200px)');
@@ -133,7 +133,6 @@ function AppRouter({ user }) {
                   path="/"
                   element={<Home scrollRef={scrollableNodeRef} />}
                 />
-
                 <Route
                   path="/genres"
                   element={<Genres />}
@@ -150,7 +149,6 @@ function AppRouter({ user }) {
                   path="/artists/:letter"
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
                 />
-
                 <Route
                   path="*"
                   element={<Home scrollRef={scrollableNodeRef} />}
@@ -158,6 +156,10 @@ function AppRouter({ user }) {
                 <Route
                   path="/profile/:profileURL"
                   element={<Profile scrollRef={scrollableNodeRef} />}
+                />{' '}
+                <Route
+                  path="/song/:songId"
+                  element={<Song />}
                 />
                 <Route
                   path="/search"

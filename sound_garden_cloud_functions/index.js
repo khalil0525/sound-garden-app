@@ -519,3 +519,28 @@ exports.removeRepost = functions.https.onCall(async (data, context) => {
     };
   }
 });
+exports.getSong = functions.https.onCall(async (data, context) => {
+  try {
+    const { songId } = data;
+
+    if (!songId) {
+      return { success: false, message: 'Song ID is required!!' };
+    }
+
+    const db = admin.firestore();
+    const songDoc = await db.collection('music').doc(songId).get();
+
+    if (!songDoc.exists) {
+      return { success: false, message: 'Song not found' };
+    }
+
+    const songData = songDoc.data();
+    return songData;
+  } catch (error) {
+    console.error('Error getting song:', error);
+    return {
+      success: false,
+      message: 'An error occurred while removing the repost.',
+    };
+  }
+});

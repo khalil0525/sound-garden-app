@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer, useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
-import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
-import { useFirestore } from '../../hooks/useFirestore';
-import { useCloudStorage } from '../../hooks/useCloudStorage';
 import AudioSeekControlBar from '../AudioPlayer/AudioSeekControlBar/AudioSeekControlBar';
-
+import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
 import placeholderImage from '../../images/blank_image_placeholder.svg';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
@@ -13,18 +13,14 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { useNavigate } from 'react-router-dom';
-
-import Modal from '../UI/Modal/Modal';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
+import Modal from '../UI/Modal/Modal';
 import { addLike, removeLike } from '../../api/functions';
-import { makeStyles } from '@mui/styles';
+import { useCloudStorage } from '../../hooks/useCloudStorage';
+import { useFirestore } from '../../hooks/useFirestore';
 import theme from '../../theme';
-
-import { songItem } from '../../styles';
-import { NavLink } from 'react-router-dom';
-
-const useStyles = makeStyles(songItem);
+import { song } from '../../styles';
+const useStyles = makeStyles(song);
 
 let initialState = {
   playing: false,
@@ -58,8 +54,7 @@ const songItemReducer = (state, action) => {
       return { ...state };
   }
 };
-
-const SongItem = ({
+const SongCard = ({
   song,
   playlistSongs,
   songPlaylistLocation,
@@ -67,7 +62,6 @@ const SongItem = ({
   liked,
   user,
   songId = null,
-  profileURL,
 }) => {
   const classes = useStyles(theme);
 
@@ -75,7 +69,6 @@ const SongItem = ({
     songItemReducer,
     initialState
   );
-  const navigate = useNavigate();
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -136,7 +129,7 @@ const SongItem = ({
       document.body.appendChild(a);
       a.click();
     };
-    xhr.open('GET', song.songURL);
+    // xhr.open('GET', song.songURL);
     xhr.send();
   };
 
@@ -257,68 +250,74 @@ const SongItem = ({
   ]);
 
   return (
-    <li className={classes.songItem}>
-      <div className={classes.songItemHeader}>
-        <div className={classes.songItemTitleContainer}>
-          <IconButton
-            className={classes.titleContainerPlayBtn}
-            onClick={handlePlayPauseClick}>
-            {playing ? (
-              <PauseIcon htmlColor="#fff" />
-            ) : (
-              <PlayArrowIcon htmlColor="#fff" />
-            )}
-          </IconButton>
+    <Box className={classes.songItem}>
+      <Box className={classes.songItemBody}>
+        <div className={classes.songItemHeader}>
+          <div className={classes.songItemTitleContainer}>
+            <IconButton
+              className={classes.titleContainerPlayBtn}
+              onClick={handlePlayPauseClick}>
+              {playing ? (
+                <PauseIcon
+                  htmlColor="#fff"
+                  fontSize="large"
+                />
+              ) : (
+                <PlayArrowIcon
+                  htmlColor="#fff"
+                  fontSize="large"
+                />
+              )}
+            </IconButton>
 
-          <div className={classes.titleContainerSongTitle}>
-            <NavLink
-              to={`/profile/${profileURL}`}
-              style={{ textDecoration: 'none' }}>
-              <span className={classes.titleContainerSongTitleArtist}>
-                {song.artist}
-              </span>
-            </NavLink>
-
-            <span
-              className={classes.titleContainerSongTitleTitle}
-              onClick={() =>
-                navigate(`/song/${song?.docID}`, {
-                  state: {
-                    song,
-                    playlistSongs,
-                    songPlaylistLocation,
-                    songIndex,
-                  },
-                })
-              }>
-              {song.title}
-            </span>
-          </div>
-          <div className={classes.titleContainerAdditional}>
-            <div className={classes.titleContainerAdditionalDateContainer}>
-              <span
-                className={classes.titleContainerAdditionalUploadDate}
-                style={{ width: '20px !important' }}>
-                {song.createdAt}
+            <div className={classes.titleContainerSongTitle}>
+              <NavLink
+                to={`/profile/${song?.profileURL || ''}`}
+                style={{ textDecoration: 'none' }}>
+                <span className={classes.titleContainerSongTitleArtist}>
+                  {song?.artist}
+                </span>
+              </NavLink>
+              <span className={classes.titleContainerSongTitleTitle}>
+                {song?.title}
               </span>
             </div>
-            <div className={classes.titleContainerAdditionalGenreContainer}>
-              <span className={classes.titleContainerAdditionalGenre}>
-                {song.genre}
-              </span>
+            <div className={classes.titleContainerAdditional}>
+              <div className={classes.titleContainerAdditionalDateContainer}>
+                <span
+                  className={classes.titleContainerAdditionalUploadDate}
+                  style={{ width: '20px !important' }}>
+                  {/* {song && new Date(song?.createdAt['_seconds'])} */}
+                </span>
+              </div>
+              <div className={classes.titleContainerAdditionalGenreContainer}>
+                <span className={classes.titleContainerAdditionalGenre}>
+                  {song?.genre}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <AudioSeekControlBar
-        className={classes.songItemSeekControl}
-        durationClassName={classes.songItemDuration}
-        duration={song.duration}
-        played={played}
-        onChange={handleSeekChange}
-        onMouseDown={handleSeekMouseDown}
-        onMouseUp={handleSeekMouseUp}
-      />
+        <AudioSeekControlBar
+          className={classes.songItemSeekControl}
+          durationClassName={classes.songItemDuration}
+          duration={song?.duration}
+          played={played}
+          onChange={handleSeekChange}
+          onMouseDown={handleSeekMouseDown}
+          onMouseUp={handleSeekMouseUp}
+        />
+
+        <div className={classes.songItemAside}>
+          <div className={classes.songItemSongPhotoContainer}>
+            <img
+              className={classes.songPhotoContainerImg}
+              src={song?.songPhotoURL ? song?.songPhotoURL : placeholderImage}
+              alt="Song Cover Art"
+            />
+          </div>
+        </div>
+      </Box>{' '}
       <div className={classes.songItemFooter}>
         <div className={classes.songItemActionContainer}>
           <Tooltip title={isLiked ? 'Unlike' : 'Like'}>
@@ -349,7 +348,7 @@ const SongItem = ({
             </IconButton>
           </Tooltip>
 
-          {user.uid === song.userID && (
+          {user?.uid === song?.userID && (
             <>
               <Tooltip title="Edit">
                 <IconButton
@@ -386,17 +385,8 @@ const SongItem = ({
           )}
         </div>
       </div>
-      <div className={classes.songItemAside}>
-        <div className={classes.songItemSongPhotoContainer}>
-          <img
-            className={classes.songPhotoContainerImg}
-            src={song.songPhotoURL ? song.songPhotoURL : placeholderImage}
-            alt="Song Cover Art"
-          />
-        </div>
-      </div>
-    </li>
+    </Box>
   );
 };
 
-export default SongItem;
+export default SongCard;
