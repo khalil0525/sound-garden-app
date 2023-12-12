@@ -1,86 +1,88 @@
-import React from "react";
+import React from 'react';
 
-import ReactDOM from "react-dom";
-import DeleteSongOverlay from "./DeleteSongOverlay/DeleteSongOverlay";
-import EditSongOverlay from "./EditSongOverlay/EditSongOverlay";
-import EditProfileOverlay from "./EditProfileOverlay/EditProfileOverlay";
-import SignInOverlay from "./SignInOverlay/SignInOverlay";
-import CreateAccountOverlay from "./CreateAccountOverlay/CreateAccountOverlay";
+import { Box, Modal as MuiModal, Typography } from '@mui/material';
+import DeleteSongOverlay from './DeleteSongOverlay/DeleteSongOverlay';
+import EditSongOverlay from './EditSongOverlay/EditSongOverlay';
+import EditProfileOverlay from './EditProfileOverlay/EditProfileOverlay';
+import LoginOverlay from './LoginOverlay/LoginOverlay';
+import RegisterOverlay from './RegisterOverlay/RegisterOverlay';
 
-// import Card from "./Card";
-// import Button from "./Button";
-import styles from "./Modal.module.css";
+const Modal = ({
+  isOpen,
+  onConfirm,
+  onCancel,
+  title,
 
-const Backdrop = (props) => {
-  return <div className={styles.backdrop} onClick={props.onCancel} />;
-};
+  action,
+  song,
+  userInformation,
+}) => {
+  let modalContent = null;
 
-const ModalOverlay = (props) => {
-  return (
-    <>
-      {props.action === "signIn" && (
-        <SignInOverlay onConfirm={props.onConfirm} onCancel={props.onCancel} />
-      )}
-      {props.action === "createAccount" && (
-        <CreateAccountOverlay
-          onConfirm={props.onConfirm}
-          onCancel={props.onCancel}
+  switch (action) {
+    case 'signIn':
+      modalContent = (
+        <LoginOverlay
+          onConfirm={onConfirm}
+          onCancel={onCancel}
         />
-      )}
-      {props.action === "deleteSong" && (
+      );
+      break;
+    case 'createAccount':
+      modalContent = (
+        <RegisterOverlay
+          onConfirm={onConfirm}
+          onCancel={onCancel}
+        />
+      );
+      break;
+    case 'deleteSong':
+      modalContent = (
         <DeleteSongOverlay
-          onConfirm={props.onConfirm}
-          onCancel={props.onCancel}
+          onConfirm={onConfirm}
+          onCancel={onCancel}
         />
-      )}
-      {props.action === "editSongInformation" && (
+      );
+      break;
+    case 'editSongInformation':
+      modalContent = (
         <EditSongOverlay
-          song={props.song}
-          onConfirm={props.onConfirm}
-          onCancel={props.onCancel}
+          song={song}
+          onConfirm={onConfirm}
+          onCancel={onCancel}
         />
-      )}
-      {props.action === "editProfileInformation" && (
+      );
+      break;
+    case 'editProfileInformation':
+      modalContent = (
         <EditProfileOverlay
-          userInformation={props.userInformation}
-          onConfirm={props.onConfirm}
-          onCancel={props.onCancel}
+          userInformation={userInformation}
+          onConfirm={onConfirm}
+          onCancel={onCancel}
         />
-      )}
-    </>
+      );
+      break;
+    default:
+      modalContent = null;
+      break;
+  }
 
-    // <Card className={styles.modal}>
-    //   <header className={styles.header}>
-    //     <h2>{props.title}</h2>
-    //   </header>
-    //   <div className={styles.content}>
-    //     <p>{props.message}</p>
-    //   </div>
-    //   <footer className={styles.actions}>
-    //     <Button onClick={props.onConfirm}>Okay</Button>
-    //   </footer>
-    // </Card>
-  );
-};
-const Modal = (props) => {
   return (
     <>
-      {ReactDOM.createPortal(
-        <Backdrop onCancel={props.onCancel} />,
-        document.getElementById("backdrop-root")
-      )}
+      {isOpen && (
+        <MuiModal
+          open={isOpen}
+          onClose={onCancel}>
+          <Box>
+            <Typography
+              variant="h5"
+              id="modal-title">
+              {title}
+            </Typography>
 
-      {ReactDOM.createPortal(
-        <ModalOverlay
-          // title={props.title}
-          // message={props.message}
-          userInformation={props.userInformation}
-          song={props.song}
-          action={props.action}
-          onConfirm={props.onConfirm}
-          onCancel={props.onCancel}
-        />,
-        document.getElementById("overlay-root")
+            {modalContent}
+          </Box>
+        </MuiModal>
       )}
     </>
   );

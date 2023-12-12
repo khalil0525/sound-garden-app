@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLogin } from '../../../../hooks/useLogin';
+import { useLogin } from '../../../../hooks/useLogin.js';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'not-allowed',
   },
 }));
-const SignInOverlay = (props) => {
+const LoginOverlay = ({ onConfirm, onCancel }) => {
   const classes = useStyles(theme);
 
   const [email, setEmail] = useState('');
@@ -103,23 +103,25 @@ const SignInOverlay = (props) => {
     setPasswordError('');
     return true;
   };
-
-  const handleFormSubmit = (event) => {
+  async function handleFormSubmit(event) {
     event.preventDefault();
-
-    setEmailError('');
-    setPasswordError('');
 
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
 
     if (isEmailValid && isPasswordValid) {
-      login(email, password);
+      try {
+        await login(email, password);
+
+        onConfirm();
+      } catch (error) {
+        console.error('Login failed', error);
+      }
     }
-  };
+  }
+
   const handlePasswordRecoverySubmit = (event) => {
     event.preventDefault();
-    // Implement password recovery logic here
   };
   return (
     <div className={classes.modal}>
@@ -327,4 +329,4 @@ const SignInOverlay = (props) => {
   );
 };
 
-export default SignInOverlay;
+export default LoginOverlay;

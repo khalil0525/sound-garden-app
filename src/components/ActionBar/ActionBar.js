@@ -19,15 +19,15 @@ const useStyles = makeStyles((theme) => ({
   actionBarNav: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     gap: theme.spacing(1),
   },
   actionBarProfileLink: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: theme.spacing(1),
-    height: theme.spacing(1),
+    width: theme.spacing(4),
+    height: theme.spacing(4),
     backgroundImage: `url('/src/images/blank_image_placeholder.svg')`,
     filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
     stroke: '#fff',
@@ -114,16 +114,17 @@ const ActionBar = ({ user, className, query }) => {
               Register
             </Button>
 
-            {isSigningIn && (
-              <Modal
-                action="signIn"
-                onConfirm={() => setIsSigningIn(false)}
-                onCancel={() => setIsSigningIn(false)}
-              />
-            )}
+            <Modal
+              action="signIn"
+              isOpen={isSigningIn}
+              onConfirm={() => setIsSigningIn(false)}
+              onCancel={() => setIsSigningIn(false)}
+            />
+
             {isCreatingAccount && (
               <Modal
                 action="createAccount"
+                isOpen={isCreatingAccount}
                 onConfirm={() => setIsCreatingAccount(false)}
                 onCancel={() => setIsCreatingAccount(false)}
               />

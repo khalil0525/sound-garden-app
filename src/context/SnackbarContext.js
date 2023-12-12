@@ -59,7 +59,7 @@ export function SnackbarProvider({ children }) {
         key={messageInfo ? messageInfo.key : undefined}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'middle',
+          horizontal: 'center',
         }}
         sx={{
           zIndex: 9999,
