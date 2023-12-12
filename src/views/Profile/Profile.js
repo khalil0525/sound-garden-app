@@ -34,8 +34,8 @@ import { Box } from '@mui/material';
 import Popover from '@mui/material/Popover';
 
 import SongItemSkeleton from '../../components/UI/Skeletons/SongItemSkeleton';
-// const tabs = ['Tracks', 'Playlists', 'Reposted', 'Likes'];
-const tabs = ['Tracks', 'Likes', 'Playlists'];
+// const tabs = ['Tracks', 'Reposted', 'Likes'];
+const tabs = ['Tracks', 'Likes'];
 //2480 x 520 (1240 x 260 res)
 const useStyles = makeStyles((theme) => ({
   profile__content: {
