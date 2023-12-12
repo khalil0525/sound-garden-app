@@ -127,86 +127,48 @@ function AppRouter({ user }) {
                 marginBottom: '1.6rem !important',
               },
             }}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Layout user={user}>
-                    <Home scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
+            <Layout user={user}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={<Home scrollRef={scrollableNodeRef} />}
+                />
 
-              <Route
-                path="/genres"
-                element={
-                  <Layout user={user}>
-                    <Genres />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/genres/:type"
-                element={
-                  <Layout user={user}>
-                    <CollectionResults scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/artists"
-                element={
-                  <Layout user={user}>
-                    <Artists />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/artists/:letter"
-                element={
-                  <Layout user={user}>
-                    <CollectionResults scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
+                <Route
+                  path="/genres"
+                  element={<Genres />}
+                />
+                <Route
+                  path="/genres/:type"
+                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                />
+                <Route
+                  path="/artists"
+                  element={<Artists />}
+                />
+                <Route
+                  path="/artists/:letter"
+                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                />
 
-              <Route
-                path="*"
-                element={
-                  <Layout user={user}>
-                    <Home scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/profile/:profileURL"
-                element={
-                  <Layout user={user}>
-                    <Profile scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  <Layout user={user}>
-                    <CollectionResults scrollRef={scrollableNodeRef} />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/upload"
-                element={
-                  user ? (
-                    <Layout user={user}>
-                      <Upload />
-                    </Layout>
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
-            </Routes>
+                <Route
+                  path="*"
+                  element={<Home scrollRef={scrollableNodeRef} />}
+                />
+                <Route
+                  path="/profile/:profileURL"
+                  element={<Profile scrollRef={scrollableNodeRef} />}
+                />
+                <Route
+                  path="/search"
+                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                />
+                <Route
+                  path="/upload"
+                  element={user ? <Upload /> : <Navigate to="/" />}
+                />
+              </Routes>
+            </Layout>
           </Grid>
         </>
       </Grid>
