@@ -1,16 +1,15 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles, useTheme } from '@mui/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 
-import { ReactComponent as HomeIcon } from '../../images/Home_fill.svg';
-import { ReactComponent as ArtistIcon } from '../../images/User_duotone_line.svg';
-import { ReactComponent as GenreIcon } from '../../images/Mic_alt_duotone.svg';
+import HomeIcon from '@mui/icons-material/Home';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'; // Use this for Playlists
+import MicIcon from '@mui/icons-material/Mic';
 import { ReactComponent as LogoIcon } from '../../images/logo.svg';
 import { NavLink } from 'react-router-dom';
 
 import { Box, Stack, Typography } from '@mui/material';
-import theme from '../../theme';
 
 const useStyles = makeStyles((theme) => ({
   sideNavigation: {
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '0.8rem',
     width: '100%',
-    padding: '1.6rem 0 0 3.2rem !important',
+    padding: '0.8rem 0 0 1.6rem !important',
     [theme.breakpoints.down('sm')]: {
       padding: '0.8rem 0 0 0.8rem !important',
     },
@@ -88,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
   navbarItemContent: {
     display: 'flex',
     gap: '1.6rem',
+    alignItems: 'center',
   },
   navbarItemContentIcon: {
     [theme.breakpoints.down('lg')]: {
@@ -106,21 +106,25 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: `inset 4px 0 0 ${theme.palette.primary.main}`,
   },
   navLink: {
+    display: 'inline-flex',
     color: '#fff',
     fontWeight: '400',
     lineHeight: '24px',
     textDecoration: 'none',
     fontSize: theme.typography.h3.fontSize,
-    padding: '1.6rem 0 1.6rem 4.8rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '1.6rem',
+    width: '100%',
+
     '&:hover': {
       background: theme.palette.primary.main,
       opacity: 0.6,
     },
-    [theme.breakpoints.down('lg')]: {
-      padding: '0.4rem 1.6rem',
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
+    [theme.breakpoints.up('md')]: {
+      justifyContent: 'start',
+      alignItems: 'center',
+      padding: '1.6rem 0 1.6rem 4.8rem',
     },
   },
   sideNavigationAudioplayerContainer: {
@@ -135,8 +139,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SideNavigation = ({ className, drawerOpen = null }) => {
+const SideNavigation = ({
+  className,
+  setDrawerOpen = null,
+  drawerOpen = null,
+}) => {
+  const theme = useTheme();
   const classes = useStyles(theme);
+
+  // Function to close the drawer
+  const handleCloseDrawer = () => {
+    if (setDrawerOpen) {
+      setDrawerOpen(false);
+    }
+  };
 
   return (
     <Grid
@@ -164,13 +180,16 @@ const SideNavigation = ({ className, drawerOpen = null }) => {
             className={({ isActive }) =>
               isActive
                 ? `
-          ${classes.navLink}
-          ${classes.navbarActiveItem}
-        `
+  ${classes.navLink}
+  ${classes.navbarActiveItem}
+`
                 : ` ${classes.navLink}`
-            }>
+            }
+            onClick={handleCloseDrawer} // Close the drawer on click
+          >
             <Box className={classes.navbarItemContent}>
-              <HomeIcon className={classes.navbarItemContentIcon} />
+              <HomeIcon fontSize="medium" />{' '}
+              {/* Use the Material-UI Home icon here */}
               <Box className={classes.navbarItemContentText}>Home</Box>
             </Box>
           </NavLink>
@@ -179,30 +198,35 @@ const SideNavigation = ({ className, drawerOpen = null }) => {
             className={({ isActive }) =>
               isActive
                 ? `
-            ${classes.navLink}
-            ${classes.navbarActiveItem}
-          `
+  ${classes.navLink}
+  ${classes.navbarActiveItem}
+`
                 : ` ${classes.navLink}`
-            }>
+            }
+            onClick={handleCloseDrawer} // Close the drawer on click
+          >
             <Box className={classes.navbarItemContent}>
-              <GenreIcon className={classes.navbarItemContentIcon} />
+              <MicIcon fontSize="medium" />
+              {/* Use the Material-UI MicAlt icon here */}
               <Box className={classes.navbarItemContentText}>Genres</Box>
             </Box>
           </NavLink>
           <NavLink
-            onClick={(e) => e.preventDefault()}
-            to="/artists"
+            to="/playlists"
             className={({ isActive }) =>
               isActive
                 ? `
-          ${classes.navLink}
-          ${classes.navbarActiveItem}
-        `
+  ${classes.navLink}
+  ${classes.navbarActiveItem}
+`
                 : ` ${classes.navLink}`
-            }>
+            }
+            onClick={handleCloseDrawer} // Close the drawer on click
+          >
             <Box className={classes.navbarItemContent}>
-              <ArtistIcon className={classes.navbarItemContentIcon} />
-              <Box className={classes.navbarItemContentText}>Artists</Box>
+              <LibraryMusicIcon fontSize="medium" />{' '}
+              {/* Use the Material-UI LibraryMusic icon here */}
+              <Box className={classes.navbarItemContentText}>Playlists</Box>
             </Box>
           </NavLink>
         </Stack>

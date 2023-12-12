@@ -19,10 +19,11 @@ import Modal from '../UI/Modal/Modal';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
-import theme from '../../theme';
 
+import { useTheme } from '@mui/material/styles';
 import { songItem } from '../../styles';
 import { NavLink } from 'react-router-dom';
+import SongAnalytics from './SongAnalytics';
 
 const useStyles = makeStyles(songItem);
 
@@ -69,6 +70,7 @@ const SongItem = ({
   songId = null,
   profileURL,
 }) => {
+  const theme = useTheme();
   const classes = useStyles(theme);
 
   const [songItemState, dispatchSongItemState] = useReducer(
@@ -385,6 +387,11 @@ const SongItem = ({
             />
           )}
         </div>
+        <SongAnalytics
+          likes={song?.likes?.length || 0}
+          plays={0}
+          downloads={0}
+        />
       </div>
       <div className={classes.songItemAside}>
         <div className={classes.songItemSongPhotoContainer}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles, useTheme } from '@mui/styles';
 import { Box } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ import Modal from '../UI/Modal/Modal';
 import { addLike, removeLike } from '../../api/functions';
 import { useCloudStorage } from '../../hooks/useCloudStorage';
 import { useFirestore } from '../../hooks/useFirestore';
-import theme from '../../theme';
+
 import { song } from '../../styles';
 const useStyles = makeStyles(song);
 
@@ -63,6 +63,7 @@ const SongCard = ({
   user,
   songId = null,
 }) => {
+  const theme = useTheme();
   const classes = useStyles(theme);
 
   const [songItemState, dispatchSongItemState] = useReducer(

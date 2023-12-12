@@ -21,7 +21,7 @@ export const songItem = (theme) => ({
     gridColumn: '2/-1',
     gridRow: '1',
     [theme.breakpoints.up('md')]: {
-      gridColumn: '2/-1',
+      gridColumn: '2/3',
       gridRow: '1',
     },
   },
@@ -84,12 +84,33 @@ export const songItem = (theme) => ({
       marginLeft: '0.5rem',
     },
   },
+  titleContainerAdditionalGenreContainer: {
+    marginTop: '0.2rem',
+    lineHeight: '1.2rem',
+  },
+  titleContainerAdditionalDateContainer: {
+    marginTop: '0.2rem',
+    lineHeight: '1.2rem',
+  },
+  titleContainerAdditionalGenre: {
+    padding: '0 0.6rem',
+    fontSize: theme.typography.body2.fontSize,
+    fontWeight: 400,
+    color: '#fff',
+    textTransform: 'uppercase',
+    backgroundColor: '#999',
+    border: '1px solid #999',
+    borderRadius: '2rem',
+    height: '1.8rem',
+    marginLeft: '0.5rem',
+  },
   songItemFooter: {
     display: 'none',
     gridColumn: '2/2',
     gridRow: '3/3',
     [theme.breakpoints.up('md')]: {
-      display: 'block',
+      display: 'flex',
+      justifyContent: 'space-between',
     },
   },
   actionContainerLikeBtnLiked: {
@@ -109,7 +130,11 @@ export const songItem = (theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       width: '16rem',
-      weight: '16rem',
+      height: '16rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '16rem',
+      maxHeight: '16rem',
     },
   },
   songPhotoContainerImg: {
@@ -131,6 +156,13 @@ export const songItem = (theme) => ({
       maxHeight: '16rem',
       gridRow: '2',
       gap: '0',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridColumn: '2',
+      width: '100%',
+      '& input': {
+        width: '100%',
+      },
     },
   },
   songItemDuration: {
@@ -163,88 +195,8 @@ export const songItem = (theme) => ({
   actionContainerBtnHover: {
     borderColor: '#ccc',
   },
-  '@media only screen and (min-width: 992px)': {
-    songItemHeader: {
-      gridColumn: '2/3',
-      gridRow: '1',
-    },
-
-    titleContainerAdditional: {
-      display: 'flex !important',
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      alignSelf: 'flex-start',
-      textAlign: 'right',
-      gap: '0.4rem',
-      marginLeft: '0.5rem',
-    },
-    titleContainerAdditionalUploadDate: {
-      display: 'flex',
-      color: '#ccc',
-      fontSize: theme.typography.body2.fontSize,
-      fontWeight: 300,
-      lineHeight: '1.6rem',
-    },
-    titleContainerAdditionalGenreContainer: {
-      marginTop: '0.2rem',
-      lineHeight: '1.2rem',
-    },
-    titleContainerAdditionalDateContainer: {
-      marginTop: '0.2rem',
-      lineHeight: '1.2rem',
-    },
-    titleContainerAdditionalGenre: {
-      padding: '0 0.6rem',
-      fontSize: theme.typography.body2.fontSize,
-      fontWeight: 400,
-      color: '#fff',
-      textTransform: 'uppercase',
-      backgroundColor: '#999',
-      border: '1px solid #999',
-      borderRadius: '2rem',
-      height: '1.8rem',
-    },
-    songItemFooter: {
-      display: 'block',
-    },
-
-    songItemSongPhotoContainer: {
-      maxWidth: '16rem',
-      maxHeight: '16rem',
-    },
-    songItemSeekControl: {
-      gridColumn: '2',
-      width: '100%',
-      '& input': {
-        width: '100%',
-      },
-    },
-    songItemSeekControlInput: {
-      width: '100%',
-    },
-  },
-  '@media (min-width: 768px) and (max-width: 991px)': {
-    songItemSongPhotoContainer: {
-      width: '12rem',
-      height: '12rem',
-    },
-  },
-  '@media (min-width: 992px) and (max-width: 1199px)': {
-    songItemSongPhotoContainer: {
-      width: '12rem',
-      height: '12rem',
-    },
-  },
-  '@media (min-width: 1200px)': {
-    songItemSongPhotoContainer: {
-      width: '12rem',
-      height: '12rem',
-    },
-  },
-  spinner: {
-    color: theme.palette.primary.main,
-  },
 });
+
 export const song = (theme) => ({
   songItem: {
     width: '100%',

@@ -3,7 +3,6 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Home from './views/Home/Home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Genres from './views/Genres/Genres';
-import Artists from './views/Artists/Artists';
 
 import Profile from './views/Profile/Profile';
 import SideNavigation from './components/SideNavigation/SideNavigation';
@@ -18,6 +17,7 @@ import { useMediaQuery, IconButton, Drawer } from '@mui/material';
 import Layout from './components/Layout/Layout';
 import MenuIcon from '@mui/icons-material/Menu';
 import Song from './views/Song/Song';
+import Playlists from './views/Playlists/Playlists';
 function AppRouter({ user }) {
   const scrollableNodeRef = React.createRef();
   const isMobile = useMediaQuery('(max-width: 1200px)');
@@ -80,7 +80,10 @@ function AppRouter({ user }) {
               </Drawer>
             </>
           )}
-          <SideNavigation drawerOpen={drawerOpen} />
+          <SideNavigation
+            drawerOpen={drawerOpen}
+            setDrawerOpen={setDrawerOpen}
+          />
         </>
 
         {!isMobile && (
@@ -142,12 +145,8 @@ function AppRouter({ user }) {
                   element={<CollectionResults scrollRef={scrollableNodeRef} />}
                 />
                 <Route
-                  path="/artists"
-                  element={<Artists />}
-                />
-                <Route
-                  path="/artists/:letter"
-                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                  path="/playlists"
+                  element={<Playlists />}
                 />
                 <Route
                   path="*"
