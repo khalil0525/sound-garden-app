@@ -103,12 +103,6 @@ const SongItem = ({
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
 
   const handlePlayPauseClick = async () => {
-    try {
-      await authorizePlay({ songId: songId });
-    } catch (error) {
-      console.log(error);
-    }
-
     if (loadedSongURL !== song.songURL) {
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
@@ -129,6 +123,7 @@ const SongItem = ({
       dispatchSongItemState({ type: 'PLAY' });
 
       dispatchAudioPlayerContext({ type: 'SONG_PLAYED' });
+      authorizePlay({ songId: songId });
     }
     dispatchSongItemState({ type: 'PLAY_PAUSE_CLICK' });
     // setIsPlaying((prevState) => !prevState);

@@ -206,7 +206,7 @@ export const song = (theme) => ({
     gridTemplateColumns: '3fr 1fr',
     gridTemplateRows: '1fr 1fr',
     width: '100%',
-    alignItems: 'center',
+    alignItems: 'start',
     gap: '0.4rem',
     listStyle: 'none',
     borderRadius: '1.4rem',
@@ -217,7 +217,7 @@ export const song = (theme) => ({
       gridTemplateColumns: '5fr 1fr',
       gridTemplateRows: '1fr 1fr',
       justifyContent: 'flex-start',
-      padding: '2rem',
+      padding: '1.6rem',
     },
   },
   songItemHeader: {

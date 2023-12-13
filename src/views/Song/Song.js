@@ -12,7 +12,7 @@ const Song = () => {
   const location = useLocation();
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: '124rem', margin: '0 auto' }}>
       {user && location?.state.song && (
         <SongCard
           song={location.state?.song}

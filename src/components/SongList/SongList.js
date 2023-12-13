@@ -12,12 +12,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '2rem',
     alignItems: 'center',
-    maxWidth: '85%',
+
     justifyContent: 'center',
     margin: '0 auto',
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: '100%',
-    },
+    [theme.breakpoints.down('sm')]: {},
   },
 }));
 

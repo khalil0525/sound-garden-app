@@ -13,9 +13,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(2),
-    backgroundColor: '#f0f0f0',
+
     borderRadius: '8px',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   },
   createButton: {
     marginBottom: theme.spacing(2),

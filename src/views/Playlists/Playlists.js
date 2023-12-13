@@ -11,13 +11,14 @@ import PlaylistResults from '../../components/PlaylistResults/PlaylistResults';
 
 const useStyles = makeStyles((theme) => ({
   playlistsContainer: {
+    maxWidth: '124rem',
+    margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(2),
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'unset',
     borderRadius: '8px',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   },
   createButton: {
     marginBottom: theme.spacing(2),
@@ -83,7 +84,7 @@ const Playlists = () => {
         Create Playlist
       </Button>
       {user && user.uid && <PlaylistResults query={query} />}
-      {/* Playlist Creation Modal */}
+
       {isCreatingPlaylist && (
         <Modal
           isOpen={isCreatingPlaylist}

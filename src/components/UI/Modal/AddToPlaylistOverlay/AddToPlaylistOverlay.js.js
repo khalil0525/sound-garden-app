@@ -9,6 +9,7 @@ import {
   Avatar,
   ListItemAvatar,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { addSongToPlaylist, getPlaylists } from '../../../../api/functions';
@@ -77,12 +78,13 @@ const AddToPlaylistOverlay = ({ songDocID, onConfirm, onCancel }) => {
   const classes = useStyles(theme);
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [addToPlaylistLoading, setAddToPlaylistLoading] = useState(false); // Loading state for the button
 
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
         const { data } = await getPlaylists();
-        if (data.success && data.playlists.length) {
+        if (data.success && data.playlists?.length) {
           setPlaylists(data.playlists);
         }
 
@@ -97,12 +99,15 @@ const AddToPlaylistOverlay = ({ songDocID, onConfirm, onCancel }) => {
 
   const addToPlaylist = async (playlistId, songId) => {
     try {
+      setAddToPlaylistLoading(true); // Set loading state to true when starting the request
       const { data } = await addSongToPlaylist({ playlistId, songId });
       if (data.success) {
         onConfirm();
       }
     } catch (error) {
       console.error('Error adding song to playlist:', error);
+    } finally {
+      setAddToPlaylistLoading(false); // Set loading state to false when the request is completed
     }
   };
 
@@ -118,74 +123,92 @@ const AddToPlaylistOverlay = ({ songDocID, onConfirm, onCancel }) => {
             Add to Playlist
           </Typography>
           <List className={classes.list}>
-            {playlists.map((playlist) => (
-              <ListItem
-                key={playlist.id}
-                className={classes.listItem}
-                sx={{ width: '100%', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', gap: '0.8rem' }}>
-                  <ListItemAvatar>
-                    {playlist.playlistPhotoURL ? (
-                      <Avatar
-                        alt={playlist.playlistName}
-                        src={playlist.playlistPhotoURL}
-                        className={classes.avatar}
-                      />
-                    ) : (
-                      <Avatar
-                        sx={{ borderRadius: '0' }}
-                        alt={playlist.playlistName}
-                        src="https://picsum.photos/300/300"
-                        className={classes.squareImage}
-                      />
-                    )}
-                  </ListItemAvatar>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.8rem',
-                    }}>
-                    <Tooltip title={playlist.playlistName}>
-                      <Typography
-                        color="#000"
-                        variant="body2"
-                        sx={{ textTransform: 'uppercase !important' }}>
-                        {playlist.playlistName}
-                      </Typography>
-                    </Tooltip>
-                    <Tooltip title={`Total Tracks: ${playlist.songs.length}`}>
-                      <Box
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'start',
-                        }}>
-                        <MusicNoteIcon
-                          fontSize="xs"
-                          htmlColor="#000"
+            {playlists &&
+              playlists.map((playlist) => (
+                <ListItem
+                  key={playlist.id}
+                  className={classes.listItem}
+                  sx={{ width: '100%', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', gap: '0.8rem' }}>
+                    <ListItemAvatar>
+                      {playlist.playlistPhotoURL ? (
+                        <Avatar
+                          alt={playlist.playlistName}
+                          src={playlist.playlistPhotoURL}
+                          className={classes.avatar}
                         />
+                      ) : (
+                        <Avatar
+                          sx={{ borderRadius: '0' }}
+                          alt={playlist.playlistName}
+                          src="https://picsum.photos/300/300"
+                          className={classes.squareImage}
+                        />
+                      )}
+                    </ListItemAvatar>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.8rem',
+                      }}>
+                      <Tooltip title={playlist.playlistName}>
                         <Typography
                           color="#000"
-                          variant="body1">
-                          {' '}
-                          {playlist.songs.length ? playlist.songs.length : '0'}
+                          variant="body2"
+                          sx={{ textTransform: 'uppercase !important' }}>
+                          {playlist.playlistName}
                         </Typography>
-                      </Box>
-                    </Tooltip>
+                      </Tooltip>
+                      <Tooltip
+                        title={`Total Tracks: ${
+                          playlist?.songs?.length
+                            ? playlist?.songs?.length
+                            : '0'
+                        } `}>
+                        <Box
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'start',
+                          }}>
+                          <MusicNoteIcon
+                            fontSize="xs"
+                            htmlColor="#000"
+                          />
+                          <Typography
+                            color="#000"
+                            variant="body1">
+                            {playlist?.songs?.length
+                              ? playlist?.songs?.length
+                              : '0'}
+                          </Typography>
+                        </Box>
+                      </Tooltip>
+                    </Box>
                   </Box>
-                </Box>
-                <Button
-                  variant="contained"
-                  onClick={() => addToPlaylist(playlist.docID, songDocID)}
-                  className={classes.addButton}
-                  disabled={playlist.songs.includes(songDocID)}>
-                  {playlist.songs.includes(songDocID)
-                    ? 'Added'
-                    : 'Add to Playlist'}
-                </Button>
-              </ListItem>
-            ))}
+                  <Button
+                    variant="contained"
+                    onClick={() => addToPlaylist(playlist.docID, songDocID)}
+                    className={classes.addButton}
+                    disabled={
+                      playlist?.songs?.includes(songDocID) ||
+                      addToPlaylistLoading
+                    } // Disable button while loading
+                  >
+                    {addToPlaylistLoading ? (
+                      <CircularProgress
+                        size={24}
+                        color="inherit"
+                      />
+                    ) : playlist?.songs?.includes(songDocID) ? (
+                      'Added'
+                    ) : (
+                      'Add to Playlist'
+                    )}
+                  </Button>
+                </ListItem>
+              ))}
           </List>
           <Button
             variant="outlined"

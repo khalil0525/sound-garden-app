@@ -1,9 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     borderRadius: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'none',
   },
   playlistImage: {
     width: '100%',
@@ -42,17 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PlaylistItem = ({ playlist, onDelete, onEdit }) => {
+const PlaylistItem = ({ playlist }) => {
   const navigate = useNavigate();
   const classes = useStyles();
-
-  const handleDeleteClick = () => {
-    onDelete(playlist.id);
-  };
-
-  const handleEditClick = () => {
-    onEdit(playlist.id);
-  };
 
   return (
     <div
@@ -66,22 +55,7 @@ const PlaylistItem = ({ playlist, onDelete, onEdit }) => {
         className={classes.playlistImage}
       />
       <div className={classes.playlistName}>{playlist.playlistName}</div>
-      <div className={classes.actionButtons}>
-        <Tooltip title="Edit">
-          <IconButton
-            onClick={handleEditClick}
-            className={classes.editButton}>
-            <EditOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton
-            onClick={handleDeleteClick}
-            className={classes.deleteButton}>
-            <DeleteForeverOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
+      12{' '}
     </div>
   );
 };
