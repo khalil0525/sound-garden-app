@@ -57,15 +57,15 @@ const useStyles = makeStyles((theme) => ({
   },
   actionBarButton: {
     backgroundColor: 'transparent',
-    padding: theme.spacing(1), // Adjust padding for smaller screens
+    padding: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
-      fontSize: '0.75rem', // Smaller font size for mobile
-      padding: theme.spacing(0.5), // Less padding on mobile
-      minWidth: 'auto', // Adjust the minimum width
+      fontSize: '0.75rem',
+      padding: theme.spacing(0.5),
+      minWidth: 'auto',
     },
   },
   searchInput: {
-    fontSize: '0.9rem', // Adjust the font size for the search input
+    fontSize: '0.9rem',
   },
 }));
 

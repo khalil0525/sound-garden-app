@@ -50,39 +50,25 @@ const PlaylistResults = ({ query }) => {
 
   const [playlists, setPlaylists] = useState(samplePlaylists);
   const [newPlaylistName, setNewPlaylistName] = useState('');
-  const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false); // State for controlling the modal
+  const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const { documents: playlistDocuments } = useCollection(...query);
-  console.log(playlistDocuments);
-  useEffect(() => {
-    // Fetch playlists when the component mounts
-    // Implement your data fetching logic here and set playlists with the result
-  }, []);
-  console.log(query);
+
   const handleCreatePlaylist = () => {
     setIsCreatingPlaylist(false);
     if (newPlaylistName.trim() !== '') {
-      // Implement your createPlaylist logic here
-      // After creating a playlist, refresh the list
-      // For now, let's add a new playlist with the entered name
       const newPlaylist = {
-        id: Date.now(), // You can generate a unique ID
+        id: Date.now(),
         name: newPlaylistName,
       };
       setPlaylists([...playlists, newPlaylist]);
 
-      setNewPlaylistName(''); // Clear the input field
+      setNewPlaylistName('');
     }
   };
 
-  const handleDeletePlaylist = (playlistId) => {
-    // Implement your deletePlaylist logic here
-    // After deleting a playlist, refresh the list
-  };
+  const handleDeletePlaylist = (playlistId) => {};
 
-  const handleEditPlaylist = (playlistId, updatedName) => {
-    // Implement your editPlaylist logic here
-    // After editing a playlist, refresh the list
-  };
+  const handleEditPlaylist = (playlistId, updatedName) => {};
 
   return (
     <div className={classes.playlistsContainer}>

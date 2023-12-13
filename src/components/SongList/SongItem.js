@@ -17,13 +17,14 @@ import { useNavigate } from 'react-router-dom';
 
 import Modal from '../UI/Modal/Modal';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { addLike, removeLike } from '../../api/functions';
+import { addLike, addSongToPlaylist, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 
 import { useTheme } from '@mui/material/styles';
 import { songItem } from '../../styles';
 import { NavLink } from 'react-router-dom';
 import SongAnalytics from './SongAnalytics';
+import { PostAdd } from '@mui/icons-material';
 
 const useStyles = makeStyles(songItem);
 
@@ -78,6 +79,7 @@ const SongItem = ({
     initialState
   );
   const navigate = useNavigate();
+  const [isAddingToPlaylist, setIsAddingToPlaylist] = useState(false);
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -148,6 +150,9 @@ const SongItem = ({
 
   const handleDeleteSong = async () => {
     deleteSongFiles(song);
+  };
+  const handleAddToPlaylist = async () => {
+    setIsAddingToPlaylist(false);
   };
 
   const handleSeekMouseDown = () => {
@@ -342,7 +347,6 @@ const SongItem = ({
               )}
             </IconButton>
           </Tooltip>
-
           <Tooltip title="Download">
             <IconButton
               className={classes.actionContainerBtn}
@@ -350,7 +354,6 @@ const SongItem = ({
               <FileDownloadOutlinedIcon />
             </IconButton>
           </Tooltip>
-
           {user.uid === song.userID && (
             <>
               <Tooltip title="Edit">
@@ -367,6 +370,14 @@ const SongItem = ({
                   onClick={() => setIsDeleting(true)}
                   disabled={isDeleting}>
                   <DeleteForeverOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Add to Playlist">
+                <IconButton
+                  className={classes.actionContainerBtn}
+                  onClick={() => setIsAddingToPlaylist(true)}
+                  disabled={isAddingToPlaylist}>
+                  <PostAdd />
                 </IconButton>
               </Tooltip>
             </>
@@ -386,6 +397,15 @@ const SongItem = ({
               action="deleteSong"
               onConfirm={handleDeleteSong}
               onCancel={() => setIsDeleting(false)}
+            />
+          )}
+          {isAddingToPlaylist && (
+            <Modal
+              isOpen={isAddingToPlaylist}
+              action="addToPlaylist"
+              songDocID={song.docID}
+              onConfirm={handleAddToPlaylist}
+              onCancel={() => setIsAddingToPlaylist(false)}
             />
           )}
         </div>

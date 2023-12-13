@@ -18,8 +18,8 @@ import Layout from './components/Layout/Layout';
 import MenuIcon from '@mui/icons-material/Menu';
 import Song from './views/Song/Song';
 import Playlists from './views/Playlists/Playlists';
+import Playlist from './views/Playlist/Playlist';
 function AppRouter({ user }) {
-  const scrollableNodeRef = React.createRef();
   const isMobile = useMediaQuery('(max-width: 1200px)');
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -101,7 +101,6 @@ function AppRouter({ user }) {
         <>
           <Grid
             p={{ xs: '0', sm: '0', md: '1.6rem 1.6rem 1.6rem 0' }}
-            ref={scrollableNodeRef}
             bgcolor={'white'}
             md={12}
             lg={9.5}
@@ -134,7 +133,7 @@ function AppRouter({ user }) {
               <Routes>
                 <Route
                   path="/"
-                  element={<Home scrollRef={scrollableNodeRef} />}
+                  element={<Home />}
                 />
                 <Route
                   path="/genres"
@@ -142,19 +141,23 @@ function AppRouter({ user }) {
                 />
                 <Route
                   path="/genres/:type"
-                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                  element={<CollectionResults />}
                 />
                 <Route
                   path="/playlists"
                   element={<Playlists />}
+                />{' '}
+                <Route
+                  path="/playlist/:playlistId"
+                  element={<Playlist />}
                 />
                 <Route
                   path="*"
-                  element={<Home scrollRef={scrollableNodeRef} />}
+                  element={<Home />}
                 />
                 <Route
                   path="/profile/:profileURL"
-                  element={<Profile scrollRef={scrollableNodeRef} />}
+                  element={<Profile />}
                 />{' '}
                 <Route
                   path="/song/:songId"
@@ -162,7 +165,7 @@ function AppRouter({ user }) {
                 />
                 <Route
                   path="/search"
-                  element={<CollectionResults scrollRef={scrollableNodeRef} />}
+                  element={<CollectionResults />}
                 />
                 <Route
                   path="/upload"

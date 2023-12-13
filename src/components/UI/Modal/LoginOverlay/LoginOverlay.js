@@ -83,7 +83,7 @@ const LoginOverlay = ({ onConfirm, onCancel }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const { login, error, isPending, signInWithGoogle } = useLogin();
-  const [showPasswordRecovery, setShowPasswordRecovery] = useState(false); // New state for toggling password recovery
+  const [showPasswordRecovery, setShowPasswordRecovery] = useState(false);
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

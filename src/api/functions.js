@@ -13,3 +13,10 @@ export const followUser = httpsCallable(functions, 'followUser');
 
 export const addLike = httpsCallable(functions, 'addLike');
 export const getSong = httpsCallable(functions, 'getSong');
+export const getPlaylist = httpsCallable(functions, 'getPlaylist');
+export const getPlaylists = httpsCallable(functions, 'getPlaylists');
+export const addSongToPlaylist = httpsCallable(functions, 'addSongToPlaylist');
+export const removeSongFromPlaylist = httpsCallable(
+  functions,
+  'removeSongFromPlaylist'
+);

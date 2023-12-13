@@ -544,3 +544,107 @@ exports.getSong = functions.https.onCall(async (data, context) => {
     };
   }
 });
+exports.getPlaylist = functions.https.onCall(async (data, context) => {
+  try {
+    const { playlistId } = data;
+    const db = admin.firestore();
+
+    const playlistDoc = await db.collection('playlists').doc(playlistId).get();
+
+    if (!playlistDoc.exists) {
+      return { success: false, message: 'Playlist not found' };
+    }
+
+    const playlistData = playlistDoc.data();
+    return playlistData;
+  } catch (error) {
+    console.error('Error getting playlist:', error);
+    return {
+      success: false,
+      message: 'An error occurred while getting the playlist',
+    };
+  }
+});
+exports.addSongToPlaylist = functions.https.onCall(async (data, context) => {
+  try {
+    const { playlistId, songId } = data;
+    const userId = context.auth.uid;
+    const db = admin.firestore();
+
+    const playlistRef = db.collection('playlists').doc(playlistId);
+    await playlistRef.update({
+      songs: admin.firestore.FieldValue.arrayUnion(songId),
+    });
+
+    return { success: true, message: 'Song added to playlist successfully' };
+  } catch (error) {
+    console.error('Error adding song to playlist:', error);
+    return {
+      success: false,
+      message: 'An error occurred while adding the song to the playlist',
+    };
+  }
+});
+exports.removeSongFromPlaylist = functions.https.onCall(
+  async (data, context) => {
+    try {
+      const { playlistId, songId } = data;
+      const userId = context.auth.uid;
+      const db = admin.firestore();
+
+      const playlistRef = db.collection('playlists').doc(playlistId);
+      await playlistRef.update({
+        songs: admin.firestore.FieldValue.arrayRemove(songId),
+      });
+
+      return {
+        success: true,
+        message: 'Song removed from playlist successfully',
+      };
+    } catch (error) {
+      console.error('Error removing song from playlist:', error);
+      return {
+        success: false,
+        message: 'An error occurred while removing the song from the playlist',
+      };
+    }
+  }
+);
+
+exports.getPlaylists = functions.https.onCall(async (data, context) => {
+  try {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        'unauthenticated',
+        'You must be logged in to fetch playlists.'
+      );
+    }
+
+    const userId = context.auth.uid;
+    const db = admin.firestore();
+    const playlistsCollection = db.collection('playlists');
+    const query = playlistsCollection.where('userID', '==', userId);
+
+    const snapshot = await query.get();
+    const playlists = [];
+
+    snapshot.forEach((doc) => {
+      const playlistData = doc.data();
+      playlists.push({
+        id: doc.id,
+        ...playlistData,
+      });
+    });
+
+    return {
+      success: true,
+      playlists,
+    };
+  } catch (error) {
+    console.error('Error fetching playlists:', error);
+    return {
+      success: false,
+      message: 'An error occurred while retrieving the data',
+    };
+  }
+});

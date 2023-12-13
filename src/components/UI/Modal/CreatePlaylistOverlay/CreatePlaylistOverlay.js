@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     zIndex: 2000,
     margin: '0 auto',
+    backgroundColor: 'transparent',
     maxWidth: '40rem',
+    borderRadius: '18px',
     padding: '2rem',
     textAlign: 'center',
   },
@@ -84,8 +86,8 @@ const useStyles = makeStyles((theme) => ({
 const initialState = {
   playlistName: '',
   playlistImageFile: null,
-  formIsValid: false, // Add formIsValid state
-  uploadIsReady: false, // Add uploadIsReady state
+  formIsValid: false,
+  uploadIsReady: false,
 };
 
 const playlistReducer = (state, action) => {
@@ -160,7 +162,6 @@ const CreatePlaylistOverlay = ({ onConfirm, onCancel }) => {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            // Access the user document data
             const userData = doc.data();
 
             addDocument({

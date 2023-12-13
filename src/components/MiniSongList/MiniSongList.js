@@ -24,13 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //We receive a song prop from whichever parent component calls this
-const MiniSongList = ({
-  songs,
-  user,
-  className,
-  playlistLocation,
-  scrollRef,
-}) => {
+const MiniSongList = ({ songs, user, className, playlistLocation }) => {
   //New Like system
   const { documents: likedSongDocuments } = useCollection('likes', [
     '__name__',
@@ -80,8 +74,7 @@ const MiniSongList = ({
           display: 'flex',
           flexDirection: 'column',
           gap: '0.2rem',
-        }}
-        scrollableTarget={scrollRef.current}>
+        }}>
         {current &&
           likedSongDocuments &&
           current.map((song, index) => (

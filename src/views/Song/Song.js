@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { useParams, useLocation } from 'react-router-dom'; // Import useLocation
+import { useParams, useLocation } from 'react-router-dom';
 
 import SongCard from '../../components/Song/SongCard';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 const Song = () => {
   const { user } = useAuthContext();
-  console.log(user);
+
   const { songId } = useParams();
   const location = useLocation();
 

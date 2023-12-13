@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
-import ActionBar from '../ActionBar/ActionBar'; // Adjust the path as needed
+import ActionBar from '../ActionBar/ActionBar';
 import { useTheme } from '@mui/system';
 
 const Layout = ({ children, user }) => {

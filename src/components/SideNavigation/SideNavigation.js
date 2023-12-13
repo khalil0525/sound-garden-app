@@ -4,7 +4,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 
 import HomeIcon from '@mui/icons-material/Home';
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'; // Use this for Playlists
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import MicIcon from '@mui/icons-material/Mic';
 import { ReactComponent as LogoIcon } from '../../images/logo.svg';
 import { NavLink } from 'react-router-dom';
@@ -147,7 +147,6 @@ const SideNavigation = ({
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  // Function to close the drawer
   const handleCloseDrawer = () => {
     if (setDrawerOpen) {
       setDrawerOpen(false);
@@ -185,11 +184,9 @@ const SideNavigation = ({
 `
                 : ` ${classes.navLink}`
             }
-            onClick={handleCloseDrawer} // Close the drawer on click
-          >
+            onClick={handleCloseDrawer}>
             <Box className={classes.navbarItemContent}>
               <HomeIcon fontSize="medium" />{' '}
-              {/* Use the Material-UI Home icon here */}
               <Box className={classes.navbarItemContentText}>Home</Box>
             </Box>
           </NavLink>
@@ -203,11 +200,10 @@ const SideNavigation = ({
 `
                 : ` ${classes.navLink}`
             }
-            onClick={handleCloseDrawer} // Close the drawer on click
-          >
+            onClick={handleCloseDrawer}>
             <Box className={classes.navbarItemContent}>
               <MicIcon fontSize="medium" />
-              {/* Use the Material-UI MicAlt icon here */}
+
               <Box className={classes.navbarItemContentText}>Genres</Box>
             </Box>
           </NavLink>
@@ -221,11 +217,9 @@ const SideNavigation = ({
 `
                 : ` ${classes.navLink}`
             }
-            onClick={handleCloseDrawer} // Close the drawer on click
-          >
+            onClick={handleCloseDrawer}>
             <Box className={classes.navbarItemContent}>
               <LibraryMusicIcon fontSize="medium" />{' '}
-              {/* Use the Material-UI LibraryMusic icon here */}
               <Box className={classes.navbarItemContentText}>Playlists</Box>
             </Box>
           </NavLink>

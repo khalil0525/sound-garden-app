@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
+const SongList = ({ songs, user, className, playlistLocation }) => {
   const classes = useStyles();
 
   const [count, setCount] = useState({
@@ -61,8 +61,7 @@ const SongList = ({ songs, user, className, playlistLocation, scrollRef }) => {
         next={getMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        className={classes.songListList}
-        scrollableTarget={scrollRef.current}>
+        className={classes.songListList}>
         {current?.length &&
           current.map((song, index) => (
             <SongItem

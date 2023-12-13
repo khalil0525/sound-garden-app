@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     filter: 'drop-shadow(3px 4px 15px rgba(0, 0, 0, 0.12))',
     borderRadius: '0.6rem',
     [theme.breakpoints.down('sm')]: {
-      transform: 'scale(1)', // Disable grow effect on mobile
+      transform: 'scale(1)',
       flex: '0 1 auto',
     },
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
     [theme.breakpoints.down('sm')]: {
-      transform: 'scale(1)', // Disable grow effect on mobile
+      transform: 'scale(1)',
     },
   },
   input: {
