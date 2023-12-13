@@ -34,7 +34,7 @@ const SongAnalytics = ({ likes, plays, downloads }) => {
   const isSmallerScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isSmallerScreen) {
-    return null; // Don't render on smaller screens
+    return null;
   }
 
   return (

@@ -6,7 +6,6 @@ import {
   Paper,
   List,
   ListItem,
-  ListItemText,
   Avatar,
   ListItemAvatar,
   Tooltip,

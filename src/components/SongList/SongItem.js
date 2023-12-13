@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Modal from '../UI/Modal/Modal';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { addLike, addSongToPlaylist, removeLike } from '../../api/functions';
+import { addLike, removeLike } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 
 import { useTheme } from '@mui/material/styles';

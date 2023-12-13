@@ -24,7 +24,7 @@ const Playlist = () => {
     };
 
     fetchPlaylist();
-  }, []);
+  }, [playlistId]);
 
   // ['music', ['userID', '==', profile.userID]]
 

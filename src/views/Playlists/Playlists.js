@@ -69,9 +69,9 @@ const Playlists = () => {
     }
   };
 
-  const handleDeletePlaylist = (playlistId) => {};
+  // const handleDeletePlaylist = (playlistId) => {};
 
-  const handleEditPlaylist = (playlistId, updatedName) => {};
+  // const handleEditPlaylist = (playlistId, updatedName) => {};
 
   return (
     <div className={classes.playlistsContainer}>

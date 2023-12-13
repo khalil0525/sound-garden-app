@@ -105,8 +105,7 @@ const SongCard = ({
           payload: { playlistSongs, songIndex, songPlaylistLocation },
         });
       }
-    } //else it's paused
-    else if (playing) {
+    } else if (playing) {
       dispatchSongItemState({ type: 'PAUSE' });
       dispatchAudioPlayerContext({ type: 'SONG_PAUSED' });
     } else {

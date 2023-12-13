@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import PlaylistList from '../../components/PlaylistList/PlaylistList';
 
@@ -48,23 +48,23 @@ const samplePlaylists = [
 const PlaylistResults = ({ query }) => {
   const classes = useStyles();
 
-  const [playlists, setPlaylists] = useState(samplePlaylists);
-  const [newPlaylistName, setNewPlaylistName] = useState('');
-  const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
+  // const [playlists, setPlaylists] = useState(samplePlaylists);
+  // const [newPlaylistName, setNewPlaylistName] = useState('');
+  // const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const { documents: playlistDocuments } = useCollection(...query);
 
-  const handleCreatePlaylist = () => {
-    setIsCreatingPlaylist(false);
-    if (newPlaylistName.trim() !== '') {
-      const newPlaylist = {
-        id: Date.now(),
-        name: newPlaylistName,
-      };
-      setPlaylists([...playlists, newPlaylist]);
+  // const handleCreatePlaylist = () => {
+  //   setIsCreatingPlaylist(false);
+  //   if (newPlaylistName.trim() !== '') {
+  //     const newPlaylist = {
+  //       id: Date.now(),
+  //       name: newPlaylistName,
+  //     };
+  //     setPlaylists([...playlists, newPlaylist]);
 
-      setNewPlaylistName('');
-    }
-  };
+  //     setNewPlaylistName('');
+  //   }
+  // };
 
   const handleDeletePlaylist = (playlistId) => {};
 
