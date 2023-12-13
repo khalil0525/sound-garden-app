@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Modal from '../UI/Modal/Modal';
 import { CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { addLike, removeLike } from '../../api/functions';
+import { addLike, removeLike, authorizePlay } from '../../api/functions';
 import { makeStyles } from '@mui/styles';
 
 import { useTheme } from '@mui/material/styles';
@@ -102,7 +102,13 @@ const SongItem = ({
 
   const { deleteSongFiles, response: cloudStorageResponse } = useCloudStorage();
 
-  const handlePlayPauseClick = () => {
+  const handlePlayPauseClick = async () => {
+    try {
+      await authorizePlay({ songId: songId });
+    } catch (error) {
+      console.log(error);
+    }
+
     if (loadedSongURL !== song.songURL) {
       if (JSON.stringify(playlist) === JSON.stringify(playlistSongs)) {
         dispatchAudioPlayerContext({
@@ -121,6 +127,7 @@ const SongItem = ({
       dispatchAudioPlayerContext({ type: 'SONG_PAUSED' });
     } else {
       dispatchSongItemState({ type: 'PLAY' });
+
       dispatchAudioPlayerContext({ type: 'SONG_PLAYED' });
     }
     dispatchSongItemState({ type: 'PLAY_PAUSE_CLICK' });

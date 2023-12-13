@@ -20,3 +20,4 @@ export const removeSongFromPlaylist = httpsCallable(
   functions,
   'removeSongFromPlaylist'
 );
+export const authorizePlay = httpsCallable(functions, 'authorizePlay');

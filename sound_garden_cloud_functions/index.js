@@ -385,54 +385,90 @@ exports.getSongs = functions.https.onCall(async (data, context) => {
   }
 });
 
-// exports.authorizePlay = functions.https.onCall(async (data, context) => {
-//   const userId = context.auth.uid;
-//   const songId = data.songId;
+exports.authorizePlay = functions.https.onCall(async (data, context) => {
+  const { songId } = data;
+  const userId = context.auth.uid;
 
-//   // Check if the user has already played this song today.
-//   const playsCollection = admin
-//     .firestore()
-//     .collection('users')
-//     .doc(userId)
-//     .collection('plays');
-//   const lastDay = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-//   const todayPlays = await playsCollection
-//     .where('songId', '==', songId)
-//     .where('timestamp', '>=', lastDay)
-//     .get();
+  try {
+    const playImpressionsCollection = admin
+      .firestore()
+      .collection('playImpressions');
+    const querySnapshot = await playImpressionsCollection
+      .where('userID', '==', userId)
+      .where('songID', '==', songId)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
 
-//   if (todayPlays.size >= 3) {
-//     return { authorized: false, message: 'Maximum daily plays reached.' };
-//   }
+    const currentTime = new Date().getTime();
+    const cooldownDuration = 10 * 60 * 1000;
 
-//   // Retrieve the song's document.
-//   const songRef = admin.firestore().collection('songs').doc(songId);
-//   const songDoc = await songRef.get();
+    const songRef = admin.firestore().collection('music').doc(songId);
+    const songDoc = await songRef.get();
 
-//   if (!songDoc.exists) {
-//     return { authorized: false, message: 'Song not found.' };
-//   }
+    if (!songDoc.exists) {
+      return { success: false, message: 'Song not found.' };
+    }
 
-//   const songData = songDoc.data();
+    if (!songDoc.data().impressions) {
+      await songRef.update({ impressions: [] });
+    }
 
-//   // Check if enough time has passed since the last play.
-//   const lastPlayTimestamp = songData.lastPlayTimestamp || 0;
-//   const timeSinceLastPlay = new Date().getTime() - lastPlayTimestamp;
-//   if (timeSinceLastPlay < songData.playCooldown) {
-//     return { authorized: false, message: 'Cooldown time not met.' };
-//   }
+    if (querySnapshot.empty) {
+      // No previous impression, allow the play.
+      await playImpressionsCollection.add({
+        userID: userId,
+        songID: songId,
+        createdAt: currentTime,
+        nextImpressionAvailableTime: currentTime + cooldownDuration,
+        isValidImpressionClick: true,
+      });
 
-//   // Record the play and update song data.
-//   const playTimestamp = new Date();
-//   await playsCollection.add({ songId, timestamp: playTimestamp });
-//   await songRef.update({
-//     playCount: (songData.playCount || 0) + 1,
-//     lastPlayTimestamp: playTimestamp,
-//   });
+      // Update the song's impressions array.
+      await songRef.update({
+        impressions: admin.firestore.FieldValue.arrayUnion(userId),
+      });
 
-//   return { authorized: true };
-// });
-// Function to repost a song
+      return { authorized: true };
+    } else {
+      // There's a previous impression, check if cooldown is met.
+      const impression = querySnapshot.docs[0].data();
+      if (impression.nextImpressionAvailableTime <= currentTime) {
+        // Cooldown is met, allow the play.
+        await playImpressionsCollection.add({
+          userID: userId,
+          songID: songId,
+          createdAt: currentTime,
+          nextImpressionAvailableTime: currentTime + cooldownDuration,
+          isValidImpressionClick: true,
+        });
+
+        // Update the song's impressions array.
+        await songRef.update({
+          impressions: admin.firestore.FieldValue.arrayUnion(userId),
+        });
+
+        return { success: true };
+      } else {
+        await playImpressionsCollection.add({
+          userID: userId,
+          songID: songId,
+          createdAt: currentTime,
+          nextImpressionAvailableTime: impression.nextImpressionAvailableTime,
+          isValidImpressionClick: false,
+        });
+        return { success: false, message: 'Cooldown time not met.' };
+      }
+    }
+  } catch (error) {
+    console.error('Error authorizing play:', error);
+    return {
+      success: false,
+      message: 'An error occurred while authorizing the play.',
+    };
+  }
+});
+
 exports.repostSong = functions.https.onCall(async (data, context) => {
   const { songId } = data;
   const userId = context.auth.uid;
