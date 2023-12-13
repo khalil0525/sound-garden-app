@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import PlaylistList from '../../components/PlaylistList/PlaylistList';
 
@@ -39,11 +39,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
 }));
-const samplePlaylists = [
-  { id: 1, name: 'Playlist 1' },
-  { id: 2, name: 'Playlist 2' },
-  { id: 3, name: 'Playlist 3' },
-];
 
 const PlaylistResults = ({ query }) => {
   const classes = useStyles();
