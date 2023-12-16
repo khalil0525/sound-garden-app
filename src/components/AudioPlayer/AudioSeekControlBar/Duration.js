@@ -20,7 +20,7 @@ const Duration = ({ className, seconds }) => {
   };
 
   return (
-    <div style={{ padding: '8px' }}>
+    <div style={{ padding: '4px' }}>
       <time
         dateTime={`P${Math.round(seconds)}S`}
         className={`${className}`}>

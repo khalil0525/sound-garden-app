@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '0.6rem',
     [theme.breakpoints.down('sm')]: {
       transform: 'scale(1)',
-      flex: '0 1 auto',
+      flex: '1 1 auto',
     },
   },
   searchIcon: {

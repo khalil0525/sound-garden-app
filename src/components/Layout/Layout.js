@@ -20,8 +20,8 @@ const Layout = ({ children, user }) => {
       sx={{
         display: 'flex',
         padding: {
-          xs: theme.spacing(1.5),
-          sm: theme.spacing(4),
+          xs: theme.spacing(2),
+          sm: theme.spacing(3),
           md: '0.8rem 3.2rem 1.6rem 3.2rem',
         },
         justifyContent: 'center',

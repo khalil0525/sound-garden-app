@@ -1,10 +1,8 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Paper, Typography, Button, TextField } from '@mui/material';
+
 import { useCloudStorage } from '../../hooks/useCloudStorage';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -18,12 +16,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    maxWidth: '60rem',
-    margin: '10% auto',
+    alignItems: 'center',
     backgroundColor: 'white',
-    padding: '2rem',
+    padding: '3.2rem',
     border: '1px rgba(128, 128, 128, 0.671) solid',
     borderRadius: '6px',
+    width: '100%',
+
+    minHeight: '220px',
   },
   filePicker: {
     display: 'flex',
@@ -35,20 +35,23 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: '0 auto',
+    margin: '0.4rem auto',
+    flex: '1 0 auto',
   },
   uploadForm: {
-    maxWidth: '50rem',
-    margin: '0 auto',
     display: 'flex',
-    flexDirection: 'column',
+
+    padding: '1.6rem',
+
     gap: '1rem',
+    width: '100%',
   },
   actionContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
     gap: '0.5rem',
+    margin: '0.8rem',
   },
   photoPickerPhoto: {
     width: '160px',
@@ -256,8 +259,22 @@ const Upload = () => {
   }, [songFile]);
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        maxWidth: '124rem',
+        margin: 'auto',
+      }}>
       <Paper className={classes.uploadContainer}>
+        <Typography
+          variant="h3"
+          color="text.secondary"
+          sx={{ margin: '1.6rem auto' }}>
+          Drag and drop your tracks & albums here
+        </Typography>
         {!songFile && (
           <FileUploader
             handleChange={handleSongFileChange}
@@ -269,93 +286,105 @@ const Upload = () => {
           />
         )}
         {songFile && (
-          <div className={classes.uploadForm}>
+          <Box sx={{ padding: '1.6rem 4.8rem', width: '100%' }}>
             <LoadingBar
               progress={uploadProgress}
               song={songFile.name}
             />
-            {!cloudStorageResponse.success && (
-              <>
-                <div className={classes.photoPicker}>
-                  <div className={classes.photoPickerPhoto}>
-                    <img
-                      src={songPhotoFile ? songPhotoURL : placeholderImage}
-                      alt="Song Cover Art"
+            <div className={classes.uploadForm}>
+              {!cloudStorageResponse.success && (
+                <>
+                  <div className={classes.photoPicker}>
+                    <div className={classes.photoPickerPhoto}>
+                      <img
+                        src={songPhotoFile ? songPhotoURL : placeholderImage}
+                        alt="Song Cover Art"
+                      />
+                    </div>
+                    <Box sx={{ position: 'relative', width: '80%' }}>
+                      <input
+                        type="file"
+                        onChange={handleSongPhotoFileChange}
+                        disabled={cloudStorageResponse.isPending}
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="photo-file-input"
+                      />
+                      <label htmlFor="photo-file-input">
+                        <Button
+                          component="span"
+                          variant="contained"
+                          color="primary"
+                          disabled={cloudStorageResponse.isPending}
+                          sx={{
+                            position: 'absolute',
+                            top: '-3.6rem',
+                            zIndex: 1000,
+                            width: '100%',
+                          }}>
+                          Choose Photo
+                        </Button>
+                      </label>
+                    </Box>
+                  </div>
+                  <Box sx={{ width: '100%' }}>
+                    <TextField
+                      label="Song Name"
+                      id="song-name"
+                      value={songName}
+                      onChange={handleSongNameChange}
+                      disabled={cloudStorageResponse.isPending}
+                      fullWidth
+                      margin="normal"
                     />
+                    <GenreSelect
+                      onGenreTypeChange={handleGenreTypeChange}
+                      genreValue={genreType}
+                      disabled={cloudStorageResponse.isPending}
+                    />
+                    {!cloudStorageResponse.isPending && (
+                      <div className={classes.actionContainer}>
+                        <Button
+                          onClick={handleCancelClick}
+                          variant="outlined"
+                          color="secondary">
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleSongUpload}
+                          variant="contained"
+                          color="primary"
+                          disabled={!uploadIsReady}>
+                          Upload
+                        </Button>
+                      </div>
+                    )}
+                  </Box>
+                </>
+              )}
+              {cloudStorageResponse.success && (
+                <>
+                  <Typography variant="h5">Uploaded Successfully!</Typography>
+                  <div>
+                    <Link to={`/profile/${profileURL}`}>
+                      Go to your uploaded tracks
+                    </Link>
                   </div>
-                  <input
-                    type="file"
-                    onChange={handleSongPhotoFileChange}
-                    disabled={cloudStorageResponse.isPending}
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    id="photo-file-input"
-                  />
-                  <label htmlFor="photo-file-input">
-                    <Button
-                      component="span"
-                      variant="contained"
-                      color="primary"
-                      disabled={cloudStorageResponse.isPending}>
-                      Choose Photo
-                    </Button>
-                  </label>
-                </div>
-                <TextField
-                  label="Song Name"
-                  id="song-name"
-                  value={songName}
-                  onChange={handleSongNameChange}
-                  disabled={cloudStorageResponse.isPending}
-                  fullWidth
-                  margin="normal"
-                />
-                <GenreSelect
-                  onGenreTypeChange={handleGenreTypeChange}
-                  genreValue={genreType}
-                  disabled={cloudStorageResponse.isPending}
-                />
-                {!cloudStorageResponse.isPending && (
-                  <div className={classes.actionContainer}>
-                    <Button
-                      onClick={handleCancelClick}
-                      variant="outlined"
-                      color="secondary">
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleSongUpload}
-                      variant="contained"
-                      color="primary"
-                      disabled={!uploadIsReady}>
-                      Upload
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
-            {cloudStorageResponse.success && (
-              <>
-                <Typography variant="h5">Uploaded Successfully!</Typography>
-                <div>
-                  <Link to={`/profile/${profileURL}`}>
-                    Go to your uploaded tracks
-                  </Link>
-                </div>
-              </>
-            )}
-            {cloudStorageResponse.isPending && (
-              <Button
-                disabled
-                variant="contained"
-                color="primary">
-                Uploading... Please wait
-              </Button>
-            )}
-          </div>
+                </>
+              )}
+              {cloudStorageResponse.isPending && (
+                <Button
+                  disabled
+                  variant="contained"
+                  color="primary">
+                  Uploading... Please wait
+                </Button>
+              )}
+            </div>
+          </Box>
         )}
       </Paper>
-    </>
+    </Box>
   );
 };
 

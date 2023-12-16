@@ -105,6 +105,18 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {},
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          maxHeight: '300px',
+        },
+      },
+    },
   },
   overrides: {
     MuiCssBaseline: {

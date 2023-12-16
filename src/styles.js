@@ -9,21 +9,22 @@ export const songItem = (theme) => ({
     listStyle: 'none',
     [theme.breakpoints.up('xs')]: {
       gridTemplateColumns: '1fr 6fr',
-      gridTemplateRows: '2fr 1fr',
+      gridTemplateRows: '1fr 1fr',
       justifyContent: 'flex-start',
-      padding: '1.6rem',
+      padding: '0.8rem',
     },
+
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 4fr',
+      gridTemplateColumns: '1fr 5fr',
       gridTemplateRows: '2fr 2fr 1fr',
       justifyContent: 'flex-start',
       padding: '1.6rem',
     },
   },
   songItemHeader: {
-    paddingLeft: '0.8rem',
     gridColumn: '2/-1',
     gridRow: '1',
+    padding: '0.8rem',
     [theme.breakpoints.up('md')]: {
       gridColumn: '2/3',
       gridRow: '1',
@@ -32,7 +33,8 @@ export const songItem = (theme) => ({
   songItemTitleContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '0.5rem',
+    gap: '1.6rem',
+    justifyContent: 'center',
   },
   titleContainerPlayBtn: {
     alignSelf: 'center',
@@ -89,12 +91,13 @@ export const songItem = (theme) => ({
     },
   },
   titleContainerAdditionalGenreContainer: {
-    marginTop: '0.2rem',
+    marginTop: '0.4rem',
     lineHeight: '1.2rem',
   },
   titleContainerAdditionalDateContainer: {
     marginTop: '0.2rem',
     lineHeight: '1.2rem',
+    color: '#ccc',
   },
   titleContainerAdditionalGenre: {
     padding: '0 0.6rem',
@@ -131,13 +134,18 @@ export const songItem = (theme) => ({
     },
   },
   songItemSongPhotoContainer: {
-    width: '8rem',
-    height: '8rem',
+    width: '6rem',
+    height: '6rem',
+    padding: '0.8rem',
     [theme.breakpoints.up('sm')]: {
-      width: '12rem',
-      height: '12rem',
+      width: '10rem',
+      height: '10rem',
     },
     [theme.breakpoints.up('md')]: {
+      width: '14rem',
+      height: '14rem',
+    },
+    [theme.breakpoints.up('lg')]: {
       width: '16rem',
       height: '16rem',
     },

@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import styles from "./LoadingBar.module.css";
+import { LinearProgress, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 const LoadingBar = (props) => {
   const [totalLoaded, setTotalLoaded] = useState(0);
 
-  //Convert the progress into whole number
   useEffect(() => {
     if (props.progress) {
       let progress = Math.round(props.progress);
@@ -14,20 +13,18 @@ const LoadingBar = (props) => {
 
   return (
     <div>
-      <div className={styles["loading-bar_header"]}>
-        <p>{props.song}</p>
-        {totalLoaded !== 0 && <p>{totalLoaded}</p>}
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography>{props.song}</Typography>
+        {totalLoaded !== 0 && <Typography>{totalLoaded}</Typography>}
       </div>
 
-      <div className={styles["loading-bar"]}>
-        <div className={styles["loading-bar_inner"]}>
-          <div
-            className={styles["loading-bar_fill"]}
-            style={{ width: totalLoaded + "%" }}
-          ></div>
-        </div>
-      </div>
+      <LinearProgress
+        variant="determinate"
+        value={totalLoaded}
+        sx={{ padding: '0.4rem', width: '100%', borderRadius: '0.2rem' }}
+      />
     </div>
   );
 };
+
 export default LoadingBar;
