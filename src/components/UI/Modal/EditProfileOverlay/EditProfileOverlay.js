@@ -218,8 +218,10 @@ const EditProfileOverlay = (props) => {
       displayName: displayName.trimStart().trimEnd(),
       profileURL: profileURL,
     };
+
     if (editSaveReady) {
       user.updateProfile({ displayName: newValues.displayName });
+      console.log(user.uid, newValues);
       updateUserDocument(user.uid, newValues);
     }
   };

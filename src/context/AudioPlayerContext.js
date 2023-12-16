@@ -178,12 +178,7 @@ export const audioPlayerReducer = (state, action) => {
         ...state,
         seekingFromAudioPlayer: true,
       };
-    //We dont need this because the song item should scrub live
-    // case "SEEK_CHANGE_FROM_AUDIO_PLAYER":
-    //   return {
-    //     ...state,
-    //     currentSongPlayedTime: action.payload,
-    //   };
+
     case 'SEEK_MOUSE_UP_FROM_AUDIO_PLAYER':
       return {
         ...state,

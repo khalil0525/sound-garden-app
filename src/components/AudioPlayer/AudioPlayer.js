@@ -388,12 +388,6 @@ const AudioPlayer = () => {
     seekingFromSongItemComplete,
   ]);
 
-  // useEffect(() => {
-  //   if (url) {
-  //     getArtistName(playlist[playlistIndex].artist);
-  //   }
-  // }, [url]);
-
   return (
     <div className={classes.audioPlayer}>
       <ReactPlayer
@@ -410,6 +404,7 @@ const AudioPlayer = () => {
         onEnded={handleEnded}
         onProgress={handleProgress}
         onDuration={handleDuration}
+        stopOnUnmount={true}
       />
       <div className={classes.audioPlayerTrackDetailsSongArt}>
         <img

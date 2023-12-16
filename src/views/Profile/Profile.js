@@ -39,6 +39,8 @@ const tabs = ['Tracks', 'Likes'];
 //2480 x 520 (1240 x 260 res)
 const useStyles = makeStyles((theme) => ({
   profile__content: {
+    maxWidth: '124rem',
+    margin: '0 auto',
     padding: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
       padding: theme.spacing(1),
@@ -47,22 +49,20 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(0),
     },
   },
-  profile__headerContainer: {
-    maxWidth: '124rem',
-    margin: '0 auto',
-  },
+  profile__headerContainer: {},
   profile__header: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '1.6rem',
-    padding: '3.6rem',
+    padding: '3.2rem',
     borderRadius: '1.6rem !important',
     position: 'relative',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     zIndex: 1,
+
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'center',
@@ -78,8 +78,8 @@ const useStyles = makeStyles((theme) => ({
     height: '100% !important',
   },
   profileHeaderImageContainer: {
-    width: '20rem',
-    height: '20rem',
+    width: '18rem',
+    height: '18rem',
     backgroundColor: '#fff',
     borderRadius: '50%',
     overflow: 'hidden',
@@ -87,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '8rem',
       height: '8rem',
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '14rem',
+      height: '14rem',
     },
   },
   profileHeaderImageContainer_img: {
@@ -109,6 +113,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '0.4rem',
+
     [theme.breakpoints.down('md')]: {
       alignItems: 'center',
       marginTop: '1.6rem',
@@ -363,7 +368,8 @@ export default function Profile({ scrollRef }) {
                 <Grid
                   item
                   xs={12}
-                  md={2.5}>
+                  md={3}
+                  xl={2.5}>
                   <div className={classes.profileHeaderImageContainer}>
                     {profile && profile?.profilePhotoURL ? (
                       <img
@@ -385,7 +391,8 @@ export default function Profile({ scrollRef }) {
                 <Grid
                   item
                   xs={12}
-                  md={9.5}>
+                  md={9}
+                  xl={9.5}>
                   <div className={classes.profileHeaderContent}>
                     <div className={classes.profileHeaderTextContainer}>
                       <h2 className={classes.profileHeaderDisplayName}>

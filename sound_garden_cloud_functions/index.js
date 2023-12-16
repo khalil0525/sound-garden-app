@@ -16,6 +16,8 @@ exports.updateUserProfile = functions.firestore
       .collection('users')
       .doc(userID)
       .update({
+        ...after.data(),
+
         profileURL: after.get('profileURL'),
       });
   });
@@ -592,6 +594,19 @@ exports.getPlaylist = functions.https.onCall(async (data, context) => {
     }
 
     const playlistData = playlistDoc.data();
+
+    if (playlistData.userID) {
+      const userDoc = await db
+        .collection('users')
+        .doc(playlistData.userID)
+        .get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        // Include the user's displayName in the playlistData
+        playlistData.displayName = userData.displayName;
+      }
+    }
+
     return playlistData;
   } catch (error) {
     console.error('Error getting playlist:', error);
@@ -656,16 +671,31 @@ exports.getPlaylists = functions.https.onCall(async (data, context) => {
       );
     }
 
-    const userId = context.auth.uid;
+    const userID = context.auth.uid;
     const db = admin.firestore();
     const playlistsCollection = db.collection('playlists');
-    const query = playlistsCollection.where('userID', '==', userId);
+    const query = playlistsCollection.where('userID', '==', userID);
 
     const snapshot = await query.get();
     const playlists = [];
 
-    snapshot.forEach((doc) => {
+    snapshot.forEach(async (doc) => {
       const playlistData = doc.data();
+
+      // Check if the playlistData contains a userId
+      if (playlistData.userID) {
+        // Fetch user data using the userId
+        const userDoc = await db
+          .collection('users')
+          .doc(playlistData.userID)
+          .get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          // Include the user's displayName in the playlistData
+          playlistData.displayName = userData.displayName;
+        }
+      }
+
       playlists.push({
         id: doc.id,
         ...playlistData,

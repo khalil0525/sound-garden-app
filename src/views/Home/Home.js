@@ -97,8 +97,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '12px',
     justifyContent: 'flex-start ',
     alignItems: 'flex-start',
+    minHeight: '220px',
     maxHeight: '300px',
-    maxWidth: '800px',
+    maxWidth: '100%',
     flex: '1 0 46%',
 
     padding: '16px',

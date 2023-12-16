@@ -14,6 +14,7 @@ const PlaylistList = ({ playlists }) => {
         <PlaylistItem
           key={playlist.docID}
           playlist={playlist}
+          playlistDisplayName={playlist.displayName}
         />
       ))}
     </div>

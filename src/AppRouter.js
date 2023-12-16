@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Home from './views/Home/Home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -27,6 +28,12 @@ function AppRouter({ user }) {
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
+  useEffect(() => {
+    if (drawerOpen && !isMobile) {
+      setDrawerOpen(false);
+      console.log('here');
+    }
+  }, [isMobile, drawerOpen]);
 
   return (
     <BrowserRouter>
@@ -42,7 +49,6 @@ function AppRouter({ user }) {
           },
         }}>
         <>
-          {' '}
           {isMobile && (
             <>
               <IconButton
@@ -75,15 +81,13 @@ function AppRouter({ user }) {
                   }}>
                   <CloseIcon fontSize="large" />
                 </IconButton>
-
-                {/* Content of the drawer */}
-              </Drawer>
+              </Drawer>{' '}
+              <SideNavigation
+                drawerOpen={drawerOpen}
+                setDrawerOpen={setDrawerOpen}
+              />
             </>
           )}
-          <SideNavigation
-            drawerOpen={drawerOpen}
-            setDrawerOpen={setDrawerOpen}
-          />
         </>
 
         {!isMobile && (

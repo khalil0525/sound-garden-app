@@ -40,17 +40,18 @@ const SongAnalytics = ({ likes, plays, downloads }) => {
   return (
     <div className={classes.analyticsBar}>
       <div className={classes.analyticsItem}>
-        <Tooltip title={`Likes: ${likes}`}>
-          <FavoriteBorderRoundedIcon fontSize="small" />
-        </Tooltip>
-        <span>{likes}</span>
-      </div>
-      <div className={classes.analyticsItem}>
         <Tooltip title={`Plays: ${plays}`}>
           <PlayArrowIcon fontSize="small" />
         </Tooltip>
         <span>{plays}</span>
       </div>
+      <div className={classes.analyticsItem}>
+        <Tooltip title={`Likes: ${likes}`}>
+          <FavoriteBorderRoundedIcon fontSize="small" />
+        </Tooltip>
+        <span>{likes}</span>
+      </div>
+
       <div className={classes.analyticsItem}>
         <Tooltip title={`Downloads: ${downloads}`}>
           <FileDownloadOutlinedIcon fontSize="small" />

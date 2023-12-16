@@ -47,19 +47,6 @@ const PlaylistResults = ({ query }) => {
   // const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const { documents: playlistDocuments } = useCollection(...query);
 
-  // const handleCreatePlaylist = () => {
-  //   setIsCreatingPlaylist(false);
-  //   if (newPlaylistName.trim() !== '') {
-  //     const newPlaylist = {
-  //       id: Date.now(),
-  //       name: newPlaylistName,
-  //     };
-  //     setPlaylists([...playlists, newPlaylist]);
-
-  //     setNewPlaylistName('');
-  //   }
-  // };
-
   const handleDeletePlaylist = (playlistId) => {};
 
   const handleEditPlaylist = (playlistId, updatedName) => {};

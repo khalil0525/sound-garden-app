@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-
+import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   playlistItem: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'start',
     flexDirection: 'column',
     padding: theme.spacing(2),
     borderRadius: theme.spacing(1),
@@ -18,8 +18,10 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '160px',
     objectFit: 'cover',
     marginBottom: theme.spacing(1),
+    cursor: 'pointer',
   },
   playlistName: {
+    cursor: 'pointer',
     fontSize: '1.2rem',
     fontWeight: 'bold',
     color: '#333',
@@ -30,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-between',
       marginTop: theme.spacing(1),
     },
+    playlistDisplayName: {
+      fontSize: theme.typography.body2.fontSize,
+      fontWeight: 400,
+      lineHeight: '1.6rem',
+      color: '#999',
+    },
     editButton: {
       color: '#4caf50',
     },
@@ -39,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PlaylistItem = ({ playlist }) => {
+const PlaylistItem = ({ playlist, playlistDisplayName }) => {
   const navigate = useNavigate();
   const classes = useStyles();
 
@@ -55,7 +63,12 @@ const PlaylistItem = ({ playlist }) => {
         className={classes.playlistImage}
       />
       <div className={classes.playlistName}>{playlist.playlistName}</div>
-      12{' '}
+      <NavLink
+        to={`/profile/${playlist.profileURL}`}
+        style={{ textDecoration: 'none' }}
+        className={classes.playlistDisplayName}>
+        <span>{playlistDisplayName}</span>
+      </NavLink>
     </div>
   );
 };

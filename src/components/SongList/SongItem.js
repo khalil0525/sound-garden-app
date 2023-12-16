@@ -413,7 +413,7 @@ const SongItem = ({
         </div>
         <SongAnalytics
           likes={song?.likes?.length || 0}
-          plays={0}
+          plays={song?.impressions?.length ? song?.impressions?.length : 0}
           downloads={0}
         />
       </div>

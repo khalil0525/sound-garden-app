@@ -1,19 +1,23 @@
 export const songItem = (theme) => ({
   songItem: {
     display: 'grid',
-    gridTemplateColumns: '1fr 3fr',
-    gridTemplateRows: '1fr 1fr',
+
     width: '100%',
 
     alignItems: 'center',
     gap: '0.4rem',
     listStyle: 'none',
-
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 5fr',
-      gridTemplateRows: '1fr 1fr 1fr',
+    [theme.breakpoints.up('xs')]: {
+      gridTemplateColumns: '1fr 6fr',
+      gridTemplateRows: '2fr 1fr',
       justifyContent: 'flex-start',
-      padding: '2rem',
+      padding: '1.6rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 4fr',
+      gridTemplateRows: '2fr 2fr 1fr',
+      justifyContent: 'flex-start',
+      padding: '1.6rem',
     },
   },
   songItemHeader: {
@@ -108,6 +112,7 @@ export const songItem = (theme) => ({
     display: 'none',
     gridColumn: '2/2',
     gridRow: '3/3',
+    padding: '0.8rem',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -119,22 +124,22 @@ export const songItem = (theme) => ({
   },
   songItemAside: {
     gridColumn: '1',
-    gridRow: '1/-1',
+    gridRow: '1',
+
+    [theme.breakpoints.up('md')]: {
+      gridRow: '1/3',
+    },
   },
   songItemSongPhotoContainer: {
-    width: '6rem',
-    height: '6rem',
+    width: '8rem',
+    height: '8rem',
     [theme.breakpoints.up('sm')]: {
-      width: '8rem',
-      height: '8rem',
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: '16rem',
-      height: '16rem',
+      width: '12rem',
+      height: '12rem',
     },
     [theme.breakpoints.up('md')]: {
-      maxWidth: '16rem',
-      maxHeight: '16rem',
+      width: '16rem',
+      height: '16rem',
     },
   },
   songPhotoContainerImg: {
@@ -145,11 +150,12 @@ export const songItem = (theme) => ({
     boxShadow: 'inset 0 0 0 1px ' + theme.palette.grey[300],
   },
   songItemSeekControl: {
+    gridColumn: '1/-1',
     gridRow: '2',
     display: 'flex',
     justifyContent: 'center',
     gap: '0.6rem',
-    padding: '1.2rem',
+    padding: '0.8rem',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'space-evenly',
       width: '100%',
