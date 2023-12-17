@@ -8,17 +8,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'start',
     flexDirection: 'column',
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    padding: theme.spacing(1),
+
     backgroundColor: 'none',
   },
   playlistImage: {
     width: '100%',
-    maxHeight: '160px',
+    maxHeight: '120px',
     objectFit: 'cover',
     marginBottom: theme.spacing(1),
     cursor: 'pointer',
+    borderRadius: '1.2rem',
   },
   playlistName: {
     cursor: 'pointer',
@@ -26,24 +26,25 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    actionButtons: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginTop: theme.spacing(1),
-    },
-    playlistDisplayName: {
-      fontSize: theme.typography.body2.fontSize,
-      fontWeight: 400,
-      lineHeight: '1.6rem',
-      color: '#999',
-    },
-    editButton: {
-      color: '#4caf50',
-    },
-    deleteButton: {
-      color: '#f44336',
-    },
+    marginLeft: '0.8rem',
+  },
+  actionButtons: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(1),
+  },
+  playlistDisplayName: {
+    fontSize: theme.typography.body2.fontSize,
+    fontWeight: 400,
+    lineHeight: '1.6rem',
+    color: '#999',
+  },
+  editButton: {
+    color: '#4caf50',
+  },
+  deleteButton: {
+    color: '#f44336',
   },
 }));
 

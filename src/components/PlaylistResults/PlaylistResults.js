@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
 
     borderRadius: '8px',
   },
@@ -53,7 +53,6 @@ const PlaylistResults = ({ query }) => {
 
   return (
     <div className={classes.playlistsContainer}>
-      {' '}
       {playlistDocuments?.length ? (
         <PlaylistList
           playlists={playlistDocuments}

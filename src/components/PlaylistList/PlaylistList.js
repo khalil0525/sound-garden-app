@@ -5,7 +5,9 @@ const PlaylistList = ({ playlists }) => {
   const playlistListStyle = {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'flex-start',
     gap: '1.6rem',
+    width: '100%',
   };
 
   return (

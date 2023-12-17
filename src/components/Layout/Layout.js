@@ -19,12 +19,39 @@ const Layout = ({ children, user }) => {
     <Box
       sx={{
         display: 'flex',
+        [theme.breakpoints.down('lg')]: {
+          marginTop: '3.2rem',
+        },
         padding: {
           xs: theme.spacing(2),
           sm: theme.spacing(3),
-          md: '0.8rem 3.2rem 1.6rem 3.2rem',
+          maxHeight: '100%',
         },
         justifyContent: 'center',
+        overflowX: 'hidden',
+
+        overflowY: 'auto',
+
+        '::-webkit-scrollbar': {
+          width: '8px',
+          margin: '0 1.6rem',
+        },
+        '::-webkit-scrollbar-thumb': {
+          backgroundColor: '#888',
+          borderRadius: '5px',
+          backgroundClip: 'padding-box',
+        },
+        '::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
+          marginTop: '3.2rem !important',
+          marginBottom: '3.2rem !important',
+        },
+      }}
+      p={{ xs: '0', sm: '0', md: '3.2rem' }}
+      bgcolor={'white'}
+      borderRadius={{
+        xs: '0',
+        lg: '3.4rem',
       }}>
       <Grid
         container
@@ -46,7 +73,7 @@ const Layout = ({ children, user }) => {
           md={12}
           width="100%"
           sx={{
-            padding: { xs: 0, sm: 0, md: theme.spacing(2) },
+            padding: { xs: 0, sm: 0, md: theme.spacing(4) },
           }}>
           {renderChildrenWithProps()}
         </Grid>

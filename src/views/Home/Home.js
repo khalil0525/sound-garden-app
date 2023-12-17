@@ -2,13 +2,9 @@ import React from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import CardList from '../../components/CardList/CardList';
-
 import Link from '@mui/material/Link';
 import womanListeningToMusicBg from '../../images/woman-listening-to-music.png';
-import card1bg from '../../images/cardBg1.png';
-import card2bg from '../../images/cardBg2.png';
-import card3bg from '../../images/cardBg3.png';
+
 import MiniBanner from '../../components/UI/MiniBanner';
 
 import CollectionResults from '../../components/CollectionResults/CollectionResults';
@@ -18,6 +14,8 @@ import theme from '../../theme';
 import { Box, IconButton } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Headphones } from '@mui/icons-material';
+import PlaylistResults from '../../components/PlaylistResults/PlaylistResults';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const useStyles = makeStyles((theme) => ({
   home: {
@@ -160,15 +158,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const tempList = [
-  { title: 'Top 50 tamil', content: '50 tracks', background: card1bg },
-  { title: 'Weekly Hits', content: '100 tracks', background: card2bg },
-  { title: 'Tolly Hit track', content: '60 Tracks', background: card3bg },
-];
-
 export default function Home({ scrollRef }) {
+  const { user } = useAuthContext();
   const classes = useStyles(theme);
   const query = ['music', ['userID', '==', 'xCvggxf5HPhL9xBbHOz49BWcsly2']];
+  const playlistQuery = ['playlists', ['userID', '==', user?.uid]];
 
   return (
     <Grid2 className={classes.home}>
@@ -218,11 +212,12 @@ export default function Home({ scrollRef }) {
           </Link>
         </Box>
         <Box className={classes.homeContainer}>
-          <CardList
+          {user && user.uid && <PlaylistResults query={playlistQuery} />}
+          {/* <CardList
             className={classes.homeCardList}
             list={tempList}
             page=""
-          />
+          /> */}
         </Box>
         <Box className={classes.homeHeaderContainer}>
           <Typography

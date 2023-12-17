@@ -16,13 +16,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     color: '#ffffff',
     zIndex: 1,
-    height: '100%',
+    minHeight: '98vh',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
-      display: 'block',
+
+    [theme.breakpoints.down('lg')]: {
+      marginTop: '3.2rem',
       textAlign: 'center',
     },
-    position: 'relative',
+    position: 'relative !important',
   },
   logoIcon: {
     width: '100%',
@@ -35,19 +36,26 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '0.8rem',
     width: '100%',
-    padding: '0.8rem 0 0 1.6rem !important',
-    [theme.breakpoints.down('sm')]: {
-      padding: '0.8rem 0 0 0.8rem !important',
+    padding: '0.8rem',
+
+    alignItems: 'center',
+    zIndex: 1,
+    [theme.breakpoints.down('lg')]: {
+      marginTop: '1.6rem',
     },
   },
   sideNavigationImageContainer: {
     display: 'flex',
-    maxWidth: '220px',
-    maxHeight: '220px',
+    maxWidth: '160px',
+    maxHeight: '160px',
     borderRadius: '12px',
     [theme.breakpoints.down('md')]: {
       maxWidth: '60px',
       height: '60px',
+    },
+    [theme.breakpoints.down('lg')]: {
+      maxWidth: '120px',
+      height: '120px',
     },
   },
   sideNavigationImage: {
@@ -114,14 +122,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.h3.fontSize,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '1.6rem',
+    padding: '0.8rem',
     width: '100%',
 
     '&:hover': {
       background: theme.palette.primary.main,
       opacity: 0.6,
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       justifyContent: 'start',
       alignItems: 'center',
       padding: '1.6rem 0 1.6rem 4.8rem',
@@ -129,11 +137,13 @@ const useStyles = makeStyles((theme) => ({
   },
   sideNavigationAudioplayerContainer: {
     paddingLeft: '1.6rem',
+    marginTop: '3.2rem',
     [theme.breakpoints.down('md')]: {
       marginBottom: '6.4rem',
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
+      alignContent: 'end',
       paddingLeft: '0',
     },
   },
@@ -158,14 +168,15 @@ const SideNavigation = ({
       sx={{
         display: drawerOpen === true || drawerOpen === null ? 'flex' : 'none',
         position: 'relative',
-        zIndex: '9999',
+        zIndex: '2000',
       }}
       container
+      alignItems="center"
       className={`${classes.sideNavigation} ${className}`}>
       <Grid className={classes.sideNavigationHeader}>
-        <Box className={classes.sideNavigationImageContainer}>
+        <div className={classes.sideNavigationImageContainer}>
           <LogoIcon className={classes.sideNavigationImage} />
-        </Box>
+        </div>
       </Grid>
       <Grid className={classes.sideNavigationNavContainer}>
         <Stack className={classes.sideNavigationNavbar}>
@@ -229,7 +240,7 @@ const SideNavigation = ({
       <Grid
         alignSelf="end"
         width="100%">
-        <div style={{ height: '400px' }} />
+        <Box sx={{ height: { xs: '360px', md: '400px', lg: '300px' } }} />
         <Box className={classes.sideNavigationAudioplayerContainer}>
           <AudioPlayer />
         </Box>

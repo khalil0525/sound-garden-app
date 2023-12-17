@@ -1,20 +1,20 @@
-import React, { useEffect, useReducer } from 'react';
-
+import React, { useEffect, useReducer, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-
-import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
-import { useFirestore } from '../../hooks/useFirestore';
-import { useCloudStorage } from '../../hooks/useCloudStorage';
+import { IconButton, Box, Avatar, Menu, MenuItem } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import { ReactComponent as MenuIcon } from '../../images/menuicon.svg';
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 import placeholderImage from '../../images/blank_image_placeholder.svg';
-
+import { useNavigate } from 'react-router-dom';
 import Duration from '../AudioPlayer/AudioSeekControlBar/Duration';
-import { IconButton, Box, Avatar } from '@mui/material';
+import { useAudioPlayerContext } from '../../hooks/useAudioPlayerContext';
 import theme from '../../theme';
 import { NavLink } from 'react-router-dom';
+import { ReactComponent as MenuIcon } from '../../images/menuicon.svg';
+import { useFirestore } from '../../hooks/useFirestore';
+import { useCloudStorage } from '../../hooks/useCloudStorage';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import RepeatIcon from '@mui/icons-material/Repeat';
 const useStyles = makeStyles((theme) => ({
   songItem: {
     padding: '1.2rem 0.6rem',
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     [theme.breakpoints.down('sm')]: {
-      maxWidth: '60%',
+      maxWidth: '100%',
     },
   },
   titleContainerPlayBtn: {
@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     gap: '0.4rem',
     justifyContent: 'center',
     marginLeft: '1.6rem',
+    flex: '0 1 auto',
     [theme.breakpoints.down('sm')]: {
       marginLeft: '0.4rem',
     },
@@ -81,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.h3.fontSize,
     fontWeight: 500,
     color: theme.palette.text.secondary,
+    cursor: 'pointer',
   },
   songItemRightSide: {
     display: 'flex',
@@ -95,14 +97,17 @@ const useStyles = makeStyles((theme) => ({
     width: '8rem',
     height: '8rem',
     [theme.breakpoints.down('sm')]: {
-      display: 'none',
       width: '4rem',
       height: '4rem',
     },
   },
   songPhotoContainerImg: {
-    width: '100%',
-    height: '100%',
+    width: '8rem',
+    height: '8rem',
+    [theme.breakpoints.down('sm')]: {
+      width: '4rem',
+      height: '4rem',
+    },
     borderRadius: '14px',
     boxShadow: `inset 0 0 0 1px ${theme.palette.background.default}`,
   },
@@ -119,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 let initialState = {
   playing: false,
   isMounted: false,
@@ -159,6 +165,7 @@ const MiniSongItem = ({
   songIndex,
   profileURL,
 }) => {
+  const navigate = useNavigate();
   const classes = useStyles(theme);
 
   const [songItemState, dispatchSongItemState] = useReducer(
@@ -166,7 +173,6 @@ const MiniSongItem = ({
     initialState
   );
 
-  // const [edited, setEdited] = useState(false);
   const { playing, isMounted, seeking } = songItemState;
   const {
     loadedSongURL,
@@ -180,6 +186,8 @@ const MiniSongItem = ({
   const { deleteDocument: deleteSongDocument } = useFirestore('music');
 
   const { response: cloudStorageResponse } = useCloudStorage();
+
+  const [menuOpen, setMenuOpen] = useState(null);
 
   const handlePlayPauseClick = () => {
     if (loadedSongURL !== song.songURL) {
@@ -262,6 +270,18 @@ const MiniSongItem = ({
     dispatchAudioPlayerContext,
   ]);
 
+  const handleMenuOpen = (event) => {
+    setMenuOpen(event.currentTarget);
+  };
+
+  const handleMenuItemClick = (action) => {
+    // Handle the action (e.g., Like or Repost)
+    console.log(`Clicked: ${action}`);
+
+    // Close the menu
+    setMenuOpen(null);
+  };
+
   return (
     <li className={classes.songItem}>
       <Box className={classes.songItemBody}>
@@ -278,9 +298,20 @@ const MiniSongItem = ({
             <Box className={classes.titleContainer}>
               <span
                 className={classes.titleContainerSongTitle}
-                style={{ color: theme.palette.text.secondary }}>
+                style={{ color: theme.palette.text.secondary }}
+                onClick={() =>
+                  navigate(`/song/${song?.docID}`, {
+                    state: {
+                      song,
+                      playlistSongs,
+                      songPlaylistLocation,
+                      songIndex,
+                    },
+                  })
+                }>
                 {song.title}
               </span>
+
               <Box
                 sx={{
                   display: 'flex',
@@ -289,13 +320,18 @@ const MiniSongItem = ({
                 }}>
                 <NavLink
                   to={`/profile/${profileURL}`}
-                  style={{ textDecoration: 'none' }}>
+                  style={{
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                  }}>
                   <Avatar sx={{ width: 24, height: 24 }}></Avatar>
+                  <span className={classes.titleContainerSongTitleArtist}>
+                    {song.artist}
+                  </span>
                 </NavLink>
 
-                <span className={classes.titleContainerSongTitleArtist}>
-                  {song.artist}
-                </span>
                 <FiberManualRecordRoundedIcon
                   sx={{ width: '0.4rem' }}
                   htmlColor="#C4C4C4"
@@ -317,7 +353,40 @@ const MiniSongItem = ({
               style={{ color: 'white' }}>
               {playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <MenuIcon />
+            <IconButton
+              onClick={handleMenuOpen}
+              style={{ color: '#000' }}>
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              anchorEl={menuOpen}
+              open={Boolean(menuOpen)}
+              onClose={() => setMenuOpen(null)}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('Like')}
+                sx={{
+                  color: 'text.secondary',
+                  display: 'flex',
+                  gap: '0.4rem',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                }}>
+                <FavoriteIcon className={classes.likeButton} /> Like
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleMenuItemClick('Repost')}
+                sx={{
+                  color: 'text.secondary',
+                  display: 'flex',
+                  gap: '0.4rem',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                }}>
+                <RepeatIcon className={classes.repostButton} /> Repost
+              </MenuItem>
+            </Menu>
           </Box>
         </Box>
       </Box>

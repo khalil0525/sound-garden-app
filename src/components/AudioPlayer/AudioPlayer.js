@@ -61,19 +61,26 @@ const useStyles = makeStyles((theme) => ({
   audioPlayerTrackDetailsSongArt: {
     position: 'absolute',
     zIndex: 3,
-    bottom: '12rem',
+    bottom: '10rem',
     left: 0,
     right: 0,
-    maxWidth: '26rem',
-    height: '30rem',
+    maxWidth: '22rem',
+    height: '28rem',
     margin: 'inherit',
     borderRadius: '12px',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '26rem',
+      height: '30rem',
+      bottom: '12rem',
+      left: 0,
+      right: 0,
+    },
   },
   audioPlayerTrackDetailsSongArtImage: { width: '100%', height: '100%' },
   audioPlayerUpper: {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1) !important',
-    maxWidth: '24rem',
-    height: '17rem',
+    maxWidth: '21rem',
+    height: '14rem',
     position: 'absolute',
     zIndex: 5,
     background: '#313132',
@@ -82,11 +89,16 @@ const useStyles = makeStyles((theme) => ({
     bottom: '64px',
     left: 0,
     right: 0,
+
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '24rem',
+      height: '17rem',
+    },
   },
   audioPlayerLower: {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1) !important',
-    maxWidth: '26rem',
-    height: '16rem',
+    maxWidth: '22rem',
+    height: '14rem',
     padding: '0',
     gap: '0',
     position: 'absolute',
@@ -97,6 +109,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 'inherit',
     background: 'linear-gradient(180deg, #725bcf 0%, #a99ae5 100%)',
     borderRadius: '2.5rem',
+
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '26rem',
+      height: '16rem',
+    },
   },
   audioPlayerControls: { display: 'flex', flexDirection: 'column' },
   audioPlayerControlsSeek: {
